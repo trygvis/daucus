@@ -25,12 +25,12 @@ public class GitoriousClient {
         this.projectsUri = gitoriousUrl + "/projects.xml";
     }
 
-    public List<GitoriousProject> findProjects() throws Exception {
+    public Set<GitoriousProject> findProjects() throws Exception {
         System.out.println("Fetching all projects");
         int page = 1;
 
-        List<GitoriousProject> all = new ArrayList<>();
-        while (true) {
+        Set<GitoriousProject> all = new HashSet<>();
+        while (page <= 10) {
             System.out.println("Fetching projects XML, page=" + page);
             long start = currentTimeMillis();
             HTTPRequest request = new HTTPRequest(new URI(projectsUri + "?page=" + page), GET);

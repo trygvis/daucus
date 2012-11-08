@@ -1,6 +1,7 @@
 package io.trygvis.esper.testing.gitorious;
 
 import io.trygvis.esper.testing.*;
+import io.trygvis.esper.testing.ResourceManager.*;
 import org.apache.abdera.*;
 import org.apache.abdera.model.*;
 import org.apache.abdera.protocol.client.*;
@@ -11,48 +12,83 @@ import org.codehaus.httpcache4j.client.*;
 import java.sql.*;
 import java.util.Date;
 import java.util.*;
+import java.util.concurrent.*;
 
 public class GitoriousImporter {
     private final AbderaClient abderaClient;
-    private final Connection connection;
+    private final Connection c;
     private final AtomDao atomDao;
     private final GitoriousDao gitoriousDao;
 
-    public GitoriousImporter(AbderaClient abderaClient, Connection c) throws SQLException {
-        this.abderaClient = abderaClient;
-        this.connection = c;
-        atomDao = new AtomDao(c);
-        gitoriousDao = new GitoriousDao(c);
-    }
-
     public static void main(String[] args) throws Exception {
         Main.configureLog4j();
-        Abdera abdera = new Abdera();
-        AbderaClient abderaClient = new AbderaClient(abdera, new LRUCache(abdera, 1000));
+        new GitoriousImporter();
+    }
 
-        Connection connection = DriverManager.getConnection(DbMain.JDBC_URL, "esper", "");
-        connection.setAutoCommit(false);
+    public GitoriousImporter() throws Exception {
+        Abdera abdera = new Abdera();
+        abderaClient = new AbderaClient(abdera, new LRUCache(abdera, 1000));
+
+        c = DriverManager.getConnection(DbMain.JDBC_URL, "esper", "");
+        c.setAutoCommit(false);
+
+        atomDao = new AtomDao(c);
+        gitoriousDao = new GitoriousDao(c);
 
         HTTPCache httpCache = new HTTPCache(new MemoryCacheStorage(), HTTPClientResponseResolver.createMultithreadedInstance());
 
-        GitoriousClient gitoriousClient = new GitoriousClient(httpCache, "https://gitorious.org");
+        final GitoriousClient gitoriousClient = new GitoriousClient(httpCache, "https://gitorious.org");
 
-        List<GitoriousProject> projects = gitoriousClient.findProjects();
+//        Set<GitoriousProject> projects = gitoriousClient.findProjects();
+//
+//        System.out.println("projects.size() = " + projects.size());
+//        for (GitoriousProject project : projects) {
+//            System.out.println("project.repositories = " + project.repositories);
+//        }
 
-        System.out.println("projects.size() = " + projects.size());
-        for (GitoriousProject project : projects) {
-            System.out.println("project.repositories = " + project.repositories);
+//        new GitoriousImporter(abderaClient, c).work();
+
+        final ScheduledThreadPoolExecutor service = new ScheduledThreadPoolExecutor(1);
+
+        int projectsUpdateInterval = 1000;
+        final int projectUpdateInterval = 1000;
+
+        ResourceManager<GitoriousProject, GitoriousProjectResourceManager> gitoriousProjects = new ResourceManager<>(service, 1000,
+
+            new ResourceManagerCallbacks<GitoriousProject, GitoriousProjectResourceManager>() {
+                public Set<GitoriousProject> discover() throws Exception {
+                    return gitoriousClient.findProjects();
+                }
+
+                public GitoriousProjectResourceManager onNew(GitoriousProject key) {
+                    return new GitoriousProjectResourceManager(service, projectUpdateInterval, key);
+                }
+
+                public void onGone(GitoriousProject key, GitoriousProjectResourceManager manager) {
+                    System.out.println("Project gone.");
+                    manager.close();
+                }
+            });
+        ;
+    }
+
+    class GitoriousProjectResourceManager extends ResourceManager<GitoriousRepository, GitoriousRepository> {
+
+        public GitoriousProjectResourceManager(ScheduledExecutorService executorService, int delay, GitoriousProject key) {
+            super(executorService, delay, new ResourceManagerCallbacks<GitoriousRepository, GitoriousRepository>() {
+                public Set<GitoriousRepository> discover() throws Exception {
+                    key
+                }
+
+                public GitoriousRepository onNew(GitoriousRepository key) {
+                    throw new RuntimeException("Not implemented");
+                }
+
+                public void onGone(GitoriousRepository key, GitoriousRepository value) {
+                    throw new RuntimeException("Not implemented");
+                }
+            });
         }
-
-//        new GitoriousImporter(abderaClient, connection).work();
-//
-//        ScheduledThreadPoolExecutor service = new ScheduledThreadPoolExecutor(1);
-//
-//        new ResourceManager<URL, URL>(Equal.<URL>anyEqual(), service, 1000, new Callable<List<URL>>() {
-//            public List<URL> call() throws Exception {
-//
-//            }
-//        });
     }
 
     private void work() throws SQLException, InterruptedException {

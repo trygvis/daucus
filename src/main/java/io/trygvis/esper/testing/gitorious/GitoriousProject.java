@@ -6,7 +6,7 @@ import org.dom4j.*;
 import java.net.*;
 import java.util.*;
 
-public class GitoriousProject {
+public class GitoriousProject implements Comparable<GitoriousProject> {
     public final String slug;
     public final List<GitoriousRepository> repositories;
 
@@ -64,9 +64,13 @@ public class GitoriousProject {
 
         return projects;
     }
+
+    public int compareTo(GitoriousProject other) {
+        return slug.compareTo(other.slug);
+    }
 }
 
-class GitoriousRepository {
+class GitoriousRepository implements Comparable<GitoriousRepository> {
     public final String project;
     public final String name;
     public final URI atom;
@@ -85,5 +89,15 @@ class GitoriousRepository {
         }
 
         return new GitoriousRepository(project, name, new URI(gitoriousUrl + "/" + project + "/" + name + ".atom"));
+    }
+
+    public int compareTo(GitoriousRepository o) {
+        int a = project.compareTo(o.project);
+
+        if (a != 0) {
+            return a;
+        }
+
+        return name.compareTo(o.name);
     }
 }
