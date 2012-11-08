@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projects type="array">
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-01T17:58:51Z</created-at>
+    <description>My First Project Andr&#233;</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>myprojectandre</slug>
+    <title>MyProjectAndre</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">aceres</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136396</id>
+          <name>myprojectandre</name>
+          <owner kind="User">aceres</owner>
+          <clone_url>git://gitorious.org/myprojectandre/myprojectandre.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-01T17:28:46Z</created-at>
+    <description>A clone of [LimeSurvey](https://www.limesurvey.org/) v1.92 with HTML5 and accessibilty for public survey.
+
+Branch LimeSurvey1.92 only for some official LS patch.</description>
+    <home-url>http://www.sondages.pro</home-url>
+    <license>GNU General Public License version 2(GPLv2)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>aksesibsurvey</slug>
+    <title>aksesibsurvey</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">shnoulle</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136394</id>
+          <name>aksesibsurvey</name>
+          <owner kind="User">shnoulle</owner>
+          <clone_url>git://gitorious.org/aksesibsurvey/aksesibsurvey.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-01T17:28:25Z</created-at>
+    <description>streaming scripts for the resoundingdublin project</description>
+    <home-url nil="true"></home-url>
+    <license>Public Domain</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>resoundingdublin</slug>
+    <title>resoundingdublin</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">canning</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136392</id>
+          <name>resoundingdublin</name>
+          <owner kind="User">canning</owner>
+          <clone_url>git://gitorious.org/resoundingdublin/resoundingdublin.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-01T17:20:39Z</created-at>
+    <description>testing gitorous</description>
+    <home-url nil="true"></home-url>
+    <license>Other/Proprietary License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>foobar69</slug>
+    <title>foobar</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">jalmargyyk</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136389</id>
+          <name>foobar69</name>
+          <owner kind="User">jalmargyyk</owner>
+          <clone_url>git://gitorious.org/foobar69/foobar69.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-01T15:01:29Z</created-at>
+    <description>NixOS configurations for various systems I use.
+
+The idea is to factor out any hardware specific differences and customize each system for it's particular function. I will also include some scripts for relatives/friends to use so that they can keep their NixOS systems up to date.
+
+Some global preferences:
+
+KDE, PulseAudio, Emacs, Wicd</description>
+    <home-url>http://nixos.org</home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>goibhnix</slug>
+    <title>goibhnix</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">goibhniu</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136382</id>
+          <name>configurations</name>
+          <owner kind="User">goibhniu</owner>
+          <clone_url>git://gitorious.org/goibhnix/configurations.git</clone_url>
+        </repository>
+        <repository>
+          <id>136397</id>
+          <name>scripts</name>
+          <owner kind="User">goibhniu</owner>
+          <clone_url>git://gitorious.org/goibhnix/scripts.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-01T13:45:25Z</created-at>
+    <description>(description intentionally meaningless)</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>nwerc</slug>
+    <title>NWERC</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">poletti-marco</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136377</id>
+          <name>nwerc</name>
+          <owner kind="User">poletti-marco</owner>
+          <clone_url>git://gitorious.org/nwerc/nwerc.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-01T12:34:16Z</created-at>
+    <description>This project contains a class which provides an ability to draw an polygon using qml language</description>
+    <home-url nil="true"></home-url>
+    <license>BSD License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>qmlpolygon</slug>
+    <title>qmlpolygon</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">xmlich02</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136372</id>
+          <name>qmlpolygon</name>
+          <owner kind="User">xmlich02</owner>
+          <clone_url>git://gitorious.org/qmlpolygon/qmlpolygon.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-01T11:18:01Z</created-at>
+    <description>Website for first customer</description>
+    <home-url nil="true"></home-url>
+    <license>Other/Multiple</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>tredius-website</slug>
+    <title>Tredius Website</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">supersym</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136366</id>
+          <name>ws-platform-top-domain</name>
+          <owner kind="User">supersym</owner>
+          <clone_url>git://gitorious.org/tredius-website/ws-platform-top-domain.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-01T09:02:51Z</created-at>
+    <description>Project for solving assignments of "Algorithmen &amp; Datenstrukturen" course at HAW Hamburg.</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 2(GPLv2)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>adpgrp1</slug>
+    <title>ADPgrp1</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="Team">adpgrp1</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136355</id>
+          <name>aufg_2_2</name>
+          <owner kind="User">martinh2</owner>
+          <clone_url>git://gitorious.org/adpgrp1/aufg_2_2.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-01T01:29:20Z</created-at>
+    <description>A clone of Nick Daly's Plinth repo: 
+git://github.com/NickDaly/Plinth.git</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>plinth</slug>
+    <title>Plinth</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">chinchani</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136341</id>
+          <name>chinchani-plinth</name>
+          <owner kind="User">chinchani</owner>
+          <clone_url>git://gitorious.org/plinth/chinchani-plinth.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-01T01:04:32Z</created-at>
+    <description>&lt;b&gt;Khromathyon Software InstallOverdom System&lt;/b&gt;
+Native crossplatform installation development system, free, professional and open-source, powered by Lazarus/Freepascal</description>
+    <home-url>http://khromathyon.hostei.com/</home-url>
+    <license>zlib/libpng License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>installoverdom</slug>
+    <title>InstallOverdom Installation System</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">cristophersosa</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136339</id>
+          <name>installoverdom-core</name>
+          <owner kind="User">cristophersosa</owner>
+          <clone_url>git://gitorious.org/installoverdom/installoverdom-core.git</clone_url>
+        </repository>
+        <repository>
+          <id>136409</id>
+          <name>installoverdom-plugins</name>
+          <owner kind="User">cristophersosa</owner>
+          <clone_url>git://gitorious.org/installoverdom/installoverdom-plugins.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-01T00:00:41Z</created-at>
+    <description>An experimental project to host evolving open access manuscripts at very early stages even before they're submitted as publication to article repositories.</description>
+    <home-url nil="true"></home-url>
+    <license>Other/Multiple</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>open-access-manuscripts</slug>
+    <title>Open Access Manuscripts</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">josef</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136337</id>
+          <name>understanding-services</name>
+          <owner kind="User">josef</owner>
+          <clone_url>git://gitorious.org/open-access-manuscripts/understanding-services.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T18:52:40Z</created-at>
+    <description>testprojectabohne</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>testprojectabohne</slug>
+    <title>testprojectabohne</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">amb1545</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136333</id>
+          <name>testprojectabohne</name>
+          <owner kind="User">amb1545</owner>
+          <clone_url>git://gitorious.org/testprojectabohne/testprojectabohne.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T18:34:16Z</created-at>
+    <description>During the attempt to build ruby-gems which are the dependency of diaspora i duplicated a bug report.
+ruby-subexed was already set as ITP #691280  by Harshad Wagmare.
+
+Both bug reports have been merged, and i try to delete mine. 
+
+This repo is a backup of what i have done, in case i will need it again. It might contain errors (no one checked the result but me). </description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>tornow-ruby-subexec</slug>
+    <title>tornow-ruby-subexec</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">tornow</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136330</id>
+          <name>tornow-ruby-subexec</name>
+          <owner kind="User">tornow</owner>
+          <clone_url>git://gitorious.org/tornow-ruby-subexec/tornow-ruby-subexec.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T18:15:52Z</created-at>
+    <description>OpenNMS Drools Rules</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>opennms-drools</slug>
+    <title>OpenNMS Drools</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">dertak</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136327</id>
+          <name>opennms-drools</name>
+          <owner kind="User">dertak</owner>
+          <clone_url>git://gitorious.org/opennms-drools/opennms-drools.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T17:39:13Z</created-at>
+    <description>Easy to deploy, use, and maintain Configuration Management System for Systems Administrators</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>legit-cf</slug>
+    <title>LeGiT CF</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">rcollette</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136325</id>
+          <name>legit-cf</name>
+          <owner kind="User">rcollette</owner>
+          <clone_url>git://gitorious.org/legit-cf/legit-cf.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T16:50:10Z</created-at>
+    <description>Just an test ok?!</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>gitorious888</slug>
+    <title>Gitorious</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">mslucas</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136323</id>
+          <name>gitorious666</name>
+          <owner kind="User">mslucas</owner>
+          <clone_url>git://gitorious.org/gitorious888/gitorious666.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T16:40:50Z</created-at>
+    <description>test the ssh keys for gitorious.</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>dectestgit</slug>
+    <title>dectestgit</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">doorbell</owner>
+    <repositories type="array">
+      <mainlines type="array">
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T16:04:42Z</created-at>
+    <description>This simple wiki doc.</description>
+    <home-url nil="true"></home-url>
+    <license>Apache License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>wjxing-wiki</slug>
+    <title>wjxing-wiki</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">wjxing</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136319</id>
+          <name>wjxing-wiki</name>
+          <owner kind="User">wjxing</owner>
+          <clone_url>git://gitorious.org/wjxing-wiki/wjxing-wiki.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T15:46:23Z</created-at>
+    <description>accompagno is an accompaniment software for GNU/Linux.</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>accompagno</slug>
+    <title>accompagno</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">henomis</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136317</id>
+          <name>accompagno</name>
+          <owner kind="User">henomis</owner>
+          <clone_url>git://gitorious.org/accompagno/accompagno.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+</projects>

@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projects type="array">
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-07T11:42:04Z</created-at>
+    <description>impression  de pi&#232;ces pour diff&#233;rents appareils sc&#233;niques</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>lsw</slug>
+    <title>LSW</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="Team">openateliers</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136787</id>
+          <name>cysp2</name>
+          <owner kind="Team">openateliers</owner>
+          <clone_url>git://gitorious.org/lsw/cysp2.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-07T11:25:27Z</created-at>
+    <description>none</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>pcc3_2013</slug>
+    <title>PCC3_2013</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="Team">pcc3-2013</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136785</id>
+          <name>whatcanieat</name>
+          <owner kind="Team">pcc3-2013</owner>
+          <clone_url>git://gitorious.org/pcc3_2013/whatcanieat.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-07T11:14:14Z</created-at>
+    <description>A test project to debug opta events</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>cf-fbf</slug>
+    <title>CF-FBF</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">ontaris</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136783</id>
+          <name>cf-fbf</name>
+          <owner kind="User">ontaris</owner>
+          <clone_url>git://gitorious.org/cf-fbf/cf-fbf.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-07T10:48:13Z</created-at>
+    <description>A repository to store all my programs for the subjects I studied/I am studying at Universidade Federal do ABC in 2012.</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>aed-ii</slug>
+    <title>UFABC works</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">belimawr</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136781</id>
+          <name>btree</name>
+          <owner kind="User">belimawr</owner>
+          <clone_url>git://gitorious.org/aed-ii/btree.git</clone_url>
+        </repository>
+        <repository>
+          <id>136836</id>
+          <name>artificial_ingeligenc_searchs</name>
+          <owner kind="User">belimawr</owner>
+          <clone_url>git://gitorious.org/aed-ii/artificial_ingeligenc_searchs.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-07T08:50:28Z</created-at>
+    <description>die DB</description>
+    <home-url nil="true"></home-url>
+    <license>None</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>keepass</slug>
+    <title>keepass</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">quaidsch</owner>
+    <repositories type="array">
+      <mainlines type="array">
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-07T05:22:42Z</created-at>
+    <description>I am creating in here a J2ME client for the tenbyten.org web service</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>josergc_tenbyten_org</slug>
+    <title>tenbyten_org</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">josergc</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136767</id>
+          <name>josergc_tenbyten_org</name>
+          <owner kind="User">josergc</owner>
+          <clone_url>git://gitorious.org/josergc_tenbyten_org/josergc_tenbyten_org.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T23:20:30Z</created-at>
+    <description>Shorten url system in rails 3</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>rails-3-sck</slug>
+    <title>Rails 3 SCK</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">celogeek</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136833</id>
+          <name>rails-3-sck</name>
+          <owner kind="User">celogeek</owner>
+          <clone_url>git://gitorious.org/rails-3-sck/rails-3-sck.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T23:11:02Z</created-at>
+    <description>theme I made for my status.net installation [stat.tonyb.us](http://stat.tonyb.us)</description>
+    <home-url>http://stat.tonyb.us</home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>slatenet</slug>
+    <title>slatenet</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">tonybaldwin</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136755</id>
+          <name>slatenet</name>
+          <owner kind="User">tonybaldwin</owner>
+          <clone_url>git://gitorious.org/slatenet/slatenet.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T22:24:24Z</created-at>
+    <description>This is a theme for StatusNet 1.x that is based on the Drupal theme Dartik, which is based on the default Drupal 7 theme, Bartik.</description>
+    <home-url>http://whird.jpope.org/2011/12/28/statusnet-theme-dartik/</home-url>
+    <license>GNU Affero General Public License (AGPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>dartik-statusnet-theme</slug>
+    <title>Dartik StatusNet theme</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">jpope</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136752</id>
+          <name>dartik-statusnet-theme</name>
+          <owner kind="User">jpope</owner>
+          <clone_url>git://gitorious.org/dartik-statusnet-theme/dartik-statusnet-theme.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T22:04:48Z</created-at>
+    <description>This is where data is uploaded.  </description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>blue-straggler-data</slug>
+    <title>Blue Straggler data</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">sitari</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136750</id>
+          <name>blue-straggler-data</name>
+          <owner kind="User">sitari</owner>
+          <clone_url>git://gitorious.org/blue-straggler-data/blue-straggler-data.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T21:32:07Z</created-at>
+    <description>Comienzo el proyecto BeepMe.</description>
+    <home-url nil="true"></home-url>
+    <license>Apache License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>beepme</slug>
+    <title>BeepMe</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">bigomby</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136747</id>
+          <name>beepme</name>
+          <owner kind="User">bigomby</owner>
+          <clone_url>git://gitorious.org/beepme/beepme.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T21:20:01Z</created-at>
+    <description>At the begining, just a simple raytraced based renderer. Programmed for fun and for practice.
+Next, I would like to become more complete, with great rendered images, nice complexity, massive multithreading (GPGPU, ...) and many other really fun features !</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>zouchraytracing</slug>
+    <title>ZouchRaytracing</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">zouch</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136743</id>
+          <name>zouchraytracing</name>
+          <owner kind="User">zouch</owner>
+          <clone_url>git://gitorious.org/zouchraytracing/zouchraytracing.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T20:38:59Z</created-at>
+    <description>test desc</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>testserg</slug>
+    <title>test</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">skoshkarev</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136741</id>
+          <name>testserg</name>
+          <owner kind="User">skoshkarev</owner>
+          <clone_url>git://gitorious.org/testserg/testserg.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T19:22:16Z</created-at>
+    <description>wordy project for guidewire</description>
+    <home-url nil="true"></home-url>
+    <license>Other/Proprietary License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>wordy</slug>
+    <title>wordy</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">toasifmohammed</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136738</id>
+          <name>wordy</name>
+          <owner kind="User">toasifmohammed</owner>
+          <clone_url>git://gitorious.org/wordy/wordy.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T19:12:25Z</created-at>
+    <description>This is my modified version of the Nintendulator NES emulator, which adds source-level debugging capabilities (among other features) to the debugger assuming the ROM was assembled with (a dev version) of CC65 with debugging info enabled.</description>
+    <home-url>http://kkfos.aspekt.fi/projects/nes/tools/nintendulatordx/</home-url>
+    <license>GNU General Public License version 2(GPLv2)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>nintendulatordx</slug>
+    <title>NintendulatorDX</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">thefox</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136736</id>
+          <name>nintendulatordx</name>
+          <owner kind="User">thefox</owner>
+          <clone_url>git://gitorious.org/nintendulatordx/nintendulatordx.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T18:23:57Z</created-at>
+    <description>yfs</description>
+    <home-url nil="true"></home-url>
+    <license>None</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>yfs</slug>
+    <title>yfs</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">mvanga</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136733</id>
+          <name>yfs</name>
+          <owner kind="User">mvanga</owner>
+          <clone_url>git://gitorious.org/yfs/yfs.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T18:04:50Z</created-at>
+    <description>Test project</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>wojaks-project</slug>
+    <title>Wojaks Project</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">wojak</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136730</id>
+          <name>wojaks-project</name>
+          <owner kind="User">wojak</owner>
+          <clone_url>git://gitorious.org/wojaks-project/wojaks-project.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T17:18:51Z</created-at>
+    <description>zPerf provides a GUI frontend for Ruckus Zap tool and generate graphs instantly from Zap tool output.</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 2(GPLv2)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>zperf</slug>
+    <title>zPerf</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">jefffermo</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136728</id>
+          <name>zperf</name>
+          <owner kind="User">jefffermo</owner>
+          <clone_url>git://gitorious.org/zperf/zperf.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T13:58:37Z</created-at>
+    <description>this repo it's maked for mi</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 2(GPLv2)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>mine</slug>
+    <title>Mine</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">415richard145</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136722</id>
+          <name>mine</name>
+          <owner kind="User">415richard145</owner>
+          <clone_url>git://gitorious.org/mine/mine.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T12:42:15Z</created-at>
+    <description>various graphical works, mostly pirate party related</description>
+    <home-url nil="true"></home-url>
+    <license>Other/Multiple</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>vinzv-graphics</slug>
+    <title>graphics</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">vinz</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136718</id>
+          <name>vinzv-graphics</name>
+          <owner kind="User">vinz</owner>
+          <clone_url>git://gitorious.org/vinzv-graphics/vinzv-graphics.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+</projects>

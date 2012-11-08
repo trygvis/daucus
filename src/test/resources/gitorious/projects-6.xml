@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projects type="array">
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T18:52:23Z</created-at>
+    <description>INF4705</description>
+    <home-url nil="true"></home-url>
+    <license>Academic Free License v3.0</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>inf4705</slug>
+    <title>INF4705</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">madeng</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136482</id>
+          <name>inf4705</name>
+          <owner kind="User">madeng</owner>
+          <clone_url>git://gitorious.org/inf4705/inf4705.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T18:17:34Z</created-at>
+    <description>Joc per iphone</description>
+    <home-url nil="true"></home-url>
+    <license>None</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>superfat</slug>
+    <title>SuperFat</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">titoermejo</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136480</id>
+          <name>superfat</name>
+          <owner kind="User">titoermejo</owner>
+          <clone_url>git://gitorious.org/superfat/superfat.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T16:57:26Z</created-at>
+    <description>Test repository</description>
+    <home-url nil="true"></home-url>
+    <license>Ruby License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>kotp-test</slug>
+    <title>test</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">kotp</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136474</id>
+          <name>kotp-test</name>
+          <owner kind="User">kotp</owner>
+          <clone_url>git://gitorious.org/kotp-test/kotp-test.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T15:23:21Z</created-at>
+    <description>Misc. projects for Daniel Jackson Allred</description>
+    <home-url nil="true"></home-url>
+    <license>Public Domain</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>daniel-allred-resume</slug>
+    <title>Daniel Allred Personal Projects</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">djallred</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136466</id>
+          <name>daniel-allred-resume</name>
+          <owner kind="User">djallred</owner>
+          <clone_url>git://gitorious.org/daniel-allred-resume/daniel-allred-resume.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T14:42:40Z</created-at>
+    <description>this is a complete book for php. beginning from php start to end php</description>
+    <home-url>http://zweb.ir/projects/book-php-php5-starttoend</home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>book-php-php5-starttoend</slug>
+    <title>Book PHP PHP5 StartToEnd</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">zweb</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136463</id>
+          <name>persian</name>
+          <owner kind="User">zweb</owner>
+          <clone_url>git://gitorious.org/book-php-php5-starttoend/persian.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+        <repository>
+          <id>136609</id>
+          <name>moradis-book-php5-persian</name>
+          <owner kind="User">moradi</owner>
+          <clone_url>git://gitorious.org/~moradi/book-php-php5-starttoend/moradis-book-php5-persian.git</clone_url>
+        </repository>
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T14:16:16Z</created-at>
+    <description>test project</description>
+    <home-url nil="true"></home-url>
+    <license>BSD License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>test-project12</slug>
+    <title>test project</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">decks</owner>
+    <repositories type="array">
+      <mainlines type="array">
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T14:01:39Z</created-at>
+    <description>Assignment 3 inf-2301</description>
+    <home-url nil="true"></home-url>
+    <license>Other/Proprietary License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>inf-2301-3</slug>
+    <title>inf-2301-3</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">jvlomax</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136459</id>
+          <name>inf-2301-3</name>
+          <owner kind="User">jvlomax</owner>
+          <clone_url>git://gitorious.org/inf-2301-3/inf-2301-3.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T13:55:10Z</created-at>
+    <description>created on November 02, 2012</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>november2</slug>
+    <title>november2</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">annumth</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136457</id>
+          <name>november2</name>
+          <owner kind="User">annumth</owner>
+          <clone_url>git://gitorious.org/november2/november2.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T13:53:35Z</created-at>
+    <description>Scala Lift based project.</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>scala-lift-project</slug>
+    <title>Scala Lift Project</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">agmonser</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136497</id>
+          <name>scala-lift-project</name>
+          <owner kind="User">agmonser</owner>
+          <clone_url>git://gitorious.org/scala-lift-project/scala-lift-project.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T13:47:30Z</created-at>
+    <description>Case of a smart-ass logotype font.</description>
+    <home-url nil="true"></home-url>
+    <license>Other/Proprietary License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>narzedzia-sukcesu</slug>
+    <title>Narz&#281;dzia Sukcesu</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">rolekgrzegorz</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136452</id>
+          <name>mainline</name>
+          <owner kind="User">rolekgrzegorz</owner>
+          <clone_url>git://gitorious.org/narzedzia-sukcesu/mainline.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T13:09:13Z</created-at>
+    <description>Projet SDA de mi-semestre.
+
+Recherche dans un espace 3D.</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>sda1-iut-descartes</slug>
+    <title>SDA1</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">clemh78</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136445</id>
+          <name>sda1-iut-descartes</name>
+          <owner kind="User">clemh78</owner>
+          <clone_url>git://gitorious.org/sda1-iut-descartes/sda1-iut-descartes.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T12:19:24Z</created-at>
+    <description>Sample Project</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>eclipseprojects</slug>
+    <title>EclipseProjects</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">maccramers</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136442</id>
+          <name>eclipseprojects</name>
+          <owner kind="User">maccramers</owner>
+          <clone_url>git://gitorious.org/eclipseprojects/eclipseprojects.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T11:29:20Z</created-at>
+    <description>2nd year group project</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>csy2033_gv_gp</slug>
+    <title>CSY2033_GV_GP</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">jarope</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136440</id>
+          <name>csy2033_gv_gp</name>
+          <owner kind="User">jarope</owner>
+          <clone_url>git://gitorious.org/csy2033_gv_gp/csy2033_gv_gp.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T08:49:16Z</created-at>
+    <description>Test Project</description>
+    <home-url nil="true"></home-url>
+    <license>Ruby License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>xenious-test-project</slug>
+    <title>xenious-test-project</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">xenious</owner>
+    <repositories type="array">
+      <mainlines type="array">
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T03:26:11Z</created-at>
+    <description>sdfsdf</description>
+    <home-url nil="true"></home-url>
+    <license>Other/Proprietary License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>alltel</slug>
+    <title>Alltel</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">hrabbit</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136430</id>
+          <name>online-signup</name>
+          <owner kind="User">hrabbit</owner>
+          <clone_url>git://gitorious.org/alltel/online-signup.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T01:58:58Z</created-at>
+    <description>zabbix_buff is helper script to cache and filter  the output of another command or plugin for Zabbix UserParameter.
+
+zabbix_buff save resources by caching the output of a command used to populate zabbix_agent UserParameter(s) when it return multiple values and therefore may be called too often.
+
+As it may be a case for using zabbix_sender this use case is explained and documented with examples.
+
+The following sample plugins are available:
+
+ * zhdd (get HDD SMART info)
+ * zmysql (sample formatter for "mysqladmin variables")
+ * zfin_asxi (sample plugin to fetch Australian Securities Exchange (ASX) Indexes)
+</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>zabbix_buff</slug>
+    <title>zabbix_buff</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">onlyjob</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136428</id>
+          <name>zabbix_buff</name>
+          <owner kind="User">onlyjob</owner>
+          <clone_url>git://gitorious.org/zabbix_buff/zabbix_buff.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T00:59:58Z</created-at>
+    <description>...</description>
+    <home-url nil="true"></home-url>
+    <license>GNU Affero General Public License (AGPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>is-in-spotify</slug>
+    <title>is-in-spotify</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">warp</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136419</id>
+          <name>is-in-spotify</name>
+          <owner kind="User">warp</owner>
+          <clone_url>git://gitorious.org/is-in-spotify/is-in-spotify.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-01T20:41:35Z</created-at>
+    <description>Repositorios relacionados con Software Libre utilizado en la Universidad Pedag&#243;gica Nacional "Francisco Moraz&#225;n".</description>
+    <home-url>http://www.upnfm.edu.hn/</home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>upnfm</slug>
+    <title>UPNFM</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">kbalam</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136413</id>
+          <name>yii-rest-api</name>
+          <owner kind="User">kbalam</owner>
+          <clone_url>git://gitorious.org/upnfm/yii-rest-api.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-01T19:23:31Z</created-at>
+    <description># ohai
+
+this is a test project</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>zauberfisch-test</slug>
+    <title>Test</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">zauberfisch</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136404</id>
+          <name>zauberfisch-test</name>
+          <owner kind="User">zauberfisch</owner>
+          <clone_url>git://gitorious.org/zauberfisch-test/zauberfisch-test.git</clone_url>
+        </repository>
+        <repository>
+          <id>136405</id>
+          <name>zauberfisch-test-2</name>
+          <owner kind="User">zauberfisch</owner>
+          <clone_url>git://gitorious.org/zauberfisch-test/zauberfisch-test-2.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-01T18:38:35Z</created-at>
+    <description>Debian package for ruby gem multi-xml.</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>ruby-multi-xml</slug>
+    <title>ruby-multi-xml</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">jishnu7</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136402</id>
+          <name>ruby-multi-xml</name>
+          <owner kind="User">jishnu7</owner>
+          <clone_url>git://gitorious.org/ruby-multi-xml/ruby-multi-xml.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+</projects>

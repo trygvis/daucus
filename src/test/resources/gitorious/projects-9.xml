@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projects type="array">
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-30T21:22:54Z</created-at>
+    <description>Repo f&#252;r Aufgabe 2.1 des AD Praktikums</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>algorithmen-und-datenstrukturen</slug>
+    <title>ADP_2_1</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">simon-brummer</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136237</id>
+          <name>algorithmen-und-datenstrukturen</name>
+          <owner kind="User">simon-brummer</owner>
+          <clone_url>git://gitorious.org/algorithmen-und-datenstrukturen/algorithmen-und-datenstrukturen.git</clone_url>
+        </repository>
+        <repository>
+          <id>136238</id>
+          <name>2_1</name>
+          <owner kind="User">simon-brummer</owner>
+          <clone_url>git://gitorious.org/algorithmen-und-datenstrukturen/2_1.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-30T20:41:41Z</created-at>
+    <description>Fork  of the Borderland project : a granular sequencer.
+
+This version is NOT FUNCTIONNAL. Please standby for more info...
+
+For now, some features are being added : 
+- real Rotation of samples
+- presets of samples
+- improving interface
+- visibility of Fx (as grains too)
+
+</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 2(GPLv2)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>borderlands-phoenux</slug>
+    <title>Borderlands Phoenux</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">asthro</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136235</id>
+          <name>borderlands-phoenux</name>
+          <owner kind="User">asthro</owner>
+          <clone_url>git://gitorious.org/borderlands-phoenux/borderlands-phoenux.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-30T20:16:15Z</created-at>
+    <description>text-based emotion analysis</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>moodigger</slug>
+    <title>moodigger</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">evuez</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136232</id>
+          <name>moodigger</name>
+          <owner kind="User">evuez</owner>
+          <clone_url>git://gitorious.org/moodigger/moodigger.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-30T15:09:26Z</created-at>
+    <description>Just a test project.</description>
+    <home-url nil="true"></home-url>
+    <license>BSD License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>jong-test-project</slug>
+    <title>Test Project</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">jong</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136217</id>
+          <name>jong-test-project-repo</name>
+          <owner kind="User">jong</owner>
+          <clone_url>git://gitorious.org/jong-test-project/jong-test-project-repo.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+        <repository>
+          <id>136220</id>
+          <name>jgartmans-jong-test-project-repo</name>
+          <owner kind="User">jgartman</owner>
+          <clone_url>git://gitorious.org/~jgartman/jong-test-project/jgartmans-jong-test-project-repo.git</clone_url>
+        </repository>
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-30T14:24:51Z</created-at>
+    <description>Just some small and simple scripts that are supposed to make my (and maybe your) life easier.</description>
+    <home-url nil="true"></home-url>
+    <license>BSD License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>whatthehellisaslug</slug>
+    <title>Small Helper Scripts</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">rndusr</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136212</id>
+          <name>smallhelperscripts</name>
+          <owner kind="User">rndusr</owner>
+          <clone_url>git://gitorious.org/whatthehellisaslug/smallhelperscripts.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-30T14:00:49Z</created-at>
+    <description>test</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>annumtest</slug>
+    <title>annumtest</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">annumth</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136210</id>
+          <name>annumtest</name>
+          <owner kind="User">annumth</owner>
+          <clone_url>git://gitorious.org/annumtest/annumtest.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-30T13:36:24Z</created-at>
+    <description>Drupal 7 build project</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>druild-7</slug>
+    <title>Druild 7</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">medhamsh</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136208</id>
+          <name>druild-7</name>
+          <owner kind="User">medhamsh</owner>
+          <clone_url>git://gitorious.org/druild-7/druild-7.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-30T13:28:55Z</created-at>
+    <description>We are making this new project for the purpose of testing. </description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>ob-work</slug>
+    <title>OB work</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">sob</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136206</id>
+          <name>ob-work</name>
+          <owner kind="User">sob</owner>
+          <clone_url>git://gitorious.org/ob-work/ob-work.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-30T13:11:58Z</created-at>
+    <description>Notes de cours en th&#233;orie des mod&#232;les.</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>modeltheory</slug>
+    <title>modeltheory</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="Team">lmfi-team</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136202</id>
+          <name>modeltheory</name>
+          <owner kind="User">ludovic</owner>
+          <clone_url>git://gitorious.org/modeltheory/modeltheory.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-30T12:45:54Z</created-at>
+    <description>The project is a thesis paper template for plaust</description>
+    <home-url nil="true"></home-url>
+    <license>Academic Free License v3.0</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>plaustpaper</slug>
+    <title>plaustpaper</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">ztkx</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136200</id>
+          <name>plaustpaper</name>
+          <owner kind="User">ztkx</owner>
+          <clone_url>git://gitorious.org/plaustpaper/plaustpaper.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-30T12:15:42Z</created-at>
+    <description>Simple GPX visualiser with GPS support</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 2(GPLv2)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>meetrack</slug>
+    <title>MeeTrack</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">rmoravcik</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136197</id>
+          <name>meetrack</name>
+          <owner kind="User">rmoravcik</owner>
+          <clone_url>git://gitorious.org/meetrack/meetrack.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-30T07:51:42Z</created-at>
+    <description>A OpenGLES enabled Qt QWS plugin for Freescales i.MX51/53.</description>
+    <home-url nil="true"></home-url>
+    <license>GNU Lesser General Public License (LGPL)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>imxqtplugin</slug>
+    <title>imxqtplugin</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">micken</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136187</id>
+          <name>imxqtplugin</name>
+          <owner kind="User">micken</owner>
+          <clone_url>git://gitorious.org/imxqtplugin/imxqtplugin.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-30T05:49:15Z</created-at>
+    <description>this research project analysis the feasibility of AVR ATmega 64A as a True Random Number Generator (TRNG)</description>
+    <home-url nil="true"></home-url>
+    <license>Academic Free License v3.0</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>avr-random-number-generator</slug>
+    <title>AVR Random Number Generator</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">rutvij</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136183</id>
+          <name>avr-random-number-generator</name>
+          <owner kind="User">rutvij</owner>
+          <clone_url>git://gitorious.org/avr-random-number-generator/avr-random-number-generator.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-30T00:21:43Z</created-at>
+    <description>QT-Webkit</description>
+    <home-url nil="true"></home-url>
+    <license>GNU Lesser General Public License (LGPL)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>qt-webkit</slug>
+    <title>QT-Webkit</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">tjswhddn</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136174</id>
+          <name>qt-webkit</name>
+          <owner kind="User">tjswhddn</owner>
+          <clone_url>git://gitorious.org/qt-webkit/qt-webkit.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-29T18:23:05Z</created-at>
+    <description>Various tools for examining transport streams</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>tsanalysis</slug>
+    <title>TSanalysis</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">aktungmak</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136163</id>
+          <name>tsanalysis</name>
+          <owner kind="User">aktungmak</owner>
+          <clone_url>git://gitorious.org/tsanalysis/tsanalysis.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-29T17:32:12Z</created-at>
+    <description>My personal files.</description>
+    <home-url nil="true"></home-url>
+    <license>Other/Multiple</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>totte</slug>
+    <title>totte</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">totte</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136157</id>
+          <name>configurations</name>
+          <owner kind="User">totte</owner>
+          <clone_url>git://gitorious.org/totte/configurations.git</clone_url>
+        </repository>
+        <repository>
+          <id>136158</id>
+          <name>scripts</name>
+          <owner kind="User">totte</owner>
+          <clone_url>git://gitorious.org/totte/scripts.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-29T16:26:59Z</created-at>
+    <description>yanrop (Yet ANother Robot Programming)
+
+Another tool to help learning coding.
+</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 2(GPLv2)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>yanrop</slug>
+    <title>yanrop</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">majidelidrissi</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136152</id>
+          <name>yanrop</name>
+          <owner kind="User">majidelidrissi</owner>
+          <clone_url>git://gitorious.org/yanrop/yanrop.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-29T14:56:45Z</created-at>
+    <description>Codigo del Peque&#241;o Computador Personal</description>
+    <home-url>http://wiki.vieju.net/doku.php?id=pcp</home-url>
+    <license>None</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>pcp</slug>
+    <title>PCP</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">jojo</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136149</id>
+          <name>pcp</name>
+          <owner kind="User">jojo</owner>
+          <clone_url>git://gitorious.org/pcp/pcp.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-29T14:18:33Z</created-at>
+    <description>TEst zeiofh</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>apoutest</slug>
+    <title>APOUTest</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">apoupard</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136146</id>
+          <name>apoutest</name>
+          <owner kind="User">apoupard</owner>
+          <clone_url>git://gitorious.org/apoutest/apoutest.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-29T13:43:58Z</created-at>
+    <description>IntTe Projekt JSF</description>
+    <home-url nil="true"></home-url>
+    <license>None</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>jsfchat</slug>
+    <title>JSFChat</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="Team">se2project-naturpur</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136142</id>
+          <name>jsfchat</name>
+          <owner kind="Team">se2project-naturpur</owner>
+          <clone_url>git://gitorious.org/jsfchat/jsfchat.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+</projects>

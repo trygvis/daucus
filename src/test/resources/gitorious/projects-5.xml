@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projects type="array">
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-04T08:53:12Z</created-at>
+    <description>dfu-util is the host side implementation of the DFU 1.0 and DFU 1.1 specifications of the USB forum. DFU is intended to download and upload firmware to devices connected over USB. It ranges from small devices like micro-controller boards up to mobile phones. Using dfu-util you can download firmware to your DFU-enabled device or upload firmware from it. dfu-util has been tested with the Openmoko Neo1973 and Freerunner and many other devices.</description>
+    <home-url>http://dfu-util.gnumonks.org/</home-url>
+    <license>GNU General Public License version 2(GPLv2)</license>
+    <mailinglist-url>https://lists.gnumonks.org/mailman/listinfo/dfu-util</mailinglist-url>
+    <slug>dfu-util</slug>
+    <title>dfu-util - Device Firmware Upgrade Utilities</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="Team">dfu-util</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136565</id>
+          <name>dfu-util</name>
+          <owner kind="User">stefan</owner>
+          <clone_url>git://gitorious.org/dfu-util/dfu-util.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-04T02:22:16Z</created-at>
+    <description>This the web site I am using as a portfolio/blogging site for future endeavors into web and software development.</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>jjhwebsite</slug>
+    <title>JJHWebSite</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">xfanger</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136558</id>
+          <name>jjhwebsite</name>
+          <owner kind="User">xfanger</owner>
+          <clone_url>git://gitorious.org/jjhwebsite/jjhwebsite.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-04T01:45:05Z</created-at>
+    <description>Port of the python-psutil module to the GNU operating system.</description>
+    <home-url>http://code.google.com/p/psutil/</home-url>
+    <license>BSD License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>python-psutil-hurd</slug>
+    <title>python-psutil-hurd</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">steap</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136555</id>
+          <name>python-psutil-hurd</name>
+          <owner kind="User">steap</owner>
+          <clone_url>git://gitorious.org/python-psutil-hurd/python-psutil-hurd.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-04T00:57:32Z</created-at>
+    <description>Repositories for www.greategytianomnium.org.</description>
+    <home-url>http://www.greategyptianomnium.org</home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>greategyptianomnium</slug>
+    <title>greategyptianomnium</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">spacez320</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136552</id>
+          <name>greategyptianomnium_theme</name>
+          <owner kind="User">spacez320</owner>
+          <clone_url>git://gitorious.org/greategyptianomnium/greategyptianomnium_theme.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-03T18:58:20Z</created-at>
+    <description>This is a Java Inventory system, this project is for Morehead State University's advanced Java pograming course.</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>javainventorysystem</slug>
+    <title>JavaInventorySystem</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">xfanger</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136540</id>
+          <name>javainventorysystem</name>
+          <owner kind="User">xfanger</owner>
+          <clone_url>git://gitorious.org/javainventorysystem/javainventorysystem.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-03T17:56:50Z</created-at>
+    <description>This is a basic library that implements fuzzy operators and gives to user a more comfortable way of using them.</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>fuzzy-operator-library</slug>
+    <title>Fuzzy Operator Library</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">schtiago</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136537</id>
+          <name>fuzzy-operator-library</name>
+          <owner kind="User">schtiago</owner>
+          <clone_url>git://gitorious.org/fuzzy-operator-library/fuzzy-operator-library.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-03T17:15:08Z</created-at>
+    <description>...</description>
+    <home-url nil="true"></home-url>
+    <license>GNU Affero General Public License (AGPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>autoincrement</slug>
+    <title>autoincrement</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">warp</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136533</id>
+          <name>autoincrement</name>
+          <owner kind="User">warp</owner>
+          <clone_url>git://gitorious.org/autoincrement/autoincrement.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-03T14:30:12Z</created-at>
+    <description>Escuelab is a space for public collaboration and development.</description>
+    <home-url>http://escuelabpuno.org</home-url>
+    <license>Other/Multiple</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>escuelab</slug>
+    <title>Escuelab</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">neyder</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136526</id>
+          <name>escuelab</name>
+          <owner kind="User">neyder</owner>
+          <clone_url>git://gitorious.org/escuelab/escuelab.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url>http://sourceforge.net/tracker/?group_id=15322&amp;atid=115322</bugtracker-url>
+    <created-at type="datetime">2012-11-03T13:51:58Z</created-at>
+    <description>SimpleMail is a simple to use but powerful mail client. It supports the SMTP, POP3 and IMAP (in a simple form) protocols. Furthermore, among much other features, it is capable of showing HTML mails and can identify spam mails by using a Bayesian filter.
+
+The Gitorious project is contains a read-only mirror of SimpleMail's CVS repository that is hosted at SourceForge.</description>
+    <home-url>http://simplemail.sf.net/</home-url>
+    <license>GNU General Public License version 2(GPLv2)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>simplemail</slug>
+    <title>SimpleMail</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">sba</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136524</id>
+          <name>simplemail-cvs</name>
+          <owner kind="User">sba</owner>
+          <clone_url>git://gitorious.org/simplemail/simplemail-cvs.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-03T11:24:23Z</created-at>
+    <description>This is a helper class to expose Unix signals to Qt signals, and provide "graceful exit" functinality.
+
+To use it, just add the unixsignalhandler.h and unixsignalhandler.cpp files to your project, and list
+them in you .pro file. For a quick start to check out the functionality, just say:
+
+qmake &amp;&amp; make 
+
+in this dir, and start the dummy test applicataion with
+
+./unixsignalhandler
+
+and send a SIGUSR1 signal for example with the kill utility.
+</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>unixsignalhandler</slug>
+    <title>Unixsignalhandler</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">zgyarmati</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136515</id>
+          <name>unixsignalhandler</name>
+          <owner kind="User">zgyarmati</owner>
+          <clone_url>git://gitorious.org/unixsignalhandler/unixsignalhandler.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-03T08:00:05Z</created-at>
+    <description>Library for generating plots (via GNUPlot) from Common Lisp</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>pm-gnuplot</slug>
+    <title>pm-gnuplot</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">pmicossi</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136511</id>
+          <name>pm-gnuplot</name>
+          <owner kind="User">pmicossi</owner>
+          <clone_url>git://gitorious.org/pm-gnuplot/pm-gnuplot.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-03T07:09:28Z</created-at>
+    <description>Turn-Based Strategy Game.</description>
+    <home-url>http://sandbox.ltmnet.com/turious</home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>turious</slug>
+    <title>Turious</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">darkrose</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136509</id>
+          <name>turious</name>
+          <owner kind="User">darkrose</owner>
+          <clone_url>git://gitorious.org/turious/turious.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-03T06:45:51Z</created-at>
+    <description>Measurement and Control Communication Projects
+
+Early stages of development of projects for measurement and control protocols. Future goals include libmcp and libmcsp, libraries for a Measurement and Control Protocol and a Measurement and Control Stream Protocol respectively.
+
+Plans for libmcp include extending TCP to create a messaging protocol for requests made between a client and server where a typical message would be eg. "read analog device channel" or "write digital device channel high".
+
+Plans for libmcsp are to develop a streaming UDP protocol that implements basic reliability through packet number sequencing and possible simple congestion control if feasible. A typical function of this protocol would be eg. start an input stream to read data from a measurement device, or start an output stream to write data to hardware device for control of an actuator.
+
+These libraries will not access hardware directly, but instead be used in conjunction with future versions of libcld by a daemon to handle that functionality.</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>mccp</slug>
+    <title>Measurement and Control Communication Projects</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">captainron</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136506</id>
+          <name>libmcp</name>
+          <owner kind="User">captainron</owner>
+          <clone_url>git://gitorious.org/mccp/libmcp.git</clone_url>
+        </repository>
+        <repository>
+          <id>136507</id>
+          <name>libmcsp</name>
+          <owner kind="User">captainron</owner>
+          <clone_url>git://gitorious.org/mccp/libmcsp.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-03T05:48:56Z</created-at>
+    <description>blank</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>haskellogy</slug>
+    <title>haskellogy</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">roc</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136504</id>
+          <name>haskellogy</name>
+          <owner kind="User">roc</owner>
+          <clone_url>git://gitorious.org/haskellogy/haskellogy.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-03T04:50:18Z</created-at>
+    <description>test</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>fbhfoodrank</slug>
+    <title>FBHFoodRank</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">lionelli1</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136500</id>
+          <name>fbhfoodrank</name>
+          <owner kind="User">lionelli1</owner>
+          <clone_url>git://gitorious.org/fbhfoodrank/fbhfoodrank.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T22:24:07Z</created-at>
+    <description>test</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>another-test</slug>
+    <title>another test</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">chertzog</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136496</id>
+          <name>another-test</name>
+          <owner kind="User">chertzog</owner>
+          <clone_url>git://gitorious.org/another-test/another-test.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T21:41:58Z</created-at>
+    <description>There can be only one moon master.</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>moonmaster</slug>
+    <title>MoonMaster</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">jtkabl</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136494</id>
+          <name>moonmaster</name>
+          <owner kind="User">jtkabl</owner>
+          <clone_url>git://gitorious.org/moonmaster/moonmaster.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T21:38:37Z</created-at>
+    <description>Some very basic functions in haskell for practice</description>
+    <home-url nil="true"></home-url>
+    <license>GNU Affero General Public License (AGPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>haskell-practice-functions</slug>
+    <title>Haskell Practice Functions</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">tshehan</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136492</id>
+          <name>haskell-practice-functions</name>
+          <owner kind="User">tshehan</owner>
+          <clone_url>git://gitorious.org/haskell-practice-functions/haskell-practice-functions.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T19:16:00Z</created-at>
+    <description>bla</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>hw</slug>
+    <title>hw</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">lucianodltec</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136486</id>
+          <name>hw</name>
+          <owner kind="User">lucianodltec</owner>
+          <clone_url>git://gitorious.org/hw/hw.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-02T18:53:39Z</created-at>
+    <description>Atelier ligne de commande pour l'AXUL</description>
+    <home-url nil="true"></home-url>
+    <license>Other Open Source Initiative Approved License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>axul-cli</slug>
+    <title>Axul-Cli</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">epy</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136484</id>
+          <name>axul-cli</name>
+          <owner kind="User">epy</owner>
+          <clone_url>git://gitorious.org/axul-cli/axul-cli.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+</projects>

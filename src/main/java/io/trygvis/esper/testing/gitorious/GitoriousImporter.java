@@ -1,12 +1,16 @@
-package io.trygvis.esper.testing;
+package io.trygvis.esper.testing.gitorious;
 
+import io.trygvis.esper.testing.*;
 import org.apache.abdera.*;
 import org.apache.abdera.model.*;
 import org.apache.abdera.protocol.client.*;
 import org.apache.abdera.protocol.client.cache.*;
+import org.codehaus.httpcache4j.cache.*;
+import org.codehaus.httpcache4j.client.*;
 
 import java.sql.*;
 import java.util.Date;
+import java.util.*;
 
 public class GitoriousImporter {
     private final AbderaClient abderaClient;
@@ -21,7 +25,7 @@ public class GitoriousImporter {
         gitoriousDao = new GitoriousDao(c);
     }
 
-    public static void main(String[] args) throws InterruptedException, SQLException {
+    public static void main(String[] args) throws Exception {
         Main.configureLog4j();
         Abdera abdera = new Abdera();
         AbderaClient abderaClient = new AbderaClient(abdera, new LRUCache(abdera, 1000));
@@ -29,7 +33,26 @@ public class GitoriousImporter {
         Connection connection = DriverManager.getConnection(DbMain.JDBC_URL, "esper", "");
         connection.setAutoCommit(false);
 
-        new GitoriousImporter(abderaClient, connection).work();
+        HTTPCache httpCache = new HTTPCache(new MemoryCacheStorage(), HTTPClientResponseResolver.createMultithreadedInstance());
+
+        GitoriousClient gitoriousClient = new GitoriousClient(httpCache, "https://gitorious.org");
+
+        List<GitoriousProject> projects = gitoriousClient.findProjects();
+
+        System.out.println("projects.size() = " + projects.size());
+        for (GitoriousProject project : projects) {
+            System.out.println("project.repositories = " + project.repositories);
+        }
+
+//        new GitoriousImporter(abderaClient, connection).work();
+//
+//        ScheduledThreadPoolExecutor service = new ScheduledThreadPoolExecutor(1);
+//
+//        new ResourceManager<URL, URL>(Equal.<URL>anyEqual(), service, 1000, new Callable<List<URL>>() {
+//            public List<URL> call() throws Exception {
+//
+//            }
+//        });
     }
 
     private void work() throws SQLException, InterruptedException {
@@ -40,7 +63,7 @@ public class GitoriousImporter {
 
             System.out.println("Fetching " + url);
             RequestOptions options = new RequestOptions();
-            if(lastUpdate != null) {
+            if (lastUpdate != null) {
                 options.setIfModifiedSince(lastUpdate);
             }
 
@@ -73,10 +96,9 @@ public class GitoriousImporter {
                 }
 
                 System.out.println("New entry: " + url + ":" + entryId);
-                if(gitoriousDao.countEntryId(entryId) == 0) {
+                if (gitoriousDao.countEntryId(entryId) == 0) {
                     gitoriousDao.insertChange(entryId, title);
-                }
-                else {
+                } else {
                     System.out.println("Already imported entry: " + entryId);
                 }
             }

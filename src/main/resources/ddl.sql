@@ -8,6 +8,11 @@ CREATE TABLE atom_feed (
   last_update TIMESTAMP NOT NULL
 );
 
+CREATE TABLE gitorious_repository (
+  entry_id VARCHAR(1000) PRIMARY KEY,
+  text VARCHAR(1000)
+);
+
 CREATE TABLE gitorious_change (
   entry_id VARCHAR(1000) PRIMARY KEY,
   text VARCHAR(1000)

@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projects type="array">
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-29T12:56:21Z</created-at>
+    <description>inci</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>inci</slug>
+    <title>Incidencias</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">rafaelox</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136139</id>
+          <name>incidencia</name>
+          <owner kind="User">rafaelox</owner>
+          <clone_url>git://gitorious.org/inci/incidencia.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-29T11:29:04Z</created-at>
+    <description>Driver for performand prototypes</description>
+    <home-url nil="true"></home-url>
+    <license>Academic Free License v3.0</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>performand-driver</slug>
+    <title>Performand Driver</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">rbrtbrehm</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136136</id>
+          <name>performand-driver</name>
+          <owner kind="User">rbrtbrehm</owner>
+          <clone_url>git://gitorious.org/performand-driver/performand-driver.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-29T11:00:33Z</created-at>
+    <description>Packaging columnize</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 2(GPLv2)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>rocky-columnize</slug>
+    <title>rocky/columnize</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">nandaja</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136130</id>
+          <name>rocky-columnize</name>
+          <owner kind="User">nandaja</owner>
+          <clone_url>git://gitorious.org/rocky-columnize/rocky-columnize.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-29T10:28:03Z</created-at>
+    <description>Several tools all around the JTAG interface.</description>
+    <home-url nil="true"></home-url>
+    <license>Other/Multiple</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>jtag-tools</slug>
+    <title>JTAG Tools</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">slz</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136131</id>
+          <name>openocd</name>
+          <owner kind="User">slz</owner>
+          <clone_url>git://gitorious.org/jtag-tools/openocd.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-29T09:25:00Z</created-at>
+    <description>The reference implementation of the FLOPSYNC wireless sensor network synchronization scheme.</description>
+    <home-url nil="true"></home-url>
+    <license>GNU Lesser General Public License (LGPL)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>flopsync</slug>
+    <title>Flopsync</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">fedetft</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136123</id>
+          <name>flopsync</name>
+          <owner kind="User">fedetft</owner>
+          <clone_url>git://gitorious.org/flopsync/flopsync.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url>http://redmine.graphics-muse.org/projects/pibox</bugtracker-url>
+    <created-at type="datetime">2012-10-29T03:27:06Z</created-at>
+    <description>Base build system for a Raspberry Pi, based on the BeagleBox build environment.</description>
+    <home-url>http://www.graphics-muse.org/wiki/pmwiki.php?n=RaspberryPi.RaspberryPi</home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>pibox</slug>
+    <title>PiBox</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">ximba</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136116</id>
+          <name>pibox</name>
+          <owner kind="User">ximba</owner>
+          <clone_url>git://gitorious.org/pibox/pibox.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-29T03:15:49Z</created-at>
+    <description>A Game Master utility for Pathfinder and other OGL games</description>
+    <home-url>http://katerberg.net</home-url>
+    <license>GNU Affero General Public License (AGPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>tap</slug>
+    <title>TAP</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">diablomarcus</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136114</id>
+          <name>tap</name>
+          <owner kind="User">diablomarcus</owner>
+          <clone_url>git://gitorious.org/tap/tap.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-29T02:17:29Z</created-at>
+    <description>buildarrhea</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 2(GPLv2)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>buildarrhea</slug>
+    <title>Buildarrhea</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">sreich</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136109</id>
+          <name>buildarrhea</name>
+          <owner kind="User">sreich</owner>
+          <clone_url>git://gitorious.org/buildarrhea/buildarrhea.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-29T02:12:57Z</created-at>
+    <description>ues for test</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>uestc</slug>
+    <title>UESTC</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">uestctest</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136107</id>
+          <name>uestc</name>
+          <owner kind="User">uestctest</owner>
+          <clone_url>git://gitorious.org/uestc/uestc.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-28T23:35:18Z</created-at>
+    <description>WCF </description>
+    <home-url nil="true"></home-url>
+    <license>Academic Free License v3.0</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>wcfserviceretail</slug>
+    <title>WcfServiceRetail</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">r3xakead0</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136102</id>
+          <name>wcfserviceretail</name>
+          <owner kind="User">r3xakead0</owner>
+          <clone_url>git://gitorious.org/wcfserviceretail/wcfserviceretail.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-28T22:14:40Z</created-at>
+    <description>Command line interface for pyTango based on ipython. Very basic and simple to copy and try. Should work with ipython from pre 0.10 up to 0.13 and above.
+Tested and designed on and for the Samba beamline. 
+This version is a complete rewrite to make things even more modular and cleaner. </description>
+    <home-url nil="true"></home-url>
+    <license>Python License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>speck</slug>
+    <title>SPECK</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">efonda</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136098</id>
+          <name>speck</name>
+          <owner kind="User">efonda</owner>
+          <clone_url>git://gitorious.org/speck/speck.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-28T19:24:55Z</created-at>
+    <description>Debian Packge  work for mediagoblin</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>debian-package-mediagoblin</slug>
+    <title>debian-package-mediagoblin</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">simonft</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136088</id>
+          <name>debian-package-mediagoblin</name>
+          <owner kind="User">simonft</owner>
+          <clone_url>git://gitorious.org/debian-package-mediagoblin/debian-package-mediagoblin.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-28T16:56:42Z</created-at>
+    <description>Elmer 166 is a follow on to the popular Elmer 160 course on microcontrollers for amateur radio homebrewers and hobbyists.
+
+Unlike Elmer 160, which focused on 8 bit PICs and assembler language,  Elmer 166 emphasizes the dsPIC 16 bit digital signal controllers and the C language.
+
+
+On this page, you need to scroll down to Activities to see the latest happenings.  The repositories are sorted oldest first, so the repos right under this note are the ones LEAST likely to change.
+</description>
+    <home-url>http://elmer166.org</home-url>
+    <license>GNU General Public License version 2(GPLv2)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>elmer166</slug>
+    <title>Elmer166</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">jjmcd</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136073</id>
+          <name>ztest-4011-meas-freq_x</name>
+          <owner kind="User">jjmcd</owner>
+          <clone_url>git://gitorious.org/elmer166/ztest-4011-meas-freq_x.git</clone_url>
+        </repository>
+        <repository>
+          <id>136074</id>
+          <name>ztest-4011-deadsimple_x</name>
+          <owner kind="User">jjmcd</owner>
+          <clone_url>git://gitorious.org/elmer166/ztest-4011-deadsimple_x.git</clone_url>
+        </repository>
+        <repository>
+          <id>136075</id>
+          <name>ztest-lcdlib-4011_x</name>
+          <owner kind="User">jjmcd</owner>
+          <clone_url>git://gitorious.org/elmer166/ztest-lcdlib-4011_x.git</clone_url>
+        </repository>
+        <repository>
+          <id>136086</id>
+          <name>ztest-4011-adc_x</name>
+          <owner kind="User">jjmcd</owner>
+          <clone_url>git://gitorious.org/elmer166/ztest-4011-adc_x.git</clone_url>
+        </repository>
+        <repository>
+          <id>136089</id>
+          <name>ztest-4011-pwm_x</name>
+          <owner kind="User">jjmcd</owner>
+          <clone_url>git://gitorious.org/elmer166/ztest-4011-pwm_x.git</clone_url>
+        </repository>
+        <repository>
+          <id>136090</id>
+          <name>ztest-4011-menu_x</name>
+          <owner kind="User">jjmcd</owner>
+          <clone_url>git://gitorious.org/elmer166/ztest-4011-menu_x.git</clone_url>
+        </repository>
+        <repository>
+          <id>136091</id>
+          <name>ztest-4011-pwmmenu_x</name>
+          <owner kind="User">jjmcd</owner>
+          <clone_url>git://gitorious.org/elmer166/ztest-4011-pwmmenu_x.git</clone_url>
+        </repository>
+        <repository>
+          <id>136092</id>
+          <name>ztest-4011-ticktock_x</name>
+          <owner kind="User">jjmcd</owner>
+          <clone_url>git://gitorious.org/elmer166/ztest-4011-ticktock_x.git</clone_url>
+        </repository>
+        <repository>
+          <id>136093</id>
+          <name>ztest-4011-testbuttons_x</name>
+          <owner kind="User">jjmcd</owner>
+          <clone_url>git://gitorious.org/elmer166/ztest-4011-testbuttons_x.git</clone_url>
+        </repository>
+        <repository>
+          <id>136094</id>
+          <name>ztest-4011-testdelay_x</name>
+          <owner kind="User">jjmcd</owner>
+          <clone_url>git://gitorious.org/elmer166/ztest-4011-testdelay_x.git</clone_url>
+        </repository>
+        <repository>
+          <id>136095</id>
+          <name>ztest-4011-testputch_x</name>
+          <owner kind="User">jjmcd</owner>
+          <clone_url>git://gitorious.org/elmer166/ztest-4011-testputch_x.git</clone_url>
+        </repository>
+        <repository>
+          <id>136096</id>
+          <name>ztest-4011-lcd-c_x</name>
+          <owner kind="User">jjmcd</owner>
+          <clone_url>git://gitorious.org/elmer166/ztest-4011-lcd-c_x.git</clone_url>
+        </repository>
+        <repository>
+          <id>136105</id>
+          <name>book_draft</name>
+          <owner kind="User">jjmcd</owner>
+          <clone_url>git://gitorious.org/elmer166/book_draft.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-28T16:51:51Z</created-at>
+    <description>An HTTP server that does permanent redirects, and nothing else.</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>red-engine</slug>
+    <title>red-engine</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">submachine</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136070</id>
+          <name>red-engine</name>
+          <owner kind="User">submachine</owner>
+          <clone_url>git://gitorious.org/red-engine/red-engine.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-28T16:36:49Z</created-at>
+    <description>This is the code for a midi sequencer based on the Arduino platform. </description>
+    <home-url nil="true"></home-url>
+    <license>None</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>mididuino</slug>
+    <title>MidiDuino</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">y1ds</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136068</id>
+          <name>mididuino</name>
+          <owner kind="User">y1ds</owner>
+          <clone_url>git://gitorious.org/mididuino/mididuino.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-28T14:24:05Z</created-at>
+    <description>Streaming Media Scripts.
+Some scripts for various tasks related to streaming media.</description>
+    <home-url nil="true"></home-url>
+    <license>None</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>sms</slug>
+    <title>SMS</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">y1ds</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136065</id>
+          <name>sms</name>
+          <owner kind="User">y1ds</owner>
+          <clone_url>git://gitorious.org/sms/sms.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-28T12:47:01Z</created-at>
+    <description>This software is a web based software using python pyramid.
+It gives you a "graphical" view of your squid server stats.
+You can also parse your logs in a convenient way (filters are comming).
+You should get squidcoronerpoller too to read squid log files and populate the database.
+For now, it works only with postgresql database (more soon) and standard squid logs (more soon).</description>
+    <home-url nil="true"></home-url>
+    <license>GNU Affero General Public License (AGPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>squidcoroner</slug>
+    <title>SquidCoroner</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">ckluska</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136060</id>
+          <name>squidcoroner</name>
+          <owner kind="User">ckluska</owner>
+          <clone_url>git://gitorious.org/squidcoroner/squidcoroner.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-28T12:36:01Z</created-at>
+    <description>This script read squid logfile and inject datas in squidcoroner's database.
+Only usefull if you use SquidCoroner with it !</description>
+    <home-url nil="true"></home-url>
+    <license>GNU Affero General Public License (AGPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>squidcoronerpoller</slug>
+    <title>SquidCoronerPoller</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">ckluska</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136057</id>
+          <name>squidcoronerpoller</name>
+          <owner kind="User">ckluska</owner>
+          <clone_url>git://gitorious.org/squidcoronerpoller/squidcoronerpoller.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-28T06:07:47Z</created-at>
+    <description>Script varios en diversos lenguajes que he usado para diferentes cosas.</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>scripts-varios</slug>
+    <title>Scripts varios</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">geopelia</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136051</id>
+          <name>scripts-varios</name>
+          <owner kind="User">geopelia</owner>
+          <clone_url>git://gitorious.org/scripts-varios/scripts-varios.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-28T04:58:21Z</created-at>
+    <description>This project is training session for my son, and is based in C, really really simple C programming.
+</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>chessclock</slug>
+    <title>ChessClock</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">victorllee</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136048</id>
+          <name>chessclock</name>
+          <owner kind="User">victorllee</owner>
+          <clone_url>git://gitorious.org/chessclock/chessclock.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+</projects>

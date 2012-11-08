@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projects type="array">
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T12:38:51Z</created-at>
+    <description>various tools and hacks</description>
+    <home-url nil="true"></home-url>
+    <license>Other/Multiple</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>vinzv-tools</slug>
+    <title>tools</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">vinz</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136715</id>
+          <name>rilconvert</name>
+          <owner kind="User">vinz</owner>
+          <clone_url>git://gitorious.org/vinzv-tools/rilconvert.git</clone_url>
+        </repository>
+        <repository>
+          <id>136716</id>
+          <name>hotot-launcher</name>
+          <owner kind="User">vinz</owner>
+          <clone_url>git://gitorious.org/vinzv-tools/hotot-launcher.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T12:21:20Z</created-at>
+    <description>wordpress works (themes, mostly)</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>vinzv-wordpress</slug>
+    <title>wordpress</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">vinz</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136713</id>
+          <name>themes</name>
+          <owner kind="User">vinz</owner>
+          <clone_url>git://gitorious.org/vinzv-wordpress/themes.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T12:13:05Z</created-at>
+    <description>pkgbuild for arch and rpm spec files</description>
+    <home-url nil="true"></home-url>
+    <license>Other/Multiple</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>vinzv-packaging</slug>
+    <title>packaging</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">vinz</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136710</id>
+          <name>fedora</name>
+          <owner kind="User">vinz</owner>
+          <clone_url>git://gitorious.org/vinzv-packaging/fedora.git</clone_url>
+        </repository>
+        <repository>
+          <id>136711</id>
+          <name>arch</name>
+          <owner kind="User">vinz</owner>
+          <clone_url>git://gitorious.org/vinzv-packaging/arch.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T11:55:59Z</created-at>
+    <description>config files from various thinkpads</description>
+    <home-url nil="true"></home-url>
+    <license>Public Domain</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>vinzv-config</slug>
+    <title>config</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">vinz</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136707</id>
+          <name>config-t42</name>
+          <owner kind="User">vinz</owner>
+          <clone_url>git://gitorious.org/vinzv-config/config-t42.git</clone_url>
+        </repository>
+        <repository>
+          <id>136708</id>
+          <name>dotfiles-l412</name>
+          <owner kind="User">vinz</owner>
+          <clone_url>git://gitorious.org/vinzv-config/dotfiles-l412.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T11:37:17Z</created-at>
+    <description>Test project</description>
+    <home-url nil="true"></home-url>
+    <license>None</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>testtawerna</slug>
+    <title>TestTawerna</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">ictorn</owner>
+    <repositories type="array">
+      <mainlines type="array">
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T10:51:09Z</created-at>
+    <description>Moja baza danych</description>
+    <home-url nil="true"></home-url>
+    <license>None</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>baza-domowa</slug>
+    <title>baza domowa</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">damianos</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136700</id>
+          <name>baza-domowa</name>
+          <owner kind="User">damianos</owner>
+          <clone_url>git://gitorious.org/baza-domowa/baza-domowa.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T10:07:51Z</created-at>
+    <description>The next generation terminal for GNU/Linux systems.</description>
+    <home-url nil="true"></home-url>
+    <license>Other/Proprietary License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>terminal-ng</slug>
+    <title>terminal-ng</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">kedz</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136697</id>
+          <name>terminal-ng</name>
+          <owner kind="User">kedz</owner>
+          <clone_url>git://gitorious.org/terminal-ng/terminal-ng.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T05:16:43Z</created-at>
+    <description>ims helper</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>imshelperv2</slug>
+    <title>IMSHelperV2</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="Team">vc3000</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136685</id>
+          <name>imshelperv2</name>
+          <owner kind="Team">vc3000</owner>
+          <clone_url>git://gitorious.org/imshelperv2/imshelperv2.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T04:24:52Z</created-at>
+    <description>test project</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>orangeleap</slug>
+    <title>orangeleap</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">ldangelo</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136682</id>
+          <name>tangarine</name>
+          <owner kind="User">ldangelo</owner>
+          <clone_url>git://gitorious.org/orangeleap/tangarine.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+        <repository>
+          <id>136683</id>
+          <name>ldangelos-tangarine</name>
+          <owner kind="User">ldangelo</owner>
+          <clone_url>git://gitorious.org/~ldangelo/orangeleap/ldangelos-tangarine.git</clone_url>
+        </repository>
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-06T00:09:46Z</created-at>
+    <description>This project gather the Archlinux packages I maintain. They are available for download from the Archlinux User Repository (AUR):
+
+https://aur.archlinux.org/</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>personal-archlinux-packages</slug>
+    <title>Orontee's Archlinux packages</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">orontee</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136677</id>
+          <name>evolution-rss-git</name>
+          <owner kind="User">orontee</owner>
+          <clone_url>git://gitorious.org/personal-archlinux-packages/evolution-rss-git.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-05T23:02:09Z</created-at>
+    <description>progetto di test 01</description>
+    <home-url nil="true"></home-url>
+    <license>Apache License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>progetto-01</slug>
+    <title>Progetto 01</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">rinux64</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136673</id>
+          <name>progetto-01</name>
+          <owner kind="User">rinux64</owner>
+          <clone_url>git://gitorious.org/progetto-01/progetto-01.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-05T22:45:04Z</created-at>
+    <description>Cours du MPRI 2012-2013</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>cours-mpri</slug>
+    <title>cours mpri</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">napech</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136671</id>
+          <name>cours</name>
+          <owner kind="User">napech</owner>
+          <clone_url>git://gitorious.org/cours-mpri/cours.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-05T22:31:24Z</created-at>
+    <description>These are repositories for Advanced Energy Solutions Group, Inc.</description>
+    <home-url>http://www.aessolar.com</home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>aessolar</slug>
+    <title>aessolar</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">spacez320</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136668</id>
+          <name>aessolar_website_old</name>
+          <owner kind="User">spacez320</owner>
+          <clone_url>git://gitorious.org/aessolar/aessolar_website_old.git</clone_url>
+        </repository>
+        <repository>
+          <id>136669</id>
+          <name>aessolar_website</name>
+          <owner kind="User">spacez320</owner>
+          <clone_url>git://gitorious.org/aessolar/aessolar_website.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-05T19:21:54Z</created-at>
+    <description>This is the consumer component for the CarpeOmnia Network monitoring environment. 
+
+Primary objectives include:
+
+- Agnostic consumption of messages from 
+--- Pacp
+--- UDP/TCP stream
+--- DAG api
+--- Custom interface to load your own data from any source with a shared object
+
+- Spooling of messages to a rolling system to allow trackback from market data events to raw network traffic later in the system.
+
+- decoding of messages to allow extraction of business and protocol data
+--- provide a plug in mechanism to allow user coded methods of deconstruction</description>
+    <home-url nil="true"></home-url>
+    <license>Other/Proprietary License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>carpe-omnia-consumer</slug>
+    <title>Carpe Omnia Consumer</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">easytiger</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136663</id>
+          <name>carpe-omnia-consumer</name>
+          <owner kind="User">easytiger</owner>
+          <clone_url>git://gitorious.org/carpe-omnia-consumer/carpe-omnia-consumer.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-05T18:30:38Z</created-at>
+    <description>El bot de #slgt-chat</description>
+    <home-url nil="true"></home-url>
+    <license>GNU Affero General Public License (AGPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>tio_chema</slug>
+    <title>tio_chema</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="Team">slgt-chat</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136661</id>
+          <name>tio_chema</name>
+          <owner kind="Team">slgt-chat</owner>
+          <clone_url>git://gitorious.org/tio_chema/tio_chema.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-05T18:30:08Z</created-at>
+    <description>Maintian openblocks linux kernel</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 2(GPLv2)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>linux-openblocks</slug>
+    <title>linux-openblocks</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">niwamatsu</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136659</id>
+          <name>linux-openblocks</name>
+          <owner kind="User">niwamatsu</owner>
+          <clone_url>git://gitorious.org/linux-openblocks/linux-openblocks.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-05T17:42:37Z</created-at>
+    <description>My First Project</description>
+    <home-url nil="true"></home-url>
+    <license>None</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>nicosoft-droid</slug>
+    <title>Nicosoft Droid</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">nicosoftmedia</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136657</id>
+          <name>nicosoft-droid</name>
+          <owner kind="User">nicosoftmedia</owner>
+          <clone_url>git://gitorious.org/nicosoft-droid/nicosoft-droid.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-05T16:34:27Z</created-at>
+    <description>A Qt application that implements OpenGL parallax texture mapping.</description>
+    <home-url nil="true"></home-url>
+    <license>GNU Lesser General Public License (LGPL)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>openglparallaxmapping</slug>
+    <title>OpenGLParallaxMapping</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">caravani0</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136652</id>
+          <name>openglparallaxmapping</name>
+          <owner kind="User">caravani0</owner>
+          <clone_url>git://gitorious.org/openglparallaxmapping/openglparallaxmapping.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-05T15:47:07Z</created-at>
+    <description>A fork of Darkgod's ToME Angband variant, via AnonymousHero's ToME 2.3.9-ah release.</description>
+    <home-url nil="true"></home-url>
+    <license>Other/Multiple</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>hacktome</slug>
+    <title>hacktome</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">miramor</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136648</id>
+          <name>hacktome</name>
+          <owner kind="User">miramor</owner>
+          <clone_url>git://gitorious.org/hacktome/hacktome.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-05T14:42:57Z</created-at>
+    <description>Plate-form game.
+Gestion of plugins.</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>srp-amd</slug>
+    <title>SRP : The adventures of the masked duck</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="Team">shadow-revival</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136645</id>
+          <name>srp-amd</name>
+          <owner kind="Team">shadow-revival</owner>
+          <clone_url>git://gitorious.org/srp-amd/srp-amd.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+</projects>

@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projects type="array">
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-08T11:29:29Z</created-at>
+    <description>Just seeing features of Gitoorious as project owner</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>lloydwatkin-demo-test</slug>
+    <title>Test</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">lloydwatkin</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136856</id>
+          <name>lloydwatkin-demo-test</name>
+          <owner kind="User">lloydwatkin</owner>
+          <clone_url>git://gitorious.org/lloydwatkin-demo-test/lloydwatkin-demo-test.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-08T11:17:18Z</created-at>
+    <description>A collection of software and scripts to drive the CycleGPS project.</description>
+    <home-url nil="true"></home-url>
+    <license>Apache License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>cyclegps</slug>
+    <title>CycleGPS</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">aladds</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136854</id>
+          <name>cyclegps</name>
+          <owner kind="User">aladds</owner>
+          <clone_url>git://gitorious.org/cyclegps/cyclegps.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-08T09:13:17Z</created-at>
+    <description>learning programs</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>jlearn</slug>
+    <title>Sample Programs</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">jaishu</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136846</id>
+          <name>jlearn</name>
+          <owner kind="User">jaishu</owner>
+          <clone_url>git://gitorious.org/jlearn/jlearn.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-08T04:44:02Z</created-at>
+    <description>CFG similarity</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>sim_evaluator</slug>
+    <title>sim_evaluator</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">sadiesv</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136843</id>
+          <name>sim_evaluator</name>
+          <owner kind="User">sadiesv</owner>
+          <clone_url>git://gitorious.org/sim_evaluator/sim_evaluator.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-08T03:13:42Z</created-at>
+    <description>These are repositories for the Carbondale Computer Recyclery project.</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>ccr</slug>
+    <title>Carbondale Computer Recyclery</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">spacez320</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136840</id>
+          <name>ccr_documents</name>
+          <owner kind="User">spacez320</owner>
+          <clone_url>git://gitorious.org/ccr/ccr_documents.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-08T00:59:23Z</created-at>
+    <description>An Open Hardware for orientation and motion sensing.</description>
+    <home-url>http://www.varesano.net/projects/hardware/FreeIMU</home-url>
+    <license>Other/Multiple</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>freeimu</slug>
+    <title>FreeIMU</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">fax8</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136838</id>
+          <name>freeimu</name>
+          <owner kind="User">fax8</owner>
+          <clone_url>git://gitorious.org/freeimu/freeimu.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-08T00:07:25Z</created-at>
+    <description>asfff</description>
+    <home-url nil="true"></home-url>
+    <license>Other/Proprietary License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>testynator</slug>
+    <title>Testynator</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">frowdoe</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136835</id>
+          <name>testynator</name>
+          <owner kind="User">frowdoe</owner>
+          <clone_url>git://gitorious.org/testynator/testynator.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-07T21:51:46Z</created-at>
+    <description>A simple web gallery that autogenerates thumbnails.</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>simplegallery</slug>
+    <title>simplegallery</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">mhn</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136830</id>
+          <name>simplegallery</name>
+          <owner kind="User">mhn</owner>
+          <clone_url>git://gitorious.org/simplegallery/simplegallery.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-07T21:08:40Z</created-at>
+    <description>screen scraper for romanian websites</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>myhouse</slug>
+    <title>myHouse</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">quamis</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136827</id>
+          <name>myhouse</name>
+          <owner kind="User">quamis</owner>
+          <clone_url>git://gitorious.org/myhouse/myhouse.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-07T19:57:24Z</created-at>
+    <description>prueba</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>prueba_disenos</slug>
+    <title>prueba_disenos</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">amly</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136820</id>
+          <name>prueba_disenos</name>
+          <owner kind="User">amly</owner>
+          <clone_url>git://gitorious.org/prueba_disenos/prueba_disenos.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+        <repository>
+          <id>136822</id>
+          <name>cerojass-prueba_disenos</name>
+          <owner kind="User">cerojas</owner>
+          <clone_url>git://gitorious.org/~cerojas/prueba_disenos/cerojass-prueba_disenos.git</clone_url>
+        </repository>
+        <repository>
+          <id>136823</id>
+          <name>team-prueba-prueba_disenos</name>
+          <owner kind="Team">team-prueba</owner>
+          <clone_url>git://gitorious.org/+team-prueba/prueba_disenos/team-prueba-prueba_disenos.git</clone_url>
+        </repository>
+        <repository>
+          <id>136824</id>
+          <name>hanrichs-prueba_disenos</name>
+          <owner kind="User">hanrich</owner>
+          <clone_url>git://gitorious.org/~hanrich/prueba_disenos/hanrichs-prueba_disenos.git</clone_url>
+        </repository>
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-07T19:19:58Z</created-at>
+    <description>hello world</description>
+    <home-url nil="true"></home-url>
+    <license>Other/Proprietary License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>hello-world07</slug>
+    <title>hello world</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">dondy</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136817</id>
+          <name>hello-world07</name>
+          <owner kind="User">dondy</owner>
+          <clone_url>git://gitorious.org/hello-world07/hello-world07.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-07T16:45:55Z</created-at>
+    <description>Extra Sabayon Security Audit tools and toys not in the mainline and some P{KGS uploaded to... 
+
+I have picked from some the better Gentoo overlays... 
+
+
+I am no dev, but just IT Security MBA student... 
+
+Suggestions for more packages and Ebuilds very much welcome... </description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>sabayon-zoro</slug>
+    <title>Sabayon Zoro</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">necrose</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136812</id>
+          <name>sabayon-zoro</name>
+          <owner kind="User">necrose</owner>
+          <clone_url>git://gitorious.org/sabayon-zoro/sabayon-zoro.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-07T16:35:46Z</created-at>
+    <description>Projetos de faculdade</description>
+    <home-url nil="true"></home-url>
+    <license>None</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>pjf</slug>
+    <title>PJF</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">bertasso</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136809</id>
+          <name>pjf</name>
+          <owner kind="User">bertasso</owner>
+          <clone_url>git://gitorious.org/pjf/pjf.git</clone_url>
+        </repository>
+        <repository>
+          <id>136813</id>
+          <name>poo</name>
+          <owner kind="User">bertasso</owner>
+          <clone_url>git://gitorious.org/pjf/poo.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-07T16:15:50Z</created-at>
+    <description>Projet SDA</description>
+    <home-url nil="true"></home-url>
+    <license>None</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>dragon-game-sda</slug>
+    <title>DragonGame</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">pat94</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136806</id>
+          <name>dragongame</name>
+          <owner kind="User">pat94</owner>
+          <clone_url>git://gitorious.org/dragon-game-sda/dragongame.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-07T15:56:34Z</created-at>
+    <description>My own emacs configuration file</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>config-emacs</slug>
+    <title>Emacs config</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">florianthorey</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136802</id>
+          <name>config-emacs</name>
+          <owner kind="User">florianthorey</owner>
+          <clone_url>git://gitorious.org/config-emacs/config-emacs.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-07T15:02:08Z</created-at>
+    <description>My Gentoo Linux System binaries on VirtualBox</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 2(GPLv2)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>gentoo-stage3-bin-virtualbox</slug>
+    <title>Gentoo Linux Stage3 on VirtualBox</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">sunjoong</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136799</id>
+          <name>stage3</name>
+          <owner kind="User">sunjoong</owner>
+          <clone_url>git://gitorious.org/gentoo-stage3-bin-virtualbox/stage3.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-07T14:26:38Z</created-at>
+    <description>Sabayon Linux is well Know however 
+it is a Fast reliable and polished Distro  Based on Gentoo and essentially it is with a binary packamanger... 
+
+A few Additional Enterprise Packages ready for USE
+
+I will document my trees and items swiped...   and put into my tree.... if the break you will need to contact them, 
+
+
+There are many many small Layman or Pallidulus trees some small 
+
+Figured I'd Take some of the better Dev and other trees with useful stuff and consolidate them... 
+
+You Will Still Need to use layman -a Sabayon 
+
+for gentoo or by default ...  Sabayon already dose this. 
+
+Cassandra and Hardoop , and other Enterprise Packages.... 
+
+this way I can build em , I do need to setup the public repos ... 
+
+Willing to take contribs volunteers and help .... 
+
+
+</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>sabayon-enterprise</slug>
+    <title>Sabayon Enterprise</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">necrose</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136797</id>
+          <name>sabayon-enterprise</name>
+          <owner kind="User">necrose</owner>
+          <clone_url>git://gitorious.org/sabayon-enterprise/sabayon-enterprise.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-07T14:07:35Z</created-at>
+    <description>TODO</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>vulture</slug>
+    <title>Vulture</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">mrnuke</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136815</id>
+          <name>irusb</name>
+          <owner kind="User">mrnuke</owner>
+          <clone_url>git://gitorious.org/vulture/irusb.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-07T13:25:01Z</created-at>
+    <description>Porpoise, related to Dolphins.</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>porpoise</slug>
+    <title>Porpoise</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">markg85</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136794</id>
+          <name>master</name>
+          <owner kind="User">markg85</owner>
+          <clone_url>git://gitorious.org/porpoise/master.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url>http://code.google.com/p/openlava-macosx/issues/list</bugtracker-url>
+    <created-at type="datetime">2012-11-07T12:14:10Z</created-at>
+    <description>description</description>
+    <home-url>http://openlava.org</home-url>
+    <license>GNU General Public License version 2(GPLv2)</license>
+    <mailinglist-url>http://www.openlava.org/support/faq.html</mailinglist-url>
+    <slug>openlava-macosx</slug>
+    <title>openlava-macosx</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">project2501a</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136792</id>
+          <name>openlava-macosx</name>
+          <owner kind="User">project2501a</owner>
+          <clone_url>git://gitorious.org/openlava-macosx/openlava-macosx.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+</projects>

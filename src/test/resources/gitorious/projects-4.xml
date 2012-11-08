@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projects type="array">
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-05T13:26:38Z</created-at>
+    <description>elinac project</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>elinac</slug>
+    <title>elinac</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">elinac</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136642</id>
+          <name>miyouhui</name>
+          <owner kind="User">elinac</owner>
+          <clone_url>git://gitorious.org/elinac/miyouhui.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-05T10:12:02Z</created-at>
+    <description>A monitoring Tool for OpenFOAM</description>
+    <home-url nil="true"></home-url>
+    <license>Other/Proprietary License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>rungui</slug>
+    <title>RunGui</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">fecub</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136632</id>
+          <name>rungui</name>
+          <owner kind="User">fecub</owner>
+          <clone_url>git://gitorious.org/rungui/rungui.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-05T09:15:11Z</created-at>
+    <description>A collection of Free and Open Source Software I'm writing as part of my job at [Network Box](https://www.network-box.com).</description>
+    <home-url nil="true"></home-url>
+    <license>Other Open Source Initiative Approved License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>bochecha-dayjob</slug>
+    <title>Bochecha's $dayjob</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">bochecha</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136625</id>
+          <name>tgldapid</name>
+          <owner kind="User">bochecha</owner>
+          <clone_url>git://gitorious.org/bochecha-dayjob/tgldapid.git</clone_url>
+        </repository>
+        <repository>
+          <id>136626</id>
+          <name>yum-plugin-nuke-newsave</name>
+          <owner kind="User">bochecha</owner>
+          <clone_url>git://gitorious.org/bochecha-dayjob/yum-plugin-nuke-newsave.git</clone_url>
+        </repository>
+        <repository>
+          <id>136627</id>
+          <name>yum-plugin-posttrans-triggers</name>
+          <owner kind="User">bochecha</owner>
+          <clone_url>git://gitorious.org/bochecha-dayjob/yum-plugin-posttrans-triggers.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-05T08:24:05Z</created-at>
+    <description>Just for some (unneeded for anybode but me) things</description>
+    <home-url nil="true"></home-url>
+    <license>Other/Proprietary License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>odiplscrap</slug>
+    <title>odiPLscrap</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">matiit</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136620</id>
+          <name>odiplscrap</name>
+          <owner kind="User">matiit</owner>
+          <clone_url>git://gitorious.org/odiplscrap/odiplscrap.git</clone_url>
+        </repository>
+        <repository>
+          <id>136621</id>
+          <name>odiplscrapper</name>
+          <owner kind="User">matiit</owner>
+          <clone_url>git://gitorious.org/odiplscrap/odiplscrapper.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-05T04:51:34Z</created-at>
+    <description>This is a single script file that serves a web page for shortening urls. It uses tokyocabinet and base-62 numerals for very small and efficient url storage.
+
+Usage:
+  gem install sinatra haml tokyocabinet
+  shotgun zipper.rb
+
+Running the web server and shortening urls will generate a 'link.tch' database in the same folder as the script. This script does not include input sanitation or page caching or all that other good stuff you might want for a production site. This is just something simple I made to learn Sinatra and hopefully help others.</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>zipper-tokyo-cabinet</slug>
+    <title>Zipper - Tokyo Cabinet</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">jaythomas</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136617</id>
+          <name>zipper-tokyo-cabinet</name>
+          <owner kind="User">jaythomas</owner>
+          <clone_url>git://gitorious.org/zipper-tokyo-cabinet/zipper-tokyo-cabinet.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-04T22:26:19Z</created-at>
+    <description>dejordzta's minecraft modification.</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>shinikai</slug>
+    <title>Shinikai</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">dejordzta</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136613</id>
+          <name>shinikai</name>
+          <owner kind="User">dejordzta</owner>
+          <clone_url>git://gitorious.org/shinikai/shinikai.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-04T19:28:43Z</created-at>
+    <description>the hurr, the durr</description>
+    <home-url nil="true"></home-url>
+    <license>Other/Proprietary License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>android2qbs</slug>
+    <title>android2qbs</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">aep</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136600</id>
+          <name>android2qbs</name>
+          <owner kind="User">aep</owner>
+          <clone_url>git://gitorious.org/android2qbs/android2qbs.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-04T18:12:44Z</created-at>
+    <description>Plugins for X-Plane</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>xplugins</slug>
+    <title>XPlugins</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">drobe011</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136594</id>
+          <name>xplugins</name>
+          <owner kind="User">drobe011</owner>
+          <clone_url>git://gitorious.org/xplugins/xplugins.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-04T18:09:04Z</created-at>
+    <description>Misc C++ projects</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>my-c-misc-projects</slug>
+    <title>My C++ misc Projects</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">drobe011</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136590</id>
+          <name>my-c-misc-projects</name>
+          <owner kind="User">drobe011</owner>
+          <clone_url>git://gitorious.org/my-c-misc-projects/my-c-misc-projects.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-04T18:09:01Z</created-at>
+    <description>Only to show to boutil. Gives errors i can't solve. </description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>tmp-ruby-libv8</slug>
+    <title>tmp-ruby-libv8</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">tornow</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136591</id>
+          <name>tmp-ruby-libv8</name>
+          <owner kind="User">tornow</owner>
+          <clone_url>git://gitorious.org/tmp-ruby-libv8/tmp-ruby-libv8.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-04T18:02:54Z</created-at>
+    <description>Moving map for X-Plane</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>xmarblemap</slug>
+    <title>XMarbleMap</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">drobe011</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136587</id>
+          <name>xmarblemap</name>
+          <owner kind="User">drobe011</owner>
+          <clone_url>git://gitorious.org/xmarblemap/xmarblemap.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-04T17:57:24Z</created-at>
+    <description>A C# project required in my school.
+A basic system information viewer program.</description>
+    <home-url nil="true"></home-url>
+    <license>None</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>c-school-project-system-information-viewer</slug>
+    <title>C# School Project - System Information Viewer</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">hellwalker</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136585</id>
+          <name>c-school-project-system-information-viewer</name>
+          <owner kind="User">hellwalker</owner>
+          <clone_url>git://gitorious.org/c-school-project-system-information-viewer/c-school-project-system-information-viewer.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-04T16:34:09Z</created-at>
+    <description>My own implementation of JSON for J2ME</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>josergc_json</slug>
+    <title>json</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">josergc</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136582</id>
+          <name>josergc_json</name>
+          <owner kind="User">josergc</owner>
+          <clone_url>git://gitorious.org/josergc_json/josergc_json.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-04T16:32:07Z</created-at>
+    <description>Some text-based utilities</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>josergc_textutils</slug>
+    <title>textutils</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">josergc</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136580</id>
+          <name>josergc_textutils</name>
+          <owner kind="User">josergc</owner>
+          <clone_url>git://gitorious.org/josergc_textutils/josergc_textutils.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-04T16:29:32Z</created-at>
+    <description>I am going to accumulate some utilities in here</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>josergc_utils</slug>
+    <title>utils</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">josergc</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136578</id>
+          <name>josergc_utils</name>
+          <owner kind="User">josergc</owner>
+          <clone_url>git://gitorious.org/josergc_utils/josergc_utils.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-04T14:27:54Z</created-at>
+    <description>Simple app for upcoming Tizen OS featuring todo list management</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>tizen-todolist</slug>
+    <title>Tizen-TodoList</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">naata</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136575</id>
+          <name>tizen-todolist</name>
+          <owner kind="User">naata</owner>
+          <clone_url>git://gitorious.org/tizen-todolist/tizen-todolist.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-04T14:25:18Z</created-at>
+    <description>These are repositories for Jaime Moss.</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>jmoss</slug>
+    <title>jmoss</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">spacez320</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136573</id>
+          <name>jmoss_website</name>
+          <owner kind="User">spacez320</owner>
+          <clone_url>git://gitorious.org/jmoss/jmoss_website.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-04T13:35:56Z</created-at>
+    <description>QES is a library that provides an easy to use interface for OS shell. It allows to use pipes and chains inside your c++ code.
+
+Example:
+QesResult *result = QesCommand("env").pipe("grep USER")-&gt;chain("pwd")-&gt;pipe("wc")-&gt;run();
+result-&gt;toString();</description>
+    <home-url>http://www.sierdzio.com</home-url>
+    <license>Other Open Source Initiative Approved License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>qeasyshell</slug>
+    <title>QEasyShell</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">sierdzio</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136571</id>
+          <name>qeasyshell</name>
+          <owner kind="User">sierdzio</owner>
+          <clone_url>git://gitorious.org/qeasyshell/qeasyshell.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-04T11:15:30Z</created-at>
+    <description>oyd</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>oyd</slug>
+    <title>oyd</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">quetoputito</owner>
+    <repositories type="array">
+      <mainlines type="array">
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-11-04T10:32:01Z</created-at>
+    <description>ticket</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>ticket</slug>
+    <title>ticket</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">quetoputito</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136568</id>
+          <name>ticket</name>
+          <owner kind="User">quetoputito</owner>
+          <clone_url>git://gitorious.org/ticket/ticket.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+</projects>

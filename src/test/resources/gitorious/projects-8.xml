@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projects type="array">
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T14:40:17Z</created-at>
+    <description>Postgres and python scripts for Database architecture and administration.</description>
+    <home-url nil="true"></home-url>
+    <license>None</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>bph_pg</slug>
+    <title>bph_pg</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">caullyn</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136314</id>
+          <name>bph_pg</name>
+          <owner kind="User">caullyn</owner>
+          <clone_url>git://gitorious.org/bph_pg/bph_pg.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T13:04:56Z</created-at>
+    <description>Files for archlinux AUR, Gentoo overlay etc</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 2(GPLv2)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>repositories</slug>
+    <title>repositories</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">cosmonaut</owner>
+    <repositories type="array">
+      <mainlines type="array">
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T11:22:26Z</created-at>
+    <description>Development modules for puppet my project </description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>production-modules-cga</slug>
+    <title>Puppet Modules </title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">alvin</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136294</id>
+          <name>production-modules-cga</name>
+          <owner kind="User">alvin</owner>
+          <clone_url>git://gitorious.org/production-modules-cga/production-modules-cga.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T10:45:00Z</created-at>
+    <description>This is a UnionFind that I am developing as a work for the subject &#8216;Algorithms and Data Structs 2&#8217; at Universidade Federal do ABC (UFABC).</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>unionfind</slug>
+    <title>UnionFind</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">belimawr</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136292</id>
+          <name>unionfind</name>
+          <owner kind="User">belimawr</owner>
+          <clone_url>git://gitorious.org/unionfind/unionfind.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T08:55:07Z</created-at>
+    <description>This is a demo of the steps required to package python-errorhandler. The demo was presented at PyCon DE 2012 on Nov. 1st 2012 in Leipzig.</description>
+    <home-url>https://2012.de.pycon.org/programm/schedule/sessions/71/</home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>pycon-de-2012-debian-packaging-demo</slug>
+    <title>PyCon DE 2012 Debian Packaging Demo</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">jandd</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136287</id>
+          <name>pycon-de-2012-debian-packaging-demo</name>
+          <owner kind="User">jandd</owner>
+          <clone_url>git://gitorious.org/pycon-de-2012-debian-packaging-demo/pycon-de-2012-debian-packaging-demo.git</clone_url>
+        </repository>
+        <repository>
+          <id>136288</id>
+          <name>debpkg-demo</name>
+          <owner kind="User">jandd</owner>
+          <clone_url>git://gitorious.org/pycon-de-2012-debian-packaging-demo/debpkg-demo.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T08:52:41Z</created-at>
+    <description>some python scripts just for fun</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>toy-python</slug>
+    <title>toy-python</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">oneyoung</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136285</id>
+          <name>toy-python</name>
+          <owner kind="User">oneyoung</owner>
+          <clone_url>git://gitorious.org/toy-python/toy-python.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T07:54:37Z</created-at>
+    <description># first project</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>14im_one</slug>
+    <title>one</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">14im</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136281</id>
+          <name>14im_one</name>
+          <owner kind="User">14im</owner>
+          <clone_url>git://gitorious.org/14im_one/14im_one.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T06:43:02Z</created-at>
+    <description>Some text.</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>core-acquire</slug>
+    <title>Core-Acquire</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">sevra</owner>
+    <repositories type="array">
+      <mainlines type="array">
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T06:42:47Z</created-at>
+    <description>Logica Project</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>logica</slug>
+    <title>Logica</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">sob</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136278</id>
+          <name>logica</name>
+          <owner kind="User">sob</owner>
+          <clone_url>git://gitorious.org/logica/logica.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T05:52:52Z</created-at>
+    <description>open id provider using drupal</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>open-id-provider</slug>
+    <title>open id provider</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">shiva655</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136272</id>
+          <name>open-id-provider</name>
+          <owner kind="User">shiva655</owner>
+          <clone_url>git://gitorious.org/open-id-provider/open-id-provider.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T04:14:58Z</created-at>
+    <description>Framework to build web applications with intense use of databases extensible by modules.</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>framenet</slug>
+    <title>Framenet</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">samydavic</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136267</id>
+          <name>framenet</name>
+          <owner kind="User">samydavic</owner>
+          <clone_url>git://gitorious.org/framenet/framenet.git</clone_url>
+        </repository>
+        <repository>
+          <id>136268</id>
+          <name>framenet-erp</name>
+          <owner kind="User">samydavic</owner>
+          <clone_url>git://gitorious.org/framenet/framenet-erp.git</clone_url>
+        </repository>
+        <repository>
+          <id>136269</id>
+          <name>framenet-core</name>
+          <owner kind="User">samydavic</owner>
+          <clone_url>git://gitorious.org/framenet/framenet-core.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url>http://khromathyon.hostei.com/bugtracker/view_all_bug_page.php</bugtracker-url>
+    <created-at type="datetime">2012-10-31T03:38:07Z</created-at>
+    <description>&lt;b&gt;Khromathyon Software &#181;.Dev Python IDE.&lt;/b&gt;
+
+An Python IDE with a RAD Dialog designer, with integration with pdb Debugger like Visual-Studio &amp; Delphi developed with Lazarus/FreePascal.
+Formely developed by Sakura Studios (http://sakurastudio.yolasite.com/micro-dev.php) but abandonned, Khromathyon Software has the authorization with continue with the development.</description>
+    <home-url>http://www.khromathyon.hostei.com</home-url>
+    <license>zlib/libpng License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>micro-dev</slug>
+    <title>&#181;.dev IDE</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">cristophersosa</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136264</id>
+          <name>micro-dev</name>
+          <owner kind="User">cristophersosa</owner>
+          <clone_url>git://gitorious.org/micro-dev/micro-dev.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T01:45:58Z</created-at>
+    <description>A tools to send IMS KPI. </description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>imskpisender</slug>
+    <title>IMSKPISender</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">vc3000</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136261</id>
+          <name>imskpisender</name>
+          <owner kind="User">vc3000</owner>
+          <clone_url>git://gitorious.org/imskpisender/imskpisender.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T01:20:49Z</created-at>
+    <description>Projeto final para a disciplina de Sistemas Distribuidos da Universidade Federal do ABC.</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>projetosd</slug>
+    <title>ProjetoSD</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">belimawr</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136259</id>
+          <name>projetosd</name>
+          <owner kind="User">belimawr</owner>
+          <clone_url>git://gitorious.org/projetosd/projetosd.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-31T00:57:57Z</created-at>
+    <description>Project for my final year at the University Of Brighton (Computer Science) </description>
+    <home-url nil="true"></home-url>
+    <license>Academic Free License v3.0</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>domenico-salvia-individual-project</slug>
+    <title>Domenico Salvia - Individual Project</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">dbsalvia</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136256</id>
+          <name>domenico-salvia-individual-project</name>
+          <owner kind="User">dbsalvia</owner>
+          <clone_url>git://gitorious.org/domenico-salvia-individual-project/domenico-salvia-individual-project.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url>http://mantis.michelmegens.net</bugtracker-url>
+    <created-at type="datetime">2012-10-31T00:01:28Z</created-at>
+    <description>&lt;h3&gt;Bermuda&lt;/h3&gt;
+Bermuda consists of several projects. The main project is the &lt;b&gt;&lt;i&gt;BermudaOS&lt;/i&gt;&lt;/b&gt; project. It is best described as a embedded system toolkit. See &lt;i&gt;http://bermuda.michelmegens.net&lt;/i&gt; for more information on this project.
+
+&lt;h2&gt;To be continued&lt;/h2&gt;</description>
+    <home-url>http://bermuda.michelmegens.net</home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>bermuda</slug>
+    <title>Bermuda</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">bietje</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136251</id>
+          <name>bermudaos</name>
+          <owner kind="User">bietje</owner>
+          <clone_url>git://gitorious.org/bermuda/bermudaos.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-30T23:07:20Z</created-at>
+    <description>Using relays connected to the GPIO pins and some sensors, this program provides an alarm system using a Raspberry Pi for your home, business, or motor vehicle.
+
+It also logs in to an XMPP account of your choice (eg, Google Talk) and provides an interactive console over chat which will not only inform you when the alarm is tripped, but allow you to arm, disarm, deactivate, and monitor status remotely.</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>pialarm</slug>
+    <title>PiAlarm</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">ver</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136248</id>
+          <name>pialarm</name>
+          <owner kind="User">ver</owner>
+          <clone_url>git://gitorious.org/pialarm/pialarm.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-30T22:36:08Z</created-at>
+    <description>List, choose, download and apply wallpaper from Desktoppr.co</description>
+    <home-url nil="true"></home-url>
+    <license>GNU General Public License version 3 (GPLv3)</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>choosewallpaper</slug>
+    <title>chooseWallpaper</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">linux4us</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136245</id>
+          <name>choosewallpaper</name>
+          <owner kind="User">linux4us</owner>
+          <clone_url>git://gitorious.org/choosewallpaper/choosewallpaper.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-30T22:09:16Z</created-at>
+    <description>Algorithen und Datenstrukturen</description>
+    <home-url nil="true"></home-url>
+    <license>Academic Free License v3.0</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>adp</slug>
+    <title>ADP</title>
+    <wiki-enabled type="boolean">false</wiki-enabled>
+    <owner kind="User">simon-brummer</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136242</id>
+          <name>adp</name>
+          <owner kind="User">simon-brummer</owner>
+          <clone_url>git://gitorious.org/adp/adp.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+  <project>
+    <bugtracker-url nil="true"></bugtracker-url>
+    <created-at type="datetime">2012-10-30T21:44:58Z</created-at>
+    <description>First test project</description>
+    <home-url nil="true"></home-url>
+    <license>MIT License</license>
+    <mailinglist-url nil="true"></mailinglist-url>
+    <slug>testggg</slug>
+    <title>Test</title>
+    <wiki-enabled type="boolean">true</wiki-enabled>
+    <owner kind="User">gnitry</owner>
+    <repositories type="array">
+      <mainlines type="array">
+        <repository>
+          <id>136240</id>
+          <name>testggg</name>
+          <owner kind="User">gnitry</owner>
+          <clone_url>git://gitorious.org/testggg/testggg.git</clone_url>
+        </repository>
+      </mainlines>
+      <clones type="array">
+      </clones>
+    </repositories>
+  </project>
+</projects>
