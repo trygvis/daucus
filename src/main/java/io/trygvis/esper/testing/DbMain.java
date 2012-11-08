@@ -5,7 +5,8 @@ import org.h2.tools.*;
 import java.sql.*;
 
 public class DbMain {
-    private static final String JDBC_URL = "jdbc:h2:mem:esper;DB_CLOSE_DELAY=-1";
+//    public static final String JDBC_URL = "jdbc:h2:mem:esper;DB_CLOSE_DELAY=-1";
+    public static final String JDBC_URL = "jdbc:postgresql://localhost/esper";
 
     public static void main(String[] args) throws Exception {
         Server server = Server.createTcpServer(args).start();

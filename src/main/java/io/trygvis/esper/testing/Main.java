@@ -9,18 +9,20 @@ public class Main {
 //    private static final String JDBC_URL = "jdbc:h2:mem:esper;DB_CLOSE_DELAY=-1";
     private static final String JDBC_URL = "jdbc:h2:tcp://127.0.0.1/esper;DB_CLOSE_DELAY=-1";
 
-    public Main() throws Exception {
+    public static void main(String[] args) throws Exception {
+        configureLog4j();
+        Main main = new Main();
+        main.work();
+    }
+
+    public static void configureLog4j() {
         Properties properties = new Properties();
         properties.setProperty("log4j.rootLogger", "DEBUG, A1");
+        properties.setProperty("log4j.logger.httpclient.wire.content", "INFO");
         properties.setProperty("log4j.appender.A1", "org.apache.log4j.ConsoleAppender");
         properties.setProperty("log4j.appender.A1.layout", "org.apache.log4j.PatternLayout");
         properties.setProperty("log4j.appender.A1.layout.ConversionPattern", "%-4r [%t] %-5p %c %x - %m%n");
         PropertyConfigurator.configure(properties);
-    }
-
-    public static void main(String[] args) throws Exception {
-        Main main = new Main();
-        main.work();
     }
 
     private void work() throws Exception {
