@@ -68,15 +68,33 @@ public class GitoriousProject implements Comparable<GitoriousProject> {
     public int compareTo(GitoriousProject other) {
         return slug.compareTo(other.slug);
     }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GitoriousProject)) return false;
+
+        GitoriousProject that = (GitoriousProject) o;
+
+        if (!repositories.equals(that.repositories)) return false;
+        if (!slug.equals(that.slug)) return false;
+
+        return true;
+    }
+
+    public int hashCode() {
+        int result = slug.hashCode();
+        result = 31 * result + repositories.hashCode();
+        return result;
+    }
 }
 
 class GitoriousRepository implements Comparable<GitoriousRepository> {
-    public final String project;
+    public final String projectSlug;
     public final String name;
     public final URI atom;
 
-    GitoriousRepository(String project, String name, URI atom) {
-        this.project = project;
+    GitoriousRepository(String projectSlug, String name, URI atom) {
+        this.projectSlug = projectSlug;
         this.name = name;
         this.atom = atom;
     }
@@ -92,12 +110,32 @@ class GitoriousRepository implements Comparable<GitoriousRepository> {
     }
 
     public int compareTo(GitoriousRepository o) {
-        int a = project.compareTo(o.project);
+        int a = projectSlug.compareTo(o.projectSlug);
 
         if (a != 0) {
             return a;
         }
 
         return name.compareTo(o.name);
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GitoriousRepository)) return false;
+
+        GitoriousRepository that = (GitoriousRepository) o;
+
+        if (!atom.equals(that.atom)) return false;
+        if (!name.equals(that.name)) return false;
+        if (!projectSlug.equals(that.projectSlug)) return false;
+
+        return true;
+    }
+
+    public int hashCode() {
+        int result = projectSlug.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + atom.hashCode();
+        return result;
     }
 }

@@ -1,24 +1,22 @@
 package io.trygvis.esper.testing.gitorious;
 
+import com.jolbox.bonecp.*;
+import com.jolbox.bonecp.hooks.*;
 import io.trygvis.esper.testing.*;
-import io.trygvis.esper.testing.ResourceManager.*;
 import org.apache.abdera.*;
-import org.apache.abdera.model.*;
 import org.apache.abdera.protocol.client.*;
 import org.apache.abdera.protocol.client.cache.*;
 import org.codehaus.httpcache4j.cache.*;
 import org.codehaus.httpcache4j.client.*;
 
 import java.sql.*;
-import java.util.Date;
 import java.util.*;
 import java.util.concurrent.*;
 
 public class GitoriousImporter {
-    private final AbderaClient abderaClient;
-    private final Connection c;
-    private final AtomDao atomDao;
-    private final GitoriousDao gitoriousDao;
+//    private final AbderaClient abderaClient;
+    private final BoneCP boneCp;
+    private final GitoriousClient gitoriousClient;
 
     public static void main(String[] args) throws Exception {
         Main.configureLog4j();
@@ -27,70 +25,109 @@ public class GitoriousImporter {
 
     public GitoriousImporter() throws Exception {
         Abdera abdera = new Abdera();
-        abderaClient = new AbderaClient(abdera, new LRUCache(abdera, 1000));
+//        abderaClient = new AbderaClient(abdera, new LRUCache(abdera, 1000));
 
-        c = DriverManager.getConnection(DbMain.JDBC_URL, "esper", "");
-        c.setAutoCommit(false);
+        BoneCPConfig config = new BoneCPConfig();
+        config.setJdbcUrl(DbMain.JDBC_URL);
+        config.setUsername("esper");
+        config.setPassword("");
+        config.setDefaultAutoCommit(false);
+        config.setMaxConnectionsPerPartition(1);
 
-        atomDao = new AtomDao(c);
-        gitoriousDao = new GitoriousDao(c);
+        config.setConnectionHook(new AbstractConnectionHook() {
+            public void onAcquire(ConnectionHandle c) {
+                try {
+                    c.setDebugHandle(new Daos(c));
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        boneCp = new BoneCP(config);
 
         HTTPCache httpCache = new HTTPCache(new MemoryCacheStorage(), HTTPClientResponseResolver.createMultithreadedInstance());
 
-        final GitoriousClient gitoriousClient = new GitoriousClient(httpCache, "https://gitorious.org");
-
-//        Set<GitoriousProject> projects = gitoriousClient.findProjects();
-//
-//        System.out.println("projects.size() = " + projects.size());
-//        for (GitoriousProject project : projects) {
-//            System.out.println("project.repositories = " + project.repositories);
-//        }
-
-//        new GitoriousImporter(abderaClient, c).work();
+        gitoriousClient = new GitoriousClient(httpCache, "https://gitorious.org");
 
         final ScheduledThreadPoolExecutor service = new ScheduledThreadPoolExecutor(1);
 
         int projectsUpdateInterval = 1000;
         final int projectUpdateInterval = 1000;
 
-        ResourceManager<GitoriousProject, GitoriousProjectResourceManager> gitoriousProjects = new ResourceManager<>(service, 1000,
+//        service.scheduleAtFixedRate(new Runnable() {
+//            public void run() {
+//                try {
+//                    discoverProjects();
+//                } catch (Exception e) {
+//                    e.printStackTrace(System.out);
+//                }
+//            }
+//        }, projectsUpdateInterval, projectsUpdateInterval, TimeUnit.MILLISECONDS);
 
-            new ResourceManagerCallbacks<GitoriousProject, GitoriousProjectResourceManager>() {
-                public Set<GitoriousProject> discover() throws Exception {
-                    return gitoriousClient.findProjects();
-                }
-
-                public GitoriousProjectResourceManager onNew(GitoriousProject key) {
-                    return new GitoriousProjectResourceManager(service, projectUpdateInterval, key);
-                }
-
-                public void onGone(GitoriousProject key, GitoriousProjectResourceManager manager) {
-                    System.out.println("Project gone.");
-                    manager.close();
-                }
-            });
-        ;
+        discoverProjects();
     }
 
-    class GitoriousProjectResourceManager extends ResourceManager<GitoriousRepository, GitoriousRepository> {
+    private void discoverProjects() throws Exception {
+        Set<GitoriousProject> projects = gitoriousClient.findProjects();
 
-        public GitoriousProjectResourceManager(ScheduledExecutorService executorService, int delay, GitoriousProject key) {
-            super(executorService, delay, new ResourceManagerCallbacks<GitoriousRepository, GitoriousRepository>() {
-                public Set<GitoriousRepository> discover() throws Exception {
-                    key
+        try (ConnectionHandle connection = (ConnectionHandle) boneCp.getConnection()) {
+            Daos daos = (Daos) connection.getDebugHandle();
+            GitoriousRepositoryDao repoDao = daos.gitoriousRepositoryDao;
+            GitoriousProjectDao projectDao = daos.gitoriousProjectDao;
+
+            daos.begin();
+            System.out.println("Processing " + projects.size() + " projects.");
+            for (GitoriousProject project : projects) {
+                if(projectDao.countProjects(project.slug) == 0) {
+                    System.out.println("New project: " + project.slug + ", has " + project.repositories.size() + " repositories.");
+                    projectDao.insertProject(project);
+                    for (GitoriousRepository repository : project.repositories) {
+                        repoDao.insertRepository(repository);
+                    }
+                }
+                else {
+                    for (GitoriousRepository repository : project.repositories) {
+                        if(repoDao.countRepositories(repository) == 0) {
+                            System.out.println("New repository for project " + repository.projectSlug + ": " + repository.name);
+                            repoDao.insertRepository(repository);
+                        }
+                    }
+
+                    for (GitoriousRepository repository : repoDao.selectForProject(project.slug)) {
+                        if(project.repositories.contains(repository)) {
+                            continue;
+                        }
+                        System.out.println("Gone repository for project " + repository.projectSlug + ": " + repository.name);
+                        repoDao.delete(repository);
+                    }
+                }
+            }
+
+            for (String project : projectDao.selectAll()) {
+                boolean found = false;
+                for (Iterator<GitoriousProject> it = projects.iterator(); it.hasNext(); ) {
+                    GitoriousProject p = it.next();
+                    if(p.slug.equals(project)) {
+                        found = true;
+                        break;
+                    }
                 }
 
-                public GitoriousRepository onNew(GitoriousRepository key) {
-                    throw new RuntimeException("Not implemented");
+                if (found) {
+                    continue;
                 }
 
-                public void onGone(GitoriousRepository key, GitoriousRepository value) {
-                    throw new RuntimeException("Not implemented");
-                }
-            });
+                System.out.println("Gone project: " + project);
+                repoDao.deleteForProject(project);
+                projectDao.delete(project);
+            }
+
+            connection.commit();
         }
     }
 
+    /*
     private void work() throws SQLException, InterruptedException {
         String url = "http://qt.gitorious.org/projects/show/qt.atom";
 
@@ -153,4 +190,5 @@ public class GitoriousImporter {
             Thread.sleep(10 * 1000);
         }
     }
+    */
 }

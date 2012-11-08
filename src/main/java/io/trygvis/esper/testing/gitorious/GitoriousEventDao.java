@@ -2,13 +2,13 @@ package io.trygvis.esper.testing.gitorious;
 
 import java.sql.*;
 
-public class GitoriousDao {
+public class GitoriousEventDao {
     private final PreparedStatement countEntryId;
     private final PreparedStatement insertChange;
 
-    public GitoriousDao(Connection c) throws SQLException {
-        countEntryId = c.prepareStatement("SELECT count(entry_id) FROM gitorious_change WHERE entry_id=?");
-        insertChange = c.prepareStatement("INSERT INTO gitorious_change(entry_id, text) VALUES(?, ?)");
+    public GitoriousEventDao(Connection c) throws SQLException {
+        countEntryId = c.prepareStatement("SELECT count(entry_id) FROM gitorious_event WHERE entry_id=?");
+        insertChange = c.prepareStatement("INSERT INTO gitorious_event(entry_id, text) VALUES(?, ?)");
     }
 
     public int countEntryId(String entryId) throws SQLException {
