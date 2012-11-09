@@ -1,5 +1,6 @@
 package io.trygvis.esper.testing;
 
+import java.net.*;
 import java.sql.*;
 
 public class AtomDao {
@@ -13,8 +14,8 @@ public class AtomDao {
         updateAtomFeed = c.prepareStatement("UPDATE atom_feed SET last_update=? WHERE url=?");
     }
 
-    public Timestamp getAtomFeed(String url) throws SQLException {
-        selectLastUpdate.setString(1, url);
+    public Timestamp getAtomFeed(URI uri) throws SQLException {
+        selectLastUpdate.setString(1, uri.toASCIIString());
         ResultSet rs = selectLastUpdate.executeQuery();
         if (!rs.next()) {
             return null;
@@ -23,15 +24,15 @@ public class AtomDao {
         return rs.getTimestamp(1);
     }
 
-    public void insertAtomFeed(String url, Timestamp lastUpdate) throws SQLException {
-        insertAtomFeed.setString(1, url);
+    public void insertAtomFeed(URI uri, Timestamp lastUpdate) throws SQLException {
+        insertAtomFeed.setString(1, uri.toASCIIString());
         insertAtomFeed.setTimestamp(2, lastUpdate);
         insertAtomFeed.executeUpdate();
     }
 
-    public void updateAtomFeed(String url, Timestamp lastUpdate) throws SQLException {
+    public void updateAtomFeed(URI uri, Timestamp lastUpdate) throws SQLException {
         updateAtomFeed.setTimestamp(1, lastUpdate);
-        updateAtomFeed.setString(2, url);
+        updateAtomFeed.setString(2, uri.toASCIIString());
         updateAtomFeed.executeUpdate();
     }
 }

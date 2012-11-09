@@ -8,10 +8,12 @@ import java.util.*;
 
 public class GitoriousProject implements Comparable<GitoriousProject> {
     public final String slug;
+    public final URI atomFeed;
     public final List<GitoriousRepository> repositories;
 
-    public GitoriousProject(String slug, List<GitoriousRepository> repositories) {
+    public GitoriousProject(String slug, URI atomFeed, List<GitoriousRepository> repositories) {
         this.slug = slug;
+        this.atomFeed = atomFeed;
         this.repositories = repositories;
     }
 
@@ -47,7 +49,7 @@ public class GitoriousProject implements Comparable<GitoriousProject> {
             repositoryList.add(r);
         }
 
-        return new GitoriousProject(slug, repositoryList);
+        return new GitoriousProject(slug, URI.create(gitoriousUrl + "/" + slug + ".atom"), repositoryList);
     }
 
     public static List<GitoriousProject> projectsFromXml(String gitoriousUrl, Element root) throws URISyntaxException {
@@ -91,12 +93,10 @@ public class GitoriousProject implements Comparable<GitoriousProject> {
 class GitoriousRepository implements Comparable<GitoriousRepository> {
     public final String projectSlug;
     public final String name;
-    public final URI atom;
 
-    GitoriousRepository(String projectSlug, String name, URI atom) {
+    GitoriousRepository(String projectSlug, String name) {
         this.projectSlug = projectSlug;
         this.name = name;
-        this.atom = atom;
     }
 
     public static GitoriousRepository fromXml(String gitoriousUrl, String project, Element element) throws URISyntaxException {
@@ -106,7 +106,7 @@ class GitoriousRepository implements Comparable<GitoriousRepository> {
             return null;
         }
 
-        return new GitoriousRepository(project, name, new URI(gitoriousUrl + "/" + project + "/" + name + ".atom"));
+        return new GitoriousRepository(project, name);
     }
 
     public int compareTo(GitoriousRepository o) {
@@ -125,7 +125,6 @@ class GitoriousRepository implements Comparable<GitoriousRepository> {
 
         GitoriousRepository that = (GitoriousRepository) o;
 
-        if (!atom.equals(that.atom)) return false;
         if (!name.equals(that.name)) return false;
         if (!projectSlug.equals(that.projectSlug)) return false;
 
@@ -135,7 +134,6 @@ class GitoriousRepository implements Comparable<GitoriousRepository> {
     public int hashCode() {
         int result = projectSlug.hashCode();
         result = 31 * result + name.hashCode();
-        result = 31 * result + atom.hashCode();
         return result;
     }
 }

@@ -1,25 +1,47 @@
 package io.trygvis.esper.testing;
 
+import com.jolbox.bonecp.*;
 import io.trygvis.esper.testing.gitorious.*;
 
+import java.io.*;
 import java.sql.*;
 
-public class Daos {
+public class Daos implements Closeable {
+    private final Connection connection;
     public final AtomDao atomDao;
     public final GitoriousEventDao gitoriousEventDao;
     public final GitoriousProjectDao gitoriousProjectDao;
     public final GitoriousRepositoryDao gitoriousRepositoryDao;
-    public final PreparedStatement begin;
+    public final int seq;
+    public static int counter = 1;
 
-    public Daos(Connection c) throws SQLException {
-        atomDao = new AtomDao(c);
-        gitoriousEventDao = new GitoriousEventDao(c);
-        gitoriousProjectDao = new GitoriousProjectDao(c);
-        gitoriousRepositoryDao = new GitoriousRepositoryDao(c);
-        begin = c.prepareStatement("BEGIN");
+    public Daos(Connection connection) throws SQLException {
+        this.connection = connection;
+        this.seq = counter++;
+        atomDao = new AtomDao(connection);
+        gitoriousEventDao = new GitoriousEventDao(connection);
+        gitoriousProjectDao = new GitoriousProjectDao(connection);
+        gitoriousRepositoryDao = new GitoriousRepositoryDao(connection);
+
+        System.out.println("Opened connection " + seq);
     }
 
-    public void begin() throws SQLException {
-        begin.executeUpdate();
+    public void close() throws IOException {
+        System.out.println("Closing connection " + seq);
+        try {
+            connection.rollback();
+            connection.close();
+        } catch (SQLException e) {
+            throw new IOException(e);
+        }
+    }
+
+    public void commit() throws SQLException {
+        connection.commit();
+    }
+
+    public static Daos lookup(BoneCP boneCp) throws SQLException {
+        return new Daos(boneCp.getConnection());
+//        return (Daos) ((ConnectionHandle) boneCp.getConnection()).getDebugHandle();
     }
 }
