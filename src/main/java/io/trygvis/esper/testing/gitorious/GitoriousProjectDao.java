@@ -1,8 +1,5 @@
 package io.trygvis.esper.testing.gitorious;
 
-import fj.*;
-
-import java.net.*;
 import java.sql.*;
 import java.util.*;
 
@@ -21,33 +18,20 @@ public class GitoriousProjectDao extends Dao {
         }
     }
 
-    private final PreparedStatement insertProject = prepareStatement("INSERT INTO gitorious_project(slug, atom_feed) VALUES(?, ?)");
+    private final PreparedStatement insertProject = prepareStatement("INSERT INTO gitorious_project(slug) VALUES(?)");
 
-    public void insertProject(GitoriousProject project) throws SQLException {
-        insertProject.setString(1, project.slug);
-        insertProject.setString(2, project.atomFeed.toASCIIString());
+    public void insertProject(String slug) throws SQLException {
+        insertProject.setString(1, slug);
         insertProject.executeUpdate();
     }
 
-    private final PreparedStatement selectAll = prepareStatement("SELECT slug FROM gitorious_project");
+    private final PreparedStatement selectSlugs = prepareStatement("SELECT slug FROM gitorious_project");
 
     public List<String> selectSlugs() throws SQLException {
-        try (ResultSet rs = selectAll.executeQuery()) {
+        try (ResultSet rs = selectSlugs.executeQuery()) {
             List<String> list = new ArrayList<>();
             while (rs.next()) {
                 list.add(rs.getString(1));
-            }
-            return list;
-        }
-    }
-
-    private final PreparedStatement selectFeeds = prepareStatement("SELECT slug, atom_feed FROM gitorious_project");
-
-    public List<P2<String, URI>> selectFeeds() throws SQLException {
-        try (ResultSet rs = selectFeeds.executeQuery()) {
-            List<P2<String, URI>> list = new ArrayList<>();
-            while (rs.next()) {
-                list.add(P.p(rs.getString(1), URI.create(rs.getString(2))));
             }
             return list;
         }

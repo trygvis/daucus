@@ -11,12 +11,12 @@ public class TestXmlParsing extends TestCase {
         try (InputStream stream = getClass().getResourceAsStream("/gitorious/projects-2.xml")) {
             Document document = GitoriousClient.xmlReader.readDocument(stream);
 
-            List<GitoriousProject> projects = GitoriousProject.projectsFromXml("http://gitorious.org", document.getRootElement());
+            List<GitoriousProjectXml> projects = GitoriousProjectXml.projectsFromXml(document.getRootElement());
 
             assertNotNull(projects);
             assertEquals(20, projects.size());
 
-            GitoriousProject project = projects.get(3);
+            GitoriousProjectXml project = projects.get(3);
             assertEquals("aed-ii", project.slug);
             assertEquals(2, project.repositories.size());
         }

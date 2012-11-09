@@ -1,70 +1,15 @@
 package io.trygvis.esper.testing.gitorious;
 
-import static org.apache.commons.lang.StringUtils.*;
-import org.dom4j.*;
+import fj.data.*;
 
 import java.net.*;
 import java.util.*;
 
 public class GitoriousProject implements Comparable<GitoriousProject> {
     public final String slug;
-    public final URI atomFeed;
-    public final List<GitoriousRepository> repositories;
 
-    public GitoriousProject(String slug, URI atomFeed, List<GitoriousRepository> repositories) {
+    public GitoriousProject(String slug) {
         this.slug = slug;
-        this.atomFeed = atomFeed;
-        this.repositories = repositories;
-    }
-
-    public static GitoriousProject fromXml(String gitoriousUrl, Element project) throws URISyntaxException {
-        String slug = trimToNull(project.elementText("slug"));
-
-        if (slug == null) {
-            System.out.println("Missing slug");
-            return null;
-        }
-
-        Element repositories = project.element("repositories");
-        if (repositories == null) {
-            System.out.println("Missing <repositories>");
-            return null;
-        }
-
-        Element mainlines = repositories.element("mainlines");
-        if (mainlines == null) {
-            System.out.println("Missing <mainlines>");
-            return null;
-        }
-
-        List<Element> list = (List<Element>) mainlines.elements("repository");
-        List<GitoriousRepository> repositoryList = new ArrayList<>(list.size());
-        for (Element repository : list) {
-            GitoriousRepository r = GitoriousRepository.fromXml(gitoriousUrl, slug, repository);
-
-            if (r == null) {
-                continue;
-            }
-
-            repositoryList.add(r);
-        }
-
-        return new GitoriousProject(slug, URI.create(gitoriousUrl + "/" + slug + ".atom"), repositoryList);
-    }
-
-    public static List<GitoriousProject> projectsFromXml(String gitoriousUrl, Element root) throws URISyntaxException {
-        List<GitoriousProject> projects = new ArrayList<>();
-        for (Element project : (List<Element>) root.elements("project")) {
-
-            GitoriousProject p = GitoriousProject.fromXml(gitoriousUrl, project);
-            if (p == null) {
-                System.out.println(project.toString());
-                continue;
-            }
-            projects.add(p);
-        }
-
-        return projects;
     }
 
     public int compareTo(GitoriousProject other) {
@@ -77,7 +22,6 @@ public class GitoriousProject implements Comparable<GitoriousProject> {
 
         GitoriousProject that = (GitoriousProject) o;
 
-        if (!repositories.equals(that.repositories)) return false;
         if (!slug.equals(that.slug)) return false;
 
         return true;
@@ -85,7 +29,6 @@ public class GitoriousProject implements Comparable<GitoriousProject> {
 
     public int hashCode() {
         int result = slug.hashCode();
-        result = 31 * result + repositories.hashCode();
         return result;
     }
 }
@@ -93,20 +36,16 @@ public class GitoriousProject implements Comparable<GitoriousProject> {
 class GitoriousRepository implements Comparable<GitoriousRepository> {
     public final String projectSlug;
     public final String name;
+    public final URI atomFeed;
+    public final Option<Date> lastUpdate;
+    public final Option<Date> lastSuccessfulUpdate;
 
-    GitoriousRepository(String projectSlug, String name) {
+    GitoriousRepository(String projectSlug, String name, URI atomFeed, Option<Date> lastUpdate, Option<Date> lastSuccessfulUpdate) {
         this.projectSlug = projectSlug;
         this.name = name;
-    }
-
-    public static GitoriousRepository fromXml(String gitoriousUrl, String project, Element element) throws URISyntaxException {
-        String name = trimToNull(element.elementText("name"));
-
-        if (name == null) {
-            return null;
-        }
-
-        return new GitoriousRepository(project, name);
+        this.atomFeed = atomFeed;
+        this.lastUpdate = lastUpdate;
+        this.lastSuccessfulUpdate = lastSuccessfulUpdate;
     }
 
     public int compareTo(GitoriousRepository o) {

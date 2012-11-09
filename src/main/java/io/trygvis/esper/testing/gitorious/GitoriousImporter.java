@@ -1,22 +1,23 @@
 package io.trygvis.esper.testing.gitorious;
 
 import com.jolbox.bonecp.*;
-import fj.*;
+import fj.data.*;
+import static fj.data.Option.*;
 import io.trygvis.esper.testing.*;
 import static java.lang.System.*;
 import org.apache.abdera.*;
 import org.apache.abdera.model.*;
 import org.apache.abdera.parser.*;
-import org.apache.abdera.protocol.client.*;
 import org.codehaus.httpcache4j.*;
 import org.codehaus.httpcache4j.cache.*;
 import org.codehaus.httpcache4j.client.*;
 
 import java.io.*;
-import java.net.*;
 import java.sql.*;
 import java.util.Date;
 import java.util.*;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.*;
 
 public class GitoriousImporter {
@@ -27,30 +28,19 @@ public class GitoriousImporter {
 
     public static void main(String[] args) throws Exception {
         Main.configureLog4j();
-        new GitoriousImporter();
+        new GitoriousImporter(DbMain.JDBC_URL, "esper", "");
     }
 
-    public GitoriousImporter() throws Exception {
+    public GitoriousImporter(String jdbcUrl, String jdbcUsername, String jdbcPassword) throws Exception {
         Abdera abdera = new Abdera();
         parser = abdera.getParser();
 
         BoneCPConfig config = new BoneCPConfig();
-        config.setJdbcUrl(DbMain.JDBC_URL);
-        config.setUsername("esper");
-        config.setPassword("");
+        config.setJdbcUrl(jdbcUrl);
+        config.setUsername(jdbcUsername);
+        config.setPassword(jdbcPassword);
         config.setDefaultAutoCommit(false);
         config.setMaxConnectionsPerPartition(10);
-
-//        config.setConnectionHook(new AbstractConnectionHook() {
-//            public void onAcquire(ConnectionHandle c) {
-//                try {
-//                    System.out.println("New SQL connection.");
-//                    c.setDebugHandle(new Daos(c));
-//                } catch (SQLException e) {connections
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        });
 
         boneCp = new BoneCP(config);
 
@@ -87,7 +77,7 @@ public class GitoriousImporter {
     }
 
     private void discoverProjects() throws Exception {
-        Set<GitoriousProject> projects = gitoriousClient.findProjects();
+        Set<GitoriousProjectXml> projects = gitoriousClient.findProjects();
 
         long start = currentTimeMillis();
         try (Daos daos = Daos.lookup(boneCp)) {
@@ -95,25 +85,35 @@ public class GitoriousImporter {
             GitoriousProjectDao projectDao = daos.gitoriousProjectDao;
 
             System.out.println("Processing " + projects.size() + " projects.");
-            for (GitoriousProject project : projects) {
+            for (GitoriousProjectXml project : projects) {
                 if (projectDao.countProjects(project.slug) == 0) {
                     System.out.println("New project: " + project.slug + ", has " + project.repositories.size() + " repositories.");
-                    projectDao.insertProject(project);
-                    for (GitoriousRepository repository : project.repositories) {
-                        repoDao.insertRepository(repository);
+                    projectDao.insertProject(project.slug);
+                    for (GitoriousRepositoryXml repository : project.repositories) {
+                        repoDao.insertRepository(repository.projectSlug, repository.name, gitoriousClient.atomFeed(project.slug));
                     }
                 } else {
-                    for (GitoriousRepository repository : project.repositories) {
-                        if (repoDao.countRepositories(repository) == 0) {
+                    for (GitoriousRepositoryXml repository : project.repositories) {
+                        if (repoDao.countRepositories(repository.projectSlug, repository.name) == 0) {
                             System.out.println("New repository for project " + repository.projectSlug + ": " + repository.name);
-                            repoDao.insertRepository(repository);
+                            repoDao.insertRepository(repository.projectSlug, repository.name, gitoriousClient.atomFeed(project.slug));
                         }
                     }
 
                     for (GitoriousRepository repository : repoDao.selectForProject(project.slug)) {
-                        if (project.repositories.contains(repository)) {
+                        boolean found = false;
+                        for (Iterator<GitoriousRepositoryXml> it = project.repositories.iterator(); it.hasNext(); ) {
+                            GitoriousRepositoryXml repo = it.next();
+                            if (repo.projectSlug.equals(repository.projectSlug) && repo.name.equals(repository.name)) {
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if (found) {
                             continue;
                         }
+
                         System.out.println("Gone repository for project " + repository.projectSlug + ": " + repository.name);
                         repoDao.delete(repository);
                     }
@@ -122,8 +122,8 @@ public class GitoriousImporter {
 
             for (String project : projectDao.selectSlugs()) {
                 boolean found = false;
-                for (Iterator<GitoriousProject> it = projects.iterator(); it.hasNext(); ) {
-                    GitoriousProject p = it.next();
+                for (Iterator<GitoriousProjectXml> it = projects.iterator(); it.hasNext(); ) {
+                    GitoriousProjectXml p = it.next();
                     if (p.slug.equals(project)) {
                         found = true;
                         break;
@@ -147,29 +147,25 @@ public class GitoriousImporter {
 
     private void updateRepositories() throws SQLException, IOException {
         try (Daos daos = Daos.lookup(boneCp)) {
-            List<P2<String, URI>> list = daos.gitoriousProjectDao.selectFeeds();
+            List<GitoriousRepository> list = daos.gitoriousRepositoryDao.select();
             System.out.println("Updating " + list.size() + " feeds.");
-            for (P2<String, URI> pair : list) {
-                updateFeed(daos, pair._1(), pair._2());
+            for (GitoriousRepository repository : list) {
+                updateFeed(daos, repository);
                 daos.commit();
             }
         }
     }
 
-    private void updateFeed(Daos daos, String slug, URI uri) throws SQLException {
-        AtomDao atomDao = daos.atomDao;
+    private void updateFeed(Daos daos, GitoriousRepository repository) throws SQLException {
+        GitoriousRepositoryDao repositoryDao = daos.gitoriousRepositoryDao;
         GitoriousEventDao eventDao = daos.gitoriousEventDao;
 
-        Timestamp lastUpdate = atomDao.getAtomFeed(uri);
+        Option<Date> lastUpdate = repository.lastUpdate;
 
-        System.out.println("Fetching " + uri);
-        RequestOptions options = new RequestOptions();
-        if (lastUpdate != null) {
-            options.setIfModifiedSince(lastUpdate);
-        }
+        System.out.println("Fetching " + repository.atomFeed);
 
         long start = currentTimeMillis();
-        HTTPResponse response = httpCache.execute(new HTTPRequest(uri, HTTPMethod.GET));
+        HTTPResponse response = httpCache.execute(new HTTPRequest(repository.atomFeed, HTTPMethod.GET));
         long end = currentTimeMillis();
         System.out.println("Fetched in " + (end - start) + "ms");
 
@@ -178,11 +174,12 @@ public class GitoriousImporter {
 
         System.out.println("responseDate = " + responseDate);
 
-        Document<Element> document = null;
+        Document<Element> document;
         try {
             document = parser.parse(response.getPayload().getInputStream());
         } catch (ParseException e) {
-            System.out.println("Error parsing " + uri);
+            repositoryDao.updateTimestamp(repository.projectSlug, repository.name, new Timestamp(currentTimeMillis()), Option.<Date>none());
+            System.out.println("Error parsing " + repository.atomFeed);
             e.printStackTrace(System.out);
             return;
         }
@@ -199,25 +196,19 @@ public class GitoriousImporter {
                 continue;
             }
 
-            if (lastUpdate != null && lastUpdate.after(published)) {
-                System.out.println("Old entry: " + uri + ":" + entryId);
+            if (lastUpdate.isSome() && lastUpdate.some().after(published)) {
+                System.out.println("Old entry: " + repository.atomFeed + ":" + entryId);
                 continue;
             }
 
-            System.out.println("New entry: " + uri + ":" + entryId);
             if (eventDao.countEntryId(entryId) == 0) {
+                System.out.println("New entry: " + repository.atomFeed + ":" + entryId);
                 eventDao.insertChange(entryId, title);
             } else {
                 System.out.println("Already imported entry: " + entryId);
             }
         }
 
-        if (lastUpdate == null) {
-            System.out.println("New atom feed");
-            atomDao.insertAtomFeed(uri, new Timestamp(responseDate.getTime()));
-        } else {
-            System.out.println("Updating atom feed");
-            atomDao.updateAtomFeed(uri, lastUpdate);
-        }
+        repositoryDao.updateTimestamp(repository.projectSlug, repository.name, new Timestamp(currentTimeMillis()), some(new Date()));
     }
 }
