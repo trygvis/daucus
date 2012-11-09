@@ -5,14 +5,13 @@ import fj.data.*;
 import static fj.data.Option.*;
 import io.trygvis.esper.testing.*;
 import static java.lang.System.*;
-import org.apache.abdera.*;
-import org.apache.abdera.model.*;
 import org.apache.abdera.parser.*;
 import org.codehaus.httpcache4j.*;
 import org.codehaus.httpcache4j.cache.*;
 import org.codehaus.httpcache4j.client.*;
 
 import java.io.*;
+import java.net.*;
 import java.sql.*;
 import java.util.Date;
 import java.util.*;
@@ -21,7 +20,7 @@ import java.util.Set;
 import java.util.concurrent.*;
 
 public class GitoriousImporter {
-    private final Parser parser;
+    private final GitoriousAtomFeedParser parser;
     private final BoneCP boneCp;
     private final GitoriousClient gitoriousClient;
     private final HTTPCache httpCache;
@@ -32,8 +31,7 @@ public class GitoriousImporter {
     }
 
     public GitoriousImporter(String jdbcUrl, String jdbcUsername, String jdbcPassword) throws Exception {
-        Abdera abdera = new Abdera();
-        parser = abdera.getParser();
+        parser = new GitoriousAtomFeedParser();
 
         BoneCPConfig config = new BoneCPConfig();
         config.setJdbcUrl(jdbcUrl);
@@ -48,22 +46,25 @@ public class GitoriousImporter {
 
         gitoriousClient = new GitoriousClient(httpCache, "http://gitorious.org");
 
-        final ScheduledThreadPoolExecutor service = new ScheduledThreadPoolExecutor(1);
+        final ScheduledThreadPoolExecutor service = new ScheduledThreadPoolExecutor(2);
 
+        boolean projectsUpdateEnabled = false;
         int projectsUpdateDelay = 0 * 1000;
         int projectsUpdateInterval = 60 * 1000;
         int repositoriesUpdateDelay = 0;
         int repositoriesUpdateInterval = 60 * 1000;
 
-        service.scheduleAtFixedRate(new Runnable() {
-            public void run() {
-                try {
-                    discoverProjects();
-                } catch (Exception e) {
-                    e.printStackTrace(System.out);
+        if (projectsUpdateEnabled) {
+            service.scheduleAtFixedRate(new Runnable() {
+                public void run() {
+                    try {
+                        discoverProjects();
+                    } catch (Exception e) {
+                        e.printStackTrace(System.out);
+                    }
                 }
-            }
-        }, projectsUpdateDelay, projectsUpdateInterval, TimeUnit.MILLISECONDS);
+            }, projectsUpdateDelay, projectsUpdateInterval, TimeUnit.MILLISECONDS);
+        }
 
         service.scheduleAtFixedRate(new Runnable() {
             public void run() {
@@ -90,13 +91,15 @@ public class GitoriousImporter {
                     System.out.println("New project: " + project.slug + ", has " + project.repositories.size() + " repositories.");
                     projectDao.insertProject(project.slug);
                     for (GitoriousRepositoryXml repository : project.repositories) {
-                        repoDao.insertRepository(repository.projectSlug, repository.name, gitoriousClient.atomFeed(project.slug));
+                        URI atomFeed = gitoriousClient.atomFeed(repository.projectSlug, repository.name);
+                        repoDao.insertRepository(repository.projectSlug, repository.name, atomFeed);
                     }
                 } else {
                     for (GitoriousRepositoryXml repository : project.repositories) {
                         if (repoDao.countRepositories(repository.projectSlug, repository.name) == 0) {
                             System.out.println("New repository for project " + repository.projectSlug + ": " + repository.name);
-                            repoDao.insertRepository(repository.projectSlug, repository.name, gitoriousClient.atomFeed(project.slug));
+                            URI atomFeed = gitoriousClient.atomFeed(repository.projectSlug, repository.name);
+                            repoDao.insertRepository(repository.projectSlug, repository.name, atomFeed);
                         }
                     }
 
@@ -160,7 +163,7 @@ public class GitoriousImporter {
         GitoriousRepositoryDao repositoryDao = daos.gitoriousRepositoryDao;
         GitoriousEventDao eventDao = daos.gitoriousEventDao;
 
-        Option<Date> lastUpdate = repository.lastUpdate;
+        Option<Date> lastUpdate = repository.lastSuccessfulUpdate;
 
         System.out.println("Fetching " + repository.atomFeed);
 
@@ -174,9 +177,9 @@ public class GitoriousImporter {
 
         System.out.println("responseDate = " + responseDate);
 
-        Document<Element> document;
+        List<GitoriousEvent> events;
         try {
-            document = parser.parse(response.getPayload().getInputStream());
+            events = parser.parseStream(response.getPayload().getInputStream(), lastUpdate, repository.projectSlug, repository.name);
         } catch (ParseException e) {
             repositoryDao.updateTimestamp(repository.projectSlug, repository.name, new Timestamp(currentTimeMillis()), Option.<Date>none());
             System.out.println("Error parsing " + repository.atomFeed);
@@ -184,28 +187,12 @@ public class GitoriousImporter {
             return;
         }
 
-        Feed feed = (Feed) document.getRoot();
-
-        for (Entry entry : feed.getEntries()) {
-            String entryId = entry.getId().toASCIIString();
-            Date published = entry.getPublished();
-            String title = entry.getTitle();
-
-            // Validate element
-            if (entryId == null || published == null || title == null) {
-                continue;
-            }
-
-            if (lastUpdate.isSome() && lastUpdate.some().after(published)) {
-                System.out.println("Old entry: " + repository.atomFeed + ":" + entryId);
-                continue;
-            }
-
-            if (eventDao.countEntryId(entryId) == 0) {
-                System.out.println("New entry: " + repository.atomFeed + ":" + entryId);
-                eventDao.insertChange(entryId, title);
+        for (GitoriousEvent event : events) {
+            if (eventDao.countEntryId(event.entryId) == 0) {
+                System.out.println("New entry in " + repository.atomFeed + ": " + event.entryId);
+                eventDao.insertEvent(event);
             } else {
-                System.out.println("Already imported entry: " + entryId);
+                System.out.println("Already imported entry: " + event.entryId);
             }
         }
 

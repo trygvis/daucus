@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xml:lang="en-US" xmlns="http://www.w3.org/2005/Atom" xmlns:gts="http://gitorious.org/schema">
+  <id>tag:gitorious.org,2005:/esper-test-project/esper-test-project</id>
+  <link type="text/html" rel="alternate" href="http://gitorious.org"/>
+  <link type="application/atom+xml" rel="self" href="http://gitorious.org/esper-test-project/esper-test-project.atom"/>
+  <title>Gitorious: esper-test-project/esper-test-project activity</title>
+  <updated>2012-11-09T14:06:33Z</updated>
+  <entry>
+    <id>tag:gitorious.org,2005:Event/43390557</id>
+    <published>2012-11-09T14:06:33Z</published>
+    <updated>2012-11-09T14:06:33Z</updated>
+    <link type="text/html" rel="alternate" href="http://gitorious.org/esper-test-project/esper-test-project/commits"/>
+    <title>Trygve Laugst&#248;l pushed 1 commit  to esper-test-project/esper-test-project:my-branch. View diff</title>
+    <content type="html">&lt;p&gt;&lt;a href="/~trygvis"&gt;trygvis&lt;/a&gt; pushed &lt;a href="/esper-test-project/esper-test-project/commits/my-branch" class="commit_event_toggler" gts:id="43390557" gts:url="/events/43390557/commits" id="commits_in_event_43390557_toggler"&gt;1 commit&lt;/a&gt;  to &lt;a href="/esper-test-project/esper-test-project/commits/my-branch"&gt;esper-test-project/esper-test-project:my-branch&lt;/a&gt;. &lt;a href="/esper-test-project/esper-test-project/commit/dd6f41a45587f3f4d81ba7c0a874fcaf94e67365/diffs/0d3de9c126c6f84e46e3f92244b4d99a4a3a3aa5"&gt;View diff&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;my-branch changed from dd6f41a to 0d3de9c&lt;p&gt;
+&lt;p&gt;&lt;/p&gt;
+</content>
+    <author>
+      <name>Trygve Laugst&#248;l</name>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:gitorious.org,2005:Event/43390538</id>
+    <published>2012-11-09T13:58:05Z</published>
+    <updated>2012-11-09T13:58:05Z</updated>
+    <link type="text/html" rel="alternate" href="http://gitorious.org/esper-test-project/esper-test-project/commits"/>
+    <title>Trygve Laugst&#248;l created branch my-branch on esper-test-project/esper-test-project</title>
+    <content type="html">&lt;p&gt;&lt;a href="/~trygvis"&gt;trygvis&lt;/a&gt; created branch &lt;a href="/esper-test-project/esper-test-project/commits/my-branch"&gt;my-branch&lt;/a&gt; on &lt;a href="/esper-test-project"&gt;esper-test-project&lt;/a&gt;/&lt;a href="http://gitorious.org/esper-test-project/esper-test-project"&gt;esper-test-project&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;p&gt;
+&lt;p&gt;&lt;/p&gt;
+</content>
+    <author>
+      <name>Trygve Laugst&#248;l</name>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:gitorious.org,2005:Event/43390537</id>
+    <published>2012-11-09T13:57:31Z</published>
+    <updated>2012-11-09T13:57:31Z</updated>
+    <link type="text/html" rel="alternate" href="http://gitorious.org/esper-test-project/esper-test-project/commits"/>
+    <title>Trygve Laugst&#248;l pushed 1 commit  to esper-test-project/esper-test-project:master. View diff</title>
+    <content type="html">&lt;p&gt;&lt;a href="/~trygvis"&gt;trygvis&lt;/a&gt; pushed &lt;a href="/esper-test-project/esper-test-project/commits/master" class="commit_event_toggler" gts:id="43390537" gts:url="/events/43390537/commits" id="commits_in_event_43390537_toggler"&gt;1 commit&lt;/a&gt;  to &lt;a href="/esper-test-project/esper-test-project/commits/master"&gt;esper-test-project/esper-test-project:master&lt;/a&gt;. &lt;a href="/esper-test-project/esper-test-project/commit/776cb0a8b1c8f56cb0f2ec919bee87665bfdc3b7/diffs/3f0ef74c1a660e9adc7d9b6668de657bdabe245a"&gt;View diff&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;master changed from 776cb0a to 3f0ef74&lt;p&gt;
+&lt;p&gt;&lt;/p&gt;
+</content>
+    <author>
+      <name>Trygve Laugst&#248;l</name>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:gitorious.org,2005:Event/43390416</id>
+    <published>2012-11-09T12:26:09Z</published>
+    <updated>2012-11-09T12:26:09Z</updated>
+    <link type="text/html" rel="alternate" href="http://gitorious.org/esper-test-project/esper-test-project/commits"/>
+    <title>Trygve Laugst&#248;l pushed 1 commit  to esper-test-project/esper-test-project:master. View diff</title>
+    <content type="html">&lt;p&gt;&lt;a href="/~trygvis"&gt;trygvis&lt;/a&gt; pushed &lt;a href="/esper-test-project/esper-test-project/commits/master" class="commit_event_toggler" gts:id="43390416" gts:url="/events/43390416/commits" id="commits_in_event_43390416_toggler"&gt;1 commit&lt;/a&gt;  to &lt;a href="/esper-test-project/esper-test-project/commits/master"&gt;esper-test-project/esper-test-project:master&lt;/a&gt;. &lt;a href="/esper-test-project/esper-test-project/commit/4aa8a70c00a9527035e3f9b2fb69bbc4779aa090/diffs/776cb0a8b1c8f56cb0f2ec919bee87665bfdc3b7"&gt;View diff&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;master changed from 4aa8a70 to 776cb0a&lt;p&gt;
+&lt;p&gt;&lt;/p&gt;
+</content>
+    <author>
+      <name>Trygve Laugst&#248;l</name>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:gitorious.org,2005:Event/43390409</id>
+    <published>2012-11-09T12:22:07Z</published>
+    <updated>2012-11-09T12:22:07Z</updated>
+    <link type="text/html" rel="alternate" href="http://gitorious.org/esper-test-project/esper-test-project/commits"/>
+    <title>Trygve Laugst&#248;l pushed 3 commits  to esper-test-project/esper-test-project:master. View diff</title>
+    <content type="html">&lt;p&gt;&lt;a href="/~trygvis"&gt;trygvis&lt;/a&gt; pushed &lt;a href="/esper-test-project/esper-test-project/commits/master" class="commit_event_toggler" gts:id="43390409" gts:url="/events/43390409/commits" id="commits_in_event_43390409_toggler"&gt;3 commits&lt;/a&gt;  to &lt;a href="/esper-test-project/esper-test-project/commits/master"&gt;esper-test-project/esper-test-project:master&lt;/a&gt;. &lt;a href="/esper-test-project/esper-test-project/commit/7054468bc18ae6e66aeccecc87896a90b21f2101/diffs/4aa8a70c00a9527035e3f9b2fb69bbc4779aa090"&gt;View diff&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;master changed from 7054468 to 4aa8a70&lt;p&gt;
+&lt;p&gt;&lt;/p&gt;
+</content>
+    <author>
+      <name>Trygve Laugst&#248;l</name>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:gitorious.org,2005:Event/43390405</id>
+    <published>2012-11-09T12:21:29Z</published>
+    <updated>2012-11-09T12:21:29Z</updated>
+    <link type="text/html" rel="alternate" href="http://gitorious.org/esper-test-project/esper-test-project/commits"/>
+    <title>Trygve Laugst&#248;l pushed 2 commits  to esper-test-project/esper-test-project:master. View diff</title>
+    <content type="html">&lt;p&gt;&lt;a href="/~trygvis"&gt;trygvis&lt;/a&gt; pushed &lt;a href="/esper-test-project/esper-test-project/commits/master" class="commit_event_toggler" gts:id="43390405" gts:url="/events/43390405/commits" id="commits_in_event_43390405_toggler"&gt;2 commits&lt;/a&gt;  to &lt;a href="/esper-test-project/esper-test-project/commits/master"&gt;esper-test-project/esper-test-project:master&lt;/a&gt;. &lt;a href="/esper-test-project/esper-test-project/commit/80c5808f3dd2e32abf94a06d27e4eb3a0b6590d1/diffs/7054468bc18ae6e66aeccecc87896a90b21f2101"&gt;View diff&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;master changed from 80c5808 to 7054468&lt;p&gt;
+&lt;p&gt;&lt;/p&gt;
+</content>
+    <author>
+      <name>Trygve Laugst&#248;l</name>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:gitorious.org,2005:Event/43390404</id>
+    <published>2012-11-09T12:19:57Z</published>
+    <updated>2012-11-09T12:19:57Z</updated>
+    <link type="text/html" rel="alternate" href="http://gitorious.org/esper-test-project/esper-test-project/commits"/>
+    <title>Trygve Laugst&#248;l started development of esper-test-project/esper-test-project</title>
+    <content type="html">&lt;p&gt;&lt;a href="/~trygvis"&gt;trygvis&lt;/a&gt; started development of &lt;a href="/esper-test-project"&gt;esper-test-project&lt;/a&gt;/&lt;a href="http://gitorious.org/esper-test-project/esper-test-project"&gt;esper-test-project&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;p&gt;
+&lt;p&gt;&lt;/p&gt;
+</content>
+    <author>
+      <name>Trygve Laugst&#248;l</name>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:gitorious.org,2005:Event/43390388</id>
+    <published>2012-11-09T12:05:04Z</published>
+    <updated>2012-11-09T12:05:04Z</updated>
+    <link type="text/html" rel="alternate" href="http://gitorious.org/esper-test-project/esper-test-project/commits"/>
+    <title>Trygve Laugst&#248;l created repository esper-test-project in esper-test-project</title>
+    <content type="html">&lt;p&gt;&lt;a href="/~trygvis"&gt;trygvis&lt;/a&gt; created repository &lt;a href="/esper-test-project/esper-test-project"&gt;esper-test-project&lt;/a&gt; in &lt;a href="/esper-test-project"&gt;esper-test-project&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;p&gt;
+&lt;p&gt;&lt;/p&gt;
+</content>
+    <author>
+      <name>Trygve Laugst&#248;l</name>
+    </author>
+  </entry>
+</feed>

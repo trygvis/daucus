@@ -63,8 +63,8 @@ public class GitoriousClient {
         return all;
     }
 
-    public URI atomFeed(String slug) {
-        return URI.create(baseUrl + "/" + slug + ".atom");
+    public URI atomFeed(String projectSlug, String repositoryName) {
+        return URI.create(baseUrl + "/" + projectSlug + "/" + repositoryName + ".atom");
     }
 }
 
@@ -97,7 +97,7 @@ class GitoriousProjectXml implements Comparable<GitoriousProjectXml> {
             return null;
         }
 
-        List<Element> list = (List<Element>) mainlines.elements("repository");
+        @SuppressWarnings("unchecked") List<Element> list = (List<Element>) mainlines.elements("repository");
         List<GitoriousRepositoryXml> repositoryList = new ArrayList<>(list.size());
         for (Element repository : list) {
             GitoriousRepositoryXml r = GitoriousRepositoryXml.fromXml(slug, repository);
@@ -114,7 +114,8 @@ class GitoriousProjectXml implements Comparable<GitoriousProjectXml> {
 
     public static List<GitoriousProjectXml> projectsFromXml(Element root) throws URISyntaxException {
         List<GitoriousProjectXml> projects = new ArrayList<>();
-        for (Element project : (List<Element>) root.elements("project")) {
+        @SuppressWarnings("unchecked") List<Element> elements = (List<Element>) root.elements("project");
+        for (Element project : elements) {
 
             GitoriousProjectXml p = GitoriousProjectXml.fromXml(project);
             if (p == null) {
