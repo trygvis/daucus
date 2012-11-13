@@ -1,6 +1,7 @@
 package io.trygvis.esper.testing.gitorious;
 
 import fj.data.*;
+import io.trygvis.esper.testing.*;
 
 import java.net.*;
 import java.sql.*;

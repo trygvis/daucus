@@ -1,4 +1,4 @@
-package io.trygvis.esper.testing.gitorious;
+package io.trygvis.esper.testing;
 
 import fj.*;
 

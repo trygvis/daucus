@@ -8,7 +8,6 @@ import java.sql.*;
 
 public class Daos implements Closeable {
     private final Connection connection;
-    public final AtomDao atomDao;
     public final GitoriousEventDao gitoriousEventDao;
     public final GitoriousProjectDao gitoriousProjectDao;
     public final GitoriousRepositoryDao gitoriousRepositoryDao;
@@ -18,7 +17,6 @@ public class Daos implements Closeable {
     public Daos(Connection connection) throws SQLException {
         this.connection = connection;
         this.seq = counter++;
-        atomDao = new AtomDao(connection);
         gitoriousEventDao = new GitoriousEventDao(connection);
         gitoriousProjectDao = new GitoriousProjectDao(connection);
         gitoriousRepositoryDao = new GitoriousRepositoryDao(connection);
@@ -42,6 +40,5 @@ public class Daos implements Closeable {
 
     public static Daos lookup(BoneCP boneCp) throws SQLException {
         return new Daos(boneCp.getConnection());
-//        return (Daos) ((ConnectionHandle) boneCp.getConnection()).getDebugHandle();
     }
 }
