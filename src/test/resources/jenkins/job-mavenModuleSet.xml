@@ -1,0 +1,244 @@
+<mavenModuleSet>
+  <action></action>
+  <action></action>
+  <action></action>
+  <action></action>
+  <description>Apache Abdera Trunk</description>
+  <displayName>Abdera-trunk</displayName>
+  <name>Abdera-trunk</name>
+  <url>https://builds.apache.org/job/Abdera-trunk/</url>
+  <buildable>true</buildable>
+  <build>
+    <number>1037</number>
+    <url>https://builds.apache.org/job/Abdera-trunk/1037/</url>
+  </build>
+  <build>
+    <number>1036</number>
+    <url>https://builds.apache.org/job/Abdera-trunk/1036/</url>
+  </build>
+  <build>
+    <number>1035</number>
+    <url>https://builds.apache.org/job/Abdera-trunk/1035/</url>
+  </build>
+  <color>blue</color>
+  <firstBuild>
+    <number>1035</number>
+    <url>https://builds.apache.org/job/Abdera-trunk/1035/</url>
+  </firstBuild>
+  <healthReport>
+    <description>Test Result: 0 tests failing out of a total of 491 tests.</description>
+    <iconUrl>health-80plus.png</iconUrl>
+    <score>100</score>
+  </healthReport>
+  <healthReport>
+    <description>Test Result: 0 tests in total.</description>
+    <iconUrl>health-80plus.png</iconUrl>
+    <score>100</score>
+  </healthReport>
+  <healthReport>
+    <description>Build stability: No recent builds failed.</description>
+    <iconUrl>health-80plus.png</iconUrl>
+    <score>100</score>
+  </healthReport>
+  <inQueue>false</inQueue>
+  <keepDependencies>false</keepDependencies>
+  <lastBuild>
+    <number>1037</number>
+    <url>https://builds.apache.org/job/Abdera-trunk/1037/</url>
+  </lastBuild>
+  <lastCompletedBuild>
+    <number>1037</number>
+    <url>https://builds.apache.org/job/Abdera-trunk/1037/</url>
+  </lastCompletedBuild>
+  <lastStableBuild>
+    <number>1037</number>
+    <url>https://builds.apache.org/job/Abdera-trunk/1037/</url>
+  </lastStableBuild>
+  <lastSuccessfulBuild>
+    <number>1037</number>
+    <url>https://builds.apache.org/job/Abdera-trunk/1037/</url>
+  </lastSuccessfulBuild>
+  <nextBuildNumber>1038</nextBuildNumber>
+  <property></property>
+  <concurrentBuild>false</concurrentBuild>
+  <scm></scm>
+  <upstreamProject>
+    <name>ws-axiom-trunk</name>
+    <url>https://builds.apache.org/job/ws-axiom-trunk/</url>
+    <color>blue</color>
+  </upstreamProject>
+  <module>
+    <name>org.apache.abdera:abdera</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera/</url>
+    <color>blue</color>
+    <displayName>Apache Abdera</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-adapters-parent</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-adapters-parent/</url>
+    <color>blue</color>
+    <displayName>Abdera Adapters</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-bundle</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-bundle/</url>
+    <color>blue</color>
+    <displayName>Abdera Bundle Jar</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-client</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-client/</url>
+    <color>blue</color>
+    <displayName>Abdera Client</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-core</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-core/</url>
+    <color>blue</color>
+    <displayName>Abdera Core</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-couchdb</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-couchdb/</url>
+    <color>disabled</color>
+    <displayName>Abdera CouchDB Adapter</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-examples</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-examples/</url>
+    <color>blue</color>
+    <displayName>Abdera Examples</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-extensions-features</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-extensions-features/</url>
+    <color>blue</color>
+    <displayName>Abdera Extensions - Features</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-extensions-gdata</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-extensions-gdata/</url>
+    <color>blue</color>
+    <displayName>Abdera Extensions - GData</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-extensions-geo</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-extensions-geo/</url>
+    <color>blue</color>
+    <displayName>Abdera Extensions - Geo</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-extensions-html</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-extensions-html/</url>
+    <color>blue</color>
+    <displayName>Abdera Extensions - HTML</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-extensions-json</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-extensions-json/</url>
+    <color>blue</color>
+    <displayName>Abdera Extensions - JSON</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-extensions-main</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-extensions-main/</url>
+    <color>blue</color>
+    <displayName>Abdera Extensions - Main</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-extensions-media</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-extensions-media/</url>
+    <color>blue</color>
+    <displayName>Abdera Extensions - Media</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-extensions-oauth</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-extensions-oauth/</url>
+    <color>blue</color>
+    <displayName>Abdera Extensions - OAuth</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-extensions-opensearch</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-extensions-opensearch/</url>
+    <color>blue</color>
+    <displayName>Abdera Extensions - OpenSearch</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-extensions-parent</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-extensions-parent/</url>
+    <color>blue</color>
+    <displayName>Abdera Extensions</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-extensions-rss</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-extensions-rss/</url>
+    <color>blue</color>
+    <displayName>Abdera Extensions - RSS</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-extensions-serializer</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-extensions-serializer/</url>
+    <color>blue</color>
+    <displayName>Abdera Extensions - Serializer</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-extensions-sharing</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-extensions-sharing/</url>
+    <color>blue</color>
+    <displayName>Abdera Extensions - Sharing</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-extensions-wsse</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-extensions-wsse/</url>
+    <color>blue</color>
+    <displayName>Abdera Extensions - WSSE</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-filesystem</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-filesystem/</url>
+    <color>blue</color>
+    <displayName>Abdera Filesystem Adapter</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-i18n</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-i18n/</url>
+    <color>blue</color>
+    <displayName>I18N Libraries</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-jcr</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-jcr/</url>
+    <color>blue</color>
+    <displayName>Abdera JCR Adapter</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-jdbc</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-jdbc/</url>
+    <color>blue</color>
+    <displayName>Abdera JDBC Adapter</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-parser</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-parser/</url>
+    <color>blue</color>
+    <displayName>Abdera Parser</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-security</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-security/</url>
+    <color>blue</color>
+    <displayName>Abdera Security</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-server</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-server/</url>
+    <color>blue</color>
+    <displayName>Abdera Server</displayName>
+  </module>
+  <module>
+    <name>org.apache.abdera:abdera-spring</name>
+    <url>https://builds.apache.org/job/Abdera-trunk/org.apache.abdera$abdera-spring/</url>
+    <color>blue</color>
+    <displayName>Abdera Spring Integration</displayName>
+  </module>
+</mavenModuleSet>
