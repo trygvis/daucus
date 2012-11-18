@@ -28,6 +28,16 @@ public class XmlUtil {
         }
     };
 
+    public static F<String, Option<Boolean>> parseBoolean = new F<String, Option<Boolean>>() {
+        public Option<Boolean> f(String s) {
+            try {
+                return some(Boolean.parseBoolean(s));
+            } catch (Throwable e) {
+                return none();
+            }
+        }
+    };
+
     public static Option<String> childText(Element e, String childName) {
         return fromNull(e.getChildText(childName));
     }

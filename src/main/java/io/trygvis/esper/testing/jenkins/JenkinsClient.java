@@ -4,6 +4,7 @@ import fj.*;
 import fj.data.*;
 import io.trygvis.esper.testing.*;
 import static io.trygvis.esper.testing.XmlUtil.*;
+import io.trygvis.esper.testing.jenkins.JenkinsJobXml.*;
 import static java.lang.Integer.*;
 import static org.apache.commons.lang.StringUtils.*;
 import org.codehaus.httpcache4j.*;
@@ -59,13 +60,15 @@ public class JenkinsClient {
     public JenkinsJobXml fetchJob(URI uri) throws IOException, JDOMException, XMLStreamException {
         Element root = fetchXml(uri).getRootElement();
 
-        switch (root.getName()) {
+        String name = root.getName();
+
+        switch (name) {
             case "freeStyleProject":
-                return FreeStyleProjectXml.parse(root);
+                return JenkinsJobXml.parse(uri, JenkinsJobType.FREE_STYLE, root);
             case "mavenModuleSet":
-                return MavenModuleSetXml.parse(root);
+                return JenkinsJobXml.parse(uri, JenkinsJobType.MAVEN, root);
             default:
-                throw new IOException("Unknown project type: " + root.getName());
+                throw new IOException("Unknown project type: " + name);
         }
     }
 
@@ -138,86 +141,73 @@ class JenkinsJobEntryXml {
     }
 }
 
-abstract class JenkinsJobXml {
+class JenkinsJobXml {
+    enum JenkinsJobType {
+        MAVEN, FREE_STYLE
+    }
+
+    public final JenkinsJobType type;
     public final Option<String> description;
     public final Option<String> displayName;
     public final Option<String> name;
-    public final Option<String> url;
+    public final URI url;
     public final Option<String> color;
+    public final boolean buildable;
     public final Option<BuildXml> lastBuild;
     public final Option<BuildXml> lastCompletedBuild;
     public final Option<BuildXml> lastFailedBuild;
     public final Option<BuildXml> lastSuccessfulBuild;
     public final Option<BuildXml> lastUnsuccessfulBuild;
 
-    protected JenkinsJobXml(Option<String> description, Option<String> displayName, Option<String> name, Option<String> url, Option<String> color, Option<BuildXml> lastBuild, Option<BuildXml> lastCompletedBuild, Option<BuildXml> lastFailedBuild, Option<BuildXml> lastSuccessfulBuild, Option<BuildXml> lastUnsuccessfulBuild) {
+    protected JenkinsJobXml(JenkinsJobType type, Option<String> description, Option<String> displayName,
+                            Option<String> name, URI url, Option<String> color, boolean buildable,
+                            Option<BuildXml> lastBuild, Option<BuildXml> lastCompletedBuild,
+                            Option<BuildXml> lastFailedBuild, Option<BuildXml> lastSuccessfulBuild,
+                            Option<BuildXml> lastUnsuccessfulBuild) {
+        this.type = type;
         this.description = description;
         this.displayName = displayName;
         this.name = name;
         this.url = url;
         this.color = color;
+        this.buildable = buildable;
         this.lastBuild = lastBuild;
         this.lastCompletedBuild = lastCompletedBuild;
         this.lastFailedBuild = lastFailedBuild;
         this.lastSuccessfulBuild = lastSuccessfulBuild;
         this.lastUnsuccessfulBuild = lastUnsuccessfulBuild;
     }
-}
 
-class BuildXml {
-    public final int number;
-    public final URI url;
-    public static F<Element, Option<BuildXml>> buildXml = new F<Element, Option<BuildXml>>() {
-        public Option<BuildXml> f(Element element) {
-            Option<Integer> number = childText(element, "number").bind(XmlUtil.parseInt);
-            Option<URI> url = childText(element, "url").bind(parseUri);
+    static class BuildXml {
+        public final int number;
+        public final URI url;
+        public static F<Element, Option<BuildXml>> buildXml = new F<Element, Option<BuildXml>>() {
+            public Option<BuildXml> f(Element element) {
+                Option<Integer> number = childText(element, "number").bind(XmlUtil.parseInt);
+                Option<URI> url = childText(element, "url").bind(parseUri);
 
-            if(number.isNone() || url.isNone()) {
-                return Option.none();
+                if(number.isNone() || url.isNone()) {
+                    return Option.none();
+                }
+
+                return Option.some(new BuildXml(number.some(), url.some()));
             }
+        };
 
-            return Option.some(new BuildXml(number.some(), url.some()));
+        BuildXml(int number, URI url) {
+            this.number = number;
+            this.url = url;
         }
-    };
-
-    BuildXml(int number, URI url) {
-        this.number = number;
-        this.url = url;
-    }
-}
-
-class FreeStyleProjectXml extends JenkinsJobXml {
-    FreeStyleProjectXml(Option<String> description, Option<String> displayName, Option<String> name, Option<String> url, Option<String> color, Option<BuildXml> lastBuild, Option<BuildXml> lastCompletedBuild, Option<BuildXml> lastFailedBuild, Option<BuildXml> lastSuccessfulBuild, Option<BuildXml> lastUnsuccessfulBuild) {
-        super(description, displayName, name, url, color, lastBuild, lastCompletedBuild, lastFailedBuild, lastSuccessfulBuild, lastUnsuccessfulBuild);
     }
 
-    public static JenkinsJobXml parse(Element root) {
-        return new FreeStyleProjectXml(
+    public static JenkinsJobXml parse(URI uri, JenkinsJobType type, Element root) {
+        return new JenkinsJobXml(type,
             childText(root, "description"),
             childText(root, "displayName"),
             childText(root, "name"),
-            childText(root, "url"),
+            childText(root, "url").bind(parseUri).orSome(uri),
             childText(root, "color"),
-            child(root, "lastBuild").bind(BuildXml.buildXml),
-            child(root, "lastCompletedBuild").bind(BuildXml.buildXml),
-            child(root, "lastFailedBuild").bind(BuildXml.buildXml),
-            child(root, "lastSuccessfulBuild").bind(BuildXml.buildXml),
-            child(root, "lastUnsuccessfulBuild").bind(BuildXml.buildXml));
-    }
-}
-
-class MavenModuleSetXml extends JenkinsJobXml {
-    MavenModuleSetXml(Option<String> description, Option<String> displayName, Option<String> name, Option<String> url, Option<String> color, Option<BuildXml> lastBuild, Option<BuildXml> lastCompletedBuild, Option<BuildXml> lastFailedBuild, Option<BuildXml> lastSuccessfulBuild, Option<BuildXml> lastUnsuccessfulBuild) {
-        super(description, displayName, name, url, color, lastBuild, lastCompletedBuild, lastFailedBuild, lastSuccessfulBuild, lastUnsuccessfulBuild);
-    }
-
-    public static JenkinsJobXml parse(Element root) {
-        return new MavenModuleSetXml(
-            childText(root, "description"),
-            childText(root, "displayName"),
-            childText(root, "name"),
-            childText(root, "url"),
-            childText(root, "color"),
+            childText(root, "buildable").bind(parseBoolean).orSome(false),
             child(root, "lastBuild").bind(BuildXml.buildXml),
             child(root, "lastCompletedBuild").bind(BuildXml.buildXml),
             child(root, "lastFailedBuild").bind(BuildXml.buildXml),
