@@ -8,7 +8,7 @@ import static java.lang.System.*;
 import org.apache.abdera.parser.*;
 import org.codehaus.httpcache4j.*;
 import org.codehaus.httpcache4j.cache.*;
-import org.codehaus.httpcache4j.client.*;
+import org.codehaus.httpcache4j.resolver.*;
 
 import java.io.*;
 import java.net.*;

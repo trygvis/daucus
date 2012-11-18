@@ -92,7 +92,7 @@ public class JenkinsServer implements Closeable {
 
             this.jenkins = some(P.p(xml, new LocalDateTime()));
 
-            jobManager.update(new HashSet<>(jobUris.subList(0, 10)));
+            jobManager.update(new HashSet<>(jobUris));
         } catch (Throwable e) {
             e.printStackTrace(System.out);
         }

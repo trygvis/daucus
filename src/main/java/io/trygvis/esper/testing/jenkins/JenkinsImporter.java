@@ -3,14 +3,10 @@ package io.trygvis.esper.testing.jenkins;
 import fj.*;
 import fj.data.*;
 import io.trygvis.esper.testing.*;
+import static io.trygvis.esper.testing.Http.http;
 import io.trygvis.esper.testing.object.*;
-import org.apache.commons.httpclient.*;
-import org.apache.commons.httpclient.params.*;
-import org.codehaus.httpcache4j.cache.*;
-import org.codehaus.httpcache4j.client.*;
 import org.joda.time.*;
 
-import java.net.*;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.concurrent.*;
@@ -19,22 +15,14 @@ public class JenkinsImporter {
     public static void main(String[] args) throws Exception {
         Main.configureLog4j();
 
-//        HTTPClientResponseResolver resolver = HTTPClientResponseResolver.createMultithreadedInstance();
-//        HTTPClientResponseResolver resolver = new HTTPClientResponseResolver(new HttpClient(new MultiThreadedHttpConnectionManager()));
-        HTTPClientResponseResolver resolver = new HTTPClientResponseResolver(new HttpClient(new SimpleHttpConnectionManager()));
-        HttpClientParams params = new HttpClientParams();
-//        params.setConnectionManagerTimeout(1000);
-        params.setSoTimeout(1000);
-        resolver.getClient().setParams(params);
-        HTTPCache http = new HTTPCache(new MemoryCacheStorage(), resolver);
         final JenkinsClient jenkinsClient = new JenkinsClient(http);
 
-        jenkinsClient.setDebugXml(true);
+        jenkinsClient.setDebugXml(false);
 
         HashSet<URI> servers = new HashSet<>();
         servers.add(URI.create("https://builds.apache.org"));
 
-        final ScheduledThreadPoolExecutor executorService = new ScheduledThreadPoolExecutor(1);
+        final ScheduledThreadPoolExecutor executorService = new ScheduledThreadPoolExecutor(5);
 
         ObjectManager<URI, JenkinsServer> serverManager = new ObjectManager<>("JenkinsServer", servers, new ObjectFactory<URI, JenkinsServer>() {
             public JenkinsServer create(URI uri) {

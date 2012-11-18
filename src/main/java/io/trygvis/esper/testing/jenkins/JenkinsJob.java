@@ -1,6 +1,10 @@
 package io.trygvis.esper.testing.jenkins;
 
+import fj.data.*;
+import static fj.data.Option.*;
+import static java.lang.System.currentTimeMillis;
 import org.codehaus.httpcache4j.util.*;
+import org.slf4j.*;
 
 import java.io.*;
 import java.net.*;
@@ -9,12 +13,11 @@ import java.util.concurrent.*;
 
 public class JenkinsJob implements Closeable {
 
+    private final Logger logger = LoggerFactory.getLogger("jenkins.job");
     private final JenkinsClient client;
     private final URI uri;
 
-    private JenkinsJobXml latestStatus;
-    // private boolean shouldRun = true;
-    // private final Thread thread;
+    private Option<JenkinsJobXml> latestStatus = none();
     private final ScheduledFuture<?> future;
 
     public JenkinsJob(ScheduledExecutorService executorService, JenkinsClient client, URI uri) {
@@ -22,62 +25,35 @@ public class JenkinsJob implements Closeable {
         this.uri = URIBuilder.fromURI(uri).addRawPath("api/xml").toURI();
 
         long initialDelay = (long) Math.random() + 1;
-        long period = (long) (Math.random() * 10d) + 1;
+        long period = (long) (Math.random() * 100d) + 1;
         future = executorService.scheduleAtFixedRate(new Runnable() {
             public void run() {
                 JenkinsJob.this.doWork();
             }
         }, initialDelay, period, TimeUnit.SECONDS);
-
-//        thread = new Thread(new Runnable() {
-//            public void run() {
-//                JenkinsJob.this.run();
-//            }
-//        });
-//        thread.setDaemon(true);
-//        thread.start();
     }
 
-    public JenkinsJobXml getLatestStatus() {
+    public Option<JenkinsJobXml> getStatus() {
         return latestStatus;
     }
-
-    /*
-    public void close() throws IOException {
-        shouldRun = false;
-        thread.interrupt();
-        while (thread.isAlive()) {
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                continue;
-            }
-        }
-    }
-
-    private void run() {
-        Random r = new Random();
-        while (shouldRun) {
-            doWork();
-
-            try {
-                Thread.sleep(1000 + r.nextInt(10) * 1000);
-            } catch (InterruptedException e) {
-                // ignore
-            }
-        }
-    }
-    */
 
     public void close() throws IOException {
         future.cancel(true);
     }
 
     private void doWork() {
+
+        String name = latestStatus.isSome() && latestStatus.some().name.isSome() ?
+            latestStatus.some().name.some() : uri.toASCIIString();
+
         try {
-            latestStatus = client.fetchJob(uri);
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
+            logger.info("Updating " + name);
+            long start = currentTimeMillis();
+            latestStatus = some(client.fetchJob(uri));
+            long end = currentTimeMillis();
+            logger.info("Updated " + name + " in " + (end - start) + "ms");
+        } catch (Throwable e) {
+            logger.warn("Error updating " + name, e);
         }
     }
 }

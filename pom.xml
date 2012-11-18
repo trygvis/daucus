@@ -21,7 +21,7 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.httpcache4j.resolvers</groupId>
-      <artifactId>resolvers-commons-httpclient</artifactId>
+      <artifactId>resolvers-httpcomponents-httpclient</artifactId>
       <version>3.4</version>
     </dependency>
     <dependency>

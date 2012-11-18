@@ -35,12 +35,10 @@ public class JenkinsClient {
     }
 
     public JenkinsXml fetchJobs(URI uri) throws XMLStreamException, JDOMException, IOException {
-        InputStream stream = fetchXml(uri);
-
-        Element doc = parseDocument(stream).getRootElement();
+        Element root = fetchXml(uri).getRootElement();
 
         List<JenkinsJobEntryXml> jobs = new ArrayList<>();
-        for (Element job : doc.getChildren("job")) {
+        for (Element job : root.getChildren("job")) {
             String name = trimToNull(job.getChildText("name"));
             String url = trimToNull(job.getChildText("url"));
             String color = trimToNull(job.getChildText("color"));
@@ -53,15 +51,13 @@ public class JenkinsClient {
         }
 
         return new JenkinsXml(
-            Option.fromNull(doc.getChildText("nodeName")),
-            Option.fromNull(doc.getChildText("nodeDescription")),
-            Option.fromNull(doc.getChildText("description")), jobs);
+            Option.fromNull(root.getChildText("nodeName")),
+            Option.fromNull(root.getChildText("nodeDescription")),
+            Option.fromNull(root.getChildText("description")), jobs);
     }
 
     public JenkinsJobXml fetchJob(URI uri) throws IOException, JDOMException, XMLStreamException {
-        InputStream stream = fetchXml(uri);
-
-        Element root = parseDocument(stream).getRootElement();
+        Element root = fetchXml(uri).getRootElement();
 
         switch (root.getName()) {
             case "freeStyleProject":
@@ -73,47 +69,46 @@ public class JenkinsClient {
         }
     }
 
-    private Document parseDocument(InputStream stream) throws JDOMException, XMLStreamException {
-        return streamBuilder.build(xmlReader.createXMLStreamReader(stream));
-    }
-
-    private InputStream fetchXml(URI uri) throws IOException {
-        HTTPResponse response;
+    private Document fetchXml(URI uri) throws IOException, XMLStreamException, JDOMException {
+        HTTPResponse response = null;
 
         try {
             response = http.execute(new HTTPRequest(uri));
+
+            if (response.getStatus().getCode() != 200) {
+                throw new IOException("Did not get 200 back, got " + response.getStatus().getCode());
+            }
+
+            InputStream stream = response.getPayload().getInputStream();
+
+            if (debugXml) {
+                int size;
+                try {
+                    size = parseInt(response.getHeaders().getFirstHeader("Content-Length").getValue());
+                } catch (Throwable e) {
+                    size = 10 * 1024;
+                }
+
+                // TODO: Pretty print
+
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream(size);
+                IOUtils.copy(stream, buffer);
+                byte[] bytes = buffer.toByteArray();
+                System.out.println("------------------------------------------------");
+                System.out.write(bytes);
+                System.out.println();
+                System.out.println("------------------------------------------------");
+                stream = new ByteArrayInputStream(bytes);
+            }
+
+            return streamBuilder.build(xmlReader.createXMLStreamReader(stream));
         } catch (HTTPException e) {
             throw new IOException(e);
+        } finally {
+            if (response != null) {
+                response.consume();
+            }
         }
-
-        if (response.getStatus().getCode() != 200) {
-            throw new IOException("Did not get 200 back, got " + response.getStatus().getCode());
-        }
-
-        InputStream stream = response.getPayload().getInputStream();
-
-        if (!debugXml) {
-            return stream;
-        }
-
-        int size;
-        try {
-            size = parseInt(response.getHeaders().getFirstHeader("Content-Length").getValue());
-        } catch (Throwable e) {
-            size = 10 * 1024;
-        }
-
-        // TODO: Pretty print
-
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream(size);
-        IOUtils.copy(stream, buffer);
-        byte[] bytes = buffer.toByteArray();
-        System.out.println("------------------------------------------------");
-        System.out.write(bytes);
-        System.out.println();
-        System.out.println("------------------------------------------------");
-        stream = new ByteArrayInputStream(bytes);
-        return stream;
     }
 }
 
