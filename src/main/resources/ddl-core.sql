@@ -10,11 +10,8 @@ CREATE TABLE subscriber (
 CREATE TABLE subscription_gitorious_repository (
   subscriber_name                   VARCHAR(100) REFERENCES subscriber (name),
   gitorious_repository_project_slug VARCHAR(100),
-  gitorious_repository_name         VARCHAR(100)
---   CONSTRAINT subscription_gitorious_repository_2_gitorious_repository FOREIGN KEY (gitorious_repository_project_slug, gitorious_repository_name) REFERENCES gitorious_repository (project_slug, name)
+  gitorious_repository_name         VARCHAR(100),
+  CONSTRAINT gitorious_repository FOREIGN KEY (gitorious_repository_project_slug, gitorious_repository_name) REFERENCES gitorious_repository (project_slug, name)
 );
-
-INSERT INTO subscriber VALUES ('trygvis');
-INSERT INTO subscription_gitorious_repository VALUES ('trygvis','esper-test-project', 'esper-test-project');
 
 COMMIT;

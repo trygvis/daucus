@@ -6,9 +6,7 @@ import static fj.data.Option.*;
 import io.trygvis.esper.testing.*;
 import static java.lang.System.*;
 import org.apache.abdera.parser.*;
-import org.codehaus.httpcache4j.*;
-import org.codehaus.httpcache4j.cache.*;
-import org.codehaus.httpcache4j.resolver.*;
+import org.apache.commons.httpclient.protocol.*;
 
 import java.io.*;
 import java.net.*;
@@ -20,37 +18,34 @@ import java.util.Set;
 import java.util.concurrent.*;
 
 public class GitoriousImporter {
-    private final GitoriousAtomFeedParser parser;
     private final BoneCP boneCp;
     private final GitoriousClient gitoriousClient;
-    private final HTTPCache httpCache;
 
     public static void main(String[] args) throws Exception {
-        Main.configureLog4j();
-        new GitoriousImporter(DbMain.JDBC_URL, "esper", "");
+        Config config = Config.loadFromDisk();
+        new GitoriousImporter(config, DbMain.JDBC_URL, "esper", "esper");
     }
 
-    public GitoriousImporter(String jdbcUrl, String jdbcUsername, String jdbcPassword) throws Exception {
-        parser = new GitoriousAtomFeedParser();
+    public GitoriousImporter(Config config, final String jdbcUrl, final String jdbcUsername, final String jdbcPassword) throws Exception {
+        BoneCPConfig boneCPConfig = new BoneCPConfig(){{
+            setJdbcUrl(jdbcUrl);
+            setUsername(jdbcUsername);
+            setPassword(jdbcPassword);
+            setDefaultAutoCommit(false);
+            setMaxConnectionsPerPartition(10);
+        }};
 
-        BoneCPConfig config = new BoneCPConfig();
-        config.setJdbcUrl(jdbcUrl);
-        config.setUsername(jdbcUsername);
-        config.setPassword(jdbcPassword);
-        config.setDefaultAutoCommit(false);
-        config.setMaxConnectionsPerPartition(10);
+        boneCp = new BoneCP(boneCPConfig);
 
-        boneCp = new BoneCP(config);
-
-        httpCache = new HTTPCache(new MemoryCacheStorage(), HTTPClientResponseResolver.createMultithreadedInstance());
-
-        gitoriousClient = new GitoriousClient(httpCache, "http://gitorious.org");
+        gitoriousClient = new GitoriousClient(HttpClient.createHttpClient(config), config.gitoriousUrl);
 
         final ScheduledThreadPoolExecutor service = new ScheduledThreadPoolExecutor(2);
 
-        boolean projectsUpdateEnabled = false;
+        boolean projectsUpdateEnabled = true;
         int projectsUpdateDelay = 0 * 1000;
         int projectsUpdateInterval = 60 * 1000;
+
+        boolean repositoriesUpdateEnabled = false;
         int repositoriesUpdateDelay = 0;
         int repositoriesUpdateInterval = 60 * 1000;
 
@@ -66,15 +61,17 @@ public class GitoriousImporter {
             }, projectsUpdateDelay, projectsUpdateInterval, TimeUnit.MILLISECONDS);
         }
 
-        service.scheduleAtFixedRate(new Runnable() {
-            public void run() {
-                try {
-                    updateRepositories();
-                } catch (Exception e) {
-                    e.printStackTrace(System.out);
+        if (repositoriesUpdateEnabled) {
+            service.scheduleAtFixedRate(new Runnable() {
+                public void run() {
+                    try {
+                        updateRepositories();
+                    } catch (Exception e) {
+                        e.printStackTrace(System.out);
+                    }
                 }
-            }
-        }, repositoriesUpdateDelay, repositoriesUpdateInterval, TimeUnit.MILLISECONDS);
+            }, repositoriesUpdateDelay, repositoriesUpdateInterval, TimeUnit.MILLISECONDS);
+        }
     }
 
     private void discoverProjects() throws Exception {
@@ -105,8 +102,7 @@ public class GitoriousImporter {
 
                     for (GitoriousRepository repository : repoDao.selectForProject(project.slug)) {
                         boolean found = false;
-                        for (Iterator<GitoriousRepositoryXml> it = project.repositories.iterator(); it.hasNext(); ) {
-                            GitoriousRepositoryXml repo = it.next();
+                        for (GitoriousRepositoryXml repo : project.repositories) {
                             if (repo.projectSlug.equals(repository.projectSlug) && repo.name.equals(repository.name)) {
                                 found = true;
                                 break;
@@ -125,8 +121,7 @@ public class GitoriousImporter {
 
             for (String project : projectDao.selectSlugs()) {
                 boolean found = false;
-                for (Iterator<GitoriousProjectXml> it = projects.iterator(); it.hasNext(); ) {
-                    GitoriousProjectXml p = it.next();
+                for (GitoriousProjectXml p : projects) {
                     if (p.slug.equals(project)) {
                         found = true;
                         break;
@@ -165,21 +160,9 @@ public class GitoriousImporter {
 
         Option<Date> lastUpdate = repository.lastSuccessfulUpdate;
 
-        System.out.println("Fetching " + repository.atomFeed);
-
-        long start = currentTimeMillis();
-        HTTPResponse response = httpCache.execute(new HTTPRequest(repository.atomFeed, HTTPMethod.GET));
-        long end = currentTimeMillis();
-        System.out.println("Fetched in " + (end - start) + "ms");
-
-        // Use the server's timestamp
-        Date responseDate = response.getDate().toDate();
-
-        System.out.println("responseDate = " + responseDate);
-
-        List<GitoriousEvent> events;
+        Iterable<GitoriousEvent> events;
         try {
-            events = parser.parseStream(response.getPayload().getInputStream(), lastUpdate, repository.projectSlug, repository.name);
+            events = gitoriousClient.fetchGitoriousEvents(repository, lastUpdate);
         } catch (ParseException e) {
             repositoryDao.updateTimestamp(repository.projectSlug, repository.name, new Timestamp(currentTimeMillis()), Option.<Date>none());
             System.out.println("Error parsing " + repository.atomFeed);

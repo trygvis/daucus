@@ -1,9 +1,13 @@
 package io.trygvis.esper.testing.gitorious;
 
 import static java.lang.System.*;
+
+import fj.data.Option;
+import org.apache.abdera.parser.ParseException;
 import org.apache.commons.io.*;
 import static org.apache.commons.lang.StringUtils.*;
 import static org.codehaus.httpcache4j.HTTPMethod.*;
+
 import org.codehaus.httpcache4j.*;
 import org.codehaus.httpcache4j.cache.*;
 import org.dom4j.*;
@@ -12,16 +16,18 @@ import org.dom4j.io.*;
 import javax.xml.stream.*;
 import java.io.*;
 import java.net.*;
+import java.sql.SQLException;
 import java.util.*;
 
 public class GitoriousClient {
     public static final STAXEventReader xmlReader = new STAXEventReader();
-    private final HTTPCache httpCache;
     public final String baseUrl;
+    private final HTTPCache http;
     private final String projectsUri;
+    private final GitoriousAtomFeedParser parser = new GitoriousAtomFeedParser();
 
-    public GitoriousClient(HTTPCache httpCache, String baseUrl) throws URISyntaxException {
-        this.httpCache = httpCache;
+    public GitoriousClient(HTTPCache http, String baseUrl) throws URISyntaxException {
+        this.http = http;
         this.baseUrl = new URI(baseUrl).toASCIIString();
         this.projectsUri = baseUrl + "/projects.xml";
     }
@@ -31,13 +37,23 @@ public class GitoriousClient {
         int page = 1;
 
         Set<GitoriousProjectXml> all = new HashSet<>();
-        while (page <= 10) {
-            System.out.println("Fetching projects XML, page=" + page);
+        while (true) {
+            System.out.println("Fetching projects, page=" + page);
             long start = currentTimeMillis();
-            HTTPRequest request = new HTTPRequest(new URI(projectsUri + "?page=" + page), GET);
-            HTTPResponse response = httpCache.execute(request);
+            HTTPResponse response = http.execute(new HTTPRequest(new URI(projectsUri + "?page=" + page), GET));
             long end = currentTimeMillis();
-            System.out.println("Fetched XML in " + (end - start) + "ms.");
+            System.out.println("Fetched in " + (end - start) + "ms.");
+
+            if (!response.getStatus().equals(Status.OK)) {
+                System.out.println("Got non-200 status from server: " + response.getStatus());
+                break;
+            }
+
+            MIMEType mimeType = MIMEType.valueOf(trimToEmpty(response.getHeaders().getFirstHeaderValue("Content-Type")));
+            if (!mimeType.getPrimaryType().equals("application") || !mimeType.getSubType().equals("xml")) {
+                System.out.println("Unexpected mime type, probably at the end of the list: " + mimeType);
+                break;
+            }
 
             byte[] bytes = IOUtils.toByteArray(response.getPayload().getInputStream());
             try {
@@ -65,6 +81,22 @@ public class GitoriousClient {
 
     public URI atomFeed(String projectSlug, String repositoryName) {
         return URI.create(baseUrl + "/" + projectSlug + "/" + repositoryName + ".atom");
+    }
+
+    public Iterable<GitoriousEvent> fetchGitoriousEvents(GitoriousRepository repository, Option<Date> lastUpdate) throws SQLException, ParseException {
+        System.out.println("Fetching " + repository.atomFeed);
+
+        long start = currentTimeMillis();
+        HTTPResponse response = http.execute(new HTTPRequest(repository.atomFeed, HTTPMethod.GET));
+        long end = currentTimeMillis();
+        System.out.println("Fetched in " + (end - start) + "ms");
+
+        // Use the server's timestamp
+        Date responseDate = response.getDate().toDate();
+
+        System.out.println("responseDate = " + responseDate);
+
+        return parser.parseStream(response.getPayload().getInputStream(), lastUpdate, repository.projectSlug, repository.name);
     }
 }
 
@@ -138,10 +170,7 @@ class GitoriousProjectXml implements Comparable<GitoriousProjectXml> {
 
         GitoriousProjectXml that = (GitoriousProjectXml) o;
 
-        if (!repositories.equals(that.repositories)) return false;
-        if (!slug.equals(that.slug)) return false;
-
-        return true;
+        return repositories.equals(that.repositories) && slug.equals(that.slug);
     }
 
     public int hashCode() {
@@ -186,10 +215,7 @@ class GitoriousRepositoryXml implements Comparable<GitoriousRepositoryXml> {
 
         GitoriousRepositoryXml that = (GitoriousRepositoryXml) o;
 
-        if (!name.equals(that.name)) return false;
-        if (!projectSlug.equals(that.projectSlug)) return false;
-
-        return true;
+        return name.equals(that.name) && projectSlug.equals(that.projectSlug);
     }
 
     public int hashCode() {

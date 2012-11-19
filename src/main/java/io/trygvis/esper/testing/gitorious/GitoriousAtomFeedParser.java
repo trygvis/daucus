@@ -2,9 +2,9 @@ package io.trygvis.esper.testing.gitorious;
 
 import fj.data.*;
 import org.apache.abdera.*;
-import org.apache.abdera.model.*;
 import org.apache.abdera.model.Document;
 import org.apache.abdera.model.Element;
+import org.apache.abdera.model.*;
 import org.apache.abdera.parser.*;
 import org.dom4j.*;
 import org.dom4j.io.*;
@@ -82,7 +82,7 @@ public class GitoriousAtomFeedParser {
             switch (event) {
                 case "created repository":
                 case "created branch":
-                // This is similar "pushed", but doesn't contain any info on commit IDs or branches
+                    // This is similar "pushed", but doesn't contain any info on commit IDs or branches
                 case "started development of":
                     return null;
                 case "pushed":

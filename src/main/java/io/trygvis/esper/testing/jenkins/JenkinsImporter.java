@@ -13,7 +13,7 @@ import java.util.concurrent.*;
 
 public class JenkinsImporter {
     public static void main(String[] args) throws Exception {
-        Main.configureLog4j();
+        Config.configureLog4j();
 
         final JenkinsClient jenkinsClient = new JenkinsClient(http);
 

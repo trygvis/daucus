@@ -37,7 +37,4 @@ CREATE TABLE gitorious_event (
   commit_count INTEGER
 );
 
-INSERT INTO gitorious_project VALUES ('esper-test-project');
-INSERT INTO gitorious_repository VALUES ('esper-test-project', 'esper-test-project', 'https://gitorious.org/esper-test-project/esper-test-project.atom');
-
 COMMIT;
