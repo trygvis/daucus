@@ -15,7 +15,7 @@ public class Http {
     static {
         SchemeRegistry schemeRegistry = new SchemeRegistry();
         schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-        schemeRegistry.register(new Scheme("https", SSLSocketFactory.getSocketFactory(), 443));
+        schemeRegistry.register(new Scheme("https", new EasySSLSocketFactory(), 443));
 
         BasicHttpParams params = new BasicHttpParams();
         ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);

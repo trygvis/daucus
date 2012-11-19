@@ -21,7 +21,9 @@ public class Dao {
             return s;
         }
 
-        statements.put(sql, c.prepareStatement(sql));
+        s = c.prepareStatement(sql);
+
+        statements.put(sql, s);
 
         return s;
     }

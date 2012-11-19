@@ -6,13 +6,11 @@ import static fj.data.Option.*;
 import io.trygvis.esper.testing.*;
 import static java.lang.System.*;
 import org.apache.abdera.parser.*;
-import org.apache.commons.httpclient.protocol.*;
 
 import java.io.*;
 import java.net.*;
 import java.sql.*;
 import java.util.Date;
-import java.util.*;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.*;
@@ -23,14 +21,14 @@ public class GitoriousImporter {
 
     public static void main(String[] args) throws Exception {
         Config config = Config.loadFromDisk();
-        new GitoriousImporter(config, DbMain.JDBC_URL, "esper", "esper");
+        new GitoriousImporter(config);
     }
 
-    public GitoriousImporter(Config config, final String jdbcUrl, final String jdbcUsername, final String jdbcPassword) throws Exception {
+    public GitoriousImporter(final Config config) throws Exception {
         BoneCPConfig boneCPConfig = new BoneCPConfig(){{
-            setJdbcUrl(jdbcUrl);
-            setUsername(jdbcUsername);
-            setPassword(jdbcPassword);
+            setJdbcUrl(config.databaseUrl);
+            setUsername(config.databaseUsername);
+            setPassword(config.databasePassword);
             setDefaultAutoCommit(false);
             setMaxConnectionsPerPartition(10);
         }};

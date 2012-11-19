@@ -1,39 +1,16 @@
 package io.trygvis.esper.testing;
 
-import ch.qos.logback.classic.*;
-import ch.qos.logback.core.util.*;
 import com.espertech.esper.client.*;
-import org.apache.log4j.*;
-import org.slf4j.*;
-
-import java.util.*;
 
 public class Main {
 //    private static final String JDBC_URL = "jdbc:h2:mem:esper;DB_CLOSE_DELAY=-1";
     private static final String JDBC_URL = "jdbc:h2:tcp://127.0.0.1/esper;DB_CLOSE_DELAY=-1";
 
     public static void main(String[] args) throws Exception {
-        configureLog4j();
+        Config.loadFromDisk();
         Main main = new Main();
         main.work();
     }
-
-    public static void configureLog4j() {
-        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
-        StatusPrinter.print(lc);
-    }
-
-//    public static void configureLog4j() {
-//        Properties properties = new Properties();
-//        properties.setProperty("log4j.rootLogger", "DEBUG, A1");
-//        properties.setProperty("log4j.logger.httpclient.wire.content", "INFO");
-//        properties.setProperty("log4j.logger.httpclient.wire.header", "INFO");
-//        properties.setProperty("log4j.logger.org.apache.commons.httpclient", "INFO");
-//        properties.setProperty("log4j.appender.A1", "org.apache.log4j.ConsoleAppender");
-//        properties.setProperty("log4j.appender.A1.layout", "org.apache.log4j.PatternLayout");
-//        properties.setProperty("log4j.appender.A1.layout.ConversionPattern", "%-4r [%t] %-5p %c %x - %m%n");
-//        PropertyConfigurator.configure(properties);
-//    }
 
     private void work() throws Exception {
         Configuration config = new Configuration();

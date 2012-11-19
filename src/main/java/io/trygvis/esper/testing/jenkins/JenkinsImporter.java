@@ -3,7 +3,6 @@ package io.trygvis.esper.testing.jenkins;
 import fj.*;
 import fj.data.*;
 import io.trygvis.esper.testing.*;
-import static io.trygvis.esper.testing.Http.http;
 import io.trygvis.esper.testing.object.*;
 import org.joda.time.*;
 
@@ -13,9 +12,9 @@ import java.util.concurrent.*;
 
 public class JenkinsImporter {
     public static void main(String[] args) throws Exception {
-        Config.configureLog4j();
+        Config config = Config.loadFromDisk();
 
-        final JenkinsClient jenkinsClient = new JenkinsClient(http);
+        final JenkinsClient jenkinsClient = new JenkinsClient(HttpClient.createHttpClient(config));
 
         jenkinsClient.setDebugXml(false);
 

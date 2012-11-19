@@ -2,3 +2,8 @@ gitorious.url=
 gitorious.sessionValue=
 
 nexus.url=
+
+database.driver=
+database.url=jdbc:h2:tcp://127.0.0.1/esper;DB_CLOSE_DELAY=-1
+database.username=
+database.password=

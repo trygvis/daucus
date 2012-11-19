@@ -35,38 +35,11 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-/**
- * <p>
- * EasyX509TrustManager unlike default {@link X509TrustManager} accepts
- * self-signed certificates.
- * </p>
- * <p>
- * This trust manager SHOULD NOT be used for productive systems
- * due to security reasons, unless it is a concious decision and
- * you are perfectly aware of security implications of accepting
- * self-signed certificates
- * </p>
- *
- * @author <a href="mailto:adrian.sutton@ephox.com">Adrian Sutton</a>
- * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
- *
- * <p>
- * DISCLAIMER: HttpClient developers DO NOT actively support this component.
- * The component is provided as a reference material, which may be inappropriate
- * for use without additional customization.
- * </p>
- */
 
 public class EasyX509TrustManager implements X509TrustManager
 {
     private X509TrustManager standardTrustManager = null;
 
-    /** Log object for this class. */
-//    private static final Log LOG = LogFactory.getLog(EasyX509TrustManager.class);
-
-    /**
-     * Constructor for EasyX509TrustManager.
-     */
     public EasyX509TrustManager(KeyStore keystore) throws NoSuchAlgorithmException, KeyStoreException {
         super();
         TrustManagerFactory factory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
@@ -78,16 +51,10 @@ public class EasyX509TrustManager implements X509TrustManager
         this.standardTrustManager = (X509TrustManager)trustmanagers[0];
     }
 
-    /**
-     * @see javax.net.ssl.X509TrustManager#checkClientTrusted(X509Certificate[],String authType)
-     */
     public void checkClientTrusted(X509Certificate[] certificates,String authType) throws CertificateException {
         standardTrustManager.checkClientTrusted(certificates,authType);
     }
 
-    /**
-     * @see javax.net.ssl.X509TrustManager#checkServerTrusted(X509Certificate[],String authType)
-     */
     public void checkServerTrusted(X509Certificate[] certificates,String authType) throws CertificateException {
 //        if (certificates != null) {
 //            System.out.println("Server certificate chain:");
@@ -103,9 +70,6 @@ public class EasyX509TrustManager implements X509TrustManager
         }
     }
 
-    /**
-     * @see javax.net.ssl.X509TrustManager#getAcceptedIssuers()
-     */
     public X509Certificate[] getAcceptedIssuers() {
         return this.standardTrustManager.getAcceptedIssuers();
     }
