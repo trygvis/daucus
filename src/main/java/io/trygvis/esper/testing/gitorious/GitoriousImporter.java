@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.concurrent.*;
 
 public class GitoriousImporter {
-    private final BoneCP boneCp;
+    private final BoneCPDataSource boneCp;
     private final GitoriousClient gitoriousClient;
 
     public static void main(String[] args) throws Exception {
@@ -25,15 +25,7 @@ public class GitoriousImporter {
     }
 
     public GitoriousImporter(final Config config) throws Exception {
-        BoneCPConfig boneCPConfig = new BoneCPConfig(){{
-            setJdbcUrl(config.databaseUrl);
-            setUsername(config.databaseUsername);
-            setPassword(config.databasePassword);
-            setDefaultAutoCommit(false);
-            setMaxConnectionsPerPartition(10);
-        }};
-
-        boneCp = new BoneCP(boneCPConfig);
+        boneCp = config.createBoneCp();
 
         gitoriousClient = new GitoriousClient(HttpClient.createHttpClient(config), config.gitoriousUrl);
 

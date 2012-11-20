@@ -3,9 +3,9 @@ package io.trygvis.esper.testing.jenkins;
 import fj.*;
 import fj.data.*;
 import io.trygvis.esper.testing.*;
-import static io.trygvis.esper.testing.XmlUtil.*;
+import static io.trygvis.esper.testing.Util.*;
 import io.trygvis.esper.testing.jenkins.JenkinsJobXml.*;
-import static java.lang.Integer.*;
+import static java.lang.Integer.parseInt;
 import static org.apache.commons.lang.StringUtils.*;
 import org.codehaus.httpcache4j.*;
 import org.codehaus.httpcache4j.cache.*;
@@ -183,8 +183,8 @@ class JenkinsJobXml {
         public final URI url;
         public static F<Element, Option<BuildXml>> buildXml = new F<Element, Option<BuildXml>>() {
             public Option<BuildXml> f(Element element) {
-                Option<Integer> number = childText(element, "number").bind(XmlUtil.parseInt);
-                Option<URI> url = childText(element, "url").bind(parseUri);
+                Option<Integer> number = childText(element, "number").bind(Util.parseInt);
+                Option<URI> url = childText(element, "url").bind(Util.parseUri);
 
                 if(number.isNone() || url.isNone()) {
                     return Option.none();
@@ -205,9 +205,9 @@ class JenkinsJobXml {
             childText(root, "description"),
             childText(root, "displayName"),
             childText(root, "name"),
-            childText(root, "url").bind(parseUri).orSome(uri),
+            childText(root, "url").bind(Util.parseUri).orSome(uri),
             childText(root, "color"),
-            childText(root, "buildable").bind(parseBoolean).orSome(false),
+            childText(root, "buildable").bind(Util.parseBoolean).orSome(false),
             child(root, "lastBuild").bind(BuildXml.buildXml),
             child(root, "lastCompletedBuild").bind(BuildXml.buildXml),
             child(root, "lastFailedBuild").bind(BuildXml.buildXml),

@@ -16,9 +16,9 @@ import javax.xml.stream.*;
 
 public class NexusClient {
     private final HTTPCache http;
-    private final String nexusUrl;
+    private final URI nexusUrl;
 
-    public NexusClient(HTTPCache http, String nexusUrl) {
+    public NexusClient(HTTPCache http, URI nexusUrl) {
         this.http = http;
         this.nexusUrl = nexusUrl;
     }
@@ -36,7 +36,7 @@ public class NexusClient {
     }
 
     public ArtifactSearchResult fetchIndexPage(String groupId, Option<String> repositoryId, Option<Integer> from) throws IOException {
-        URIBuilder uriBuilder = URIBuilder.fromURI(URI.create(nexusUrl)).
+        URIBuilder uriBuilder = URIBuilder.fromURI(nexusUrl).
                 addRawPath("/service/local/lucene/search").
                 addParameter("g", groupId + ".*");
 

@@ -17,12 +17,12 @@
     <dependency>
       <groupId>org.codehaus.httpcache4j</groupId>
       <artifactId>httpcache4j-core</artifactId>
-      <version>3.4</version>
+      <version>${version.httpcache4}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.httpcache4j.resolvers</groupId>
       <artifactId>resolvers-httpcomponents-httpclient</artifactId>
-      <version>3.4</version>
+      <version>${version.httpcache4}</version>
     </dependency>
     <dependency>
       <groupId>dom4j</groupId>
@@ -84,5 +84,6 @@
   <properties>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
+    <version.httpcache4>3.4</version.httpcache4>
   </properties>
 </project>

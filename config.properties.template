@@ -1,7 +1,7 @@
 gitorious.url=
 gitorious.sessionValue=
 
-nexus.url=
+nexus.updateInterval=3600
 
 database.driver=
 database.url=jdbc:h2:tcp://127.0.0.1/esper;DB_CLOSE_DELAY=-1

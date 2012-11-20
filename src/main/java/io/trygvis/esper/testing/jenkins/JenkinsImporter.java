@@ -4,11 +4,13 @@ import fj.*;
 import fj.data.*;
 import io.trygvis.esper.testing.*;
 import io.trygvis.esper.testing.object.*;
+import static java.lang.Thread.currentThread;
 import org.joda.time.*;
 
 import java.net.URI;
 import java.util.HashSet;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.*;
 
 public class JenkinsImporter {
     public static void main(String[] args) throws Exception {
@@ -28,19 +30,11 @@ public class JenkinsImporter {
                 return new JenkinsServer(executorService, jenkinsClient, uri);
             }
         });
-        final boolean[] shouldRun = new boolean[]{true};
 
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            {
-                setName("Shutdown hoook");
-            }
+        final AtomicBoolean shouldRun = new AtomicBoolean(true);
+        config.addShutdownHook(currentThread(), shouldRun);
 
-            public void run() {
-                shouldRun[0] = false;
-            }
-        });
-
-        while (shouldRun[0]) {
+        while (shouldRun.get()) {
             for (JenkinsServer server : serverManager.getObjects()) {
                 Option<P2<JenkinsXml, LocalDateTime>> o = server.getJenkins();
 
@@ -52,7 +46,9 @@ public class JenkinsImporter {
                 }
             }
 
-            Thread.sleep(1000);
+            synchronized (shouldRun) {
+                shouldRun.wait(1000);
+            }
         }
 
         serverManager.close();

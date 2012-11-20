@@ -1,8 +1,8 @@
 package io.trygvis.esper.testing;
 
-import com.jolbox.bonecp.*;
 import io.trygvis.esper.testing.gitorious.*;
 
+import javax.sql.*;
 import java.io.*;
 import java.sql.*;
 
@@ -38,7 +38,7 @@ public class Daos implements Closeable {
         connection.commit();
     }
 
-    public static Daos lookup(BoneCP boneCp) throws SQLException {
-        return new Daos(boneCp.getConnection());
+    public static Daos lookup(DataSource dataSource) throws SQLException {
+        return new Daos(dataSource.getConnection());
     }
 }

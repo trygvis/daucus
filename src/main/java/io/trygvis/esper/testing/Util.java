@@ -7,7 +7,7 @@ import org.jdom2.*;
 
 import java.net.*;
 
-public class XmlUtil {
+public class Util {
     public static F<String, Option<Integer>> parseInt = new F<String, Option<Integer>>() {
         public Option<Integer> f(String s) {
             try {
