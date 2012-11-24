@@ -1,7 +1,8 @@
 package io.trygvis.esper.testing.gitorious;
 
 import fj.data.*;
-import io.trygvis.esper.testing.*;
+import static io.trygvis.esper.testing.DaoUtil.dateToTimestamp;
+import static io.trygvis.esper.testing.DaoUtil.timestampToDate;
 
 import java.net.*;
 import java.sql.*;
@@ -9,9 +10,11 @@ import java.util.*;
 import java.util.Date;
 import java.util.List;
 
-public class GitoriousRepositoryDao extends Dao {
-    public GitoriousRepositoryDao(Connection c) throws SQLException {
-        super(c);
+public class GitoriousRepositoryDao {
+    private final Connection c;
+
+    public GitoriousRepositoryDao(Connection c) {
+        this.c = c;
     }
 
     private static final String ALL_FIELDS = "project_slug, name, atom_feed, last_update, last_successful_update";
@@ -33,61 +36,62 @@ public class GitoriousRepositoryDao extends Dao {
         }
     }
 
-    private final PreparedStatement countRepositories = prepareStatement("SELECT count(*) FROM gitorious_repository WHERE project_slug=? and name=?");
 
     public int countRepositories(String projectSlug, String name) throws SQLException {
-        countRepositories.setString(1, projectSlug);
-        countRepositories.setString(2, name);
-        try (ResultSet rs = countRepositories.executeQuery()) {
-            rs.next();
-            return rs.getInt(1);
+        try (PreparedStatement s = c.prepareStatement("SELECT count(*) FROM gitorious_repository WHERE project_slug=? and name=?")) {
+            s.setString(1, projectSlug);
+            s.setString(2, name);
+            try (ResultSet rs = s.executeQuery()) {
+                rs.next();
+                return rs.getInt(1);
+            }
         }
     }
 
-    private final PreparedStatement selectForProject = prepareStatement("SELECT " + ALL_FIELDS + " FROM gitorious_repository WHERE project_slug=?");
-
     public List<GitoriousRepository> selectForProject(String projectSlug) throws SQLException {
-        selectForProject.setString(1, projectSlug);
-        return executeQuery(selectForProject);
+        try (PreparedStatement s = c.prepareStatement("SELECT " + ALL_FIELDS + " FROM gitorious_repository WHERE project_slug=?")) {
+            s.setString(1, projectSlug);
+            return executeQuery(s);
+        }
     }
-
-    private final PreparedStatement select = prepareStatement("SELECT " + ALL_FIELDS + " FROM gitorious_repository");
 
     public List<GitoriousRepository> select() throws SQLException {
-        return executeQuery(select);
+        try (PreparedStatement s = c.prepareStatement("SELECT " + ALL_FIELDS + " FROM gitorious_repository")) {
+            return executeQuery(s);
+        }
     }
-
-    private final PreparedStatement insertRepository = prepareStatement("INSERT INTO gitorious_repository(project_slug, name, atom_feed) VALUES(?, ?, ?)");
 
     public void insertRepository(String projectSlug, String name, URI atomFeed) throws SQLException {
-        insertRepository.setString(1, projectSlug);
-        insertRepository.setString(2, name);
-        insertRepository.setString(3, atomFeed.toASCIIString());
-        insertRepository.executeUpdate();
+        try (PreparedStatement s = c.prepareStatement("INSERT INTO gitorious_repository(project_slug, name, atom_feed) VALUES(?, ?, ?)")) {
+            s.setString(1, projectSlug);
+            s.setString(2, name);
+            s.setString(3, atomFeed.toASCIIString());
+            s.executeUpdate();
+        }
     }
-
-    private final PreparedStatement delete = prepareStatement("DELETE FROM gitorious_repository WHERE project_slug=? and name=?");
 
     public void delete(GitoriousRepository repository) throws SQLException {
-        delete.setString(1, repository.projectSlug);
-        delete.setString(2, repository.name);
-        delete.executeUpdate();
+        try (PreparedStatement s = c.prepareStatement("DELETE FROM gitorious_repository WHERE project_slug=? and name=?")) {
+            s.setString(1, repository.projectSlug);
+            s.setString(2, repository.name);
+            s.executeUpdate();
+        }
     }
-
-    private final PreparedStatement deleteForProject = prepareStatement("DELETE FROM gitorious_repository WHERE project_slug=?");
 
     public void deleteForProject(String project) throws SQLException {
-        deleteForProject.setString(1, project);
-        deleteForProject.executeUpdate();
+        try (PreparedStatement s = c.prepareStatement("DELETE FROM gitorious_repository WHERE project_slug=?")) {
+            s.setString(1, project);
+            s.executeUpdate();
+        }
     }
 
-    private final PreparedStatement updateTimestamp = prepareStatement("UPDATE gitorious_repository SET last_update=?, last_successful_update=? WHERE project_slug=? AND name=?");
-
     public void updateTimestamp(String projectName, String slug, Timestamp lastUpdate, Option<Date> lastSuccessfulUpdate) throws SQLException {
-        updateTimestamp.setTimestamp(1, lastUpdate);
-        updateTimestamp.setTimestamp(2, lastSuccessfulUpdate.map(dateToTimestamp).toNull());
-        updateTimestamp.setString(3, slug);
-        updateTimestamp.setString(4, projectName);
-        updateTimestamp.executeUpdate();
+        try (PreparedStatement s = c.prepareStatement("UPDATE gitorious_repository SET last_update=?, last_successful_update=? WHERE project_slug=? AND name=?")) {
+            s.setTimestamp(1, lastUpdate);
+            s.setTimestamp(2, lastSuccessfulUpdate.map(dateToTimestamp).toNull());
+            s.setString(3, slug);
+            s.setString(4, projectName);
+            s.executeUpdate();
+        }
     }
 }

@@ -38,7 +38,7 @@ public class NexusClient {
     public ArtifactSearchResult fetchIndexPage(String groupId, Option<String> repositoryId, Option<Integer> from) throws IOException {
         URIBuilder uriBuilder = URIBuilder.fromURI(nexusUrl).
                 addRawPath("/service/local/lucene/search").
-                addParameter("g", groupId + ".*");
+                addParameter("g", groupId);
 
         if (repositoryId.isSome()) {
             uriBuilder = uriBuilder.addParameter("repositoryId", repositoryId.some());

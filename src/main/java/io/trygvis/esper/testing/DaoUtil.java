@@ -4,30 +4,8 @@ import fj.*;
 import org.joda.time.*;
 
 import java.sql.*;
-import java.util.*;
 
-public class Dao {
-    protected final Connection c;
-    private final Map<String, PreparedStatement> statements = new HashMap<>();
-
-    protected Dao(Connection c) {
-        this.c = c;
-    }
-
-    protected PreparedStatement prepareStatement(String sql) throws SQLException {
-        PreparedStatement s = statements.get(sql);
-
-        if (s != null) {
-            return s;
-        }
-
-        s = c.prepareStatement(sql);
-
-        statements.put(sql, s);
-
-        return s;
-    }
-
+public class DaoUtil {
     public static final F<Timestamp, java.util.Date> timestampToDate = new F<Timestamp, java.util.Date>() {
         public java.util.Date f(Timestamp timestamp) {
             return new java.util.Date(timestamp.getTime());

@@ -1,16 +1,18 @@
 package io.trygvis.esper.testing.nexus;
 
-import com.google.common.collect.*;
 import com.jolbox.bonecp.*;
 import fj.data.*;
+import static fj.data.Option.*;
 import io.trygvis.esper.testing.*;
 import io.trygvis.esper.testing.object.*;
 import static java.lang.Thread.*;
-import org.apache.commons.lang.*;
 import org.codehaus.httpcache4j.cache.*;
 
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.*;
 
 public class NexusImporter {
@@ -25,7 +27,9 @@ public class NexusImporter {
             public ActorRef<NexusServer> create(NexusServerDto server) {
                 final NexusClient client = new NexusClient(http, server.url);
 
-                return ObjectUtil.threadedActor(boneCp, config.nexusUpdateInterval, new NexusServer(client, server));
+                String name = server.name;
+
+                return ObjectUtil.threadedActor(boneCp, "", config.nexusUpdateInterval, new NexusServer(client, server));
             }
         });
 
@@ -42,7 +46,7 @@ public class NexusImporter {
             }
 
             synchronized (shouldRun) {
-                shouldRun.wait(1000);
+                shouldRun.wait(60 * 1000);
             }
         }
 
@@ -61,20 +65,83 @@ class NexusServer implements TransactionalActor {
     }
 
     public void act(Connection c) throws Exception {
+        Date timestamp = new Date();
         NexusDao dao = new NexusDao(c);
 
-        for (NexusRepositoryDto repository : dao.findRepositories(server.url)) {
-            System.out.println("Updating repository: " + repository.repositoryId);
-            for (String groupId : repository.groupIds) {
-                System.out.println("Updating groupId: " + groupId);
-                ArtifactSearchResult result = client.fetchIndex(groupId, Option.<String>none());
+        String p = server.name;
 
-                ArrayList<ArtifactXml> artifacts = Lists.newArrayList(result.artifacts);
-                Collections.sort(artifacts);
-                for (ArtifactXml artifact : artifacts) {
-                    System.out.println("repo=" + StringUtils.join(artifact.repositories(), ", ") + ", artifact=" + artifact.getId());
+        for (NexusRepositoryDto repository : dao.findRepositories(server.url)) {
+            String p2 = p + "/" + repository.repositoryId;
+
+            System.out.println(p2 + ": Updating repository: " + repository.repositoryId);
+
+            TreeMap<ArtifactId, ArtifactXml> artifactsInNexus = new TreeMap<>();
+
+            for (String groupId : repository.groupIds) {
+                String p3 = p2 + "/" + groupId;
+
+                System.out.println(p3 + ": Updating group id");
+                ArtifactSearchResult result = client.fetchIndex(groupId, some(repository.repositoryId));
+                System.out.println(p3 + ": Found " + result.artifacts.size() + " artifacts");
+
+                for (ArtifactXml xml : result.artifacts) {
+                    artifactsInNexus.put(xml.id, xml);
+                }
+
+                System.out.println(p3 + ": Updating everything under group id");
+                result = client.fetchIndex(groupId + ".*", some(repository.repositoryId));
+                System.out.println(p3 + ": Found " + result.artifacts.size() + " artifacts");
+
+                for (ArtifactXml xml : result.artifacts) {
+                    artifactsInNexus.put(xml.id, xml);
                 }
             }
+
+            Map<ArtifactId, ArtifactDto> artifactsInDatabase = new HashMap<>();
+            for (ArtifactDto dto : dao.findArtifactsInRepository(server.url, repository.repositoryId)) {
+                artifactsInDatabase.put(dto.id, dto);
+            }
+
+            ArrayList<FlatArtifact> created = new ArrayList<>();
+            ArrayList<FlatArtifact> kept = new ArrayList<>();
+            ArrayList<ArtifactDto> removed = new ArrayList<>();
+
+            for (ArtifactXml xml : artifactsInNexus.values()) {
+                Option<FlatArtifact> o = xml.flatten(repository.repositoryId);
+
+                if(o.isNone()) {
+                    continue;
+                }
+
+                FlatArtifact artifact = o.some();
+
+                if(!artifactsInDatabase.containsKey(xml.id)) {
+                    created.add(artifact);
+                }
+                else {
+                    kept.add(artifact);
+                }
+            }
+
+            for (ArtifactDto dto : artifactsInDatabase.values()) {
+                if(!artifactsInNexus.containsKey(dto.id)) {
+                    removed.add(dto);
+                }
+            }
+
+            System.out.println(p2 + ": found " + created.size() + " new artifacts, " + removed.size() + " removed artifacts and " + kept.size() + " existing artifacts.");
+
+            System.out.println(p2 + ": inserting new artifacts");
+            for (FlatArtifact artifact : created) {
+                dao.insertArtifact(repository.nexusUrl, repository.repositoryId, artifact.id, Option.<String>none(), artifact.files, timestamp);
+            }
+            System.out.println(p2 + ": inserted");
+
+            System.out.println(p2 + ": deleting removed artifacts");
+            for (ArtifactDto artifact : removed) {
+                dao.deleteArtifact(repository.nexusUrl, repository.repositoryId, artifact.id);
+            }
+            System.out.println(p2 + ": deleted");
         }
 
         c.commit();

@@ -2,19 +2,18 @@ package io.trygvis.esper.testing.nexus;
 
 import com.google.common.base.*;
 import com.google.common.collect.*;
-import fj.*;
 import fj.data.*;
-import static fj.data.Option.fromNull;
+import static fj.data.Option.*;
 import static org.apache.commons.lang.StringUtils.*;
 import org.dom4j.*;
 import org.dom4j.io.*;
 
+import javax.xml.stream.*;
 import java.io.*;
 import java.util.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.xml.stream.*;
 
 public class NexusParser {
     public static final STAXEventReader xmlReader = new STAXEventReader();
@@ -23,7 +22,7 @@ public class NexusParser {
         Document doc = xmlReader.readDocument(is);
 
         Option<Integer> totalCount = fromNull(trimToNull(doc.getRootElement().elementText("totalCount"))).
-                bind(Option.parseInt);
+            bind(Option.parseInt);
         if (totalCount.isNone()) {
             throw new RuntimeException("Could not find required element <totalCount>");
         }
@@ -71,7 +70,7 @@ public class NexusParser {
                 artifactHitsList.add(new ArtifactHits(repositoryId, files));
             }
 
-            list.add(new ArtifactXml(groupId, artifactId, version, artifactHitsList));
+            list.add(new ArtifactXml(new ArtifactId(groupId, artifactId, version), artifactHitsList));
         }
 
         return new ArtifactSearchResult(totalCount.some(), tooManyResults, list);
@@ -97,15 +96,11 @@ class ArtifactSearchResult {
 }
 
 class ArtifactXml implements Comparable<ArtifactXml> {
-    public final String groupId;
-    public final String artifactId;
-    public final String version;
+    public final ArtifactId id;
     public final List<ArtifactHits> hits;
 
-    ArtifactXml(String groupId, String artifactId, String version, List<ArtifactHits> hits) {
-        this.groupId = groupId;
-        this.artifactId = artifactId;
-        this.version = version;
+    ArtifactXml(ArtifactId id, List<ArtifactHits> hits) {
+        this.id = id;
         this.hits = hits;
     }
 
@@ -121,34 +116,18 @@ class ArtifactXml implements Comparable<ArtifactXml> {
         };
     }
 
-    public FlatArtifact flatten(String repositoryId) {
+    public Option<FlatArtifact> flatten(String repositoryId) {
         for (ArtifactHits hit : hits) {
             if (hit.repositoryId.equals(repositoryId)) {
-                return new FlatArtifact(groupId, artifactId, version, hit.files);
+                return some(new FlatArtifact(id, hit.files));
             }
         }
 
-        throw new RuntimeException("No hits in repository " + repositoryId);
+        return none();
     }
 
     public int compareTo(ArtifactXml o) {
-        int c = groupId.compareTo(o.groupId);
-
-        if(c != 0) {
-            return c;
-        }
-
-        c = artifactId.compareTo(o.artifactId);
-
-        if(c != 0) {
-            return c;
-        }
-
-        return version.compareTo(o.version);
-    }
-
-    public String getId() {
-        return groupId + ":" + artifactId + ":" + version;
+        return id.compareTo(o.id);
     }
 
     public Set<String> repositories() {
@@ -163,15 +142,11 @@ class ArtifactXml implements Comparable<ArtifactXml> {
 }
 
 class FlatArtifact {
-    public final String groupId;
-    public final String artifactId;
-    public final String version;
+    public final ArtifactId id;
     public final List<ArtifactFile> files;
 
-    FlatArtifact(String groupId, String artifactId, String version, List<ArtifactFile> files) {
-        this.groupId = groupId;
-        this.artifactId = artifactId;
-        this.version = version;
+    FlatArtifact(ArtifactId id, List<ArtifactFile> files) {
+        this.id = id;
         this.files = files;
     }
 }
@@ -183,15 +158,5 @@ class ArtifactHits {
     ArtifactHits(String repositoryId, List<ArtifactFile> files) {
         this.repositoryId = repositoryId;
         this.files = files;
-    }
-}
-
-class ArtifactFile {
-    public final Option<String> classifier;
-    public final String extension;
-
-    ArtifactFile(Option<String> classifier, String extension) {
-        this.classifier = classifier;
-        this.extension = extension;
     }
 }

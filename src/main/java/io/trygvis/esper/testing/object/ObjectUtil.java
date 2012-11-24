@@ -6,8 +6,8 @@ import java.sql.*;
 
 public class ObjectUtil {
 
-    public static <A extends TransactionalActor> ActorRef<A> threadedActor(DataSource dataSource, long delay, A actor) {
-        return new ThreadedActor<>(dataSource, actor, delay);
+    public static <A extends TransactionalActor> ActorRef<A> threadedActor(DataSource dataSource, String threadName, long delay, A actor) {
+        return new ThreadedActor<>(dataSource, threadName, actor, delay);
     }
 
     static class ThreadedActor<A extends TransactionalActor> implements ActorRef<A>, Runnable, Closeable {
@@ -18,11 +18,11 @@ public class ObjectUtil {
         private final Thread thread;
         private boolean shouldRun = true;
 
-        ThreadedActor(DataSource dataSource, A actor, long delay) {
+        ThreadedActor(DataSource dataSource, String threadName, A actor, long delay) {
             this.dataSource = dataSource;
             this.actor = actor;
             this.delay = delay;
-            thread = new Thread(this);
+            thread = new Thread(this, threadName);
             thread.setDaemon(true);
             thread.start();
         }
@@ -43,6 +43,7 @@ public class ObjectUtil {
                         }
                     }
                 } catch (Exception e) {
+                    System.out.println("Exception in thread " + Thread.currentThread().getName());
                     e.printStackTrace(System.out);
                 }
 
