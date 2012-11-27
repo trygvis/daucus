@@ -7,6 +7,22 @@ import java.io.*;
 import java.sql.*;
 
 public class Daos implements Closeable {
+
+    public enum OrderDirection {
+        ASC, DESC, NONE;
+
+        public String toSql(String expression) {
+           switch (this) {
+               case ASC:
+                   return expression + "expression";
+               case DESC:
+                   return expression + "expression DESC";
+               default:
+                   return "1";
+           }
+        }
+    }
+
     private final Connection connection;
     public final GitoriousEventDao gitoriousEventDao;
     public final GitoriousProjectDao gitoriousProjectDao;
@@ -20,8 +36,6 @@ public class Daos implements Closeable {
         gitoriousEventDao = new GitoriousEventDao(connection);
         gitoriousProjectDao = new GitoriousProjectDao(connection);
         gitoriousRepositoryDao = new GitoriousRepositoryDao(connection);
-
-        System.out.println("Opened connection " + seq);
     }
 
     public void close() throws IOException {

@@ -1,7 +1,5 @@
 package io.trygvis.esper.testing;
 
-import ch.qos.logback.classic.*;
-import ch.qos.logback.core.util.*;
 import com.jolbox.bonecp.*;
 import fj.data.*;
 import static fj.data.Option.*;
@@ -14,8 +12,31 @@ import java.util.*;
 import java.util.concurrent.atomic.*;
 
 public class Config {
-    public final String gitoriousUrl;
-    public final Option<String> gitoriousSessionValue;
+    public static class GitoriousConfig {
+        public final String url;
+        public final Option<String> sessionValue;
+
+        public final long projectListUpdateDelay;
+
+        public final long projectListUpdateInterval;
+
+        public GitoriousConfig(String url, Option<String> sessionValue, long projectListUpdateDelay, long projectListUpdateInterval) {
+            this.url = url;
+            this.sessionValue = sessionValue;
+            this.projectListUpdateDelay = projectListUpdateDelay;
+            this.projectListUpdateInterval = projectListUpdateInterval;
+        }
+
+        public static GitoriousConfig fromProperties(Properties properties) {
+            String key = "gitorious.sessionValue";
+            return new GitoriousConfig(trimToNull(properties.getProperty("gitorious.url")),
+                    getProperty(properties, key),
+                    getProperty(properties, "gitorious.projectListUpdateDelay").bind(parseLong).valueE("Missing/bad value for 'gitorious.projectListUpdateDelay'"),
+                    getProperty(properties, "gitorious.projectListUpdateInterval").bind(parseLong).valueE("Missing/bad value for 'gitorious.projectListUpdateInterval'"));
+        }
+    }
+
+    public final GitoriousConfig gitorious;
 
     public final long nexusUpdateInterval;
 
@@ -23,9 +44,8 @@ public class Config {
     public final String databaseUsername;
     public final String databasePassword;
 
-    public Config(String gitoriousUrl, Option<String> gitoriousSessionValue, long nexusUpdateInterval, String databaseUrl, String databaseUsername, String databasePassword) {
-        this.gitoriousUrl = gitoriousUrl;
-        this.gitoriousSessionValue = gitoriousSessionValue;
+    public Config(GitoriousConfig gitorious, long nexusUpdateInterval, String databaseUrl, String databaseUsername, String databasePassword) {
+        this.gitorious = gitorious;
         this.nexusUpdateInterval = nexusUpdateInterval;
         this.databaseUrl = databaseUrl;
         this.databaseUsername = databaseUsername;
@@ -40,17 +60,17 @@ public class Config {
             properties.load(inputStream);
         }
 
-        return new Config(trimToNull(properties.getProperty("gitorious.url")),
-                fromNull(trimToNull(properties.getProperty("gitorious.sessionValue"))),
-                fromNull(trimToNull(properties.getProperty("nexus.updateInterval"))).bind(parseInt).some() * 1000,
+        return new Config(GitoriousConfig.fromProperties(properties),
+                getProperty(properties, "nexus.updateInterval").bind(parseInt).valueE("Missing required property: nexus.updateInterval") * 1000,
                 trimToNull(properties.getProperty("database.url")),
                 trimToNull(properties.getProperty("database.username")),
                 trimToNull(properties.getProperty("database.password")));
     }
 
     private static void initLogging() {
-        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
-        StatusPrinter.print(lc);
+        LoggerFactory.getILoggerFactory();
+//        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
+//        StatusPrinter.print(lc);
     }
 
     public BoneCPDataSource createBoneCp() throws SQLException {
@@ -77,5 +97,9 @@ public class Config {
                 }
             }
         });
+    }
+
+    private static Option<String> getProperty(Properties properties, String key) {
+        return fromNull(trimToNull(properties.getProperty(key)));
     }
 }

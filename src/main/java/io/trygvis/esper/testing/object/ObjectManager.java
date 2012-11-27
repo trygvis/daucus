@@ -13,7 +13,7 @@ public class ObjectManager<K, V extends Closeable> implements Closeable {
         this.type = type;
         this.objectFactory = objectFactory;
 
-        update(initialKeys);
+        update(new HashSet<>(initialKeys));
     }
 
     public synchronized void update(Collection<K> newKeys) {

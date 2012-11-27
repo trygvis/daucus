@@ -22,8 +22,8 @@ public class HttpClient {
         ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
         ResponseResolver responseResolver = new HTTPClientResponseResolver(new DefaultHttpClient(cm, new BasicHttpParams()));
 
-        if (config.gitoriousSessionValue.isSome()) {
-            responseResolver = new GitoriousResponseResolver(config.gitoriousSessionValue.some(), responseResolver);
+        if (config.gitorious.sessionValue.isSome()) {
+            responseResolver = new GitoriousResponseResolver(config.gitorious.sessionValue.some(), responseResolver);
         }
 
         responseResolver = new TimingResponseResolver(responseResolver);

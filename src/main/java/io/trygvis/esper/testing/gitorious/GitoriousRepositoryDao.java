@@ -1,6 +1,7 @@
 package io.trygvis.esper.testing.gitorious;
 
 import fj.data.*;
+import io.trygvis.esper.testing.*;
 import static io.trygvis.esper.testing.DaoUtil.dateToTimestamp;
 import static io.trygvis.esper.testing.DaoUtil.timestampToDate;
 
@@ -19,12 +20,12 @@ public class GitoriousRepositoryDao {
 
     private static final String ALL_FIELDS = "project_slug, name, atom_feed, last_update, last_successful_update";
 
-    private List<GitoriousRepository> executeQuery(PreparedStatement statement) throws SQLException {
+    private List<GitoriousRepositoryDto> executeQuery(PreparedStatement statement) throws SQLException {
         try (ResultSet rs = statement.executeQuery()) {
-            List<GitoriousRepository> list = new ArrayList<>();
+            List<GitoriousRepositoryDto> list = new ArrayList<>();
 
             while (rs.next()) {
-                list.add(new GitoriousRepository(
+                list.add(new GitoriousRepositoryDto(
                     rs.getString(1),
                     rs.getString(2),
                     URI.create(rs.getString(3)),
@@ -35,7 +36,6 @@ public class GitoriousRepositoryDao {
             return list;
         }
     }
-
 
     public int countRepositories(String projectSlug, String name) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT count(*) FROM gitorious_repository WHERE project_slug=? and name=?")) {
@@ -48,15 +48,28 @@ public class GitoriousRepositoryDao {
         }
     }
 
-    public List<GitoriousRepository> selectForProject(String projectSlug) throws SQLException {
+    public List<GitoriousRepositoryDto> selectForProject(String projectSlug) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT " + ALL_FIELDS + " FROM gitorious_repository WHERE project_slug=?")) {
             s.setString(1, projectSlug);
             return executeQuery(s);
         }
     }
 
-    public List<GitoriousRepository> select() throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("SELECT " + ALL_FIELDS + " FROM gitorious_repository")) {
+    public List<GitoriousRepositoryDto> select(Daos.OrderDirection order) throws SQLException {
+        String orderBy;
+
+        switch (order) {
+            case ASC:
+                orderBy = "ORDER BY project_slug, name";
+                break;
+            case DESC:
+                orderBy = "ORDER BY project_slug DESC, name DESC";
+                break;
+            default:
+                orderBy = "";
+        }
+
+        try (PreparedStatement s = c.prepareStatement("SELECT " + ALL_FIELDS + " FROM gitorious_repository " + orderBy)) {
             return executeQuery(s);
         }
     }
@@ -70,7 +83,7 @@ public class GitoriousRepositoryDao {
         }
     }
 
-    public void delete(GitoriousRepository repository) throws SQLException {
+    public void delete(GitoriousRepositoryDto repository) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("DELETE FROM gitorious_repository WHERE project_slug=? and name=?")) {
             s.setString(1, repository.projectSlug);
             s.setString(2, repository.name);

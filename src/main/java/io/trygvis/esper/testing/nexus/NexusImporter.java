@@ -29,7 +29,7 @@ public class NexusImporter {
 
                 String name = server.name;
 
-                return ObjectUtil.threadedActor(boneCp, "", config.nexusUpdateInterval, new NexusServer(client, server));
+                return ObjectUtil.threadedActor(name, config.nexusUpdateInterval, boneCp, new NexusServer(client, server));
             }
         });
 

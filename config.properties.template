@@ -1,5 +1,7 @@
 gitorious.url=
 gitorious.sessionValue=
+gitorious.projectListUpdateDelay=1
+gitorious.projectListUpdateInterval=60
 
 nexus.updateInterval=3600
 

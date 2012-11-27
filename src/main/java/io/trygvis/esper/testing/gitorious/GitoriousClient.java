@@ -83,7 +83,7 @@ public class GitoriousClient {
         return URI.create(baseUrl + "/" + projectSlug + "/" + repositoryName + ".atom");
     }
 
-    public Iterable<GitoriousEvent> fetchGitoriousEvents(GitoriousRepository repository, Option<Date> lastUpdate) throws SQLException, ParseException {
+    public Iterable<GitoriousEvent> fetchGitoriousEvents(GitoriousRepositoryDto repository, Option<Date> lastUpdate) throws SQLException, ParseException {
         System.out.println("Fetching " + repository.atomFeed);
 
         long start = currentTimeMillis();
