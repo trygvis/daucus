@@ -11,7 +11,7 @@ import java.util.*;
 public class TestXmlParsing extends TestCase {
     public void testProjectParsing() throws Exception {
         try (InputStream stream = getClass().getResourceAsStream("/nexus/search-1.xml")) {
-            ArtifactSearchResult result = NexusParser.parseDocument(stream);
+            ArtifactSearchResult result = SearchNGResponseParser.parseDocument(stream);
 
             List<ArtifactXml> list = result.artifacts;
 

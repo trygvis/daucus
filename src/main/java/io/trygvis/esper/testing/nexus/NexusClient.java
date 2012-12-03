@@ -2,7 +2,7 @@ package io.trygvis.esper.testing.nexus;
 
 import fj.data.*;
 import static fj.data.Option.*;
-import static io.trygvis.esper.testing.nexus.NexusParser.*;
+import static io.trygvis.esper.testing.nexus.SearchNGResponseParser.*;
 import org.apache.commons.io.*;
 import org.apache.commons.lang.*;
 import static org.codehaus.httpcache4j.HTTPMethod.*;

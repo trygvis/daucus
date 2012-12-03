@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class NexusParser {
+public class SearchNGResponseParser {
     public static final STAXEventReader xmlReader = new STAXEventReader();
 
     public static ArtifactSearchResult parseDocument(InputStream is) throws XMLStreamException {
