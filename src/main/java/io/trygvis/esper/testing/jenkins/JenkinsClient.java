@@ -5,38 +5,32 @@ import fj.data.*;
 import io.trygvis.esper.testing.*;
 import static io.trygvis.esper.testing.Util.*;
 import io.trygvis.esper.testing.jenkins.JenkinsJobXml.*;
-import static java.lang.Integer.parseInt;
+import io.trygvis.esper.testing.util.*;
 import static org.apache.commons.lang.StringUtils.*;
-import org.codehaus.httpcache4j.*;
 import org.codehaus.httpcache4j.cache.*;
-import org.h2.util.*;
 import org.jdom2.*;
-import org.jdom2.input.*;
 
-import javax.xml.stream.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.List;
+import javax.xml.stream.*;
 
 public class JenkinsClient {
-    private static final XMLInputFactory xmlReader = XMLInputFactory.newFactory();
-    private static final StAXStreamBuilder streamBuilder = new StAXStreamBuilder();
-    private final HTTPCache http;
-
-    private boolean debugXml;
+    private final XmlHttpClient xmlHttpClient;
 
     public JenkinsClient(HTTPCache http) {
-        this.http = http;
-        this.debugXml = false;
-    }
-
-    public void setDebugXml(boolean debugXml) {
-        this.debugXml = debugXml;
+        this.xmlHttpClient = new XmlHttpClient(http);
     }
 
     public JenkinsXml fetchJobs(URI uri) throws XMLStreamException, JDOMException, IOException {
-        Element root = fetchXml(uri).getRootElement();
+        Option<Document> d = xmlHttpClient.fetch(uri);
+
+        if(d.isNone()) {
+            return new JenkinsXml(Option.<String>none(), Option.<String>none(), Option.<String>none(), Collections.<JenkinsJobEntryXml>emptyList());
+        }
+
+        Element root = d.some().getRootElement();
 
         List<JenkinsJobEntryXml> jobs = new ArrayList<>();
         for (Element job : root.getChildren("job")) {
@@ -57,60 +51,25 @@ public class JenkinsClient {
             Option.fromNull(root.getChildText("description")), jobs);
     }
 
-    public JenkinsJobXml fetchJob(URI uri) throws IOException, JDOMException, XMLStreamException {
-        Element root = fetchXml(uri).getRootElement();
+    public Option<JenkinsJobXml> fetchJob(URI uri) throws IOException, JDOMException, XMLStreamException {
+        Option<Document> d = xmlHttpClient.fetch(uri);
+
+        if(d.isNone()) {
+            return Option.none();
+        }
+
+        Element root = d.some().getRootElement();
 
         String name = root.getName();
 
         switch (name) {
             case "freeStyleProject":
-                return JenkinsJobXml.parse(uri, JenkinsJobType.FREE_STYLE, root);
+                return Option.some(JenkinsJobXml.parse(uri, JenkinsJobType.FREE_STYLE, root));
             case "mavenModuleSet":
-                return JenkinsJobXml.parse(uri, JenkinsJobType.MAVEN, root);
+                return Option.some(JenkinsJobXml.parse(uri, JenkinsJobType.MAVEN, root));
             default:
-                throw new IOException("Unknown project type: " + name);
-        }
-    }
-
-    private Document fetchXml(URI uri) throws IOException, XMLStreamException, JDOMException {
-        HTTPResponse response = null;
-
-        try {
-            response = http.execute(new HTTPRequest(uri));
-
-            if (response.getStatus().getCode() != 200) {
-                throw new IOException("Did not get 200 back, got " + response.getStatus().getCode());
-            }
-
-            InputStream stream = response.getPayload().getInputStream();
-
-            if (debugXml) {
-                int size;
-                try {
-                    size = parseInt(response.getHeaders().getFirstHeader("Content-Length").getValue());
-                } catch (Throwable e) {
-                    size = 10 * 1024;
-                }
-
-                // TODO: Pretty print
-
-                ByteArrayOutputStream buffer = new ByteArrayOutputStream(size);
-                IOUtils.copy(stream, buffer);
-                byte[] bytes = buffer.toByteArray();
-                System.out.println("------------------------------------------------");
-                System.out.write(bytes);
-                System.out.println();
-                System.out.println("------------------------------------------------");
-                stream = new ByteArrayInputStream(bytes);
-            }
-
-            return streamBuilder.build(xmlReader.createXMLStreamReader(stream));
-        } catch (HTTPException e) {
-            throw new IOException(e);
-        } finally {
-            if (response != null) {
-                response.consume();
-            }
+                System.out.println("Unknown project type: " + name);
+                return Option.none();
         }
     }
 }

@@ -4,7 +4,9 @@ import fj.*;
 import fj.data.*;
 import io.trygvis.esper.testing.*;
 import io.trygvis.esper.testing.object.*;
+import io.trygvis.esper.testing.util.*;
 import static java.lang.Thread.currentThread;
+import org.codehaus.httpcache4j.cache.*;
 import org.joda.time.*;
 
 import java.net.URI;
@@ -16,9 +18,9 @@ public class JenkinsImporter {
     public static void main(String[] args) throws Exception {
         Config config = Config.loadFromDisk();
 
-        final JenkinsClient jenkinsClient = new JenkinsClient(HttpClient.createHttpClient(config));
+        HTTPCache httpCache = HttpClient.createHttpCache(config);
 
-        jenkinsClient.setDebugXml(false);
+        final JenkinsClient jenkinsClient = new JenkinsClient(httpCache);
 
         HashSet<URI> servers = new HashSet<>();
         servers.add(URI.create("https://builds.apache.org"));

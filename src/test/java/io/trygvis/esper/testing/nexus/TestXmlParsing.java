@@ -3,7 +3,9 @@ package io.trygvis.esper.testing.nexus;
 import static com.google.common.collect.Iterables.*;
 import static com.google.common.collect.Lists.*;
 import static io.trygvis.esper.testing.nexus.ArtifactXml.repositoryFilter;
+import io.trygvis.esper.testing.util.*;
 import junit.framework.*;
+import org.jdom2.*;
 
 import java.io.*;
 import java.util.*;
@@ -42,6 +44,23 @@ public class TestXmlParsing extends TestCase {
             assertEquals("maven-hibernate3-jdk15", flatArtifact.id.artifactId);
             assertEquals("2.0-alpha-1", flatArtifact.id.version);
             assertEquals(2, flatArtifact.files.size());
+        }
+    }
+
+    public void testTimelineParsing() throws Exception {
+        XmlParser parser = new XmlParser();
+
+        try (InputStream stream = getClass().getResourceAsStream("/nexus/recentlyDeployedArtifacts.xml")) {
+            Document document = parser.parseDocument(stream).some();
+
+            NexusEvent event = NexusFeedParser.parseEvent(document.getRootElement().getChild("channel").getChild("item")).some();
+
+            assertTrue(event instanceof NewSnapshotEvent);
+            NewSnapshotEvent nse = (NewSnapshotEvent) event;
+            assertEquals("org.example", nse.artifactId.groupId);
+            assertEquals("example", nse.artifactId.artifactId);
+            assertEquals("1.0-SNAPSHOT", nse.artifactId.version);
+            assertEquals("20121204.122640-536", nse.snapshotTimestamp);
         }
     }
 }

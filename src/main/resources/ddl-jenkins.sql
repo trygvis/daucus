@@ -1,0 +1,9 @@
+BEGIN;
+
+DROP TABLE IF EXISTS jenkins_server;
+
+CREATE TABLE jenkins_server(
+    url VARCHAR(1000) NOT NULL PRIMARY KEY
+);
+
+COMMIT;

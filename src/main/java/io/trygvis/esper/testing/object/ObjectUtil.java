@@ -7,32 +7,42 @@ import java.util.concurrent.*;
 
 public class ObjectUtil {
 
-    public static <A extends TransactionalActor> ActorRef<A> threadedActor(String threadName, long delay, DataSource dataSource, A actor) {
-        return new ThreadedActor<>(dataSource, threadName, actor, delay);
+    public static <A extends TransactionalActor> ActorRef<A> threadedActor(String threadName, long delay, DataSource dataSource, String name, A actor) {
+        return new ThreadedActor<>(dataSource, threadName, name, actor, delay);
     }
 
-    public static <A extends TransactionalActor> ActorRef<A> scheduledActorWithFixedDelay(ScheduledExecutorService scheduledExecutorService, long initialDelay, long delay, TimeUnit unit, DataSource dataSource, A actor) {
-        return new ScheduledActor<>(scheduledExecutorService, initialDelay, delay, unit, dataSource, actor);
+    public static <A extends TransactionalActor> ActorRef<A> scheduledActorWithFixedDelay(ScheduledExecutorService scheduledExecutorService, long initialDelay, long delay, TimeUnit unit, DataSource dataSource, String name, A actor) {
+        return new ScheduledActor<>(scheduledExecutorService, initialDelay, delay, unit, dataSource, name, actor);
     }
 
     private static class TransactionalActorWrapper<A extends TransactionalActor> implements Runnable {
         private final DataSource dataSource;
+        private final String name;
         private final A actor;
 
-        TransactionalActorWrapper(DataSource dataSource, A actor) {
+        TransactionalActorWrapper(DataSource dataSource, String name, A actor) {
             this.dataSource = dataSource;
+            this.name = name;
             this.actor = actor;
         }
 
         public void run() {
             try {
                 Connection c = dataSource.getConnection();
+
                 try {
+                    try (PreparedStatement s = c.prepareStatement("set application_name = 'Actor: " + name + "';")) {
+//                        s.setString(1, "Actor: " + name);
+                        s.executeUpdate();
+                        s.close();
+                    }
+
                     actor.act(c);
                     c.commit();
                 }
                 catch(SQLException e) {
                     c.rollback();
+                    throw e;
                 } finally {
                     c.close();
                 }
@@ -48,9 +58,9 @@ public class ObjectUtil {
 
         private final TransactionalActorWrapper<A> actor;
 
-        ScheduledActor(ScheduledExecutorService executorService, long initialDelay, long delay, TimeUnit unit, DataSource dataSource, A actor) {
+        ScheduledActor(ScheduledExecutorService executorService, long initialDelay, long delay, TimeUnit unit, DataSource dataSource, String name, A actor) {
             future = executorService.scheduleWithFixedDelay(this, initialDelay, delay, unit);
-            this.actor = new TransactionalActorWrapper<>(dataSource, actor);
+            this.actor = new TransactionalActorWrapper<>(dataSource, name, actor);
         }
 
         public A underlying() {
@@ -74,8 +84,8 @@ public class ObjectUtil {
         private final Thread thread;
         private boolean shouldRun = true;
 
-        ThreadedActor(DataSource dataSource, String threadName, A actor, long delay) {
-            this.actor = new TransactionalActorWrapper<A>(dataSource, actor);
+        ThreadedActor(DataSource dataSource, String threadName, String name, A actor, long delay) {
+            this.actor = new TransactionalActorWrapper<>(dataSource, name, actor);
             this.delay = delay;
             thread = new Thread(this, threadName);
             thread.setDaemon(true);

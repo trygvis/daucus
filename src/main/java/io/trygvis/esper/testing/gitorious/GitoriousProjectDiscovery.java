@@ -10,6 +10,7 @@ import io.trygvis.esper.testing.object.ObjectManager;
 import io.trygvis.esper.testing.object.ObjectUtil;
 import io.trygvis.esper.testing.object.TransactionalActor;
 
+import io.trygvis.esper.testing.util.*;
 import static java.lang.System.*;
 import org.apache.abdera.parser.*;
 
@@ -31,7 +32,7 @@ public class GitoriousProjectDiscovery {
     public GitoriousProjectDiscovery(final Config config) throws Exception {
         boneCp = config.createBoneCp();
 
-        gitoriousClient = new GitoriousClient(HttpClient.createHttpClient(config), config.gitorious.url);
+        gitoriousClient = new GitoriousClient(HttpClient.createHttpCache(config), config.gitorious.url);
 
         final ScheduledThreadPoolExecutor service = new ScheduledThreadPoolExecutor(1);
 
@@ -44,11 +45,11 @@ public class GitoriousProjectDiscovery {
 
         final ObjectManager<GitoriousRepositoryDto, ActorRef<GitoriousRepository>> repositoryManager = new ObjectManager<>("", repositories, new ObjectFactory<GitoriousRepositoryDto, ActorRef<GitoriousRepository>>() {
             public ActorRef<GitoriousRepository> create(GitoriousRepositoryDto repository) {
-                return ObjectUtil.scheduledActorWithFixedDelay(service, 0, 60, TimeUnit.SECONDS, boneCp, new GitoriousRepository(gitoriousClient, repository));
+                return ObjectUtil.scheduledActorWithFixedDelay(service, 0, 60, TimeUnit.SECONDS, boneCp, "Gitorious", new GitoriousRepository(gitoriousClient, repository));
             }
         });
 
-        ObjectUtil.scheduledActorWithFixedDelay(service, config.gitorious.projectListUpdateDelay, config.gitorious.projectListUpdateInterval, TimeUnit.MILLISECONDS, boneCp, new TransactionalActor() {
+        ObjectUtil.scheduledActorWithFixedDelay(service, config.gitorious.projectListUpdateDelay, config.gitorious.projectListUpdateInterval, TimeUnit.MILLISECONDS, boneCp, "Gitorious", new TransactionalActor() {
             @Override
             public void act(Connection c) throws Exception {
                 Daos daos = new Daos(c);

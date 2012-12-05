@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>New deployed artifacts</title>
+    <link>http://localhost:8081/repository/service/local/feeds/recentlyDeployedArtifacts</link>
+    <description>New deployed artifacts in all Nexus repositories (deployed).</description>
+    <pubDate>Tue, 04 Dec 2012 12:26:41 GMT</pubDate>
+    <dc:creator>Nexus 1.9.2.3</dc:creator>
+    <dc:date>2012-12-04T12:26:41Z</dc:date>
+    <item>
+      <title>org.example:example:1.0-20121204.122640-536</title>
+      <link>http://hostname/repository/content/repositories/snapshots/org/example/example/1.0-SNAPSHOT/example-1.0-20121204.122640-536.pom</link>
+      <description>
+        The artifact 'org.example:example:1.0-20121204.122640-536' in repository 'Snapshots' was
+        deployed.Action was initiated by user "developer".
+        Request originated from IP address 1.2.3.4.
+      </description>
+      <pubDate>Tue, 04 Dec 2012 12:26:40 GMT</pubDate>
+      <guid>http://hostname/repository/content/repositories/snapshots/org/example/example/1.0-SNAPSHOT/example-1.0-20121204.122640-536.pom</guid>
+      <dc:creator>developer</dc:creator>
+      <dc:date>2012-12-04T12:26:40Z</dc:date>
+    </item>
+  </channel>
+</rss>

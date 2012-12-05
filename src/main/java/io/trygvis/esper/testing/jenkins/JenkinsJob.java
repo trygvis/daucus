@@ -8,7 +8,6 @@ import org.slf4j.*;
 
 import java.io.*;
 import java.net.*;
-import java.util.*;
 import java.util.concurrent.*;
 
 public class JenkinsJob implements Closeable {
@@ -49,7 +48,7 @@ public class JenkinsJob implements Closeable {
         try {
             logger.info("Updating " + name);
             long start = currentTimeMillis();
-            latestStatus = some(client.fetchJob(uri));
+            latestStatus = client.fetchJob(uri);
             long end = currentTimeMillis();
             logger.info("Updated " + name + " in " + (end - start) + "ms");
         } catch (Throwable e) {

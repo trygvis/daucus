@@ -1,4 +1,4 @@
-package io.trygvis.esper.testing;
+package io.trygvis.esper.testing.util;
 
 /*
  * ====================================================================

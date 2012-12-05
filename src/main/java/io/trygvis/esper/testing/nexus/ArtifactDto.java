@@ -2,32 +2,20 @@ package io.trygvis.esper.testing.nexus;
 
 import fj.data.*;
 
-import java.net.*;
+import java.util.*;
 
 public class ArtifactDto implements Comparable<ArtifactDto> {
-    public final URI serverUrl;
+    public final UUID uuid;
     public final String repositoryId;
     public final ArtifactId id;
 
-    public ArtifactDto(URI serverUrl, String repositoryId, ArtifactId id) {
-        this.serverUrl = serverUrl;
+    public ArtifactDto(UUID uuid, String repositoryId, ArtifactId id) {
+        this.uuid = uuid;
         this.repositoryId = repositoryId;
         this.id = id;
     }
 
     public int compareTo(ArtifactDto o) {
-        int i = serverUrl.compareTo(o.serverUrl);
-
-        if (i != 0) {
-            return i;
-        }
-
-        i = repositoryId.compareTo(o.repositoryId);
-
-        if (i != 0) {
-            return i;
-        }
-
         return id.compareTo(o.id);
     }
 
@@ -37,17 +25,11 @@ public class ArtifactDto implements Comparable<ArtifactDto> {
 
         ArtifactDto that = (ArtifactDto) o;
 
-        if (!serverUrl.equals(that.serverUrl)) return false;
-        if (!repositoryId.equals(that.repositoryId)) return false;
-
-        return id.equals(that.id);
+        return uuid.equals(that.uuid);
     }
 
     public int hashCode() {
-        int result = serverUrl.hashCode();
-        result = 31 * result + repositoryId.hashCode();
-        result = 31 * result + id.hashCode();
-        return result;
+        return uuid.hashCode();
     }
 }
 

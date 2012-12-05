@@ -3,31 +3,52 @@ package io.trygvis.esper.testing.nexus;
 import fj.data.*;
 import static fj.data.Option.*;
 import static io.trygvis.esper.testing.nexus.SearchNGResponseParser.*;
+import io.trygvis.esper.testing.util.*;
 import org.apache.commons.io.*;
 import org.apache.commons.lang.*;
 import static org.codehaus.httpcache4j.HTTPMethod.*;
 import org.codehaus.httpcache4j.*;
 import org.codehaus.httpcache4j.cache.*;
 import org.codehaus.httpcache4j.util.*;
+import org.jdom2.*;
 
 import java.io.*;
 import java.net.*;
+import java.util.*;
 import javax.xml.stream.*;
 
 public class NexusClient {
     private final HTTPCache http;
+
     private final URI nexusUrl;
+
+    private final XmlHttpClient xmlHttpClient;
 
     public NexusClient(HTTPCache http, URI nexusUrl) {
         this.http = http;
         this.nexusUrl = nexusUrl;
+        this.xmlHttpClient = new XmlHttpClient(http);
+    }
+
+    public NexusFeed fetchTimeline(String timeline) throws IOException {
+        URI uri = URI.create(nexusUrl.toASCIIString() + "/service/local/feeds/" + timeline);
+
+        Option<Document> d = xmlHttpClient.fetch(uri);
+
+        if (d.isNone()) {
+            return new NexusFeed(Collections.<NexusEvent>emptyList());
+        }
+
+        Document document = d.some();
+
+        return NexusFeedParser.parseDocument(document);
     }
 
     public ArtifactSearchResult fetchIndex(String groupId, Option<String> repositoryId) throws IOException {
         ArtifactSearchResult aggregate = fetchIndexPage(groupId, repositoryId, Option.<Integer>none());
         ArtifactSearchResult result = aggregate;
 
-        while(result.artifacts.size() > 0) {
+        while (result.artifacts.size() > 0) {
             result = fetchIndexPage(groupId, repositoryId, some(aggregate.artifacts.size()));
             aggregate = aggregate.append(result);
         }
