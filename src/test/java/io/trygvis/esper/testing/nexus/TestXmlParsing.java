@@ -53,14 +53,34 @@ public class TestXmlParsing extends TestCase {
         try (InputStream stream = getClass().getResourceAsStream("/nexus/recentlyDeployedArtifacts.xml")) {
             Document document = parser.parseDocument(stream).some();
 
-            NexusEvent event = NexusFeedParser.parseEvent(document.getRootElement().getChild("channel").getChild("item")).some();
+            List<Element> items = document.getRootElement().getChild("channel").getChildren("item");
 
+            NexusEvent event = NexusFeedParser.parseEvent(items.get(0)).some();
             assertTrue(event instanceof NewSnapshotEvent);
             NewSnapshotEvent nse = (NewSnapshotEvent) event;
             assertEquals("org.example", nse.artifactId.groupId);
             assertEquals("example", nse.artifactId.artifactId);
             assertEquals("1.0-SNAPSHOT", nse.artifactId.version);
-            assertEquals("20121204.122640-536", nse.snapshotTimestamp);
+            assertEquals("20121204.122640", nse.snapshotTimestamp);
+            assertEquals("536", nse.buildNumber);
+
+            event = NexusFeedParser.parseEvent(items.get(1)).some();
+            assertTrue(event instanceof NewSnapshotEvent);
+            nse = (NewSnapshotEvent) event;
+            assertEquals("org.example", nse.artifactId.groupId);
+            assertEquals("example", nse.artifactId.artifactId);
+            assertEquals("1.0-SNAPSHOT", nse.artifactId.version);
+            assertEquals("20121204.122640", nse.snapshotTimestamp);
+            assertEquals("536", nse.buildNumber);
+
+            event = NexusFeedParser.parseEvent(items.get(2)).some();
+            assertTrue(event instanceof NewReleaseEvent);
+            NewReleaseEvent nre = (NewReleaseEvent) event;
+            assertEquals("org.example", nre.artifactId.groupId);
+            assertEquals("example", nre.artifactId.artifactId);
+            assertEquals("1.10", nre.artifactId.version);
+
+            assertEquals(3, items.size());
         }
     }
 }

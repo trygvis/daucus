@@ -173,8 +173,8 @@ public class NexusDao {
 //        }
 //    }
 
-    public UUID insertNewSnapshotEvent(UUID artifact, String guid, String file, String snapshotTimestamp) throws SQLException {
-        try(PreparedStatement s = c.prepareStatement("INSERT INTO nexus_event(uuid, artifact, timestamp, guid, type, snapshot_timestamp, file) VALUES(?, ?, ?, ?, ?, ?, ?)")) {
+    public UUID insertNewSnapshotEvent(UUID artifact, String guid, String snapshotTimestamp, int buildNumber, String file) throws SQLException {
+        try(PreparedStatement s = c.prepareStatement("INSERT INTO nexus_event(uuid, artifact, timestamp, guid, type, snapshot_timestamp, build_number, file) VALUES(?, ?, ?, ?, ?, ?, ?, ?)")) {
             UUID uuid = UUID.randomUUID();
             int i = 1;
             s.setString(i++, uuid.toString());
@@ -183,6 +183,22 @@ public class NexusDao {
             s.setString(i++, guid);
             s.setString(i++, "new_snapshot");
             s.setString(i++, snapshotTimestamp);
+            s.setInt(i++, buildNumber);
+            s.setString(i, file);
+            s.executeUpdate();
+            return uuid;
+        }
+    }
+
+    public UUID insertNewReleaseEvent(UUID artifact, String guid, String file) throws SQLException {
+        try(PreparedStatement s = c.prepareStatement("INSERT INTO nexus_event(uuid, artifact, timestamp, guid, type, file) VALUES(?, ?, ?, ?, ?, ?)")) {
+            UUID uuid = UUID.randomUUID();
+            int i = 1;
+            s.setString(i++, uuid.toString());
+            s.setString(i++, artifact.toString());
+            s.setTimestamp(i++, new Timestamp(currentTimeMillis()));
+            s.setString(i++, guid);
+            s.setString(i++, "new_release");
             s.setString(i, file);
             s.executeUpdate();
             return uuid;

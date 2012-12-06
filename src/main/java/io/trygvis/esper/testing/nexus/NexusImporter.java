@@ -21,7 +21,7 @@ public class NexusImporter {
         final XmlParser xmlParser = new XmlParser();
         final BoneCPDataSource boneCp = config.createBoneCp();
 
-        XmlParser.debugXml = true;
+        XmlParser.debugXml = false;
 
         ObjectManager<NexusServerDto, ActorRef<NexusServer>> serverManager = new ObjectManager<>("Nexus server", Collections.<NexusServerDto>emptySet(), new ObjectFactory<NexusServerDto, ActorRef<NexusServer>>() {
             public ActorRef<NexusServer> create(NexusServerDto server) {
@@ -104,28 +104,32 @@ class NexusServer implements TransactionalActor {
 
             Option<ArtifactDto> a = dao.findArtifact(repository.uuid, event.artifactId);
 
-            if(event instanceof NewSnapshotEvent) {
-                NewSnapshotEvent newSnapshotEvent = (NewSnapshotEvent) event;
+            UUID uuid;
 
-                Option<String> snapshotTimestamp = Option.some(newSnapshotEvent.snapshotTimestamp);
+            if(a.isNone()) {
+                System.out.println("New artifact: " + event.artifactId);
+                uuid = dao.insertArtifact(repository.uuid, event.artifactId);
+            }
+            else {
+                ArtifactDto artifact = a.some();
 
-                UUID uuid;
-
-                if(a.isNone()) {
-                    System.out.println("New artifact: " + event.artifactId);
-                    List<ArtifactFile> files = Collections.emptyList();
-                    uuid = dao.insertArtifact(repository.uuid, event.artifactId);
-                }
-                else {
-                    ArtifactDto artifact = a.some();
-
-                    System.out.println("Updated artifact: " + event.artifactId);
+                System.out.println("Updated artifact: " + event.artifactId);
 //                    dao.updateSnapshotTimestamp(artifact.uuid, newSnapshotEvent.snapshotTimestamp);
 
-                    uuid = artifact.uuid;
-                }
+                uuid = artifact.uuid;
+            }
 
-                dao.insertNewSnapshotEvent(uuid, event.guid, newSnapshotEvent.url.toASCIIString(), newSnapshotEvent.snapshotTimestamp);
+            if (event instanceof NewSnapshotEvent) {
+                NewSnapshotEvent newSnapshotEvent = (NewSnapshotEvent) event;
+
+                dao.insertNewSnapshotEvent(uuid, event.guid, newSnapshotEvent.snapshotTimestamp,
+                        newSnapshotEvent.buildNumber, newSnapshotEvent.url.toASCIIString());
+            } else if (event instanceof NewReleaseEvent) {
+                NewReleaseEvent nre = (NewReleaseEvent) event;
+
+                dao.insertNewReleaseEvent(uuid, event.guid, nre.url.toASCIIString());
+            } else {
+                System.out.println("Unknown event type: " + event.getClass().getName());
             }
         }
 

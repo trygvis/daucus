@@ -38,17 +38,22 @@ CREATE TABLE nexus_event (
   uuid               CHAR(36)     NOT NULL,
   artifact           CHAR(36)     NOT NULL,
   timestamp          VARCHAR(100),
+
+-- From the RSS
   guid               VARCHAR(1000),
 
+-- Our type flag
   type               VARCHAR(100) NOT NULL,
 
 -- new snapshot event
-  snapshot_timestamp VARCHAR(1000),
+  snapshot_timestamp TIMESTAMP,
+  build_number       INT,
   file               VARCHAR(1000),
+  who                VARCHAR(1000),
   CONSTRAINT pk_nexus_event PRIMARY KEY (uuid),
   CONSTRAINT fk_nexus_artifact FOREIGN KEY (artifact) REFERENCES nexus_artifact (uuid),
   CONSTRAINT uq_guid UNIQUE (guid),
-  CONSTRAINT check_event_type CHECK (type IN ('new_snapshot'))
+  CONSTRAINT check_event_type CHECK (type IN ('new_snapshot', 'new_release'))
 --   CONSTRAINT pk_nexus_event PRIMARY KEY (timestamp, server_url, repository_id, group_id, artifact_id, version)
 );
 

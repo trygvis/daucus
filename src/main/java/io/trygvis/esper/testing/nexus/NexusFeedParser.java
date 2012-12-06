@@ -78,21 +78,44 @@ public class NexusFeedParser {
             return null;
         }
 
-        if (guid.isNone() || creator.isNone() || date.isNone()) {
+        if (guid.isNone()) {
+            System.out.println("Missing <guid>.");
+            return null;
+        }
+        if (creator.isNone()) {
+            System.out.println("Missing <dc:creator>.");
+            return null;
+        }
+        if (date.isNone()) {
+            System.out.println("Missing <dc:date>");
             return null;
         }
 
-        Pattern regexp = Pattern.compile("(.*)-([0-9]{8}\\.[0-9]{6}-[0-9]*)$");
+        Pattern regexp = Pattern.compile("(.*)-([0-9]{8}\\.[0-9]{6})-([0-9]*)$");
 
         Matcher matcher = regexp.matcher(version);
 
         if (matcher.matches()) {
             ArtifactId id = new ArtifactId(groupId, artifactId, matcher.group(1) + "-SNAPSHOT");
+            Option<Integer> buildNumber = parseInt.f(matcher.group(3));
+
+            if(buildNumber.isNone()) {
+                System.out.println("Could not parse build number: " + matcher.group(3));
+                return none();
+            }
+
             return Option.<NexusEvent>some(new NewSnapshotEvent(guid.some(), id, classifier, creator.some(),
-                    date.some(), matcher.group(2), URI.create(item.getChildText("link"))));
+                    date.some(), matcher.group(2), buildNumber.some(), URI.create(item.getChildText("link"))));
+        } else {
+            ArtifactId id = new ArtifactId(groupId, artifactId, version);
+
+            return Option.<NexusEvent>some(new NewReleaseEvent(guid.some(), id, classifier, creator.some(),
+                    date.some(), URI.create(item.getChildText("link"))));
         }
 
-        return none();
+//        System.out.println("Unknown event type.");
+//
+//        return none();
     }
 }
 
@@ -122,11 +145,22 @@ abstract class NexusEvent {
 
 class NewSnapshotEvent extends NexusEvent {
     public final String snapshotTimestamp;
+    public final int buildNumber;
     public final URI url;
 
-    NewSnapshotEvent(String guid, ArtifactId artifactId, Option<String> classifier, String creator, DateTime date, String snapshotTimestamp, URI url) {
+    NewSnapshotEvent(String guid, ArtifactId artifactId, Option<String> classifier, String creator, DateTime date, String snapshotTimestamp, int buildNumber, URI url) {
         super(guid, artifactId, classifier, creator, date);
         this.snapshotTimestamp = snapshotTimestamp;
+        this.buildNumber = buildNumber;
+        this.url = url;
+    }
+}
+
+class NewReleaseEvent extends NexusEvent {
+    public final URI url;
+
+    NewReleaseEvent(String guid, ArtifactId artifactId, Option<String> classifier, String creator, DateTime date, URI url) {
+        super(guid, artifactId, classifier, creator, date);
         this.url = url;
     }
 }

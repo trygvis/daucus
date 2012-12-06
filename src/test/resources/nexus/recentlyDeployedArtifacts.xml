@@ -7,6 +7,7 @@
     <pubDate>Tue, 04 Dec 2012 12:26:41 GMT</pubDate>
     <dc:creator>Nexus 1.9.2.3</dc:creator>
     <dc:date>2012-12-04T12:26:41Z</dc:date>
+    <!-- normal snapshot -->
     <item>
       <title>org.example:example:1.0-20121204.122640-536</title>
       <link>http://hostname/repository/content/repositories/snapshots/org/example/example/1.0-SNAPSHOT/example-1.0-20121204.122640-536.pom</link>
@@ -19,6 +20,31 @@
       <guid>http://hostname/repository/content/repositories/snapshots/org/example/example/1.0-SNAPSHOT/example-1.0-20121204.122640-536.pom</guid>
       <dc:creator>developer</dc:creator>
       <dc:date>2012-12-04T12:26:40Z</dc:date>
+    </item>
+    <!-- classifier -->
+    <item>
+      <title>org.example:example:1.0-20121204.122640-536:tests</title>
+      <link>http://hostname/repository/content/repositories/snapshots/org/example/example/1.0-SNAPSHOT/example-1.0-20121204.122640-536-tests.jar</link>
+      <description>
+        The artifact 'org.example:example:1.0-20121204.122640-536:tests' in repository 'Snapshots' was
+        deployed.Action was initiated by user "developer".
+        Request originated from IP address 1.2.3.4.
+      </description>
+      <pubDate>Tue, 04 Dec 2012 12:26:40 GMT</pubDate>
+      <guid>http://hostname/repository/content/repositories/snapshots/org/example/example/1.0-SNAPSHOT/example-1.0-20121204.122640-536:tests.jar</guid>
+      <dc:creator>developer</dc:creator>
+      <dc:date>2012-12-04T12:26:40Z</dc:date>
+    </item>
+    <!-- normal release -->
+    <item>
+      <title>org.example:example:1.10</title>
+      <link>http://hostname/repository/content/repositories/releases/org/example/example/1.10/example-1.10.pom</link>
+      <description>The artifact 'org.example:example:1.10' in repository 'Releases' was deployed.Action was initiated by user "foo".
+        Request originated from IP address 172.21.3.60.</description>
+      <pubDate>Wed, 05 Dec 2012 13:33:47 GMT</pubDate>
+      <guid>http://hostname/repository/content/repositories/releases/org/example/example/1.10/example-1.10.pom</guid>
+      <dc:creator>foo</dc:creator>
+      <dc:date>2012-12-05T13:33:47Z</dc:date>
     </item>
   </channel>
 </rss>
