@@ -30,13 +30,25 @@ public class NexusClient {
         this.xmlHttpClient = new XmlHttpClient(http);
     }
 
-    public NexusFeed fetchTimeline(String timeline) throws IOException {
-        URI uri = URI.create(nexusUrl.toASCIIString() + "/service/local/feeds/" + timeline);
+    public NexusFeed fetchTimeline(String timeline, int count, int from) throws IOException {
+
+        String args = "";
+
+        if (count != 0) {
+            args += (args.length() == 0 ? "?" : "&") + "count=" + count;
+        }
+
+        if (from != 0) {
+            args += (args.length() == 0 ? "?" : "&") + "from=" + from;
+        }
+
+        System.out.println("args = " + args);
+        URI uri = URI.create(nexusUrl.toASCIIString() + "/service/local/feeds/" + timeline + args);
 
         Option<Document> d = xmlHttpClient.fetch(uri);
 
         if (d.isNone()) {
-            return new NexusFeed(Collections.<NexusEvent>emptyList());
+            return new NexusFeed(Collections.<HasNexusEvent>emptyList());
         }
 
         Document document = d.some();

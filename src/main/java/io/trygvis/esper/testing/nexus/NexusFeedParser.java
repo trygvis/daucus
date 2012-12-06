@@ -3,6 +3,7 @@ package io.trygvis.esper.testing.nexus;
 import fj.*;
 import fj.data.*;
 import static fj.data.Option.*;
+import static java.util.regex.Pattern.compile;
 import org.jdom2.*;
 import static org.jdom2.filter.Filters.*;
 import org.joda.time.*;
@@ -14,12 +15,15 @@ import java.util.List;
 import java.util.regex.*;
 
 public class NexusFeedParser {
-    private static Namespace dc = Namespace.getNamespace("http://purl.org/dc/elements/1.1/");
+    private static final Namespace dc = Namespace.getNamespace("http://purl.org/dc/elements/1.1/");
+
+    private static final Pattern snapshotPattern =
+            compile("(.*)-([0-9]{4})([0-9]{2})([0-9]{2})\\.([0-9]{2})([0-9]{2})([0-9]{2})-([0-9]*)$");
 
     public static NexusFeed parseDocument(Document document) {
         List<Element> channels = document.getRootElement().getContent(element("channel"));
 
-        List<NexusEvent> events = new ArrayList<>();
+        List<HasNexusEvent> events = new ArrayList<>();
 
         if (channels.size() != 1) {
             return new NexusFeed(events);
@@ -28,7 +32,7 @@ public class NexusFeedParser {
         Element channel = channels.get(0);
 
         for (Element item : channel.getContent(element("item"))) {
-            Option<NexusEvent> e = parseEvent(item);
+            Option<HasNexusEvent> e = parseEvent(item);
 
             if (e.isNone()) {
                 continue;
@@ -40,7 +44,7 @@ public class NexusFeedParser {
         return new NexusFeed(events);
     }
 
-    public static Option<NexusEvent> parseEvent(Element item) {
+    public static Option<HasNexusEvent> parseEvent(Element item) {
         String title = item.getChildText("title");
 
         Option<String> guid = Option.fromNull(item.getChildText("guid"));
@@ -91,43 +95,47 @@ public class NexusFeedParser {
             return null;
         }
 
-        Pattern regexp = Pattern.compile("(.*)-([0-9]{8}\\.[0-9]{6})-([0-9]*)$");
-
-        Matcher matcher = regexp.matcher(version);
+        Matcher matcher = snapshotPattern.matcher(version);
 
         if (matcher.matches()) {
             ArtifactId id = new ArtifactId(groupId, artifactId, matcher.group(1) + "-SNAPSHOT");
-            Option<Integer> buildNumber = parseInt.f(matcher.group(3));
+            Option<Integer> buildNumber = parseInt.f(matcher.group(8));
 
             if(buildNumber.isNone()) {
                 System.out.println("Could not parse build number: " + matcher.group(3));
                 return none();
             }
 
-            return Option.<NexusEvent>some(new NewSnapshotEvent(guid.some(), id, classifier, creator.some(),
-                    date.some(), matcher.group(2), buildNumber.some(), URI.create(item.getChildText("link"))));
+            NexusEvent event = new NexusEvent(guid.some(), id, classifier, creator.some(), date.some());
+
+            int year = Integer.parseInt(matcher.group(2));
+            int month = Integer.parseInt(matcher.group(3));
+            int day = Integer.parseInt(matcher.group(4));
+            int hour = Integer.parseInt(matcher.group(5));
+            int minute = Integer.parseInt(matcher.group(6));
+            int second = Integer.parseInt(matcher.group(7));
+
+            return Option.<HasNexusEvent>some(new NewSnapshotEvent(event, new DateTime(year, month, day, hour, minute, second, 0), buildNumber.some(),
+                    URI.create(item.getChildText("link"))));
         } else {
             ArtifactId id = new ArtifactId(groupId, artifactId, version);
 
-            return Option.<NexusEvent>some(new NewReleaseEvent(guid.some(), id, classifier, creator.some(),
-                    date.some(), URI.create(item.getChildText("link"))));
-        }
+            NexusEvent event = new NexusEvent(guid.some(), id, classifier, creator.some(), date.some());
 
-//        System.out.println("Unknown event type.");
-//
-//        return none();
+            return Option.<HasNexusEvent>some(new NewReleaseEvent(event, URI.create(item.getChildText("link"))));
+        }
     }
 }
 
 class NexusFeed {
-    List<NexusEvent> events = new ArrayList<>();
+    List<HasNexusEvent> events = new ArrayList<>();
 
-    NexusFeed(List<NexusEvent> events) {
+    NexusFeed(List<HasNexusEvent> events) {
         this.events = events;
     }
 }
 
-abstract class NexusEvent {
+final class NexusEvent {
     public final String guid;
     public final ArtifactId artifactId;
     public final Option<String> classifier;
@@ -143,24 +151,32 @@ abstract class NexusEvent {
     }
 }
 
-class NewSnapshotEvent extends NexusEvent {
-    public final String snapshotTimestamp;
+abstract class HasNexusEvent {
+    public final NexusEvent event;
+
+    protected HasNexusEvent(NexusEvent event) {
+        this.event = event;
+    }
+}
+
+class NewSnapshotEvent extends HasNexusEvent {
+    public final DateTime snapshotTimestamp;
     public final int buildNumber;
     public final URI url;
 
-    NewSnapshotEvent(String guid, ArtifactId artifactId, Option<String> classifier, String creator, DateTime date, String snapshotTimestamp, int buildNumber, URI url) {
-        super(guid, artifactId, classifier, creator, date);
+    NewSnapshotEvent(NexusEvent event, DateTime snapshotTimestamp, int buildNumber, URI url) {
+        super(event);
         this.snapshotTimestamp = snapshotTimestamp;
         this.buildNumber = buildNumber;
         this.url = url;
     }
 }
 
-class NewReleaseEvent extends NexusEvent {
+class NewReleaseEvent extends HasNexusEvent {
     public final URI url;
 
-    NewReleaseEvent(String guid, ArtifactId artifactId, Option<String> classifier, String creator, DateTime date, URI url) {
-        super(guid, artifactId, classifier, creator, date);
+    NewReleaseEvent(NexusEvent event, URI url) {
+        super(event);
         this.url = url;
     }
 }

@@ -115,8 +115,7 @@ public class ObjectUtil {
             while (thread.isAlive()) {
                 try {
                     thread.join();
-                } catch (InterruptedException e) {
-                    continue;
+                } catch (InterruptedException ignore) {
                 }
             }
         }

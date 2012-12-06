@@ -12,6 +12,7 @@ import org.codehaus.httpcache4j.cache.*;
 import java.sql.*;
 import java.util.*;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.*;
 
 public class NexusImporter {
@@ -75,65 +76,97 @@ class NexusServer implements TransactionalActor {
 
         NexusDao dao = new NexusDao(c);
 
-        NexusFeed feed = client.fetchTimeline("recentlyDeployedArtifacts");
+        int newEvents = 0, oldEvents = 0, count = 0, pages = 0;
 
-        int newEvents = 0, oldEvents = 0;
+        int newInFeed;
+        do {
+            newInFeed = 0;
+            NexusFeed feed = client.fetchTimeline("recentlyDeployedArtifacts", 100, count);
 
-        for (NexusEvent event : feed.events) {
+            pages++;
+            count += feed.events.size();
 
-            if(dao.countEventByGuid(event.guid) != 0) {
-                oldEvents++;
-                continue;
+            List<String> guids = new ArrayList<>();
+
+            for (HasNexusEvent event : feed.events) {
+                guids.add(event.event.guid);
             }
 
-            newEvents++;
+            Set<String> oldGuids = dao.selectGuidsByGuids(guids);
 
-            String repositoryId = event.guid.replaceAll("^" + quote(server.url.toASCIIString()) + "/content/repositories/([-a-zA-Z0-9]*)/.*", "$1");
+            System.out.println("oldGuids.size() = " + oldGuids.size());
 
-            if(repositoryId.length() == 0) {
-                continue;
+            for (HasNexusEvent event : feed.events) {
+
+//                if (oldGuids.contains(event.event.guid)) {
+//                    oldEvents++;
+//                    continue;
+//                }
+
+                if (dao.countEventByGuid(event.event.guid) != 0) {
+                    oldEvents++;
+                    continue;
+                }
+
+                newEvents++;
+                newInFeed++;
+
+                onEvent(dao, event);
             }
 
-            Option<NexusRepositoryDto> r = dao.findRepository(server.uuid, repositoryId);
+            System.out.println("newInFeed = " + newInFeed);
+        } while (newInFeed > 0);
 
-            if(r.isNone()) {
-                continue;
-            }
+        System.out.println("Timeline updated. New=" + newEvents + ", old=" + oldEvents + ", count=" + count + ", pages=" + pages);
+    }
 
-            NexusRepositoryDto repository = r.some();
+    private void onEvent(NexusDao dao, HasNexusEvent e) throws SQLException {
 
-            Option<ArtifactDto> a = dao.findArtifact(repository.uuid, event.artifactId);
+        NexusEvent event = e.event;
 
-            UUID uuid;
+        String repositoryId = event.guid.replaceAll("^" + quote(server.url.toASCIIString()) + "/content/repositories/([-a-zA-Z0-9]*)/.*", "$1");
 
-            if(a.isNone()) {
-                System.out.println("New artifact: " + event.artifactId);
-                uuid = dao.insertArtifact(repository.uuid, event.artifactId);
-            }
-            else {
-                ArtifactDto artifact = a.some();
-
-                System.out.println("Updated artifact: " + event.artifactId);
-//                    dao.updateSnapshotTimestamp(artifact.uuid, newSnapshotEvent.snapshotTimestamp);
-
-                uuid = artifact.uuid;
-            }
-
-            if (event instanceof NewSnapshotEvent) {
-                NewSnapshotEvent newSnapshotEvent = (NewSnapshotEvent) event;
-
-                dao.insertNewSnapshotEvent(uuid, event.guid, newSnapshotEvent.snapshotTimestamp,
-                        newSnapshotEvent.buildNumber, newSnapshotEvent.url.toASCIIString());
-            } else if (event instanceof NewReleaseEvent) {
-                NewReleaseEvent nre = (NewReleaseEvent) event;
-
-                dao.insertNewReleaseEvent(uuid, event.guid, nre.url.toASCIIString());
-            } else {
-                System.out.println("Unknown event type: " + event.getClass().getName());
-            }
+        if(repositoryId.length() == 0) {
+            return;
         }
 
-        System.out.println("Timeline updated. New=" + newEvents + ", old=" + oldEvents);
+        Option<NexusRepositoryDto> r = dao.findRepository(server.uuid, repositoryId);
+
+        if(r.isNone()) {
+            return;
+        }
+
+        NexusRepositoryDto repository = r.some();
+
+        Option<ArtifactDto> a = dao.findArtifact(repository.uuid, event.artifactId);
+
+        UUID uuid;
+
+        if(a.isNone()) {
+            System.out.println("New artifact: " + event.artifactId);
+            uuid = dao.insertArtifact(repository.uuid, event.artifactId);
+        }
+        else {
+            ArtifactDto artifact = a.some();
+
+//            System.out.println("Updated artifact: " + event.artifactId);
+
+            uuid = artifact.uuid;
+        }
+
+        if (e instanceof NewSnapshotEvent) {
+            NewSnapshotEvent newSnapshotEvent = (NewSnapshotEvent) e;
+
+            dao.insertNewSnapshotEvent(uuid, event.guid, event.creator, event.date,
+                    newSnapshotEvent.snapshotTimestamp, newSnapshotEvent.buildNumber,
+                    newSnapshotEvent.url.toASCIIString());
+        } else if (e instanceof NewReleaseEvent) {
+            NewReleaseEvent nre = (NewReleaseEvent) e;
+
+            dao.insertNewReleaseEvent(uuid, event.guid, event.creator, event.date, nre.url.toASCIIString());
+        } else {
+            System.out.println("Unknown event type: " + event.getClass().getName());
+        }
     }
 
 //    public void act(Connection c) throws Exception {
