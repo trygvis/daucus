@@ -1,13 +1,10 @@
 package io.trygvis.esper.testing.gitorious;
 
-import static java.lang.System.*;
-
-import fj.data.Option;
-import org.apache.abdera.parser.ParseException;
+import fj.*;
+import fj.data.*;
+import io.trygvis.esper.testing.util.*;
+import org.apache.abdera.parser.*;
 import org.apache.commons.io.*;
-import static org.apache.commons.lang.StringUtils.*;
-import static org.codehaus.httpcache4j.HTTPMethod.*;
-
 import org.codehaus.httpcache4j.*;
 import org.codehaus.httpcache4j.cache.*;
 import org.dom4j.*;
@@ -16,19 +13,61 @@ import org.dom4j.io.*;
 import javax.xml.stream.*;
 import java.io.*;
 import java.net.*;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static fj.data.Option.*;
+import static org.apache.commons.lang.StringUtils.*;
 
 public class GitoriousClient {
     public static final STAXEventReader xmlReader = new STAXEventReader();
     public final String baseUrl;
-    private final HTTPCache http;
+    private final HttpClient<List<GitoriousProjectXml>> http;
     private final String projectsUri;
-    private final GitoriousAtomFeedParser parser = new GitoriousAtomFeedParser();
+    private final GitoriousAtomFeedParser parser;
 
-    public GitoriousClient(HTTPCache http, String baseUrl) throws URISyntaxException {
-        this.http = http;
+    private final F<HTTPResponse, Option<List<GitoriousProjectXml>>> parseDocument = new F<HTTPResponse, Option<List<GitoriousProjectXml>>>() {
+        @Override
+        public Option<List<GitoriousProjectXml>> f(HTTPResponse response) {
+            MIMEType mimeType = MIMEType.valueOf(trimToEmpty(response.getHeaders().getFirstHeaderValue("Content-Type")));
+            if (!mimeType.getPrimaryType().equals("application") || !mimeType.getSubType().equals("xml")) {
+                System.out.println("Unexpected mime type, probably at the end of the list: " + mimeType);
+                return none();
+            }
+
+            byte[] bytes;
+
+            try {
+                bytes = IOUtils.toByteArray(response.getPayload().getInputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return none();
+            }
+
+            try {
+                Document doc = xmlReader.readDocument(new ByteArrayInputStream(bytes));
+
+                List<GitoriousProjectXml> list = GitoriousProjectXml.projectsFromXml(doc.getRootElement());
+
+                System.out.println("Parsed out " + list.size() + " projects.");
+
+                return some(list);
+            } catch (XMLStreamException e) {
+                System.out.println("Unable to parse XML.");
+                System.out.println(new String(bytes));
+                return none();
+            }
+        }
+    };
+
+    public GitoriousClient(HTTPCache cache, String baseUrl, GitoriousAtomFeedParser parser) throws URISyntaxException {
+        this.http = new HttpClient<>(cache, parseDocument);
         this.baseUrl = new URI(baseUrl).toASCIIString();
+        this.parser = parser;
         this.projectsUri = baseUrl + "/projects.xml";
     }
 
@@ -38,40 +77,20 @@ public class GitoriousClient {
 
         Set<GitoriousProjectXml> all = new HashSet<>();
         while (true) {
-            System.out.println("Fetching projects, page=" + page);
-            long start = currentTimeMillis();
-            HTTPResponse response = http.execute(new HTTPRequest(new URI(projectsUri + "?page=" + page), GET));
-            long end = currentTimeMillis();
-            System.out.println("Fetched in " + (end - start) + "ms.");
+            Option<List<GitoriousProjectXml>> option = http.fetch(new URI(projectsUri + "?page=" + page));
 
-            if (!response.getStatus().equals(Status.OK)) {
-                System.out.println("Got non-200 status from server: " + response.getStatus());
+            if (option.isNone()) {
+                return all;
+            }
+
+            List<GitoriousProjectXml> list = option.some();
+
+            // This indicates the last page.
+            if (list.size() == 0) {
                 break;
             }
 
-            MIMEType mimeType = MIMEType.valueOf(trimToEmpty(response.getHeaders().getFirstHeaderValue("Content-Type")));
-            if (!mimeType.getPrimaryType().equals("application") || !mimeType.getSubType().equals("xml")) {
-                System.out.println("Unexpected mime type, probably at the end of the list: " + mimeType);
-                break;
-            }
-
-            byte[] bytes = IOUtils.toByteArray(response.getPayload().getInputStream());
-            try {
-                Document doc = xmlReader.readDocument(new ByteArrayInputStream(bytes));
-
-                List<GitoriousProjectXml> list = GitoriousProjectXml.projectsFromXml(doc.getRootElement());
-
-                // This indicates the last page.
-                if (list.size() == 0) {
-                    break;
-                }
-
-                System.out.println("Parsed out " + list.size() + " projects.");
-                all.addAll(list);
-            } catch (XMLStreamException e) {
-                System.out.println("Unable to parse XML.");
-                System.out.println(new String(bytes));
-            }
+            all.addAll(list);
 
             page++;
         }
@@ -84,19 +103,20 @@ public class GitoriousClient {
     }
 
     public Iterable<GitoriousEvent> fetchGitoriousEvents(GitoriousRepositoryDto repository, Option<Date> lastUpdate) throws SQLException, ParseException {
-        System.out.println("Fetching " + repository.atomFeed);
-
-        long start = currentTimeMillis();
-        HTTPResponse response = http.execute(new HTTPRequest(repository.atomFeed, HTTPMethod.GET));
-        long end = currentTimeMillis();
-        System.out.println("Fetched in " + (end - start) + "ms");
-
-        // Use the server's timestamp
-        Date responseDate = response.getDate().toDate();
-
-        System.out.println("responseDate = " + responseDate);
-
-        return parser.parseStream(response.getPayload().getInputStream(), lastUpdate, repository.projectSlug, repository.name);
+        throw new RuntimeException("re-implement");
+//        System.out.println("Fetching " + repository.atomFeed);
+//
+//        long start = currentTimeMillis();
+//        HTTPResponse response = http.execute(new HTTPRequest(repository.atomFeed, HTTPMethod.GET));
+//        long end = currentTimeMillis();
+//        System.out.println("Fetched in " + (end - start) + "ms");
+//
+//        // Use the server's timestamp
+//        Date responseDate = response.getDate().toDate();
+//
+//        System.out.println("responseDate = " + responseDate);
+//
+//        return parser.parseStream(response.getPayload().getInputStream(), lastUpdate, repository.projectSlug, repository.name);
     }
 }
 
@@ -109,7 +129,7 @@ class GitoriousProjectXml implements Comparable<GitoriousProjectXml> {
         this.repositories = repositories;
     }
 
-    public static GitoriousProjectXml fromXml(Element project) throws URISyntaxException {
+    public static GitoriousProjectXml fromXml(Element project) {
         String slug = trimToNull(project.elementText("slug"));
 
         if (slug == null) {
@@ -144,7 +164,7 @@ class GitoriousProjectXml implements Comparable<GitoriousProjectXml> {
         return new GitoriousProjectXml(slug, repositoryList);
     }
 
-    public static List<GitoriousProjectXml> projectsFromXml(Element root) throws URISyntaxException {
+    public static List<GitoriousProjectXml> projectsFromXml(Element root) {
         List<GitoriousProjectXml> projects = new ArrayList<>();
         @SuppressWarnings("unchecked") List<Element> elements = (List<Element>) root.elements("project");
         for (Element project : elements) {
@@ -189,7 +209,7 @@ class GitoriousRepositoryXml implements Comparable<GitoriousRepositoryXml> {
         this.name = name;
     }
 
-    public static GitoriousRepositoryXml fromXml(String project, Element element) throws URISyntaxException {
+    public static GitoriousRepositoryXml fromXml(String project, Element element) {
         String name = trimToNull(element.elementText("name"));
 
         if (name == null) {

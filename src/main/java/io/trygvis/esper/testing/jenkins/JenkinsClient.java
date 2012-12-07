@@ -3,31 +3,66 @@ package io.trygvis.esper.testing.jenkins;
 import fj.*;
 import fj.data.*;
 import io.trygvis.esper.testing.*;
-import static io.trygvis.esper.testing.Util.*;
 import io.trygvis.esper.testing.jenkins.JenkinsJobXml.*;
 import io.trygvis.esper.testing.util.*;
-import static org.apache.commons.lang.StringUtils.*;
+import org.apache.abdera.*;
+import org.apache.abdera.model.*;
+import org.apache.abdera.parser.*;
+import org.codehaus.httpcache4j.*;
 import org.codehaus.httpcache4j.cache.*;
+import org.jdom2.Document;
+import org.jdom2.Element;
 import org.jdom2.*;
+import org.joda.time.DateTime;
 
+import javax.xml.stream.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.List;
-import javax.xml.stream.*;
+
+import static fj.data.Option.*;
+import static io.trygvis.esper.testing.Util.*;
+import static org.apache.commons.lang.StringUtils.*;
 
 public class JenkinsClient {
     private final XmlHttpClient xmlHttpClient;
+    private final HttpClient<List<JenkinsEntryXml>> jenkinsEntryXmlClient;
+    private final Parser parser;
 
-    public JenkinsClient(HTTPCache http) {
+    public JenkinsClient(HTTPCache http, Abdera abdera) {
         this.xmlHttpClient = new XmlHttpClient(http);
+        this.parser = abdera.getParser();
+
+        jenkinsEntryXmlClient = new HttpClient<>(http, new F<HTTPResponse, Option<List<JenkinsEntryXml>>>() {
+            public Option<List<JenkinsEntryXml>> f(HTTPResponse response) {
+                Feed feed = (Feed) parser.parse(response.getPayload().getInputStream()).getRoot();
+
+                List<JenkinsEntryXml> list = new ArrayList<>();
+
+                for (Entry entry : feed.getEntries()) {
+                    try {
+                        list.add(new JenkinsEntryXml(entry.getIdElement().getText(), new DateTime(entry.getPublished().getTime()), entry.getAlternateLinkResolvedHref().toURI()));
+                    } catch (URISyntaxException ignore) {
+                    }
+                }
+
+                return some(list);
+            }
+        });
+    }
+
+    public Option<List<JenkinsEntryXml>> fetchRss(URI uri) throws IOException {
+        return jenkinsEntryXmlClient.fetch(uri);
     }
 
     public JenkinsXml fetchJobs(URI uri) throws XMLStreamException, JDOMException, IOException {
         Option<Document> d = xmlHttpClient.fetch(uri);
 
-        if(d.isNone()) {
-            return new JenkinsXml(Option.<String>none(), Option.<String>none(), Option.<String>none(), Collections.<JenkinsJobEntryXml>emptyList());
+        if (d.isNone()) {
+            Option<String> n = Option.none();
+
+            return new JenkinsXml(n, n, n, Collections.<JenkinsJobEntryXml>emptyList());
         }
 
         Element root = d.some().getRootElement();
@@ -54,7 +89,7 @@ public class JenkinsClient {
     public Option<JenkinsJobXml> fetchJob(URI uri) throws IOException, JDOMException, XMLStreamException {
         Option<Document> d = xmlHttpClient.fetch(uri);
 
-        if(d.isNone()) {
+        if (d.isNone()) {
             return Option.none();
         }
 
@@ -64,13 +99,25 @@ public class JenkinsClient {
 
         switch (name) {
             case "freeStyleProject":
-                return Option.some(JenkinsJobXml.parse(uri, JenkinsJobType.FREE_STYLE, root));
+                return some(JenkinsJobXml.parse(uri, JenkinsJobType.FREE_STYLE, root));
             case "mavenModuleSet":
-                return Option.some(JenkinsJobXml.parse(uri, JenkinsJobType.MAVEN, root));
+                return some(JenkinsJobXml.parse(uri, JenkinsJobType.MAVEN, root));
             default:
                 System.out.println("Unknown project type: " + name);
                 return Option.none();
         }
+    }
+}
+
+class JenkinsEntryXml {
+    public final String id;
+    public final DateTime timestamp;
+    public final URI uri;
+
+    JenkinsEntryXml(String id, DateTime timestamp, URI uri) {
+        this.id = id;
+        this.timestamp = timestamp;
+        this.uri = uri;
     }
 }
 
@@ -145,11 +192,11 @@ class JenkinsJobXml {
                 Option<Integer> number = childText(element, "number").bind(Util.parseInt);
                 Option<URI> url = childText(element, "url").bind(Util.parseUri);
 
-                if(number.isNone() || url.isNone()) {
+                if (number.isNone() || url.isNone()) {
                     return Option.none();
                 }
 
-                return Option.some(new BuildXml(number.some(), url.some()));
+                return some(new BuildXml(number.some(), url.some()));
             }
         };
 

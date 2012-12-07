@@ -18,8 +18,7 @@ public class GitoriousAtomFeedParser {
     public final Parser parser;
     public static final STAXEventReader xmlReader = new STAXEventReader();
 
-    public GitoriousAtomFeedParser() {
-        Abdera abdera = new Abdera();
+    public GitoriousAtomFeedParser(Abdera abdera) {
         parser = abdera.getParser();
     }
 

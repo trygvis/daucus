@@ -1,35 +1,35 @@
 package io.trygvis.esper.testing.jenkins;
 
-import fj.*;
-import fj.data.*;
+import com.jolbox.bonecp.*;
 import io.trygvis.esper.testing.*;
 import io.trygvis.esper.testing.object.*;
 import io.trygvis.esper.testing.util.*;
-import static java.lang.Thread.currentThread;
+import org.apache.abdera.*;
 import org.codehaus.httpcache4j.cache.*;
-import org.joda.time.*;
 
-import java.net.URI;
-import java.util.HashSet;
+import java.sql.*;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;
 
+import static io.trygvis.esper.testing.object.ObjectUtil.*;
+import static java.lang.Thread.*;
+
 public class JenkinsImporter {
     public static void main(String[] args) throws Exception {
-        Config config = Config.loadFromDisk();
-
+        final Config config = Config.loadFromDisk();
+        final BoneCPDataSource boneCp = config.createBoneCp();
         HTTPCache httpCache = HttpClient.createHttpCache(config);
-
-        final JenkinsClient jenkinsClient = new JenkinsClient(httpCache);
-
-        HashSet<URI> servers = new HashSet<>();
-        servers.add(URI.create("https://builds.apache.org"));
-
+        Abdera abdera = config.createAbdera();
+        final JenkinsClient jenkinsClient = new JenkinsClient(httpCache, abdera);
         final ScheduledThreadPoolExecutor executorService = new ScheduledThreadPoolExecutor(5);
 
-        ObjectManager<URI, JenkinsServer> serverManager = new ObjectManager<>("JenkinsServer", servers, new ObjectFactory<URI, JenkinsServer>() {
-            public JenkinsServer create(URI uri) {
-                return new JenkinsServer(executorService, jenkinsClient, uri);
+        HashSet<JenkinsServerDto> servers = new HashSet<>();
+
+        ObjectManager<JenkinsServerDto, ActorRef<JenkinsServer2>> serverManager = new ObjectManager<>("JenkinsServer", servers, new ObjectFactory<JenkinsServerDto, ActorRef<JenkinsServer2>>() {
+            public ActorRef<JenkinsServer2> create(JenkinsServerDto server) {
+                String name = "Jenkins: " + server.uri;
+                return threadedActor(name, config.jenkinsUpdateInterval, boneCp, name, new JenkinsServer2(jenkinsClient, server.uri));
             }
         });
 
@@ -37,16 +37,28 @@ public class JenkinsImporter {
         config.addShutdownHook(currentThread(), shouldRun);
 
         while (shouldRun.get()) {
-            for (JenkinsServer server : serverManager.getObjects()) {
-                Option<P2<JenkinsXml, LocalDateTime>> o = server.getJenkins();
+            try {
+                java.util.List<JenkinsServerDto> newKeys;
 
-                if (o.isSome()) {
-                    P2<JenkinsXml, LocalDateTime> p = o.some();
-                    System.out.println("Last update: " + p._2() + ", jobs=" + p._1().jobs.size());
-                } else {
-                    System.out.println("Never updated: url=" + server.uri);
+                try (Connection c = boneCp.getConnection()) {
+                    newKeys = new JenkinsDao(c).selectServer();
                 }
+
+                serverManager.update(newKeys);
+            } catch (SQLException e) {
+                e.printStackTrace(System.out);
             }
+
+//            for (ActorRef<JenkinsServer2> server : serverManager.getObjects()) {
+//                Option<P2<JenkinsXml, LocalDateTime>> o = server.underlying().getJenkins();
+//
+//                if (o.isSome()) {
+//                    P2<JenkinsXml, LocalDateTime> p = o.some();
+//                    System.out.println("Last update: " + p._2() + ", jobs=" + p._1().jobs.size());
+//                } else {
+//                    System.out.println("Never updated: url=" + server.uri);
+//                }
+//            }
 
             synchronized (shouldRun) {
                 shouldRun.wait(1000);

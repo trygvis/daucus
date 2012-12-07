@@ -3,8 +3,6 @@ package io.trygvis.esper.testing.util;
 import fj.*;
 import fj.data.*;
 import io.trygvis.esper.testing.*;
-import static java.lang.System.*;
-
 import org.apache.http.conn.scheme.*;
 import org.apache.http.impl.client.*;
 import org.apache.http.impl.conn.tsccm.*;
@@ -12,43 +10,58 @@ import org.apache.http.params.*;
 import org.codehaus.httpcache4j.*;
 import org.codehaus.httpcache4j.cache.*;
 import org.codehaus.httpcache4j.resolver.*;
-import org.jdom2.*;
 
 import java.io.*;
 import java.net.*;
-import javax.xml.stream.*;
+
+import static java.lang.System.*;
 
 public class HttpClient<A> {
 
     private final HTTPCache http;
-    private final F<InputStream, Option<A>> f;
+    private final F<HTTPResponse, Option<A>> f;
 
-    public HttpClient(HTTPCache http, F<InputStream, Option<A>> f) {
+    public HttpClient(HTTPCache http, F<HTTPResponse, Option<A>> f) {
         this.http = http;
         this.f = f;
+    }
+
+    public static <A> HttpClient<A> httpClient(HTTPCache http, final F<InputStream, Option<A>> f) {
+        return new HttpClient<>(http, new F<HTTPResponse, Option<A>>() {
+            @Override
+            public Option<A> f(HTTPResponse response) {
+                return f.f(response.getPayload().getInputStream());
+            }
+        });
     }
 
     public Option<A> fetch(URI uri) throws IOException {
         HTTPResponse response = null;
 
         try {
+            System.out.println("Fetching " + uri);
+            long start = currentTimeMillis();
             response = http.execute(new HTTPRequest(uri));
+            long end = currentTimeMillis();
+            int code = response.getStatus().getCode();
+            System.out.println("Fetched in " + (end - start) + "ms. Status: " + code);
 
-            if (response.getStatus().getCode() != 200) {
-                throw new IOException("Did not get 200 back, got " + response.getStatus().getCode());
+            if (code != 200) {
+                throw new IOException("Did not get 200 back, got " + code);
             }
 
-//            return getDocument(response.getPayload().getInputStream());
-            return f.f(response.getPayload().getInputStream());
+            return f.f(response);
         } catch (HTTPException e) {
             throw new IOException(e);
         } finally {
             if (response != null) {
-                response.consume();
+                try {
+                    response.consume();
+                } catch (Exception ignore) {
+                }
             }
         }
     }
-
 
     public static HTTPCache createHttpCache(Config config) {
         SchemeRegistry schemeRegistry = new SchemeRegistry();

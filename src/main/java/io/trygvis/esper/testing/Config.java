@@ -4,6 +4,8 @@ import com.jolbox.bonecp.*;
 import fj.data.*;
 import static fj.data.Option.*;
 import static org.apache.commons.lang.StringUtils.*;
+
+import org.apache.abdera.*;
 import org.slf4j.*;
 
 import java.io.*;
@@ -40,13 +42,17 @@ public class Config {
 
     public final long nexusUpdateInterval;
 
+    public final long jenkinsUpdateInterval;
+
     public final String databaseUrl;
     public final String databaseUsername;
     public final String databasePassword;
 
-    public Config(GitoriousConfig gitorious, long nexusUpdateInterval, String databaseUrl, String databaseUsername, String databasePassword) {
+    public Config(GitoriousConfig gitorious, long nexusUpdateInterval, long jenkinsUpdateInterval, String databaseUrl,
+                  String databaseUsername, String databasePassword) {
         this.gitorious = gitorious;
         this.nexusUpdateInterval = nexusUpdateInterval;
+        this.jenkinsUpdateInterval = jenkinsUpdateInterval;
         this.databaseUrl = databaseUrl;
         this.databaseUsername = databaseUsername;
         this.databasePassword = databasePassword;
@@ -62,6 +68,7 @@ public class Config {
 
         return new Config(GitoriousConfig.fromProperties(properties),
                 getProperty(properties, "nexus.updateInterval").bind(parseInt).valueE("Missing required property: nexus.updateInterval") * 1000,
+                getProperty(properties, "jenkins.updateInterval").bind(parseInt).valueE("Missing required property: jenkins.updateInterval") * 1000,
                 trimToNull(properties.getProperty("database.url")),
                 trimToNull(properties.getProperty("database.username")),
                 trimToNull(properties.getProperty("database.password")));
@@ -79,8 +86,13 @@ public class Config {
             setUsername(databaseUsername);
             setPassword(databasePassword);
             setDefaultAutoCommit(false);
+            setCloseConnectionWatch(true);
             setMaxConnectionsPerPartition(10);
         }});
+    }
+
+    public Abdera createAbdera() {
+        return new Abdera();
     }
 
     public void addShutdownHook(final Thread t, final AtomicBoolean shouldRun) {

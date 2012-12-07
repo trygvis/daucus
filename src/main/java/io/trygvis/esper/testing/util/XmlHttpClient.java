@@ -14,7 +14,7 @@ public class XmlHttpClient {
 
     public XmlHttpClient(HTTPCache http) {
         final XmlParser parser = new XmlParser();
-        httpClient = new HttpClient<>(http, new F<InputStream, Option<Document>>() {
+        httpClient = HttpClient.httpClient(http, new F<InputStream, Option<Document>>() {
             public Option<Document> f(InputStream inputStream) {
                 return parser.parseDocument(inputStream);
             }

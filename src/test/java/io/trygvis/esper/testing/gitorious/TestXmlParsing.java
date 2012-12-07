@@ -2,6 +2,7 @@ package io.trygvis.esper.testing.gitorious;
 
 import fj.data.*;
 import junit.framework.*;
+import org.apache.abdera.*;
 import org.dom4j.*;
 
 import java.io.*;
@@ -25,7 +26,7 @@ public class TestXmlParsing extends TestCase {
     }
 
     public void testEventParsing() throws Exception {
-        GitoriousAtomFeedParser parser = new GitoriousAtomFeedParser();
+        GitoriousAtomFeedParser parser = new GitoriousAtomFeedParser(new Abdera());
         try (InputStream stream = getClass().getResourceAsStream("/gitorious/esper-test-project.atom")) {
 
             List<GitoriousEvent> events = parser.parseStream(stream, Option.<Date>none(), "esper-test-project", "esper-test-project");

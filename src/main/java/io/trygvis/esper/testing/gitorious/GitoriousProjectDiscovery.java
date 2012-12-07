@@ -31,8 +31,8 @@ public class GitoriousProjectDiscovery {
 
     public GitoriousProjectDiscovery(final Config config) throws Exception {
         boneCp = config.createBoneCp();
-
-        gitoriousClient = new GitoriousClient(HttpClient.createHttpCache(config), config.gitorious.url);
+        GitoriousAtomFeedParser parser = new GitoriousAtomFeedParser(config.createAbdera());
+        gitoriousClient = new GitoriousClient(HttpClient.createHttpCache(config), config.gitorious.url, parser);
 
         final ScheduledThreadPoolExecutor service = new ScheduledThreadPoolExecutor(1);
 
