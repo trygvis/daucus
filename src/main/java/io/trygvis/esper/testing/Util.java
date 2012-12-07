@@ -18,6 +18,16 @@ public class Util {
         }
     };
 
+    public static F<String, Option<Long>> parseLong = new F<String, Option<Long>>() {
+        public Option<Long> f(String s) {
+            try {
+                return some(Long.parseLong(s));
+            } catch (NumberFormatException e) {
+                return none();
+            }
+        }
+    };
+
     public static F<String, Option<URI>> parseUri = new F<String, Option<URI>>() {
         public Option<URI> f(String s) {
             try {

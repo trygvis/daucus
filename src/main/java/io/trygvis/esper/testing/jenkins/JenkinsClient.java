@@ -12,10 +12,8 @@ import org.codehaus.httpcache4j.*;
 import org.codehaus.httpcache4j.cache.*;
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.jdom2.*;
 import org.joda.time.DateTime;
 
-import javax.xml.stream.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -56,7 +54,7 @@ public class JenkinsClient {
         return jenkinsEntryXmlClient.fetch(uri);
     }
 
-    public JenkinsXml fetchJobs(URI uri) throws XMLStreamException, JDOMException, IOException {
+    public JenkinsXml fetchJobs(URI uri) throws IOException {
         Option<Document> d = xmlHttpClient.fetch(uri);
 
         if (d.isNone()) {
@@ -86,7 +84,7 @@ public class JenkinsClient {
             Option.fromNull(root.getChildText("description")), jobs);
     }
 
-    public Option<JenkinsJobXml> fetchJob(URI uri) throws IOException, JDOMException, XMLStreamException {
+    public Option<JenkinsJobXml> fetchJob(URI uri) throws IOException {
         Option<Document> d = xmlHttpClient.fetch(uri);
 
         if (d.isNone()) {
@@ -104,6 +102,29 @@ public class JenkinsClient {
                 return some(JenkinsJobXml.parse(uri, JenkinsJobType.MAVEN, root));
             default:
                 System.out.println("Unknown project type: " + name);
+                return Option.none();
+        }
+    }
+
+    public Option<JenkinsBuildXml> fetchBuild(URI uri) throws IOException {
+        Option<Document> d = xmlHttpClient.fetch(uri);
+
+        if (d.isNone()) {
+            return Option.none();
+        }
+
+        Element root = d.some().getRootElement();
+
+        String name = root.getName();
+
+        switch (name) {
+            case "matrixBuild":
+            case "matrixRun":
+            case "mavenModuleSetBuild":
+            case "freeStyleBuild":
+                return JenkinsBuildXml.parse(root);
+            default:
+                System.out.println("Unknown build type: " + name);
                 return Option.none();
         }
     }
@@ -149,7 +170,7 @@ class JenkinsJobEntryXml {
 
 class JenkinsJobXml {
     enum JenkinsJobType {
-        MAVEN, FREE_STYLE
+        MAVEN, FREE_STYLE, MATRIX
     }
 
     public final JenkinsJobType type;
@@ -219,5 +240,38 @@ class JenkinsJobXml {
             child(root, "lastFailedBuild").bind(BuildXml.buildXml),
             child(root, "lastSuccessfulBuild").bind(BuildXml.buildXml),
             child(root, "lastUnsuccessfulBuild").bind(BuildXml.buildXml));
+    }
+}
+
+class JenkinsBuildXml {
+
+    public final URI uri;
+    public final int number;
+    public final String result;
+    public final int duration;
+    public final long timestamp;
+
+    JenkinsBuildXml(URI uri, int number, String result, int duration, long timestamp) {
+        this.uri = uri;
+        this.number = number;
+        this.result = result;
+        this.duration = duration;
+        this.timestamp = timestamp;
+    }
+
+    public static Option<JenkinsBuildXml> parse(Element root) {
+
+        Option<URI> uri = childText(root, "url").bind(Util.parseUri);
+        Option<Integer> number = childText(root, "number").bind(Util.parseInt);
+        Option<String> result = childText(root, "result");
+        Option<Integer> duration = childText(root, "duration").bind(Util.parseInt);
+        Option<Long> timestamp = childText(root, "timestamp").bind(Util.parseLong);
+
+        if(uri.isNone() || number.isNone() || result.isNone() || duration.isNone() || timestamp.isNone()) {
+            System.out.println("Missing required fields.");
+            return none();
+        }
+
+        return some(new JenkinsBuildXml(uri.some(), number.some(), result.some(), duration.some(), timestamp.some()));
     }
 }

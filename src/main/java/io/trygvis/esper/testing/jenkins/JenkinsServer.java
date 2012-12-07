@@ -1,99 +1,65 @@
 package io.trygvis.esper.testing.jenkins;
 
-import fj.*;
 import fj.data.*;
-import static fj.data.Option.*;
 import io.trygvis.esper.testing.object.*;
-import org.codehaus.httpcache4j.util.*;
-import org.joda.time.*;
 
-import java.io.*;
 import java.net.*;
+import java.sql.*;
 import java.util.*;
-import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.*;
 
-public class JenkinsServer implements Closeable {
-
+public class JenkinsServer implements TransactionalActor {
     private final JenkinsClient client;
     public final URI uri;
-    private final ObjectManager<URI, JenkinsJob> jobManager;
 
-    private boolean shouldRun = true;
-    private final Thread thread;
-
-    private Option<P2<JenkinsXml, LocalDateTime>> jenkins = none();
-
-    public JenkinsServer(final ScheduledExecutorService executorService, final JenkinsClient client, URI uri) {
+    public JenkinsServer(JenkinsClient client, URI uri) {
         this.client = client;
-        this.uri = URIBuilder.fromURI(uri).addRawPath("api/xml").toURI();
-
-        jobManager = new ObjectManager<>("JenkinsJob", Collections.<URI>emptySet(), new ObjectFactory<URI, JenkinsJob>() {
-            public JenkinsJob create(URI uri) {
-                return new JenkinsJob(executorService, client, uri);
-            }
-        });
-
-        thread = new Thread(new Runnable() {
-            public void run() {
-                JenkinsServer.this.run();
-            }
-        });
-        thread.setDaemon(true);
-        thread.start();
+        this.uri = uri;
     }
 
-    public void close() throws IOException {
-        shouldRun = false;
-        thread.interrupt();
-        while (thread.isAlive()) {
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
+    public void act(Connection c) throws Exception {
+        JenkinsDao dao = new JenkinsDao(c);
+        Option<List<JenkinsEntryXml>> option = client.fetchRss(URI.create(uri.toASCIIString() + "/rssAll"));
+
+        if(option.isNone()) {
+            return;
+        }
+
+        List<JenkinsEntryXml> list = option.some();
+
+        System.out.println("Got " + list.size() + " entries.");
+
+        int i = 0;
+
+        for (JenkinsEntryXml entry : list) {
+            Option<JenkinsBuildDto> o = dao.selectBuildByEntryId(entry.id);
+
+            if(o.isSome()) {
+                System.out.println("Old event: " + entry.id);
                 continue;
             }
-        }
-    }
 
-    private void run() {
-        while (shouldRun) {
-            try {
-                doWork();
-            } catch (Exception e) {
-                e.printStackTrace(System.out);
+            System.out.println("New event: " + entry.id + ", fetching build info");
+
+            i++;
+
+            Option<JenkinsBuildXml> o2 = client.fetchBuild(URI.create(entry.uri.toASCIIString() + "/api/xml"));
+
+            if(o2.isNone()) {
+                continue;
             }
 
-            try {
-                Thread.sleep(10 * 1000);
-            } catch (InterruptedException e) {
-                // ignore
-            }
+            JenkinsBuildXml build = o2.some();
+
+            UUID uuid = dao.insertBuild(entry.id, build.uri, build.result, build.number, build.duration, build.timestamp);
+
+            System.out.println("Build inserted: " + uuid + ", i=" + i);
+
+//            if(i == 1) {
+//                break;
+//            }
         }
-    }
 
-    public Option<P2<JenkinsXml, LocalDateTime>> getJenkins() {
-        return jenkins;
-    }
-
-    public Collection<JenkinsJob> getJobs() {
-        return jobManager.getObjects();
-    }
-
-    private void doWork() {
-        try {
-            JenkinsXml xml = client.fetchJobs(uri);
-
-            List<URI> jobUris = new ArrayList<>(xml.jobs.size());
-            for (JenkinsJobEntryXml job : xml.jobs) {
-                jobUris.add(URI.create(job.url));
-            }
-
-            this.jenkins = some(P.p(xml, new LocalDateTime()));
-
-            jobManager.update(new HashSet<>(jobUris));
-        } catch (Throwable e) {
-            e.printStackTrace(System.out);
-        }
+        System.out.println("Inserted " + i + " new events.");
     }
 }

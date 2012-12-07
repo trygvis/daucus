@@ -26,10 +26,10 @@ public class JenkinsImporter {
 
         HashSet<JenkinsServerDto> servers = new HashSet<>();
 
-        ObjectManager<JenkinsServerDto, ActorRef<JenkinsServer2>> serverManager = new ObjectManager<>("JenkinsServer", servers, new ObjectFactory<JenkinsServerDto, ActorRef<JenkinsServer2>>() {
-            public ActorRef<JenkinsServer2> create(JenkinsServerDto server) {
+        ObjectManager<JenkinsServerDto, ActorRef<JenkinsServer>> serverManager = new ObjectManager<>("JenkinsServerOld", servers, new ObjectFactory<JenkinsServerDto, ActorRef<JenkinsServer>>() {
+            public ActorRef<JenkinsServer> create(JenkinsServerDto server) {
                 String name = "Jenkins: " + server.uri;
-                return threadedActor(name, config.jenkinsUpdateInterval, boneCp, name, new JenkinsServer2(jenkinsClient, server.uri));
+                return threadedActor(name, config.jenkinsUpdateInterval, boneCp, name, new JenkinsServer(jenkinsClient, server.uri));
             }
         });
 
