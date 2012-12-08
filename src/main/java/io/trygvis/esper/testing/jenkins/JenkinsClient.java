@@ -22,6 +22,7 @@ import java.util.List;
 import static fj.data.Option.*;
 import static io.trygvis.esper.testing.Util.*;
 import static io.trygvis.esper.testing.util.HttpClient.inputStreamOnly;
+import static java.lang.System.currentTimeMillis;
 import static org.apache.commons.lang.StringUtils.*;
 
 public class JenkinsClient {
@@ -36,7 +37,10 @@ public class JenkinsClient {
 
         jenkinsEntryXmlClient = new HttpClient<>(http, inputStreamOnly(new F<InputStream, Option<List<JenkinsEntryXml>>>() {
             public Option<List<JenkinsEntryXml>> f(InputStream inputStream) {
+                long start = currentTimeMillis();
                 Feed feed = (Feed) parser.parse(inputStream).getRoot();
+                long end = currentTimeMillis();
+                logger.info("Parsed document in " + (end - start) + "ms.");
 
                 List<JenkinsEntryXml> list = new ArrayList<>();
 
@@ -46,6 +50,10 @@ public class JenkinsClient {
                     } catch (URISyntaxException ignore) {
                     }
                 }
+
+                long end2 = currentTimeMillis();
+
+                logger.info("Converted document to JenkinsEntryXml in " + (end2 - end) + "ms.");
 
                 return some(list);
             }
@@ -133,8 +141,8 @@ public class JenkinsClient {
 
         switch (name) {
             case "matrixBuild":
-            case "matrixRun":
             case "mavenModuleSetBuild":
+            case "mavenBuild":
             case "freeStyleBuild":
                 return JenkinsBuildXml.parse(root);
             default:
@@ -166,8 +174,24 @@ public class JenkinsClient {
             Option<Integer> duration = childText(root, "duration").bind(Util.parseInt);
             Option<Long> timestamp = childText(root, "timestamp").bind(Util.parseLong);
 
-            if(url.isNone() || number.isNone() || result.isNone() || duration.isNone() || timestamp.isNone()) {
-                logger.warn("Missing required fields.");
+            if(url.isNone()) {
+                logger.warn("Missing required field: <url>");
+                return none();
+            }
+            if(number.isNone()) {
+                logger.warn("Missing required field: <number>");
+                return none();
+            }
+            if(result.isNone()) {
+                logger.warn("Missing required field: <result>");
+                return none();
+            }
+            if(duration.isNone()) {
+                logger.warn("Missing required field: <duration>");
+                return none();
+            }
+            if(timestamp.isNone()) {
+                logger.warn("Missing required field: <timestamp>");
                 return none();
             }
 

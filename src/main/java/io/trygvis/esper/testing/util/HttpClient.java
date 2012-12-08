@@ -16,7 +16,7 @@ import org.slf4j.*;
 import java.io.*;
 import java.net.*;
 
-import static fj.data.Option.none;
+import static fj.data.Option.*;
 import static java.lang.System.*;
 
 public class HttpClient<A> {

@@ -9,8 +9,8 @@ import java.sql.*;
 import java.util.List;
 import java.util.*;
 
-import static fj.data.Option.*;
 import static io.trygvis.esper.testing.jenkins.JenkinsClient.*;
+import static java.lang.System.*;
 
 public class JenkinsServer implements TransactionalActor {
     private static final Logger logger = LoggerFactory.getLogger(JenkinsServer.class);
@@ -23,8 +23,10 @@ public class JenkinsServer implements TransactionalActor {
     }
 
     public void act(Connection c) throws Exception {
+        long start = currentTimeMillis();
+
         JenkinsDao dao = new JenkinsDao(c);
-        Option<List<JenkinsEntryXml>> option = client.fetchRss(URI.create(server.url.toASCIIString() + "/rssAll"));
+        Option<List<JenkinsEntryXml>> option = client.fetchRss(URI.create(server.url.toASCIIString() + "/rssLatest"));
 
         if (option.isNone()) {
             return;
@@ -46,24 +48,42 @@ public class JenkinsServer implements TransactionalActor {
 
             logger.info("New build: " + entry.id + ", fetching info");
 
+            Option<JenkinsBuildXml> buildXmlOption = client.fetchBuild(apiXml(entry.url));
+
+            if (buildXmlOption.isNone()) {
+                continue;
+            }
+
+            JenkinsBuildXml build = buildXmlOption.some();
+
+            URI jobUrl = createJobUrl(build.url.toASCIIString());
+
+            Option<JenkinsJobDto> jobDtoOption = dao.selectJobByUrl(jobUrl);
+
+            UUID job;
+
+            if (jobDtoOption.isSome()) {
+                job = jobDtoOption.some().uuid;
+            } else {
+                logger.info("New job: " + jobUrl + ", fetching info");
+
+                Option<JenkinsJobXml> jobXmlOption = client.fetchJob(apiXml(jobUrl));
+
+                if (jobXmlOption.isNone()) {
+                    continue;
+                }
+
+                JenkinsJobXml xml = jobXmlOption.some();
+
+                job = dao.insertJob(server.uuid, xml.url, xml.displayName);
+
+                logger.info("New job: " + xml.displayName.orSome(xml.url.toASCIIString()) + ", uuid=" + job);
+            }
+
             i++;
 
-            Option<JenkinsBuildXml> o2 = client.fetchBuild(apiXml(entry.url));
-
-            if (o2.isNone()) {
-                continue;
-            }
-
-            JenkinsBuildXml build = o2.some();
-
-            Option<UUID> job = findJob(dao, server, build);
-
-            if (job.isNone()) {
-                continue;
-            }
-
             UUID uuid = dao.insertBuild(
-                    job.some(),
+                    job,
                     entry.id,
                     build.url,
                     build.result,
@@ -74,33 +94,9 @@ public class JenkinsServer implements TransactionalActor {
             logger.info("Build inserted: " + uuid + ", i=" + i);
         }
 
-        logger.info("Inserted " + i + " new events.");
-    }
+        long end = currentTimeMillis();
 
-    private Option<UUID> findJob(JenkinsDao dao, JenkinsServerDto server, JenkinsBuildXml build) throws SQLException {
-        URI jobUrl = createJobUrl(build.url.toASCIIString());
-
-        Option<JenkinsJobDto> o2 = dao.selectJobByUrl(jobUrl);
-
-        if (o2.isSome()) {
-            return some(o2.some().uuid);
-        }
-
-        logger.info("New job: " + jobUrl + ", fetching info");
-
-        Option<JenkinsJobXml> o = client.fetchJob(apiXml(jobUrl));
-
-        if (o.isNone()) {
-            return none();
-        }
-
-        JenkinsJobXml xml = o.some();
-
-        UUID uuid = dao.insertJob(server.uuid, xml.url, xml.displayName);
-
-        logger.info("New job: " + xml.displayName.orSome(xml.url.toASCIIString()) + ", uuid=" + uuid);
-
-        return some(uuid);
+        logger.info("Inserted " + i + " new builds in " + (end - start) + "ms.");
     }
 
     /**
@@ -108,6 +104,14 @@ public class JenkinsServer implements TransactionalActor {
      */
     public static URI createJobUrl(String u) {
         if (u.matches(".*/[-_a-zA-Z]*=.*/[0-9]*/")) {
+            u = u.substring(0, u.lastIndexOf("/"));
+            u = u.substring(0, u.lastIndexOf("/"));
+            u = u.substring(0, u.lastIndexOf("/") + 1);
+
+            return URI.create(u);
+        }
+
+        if (u.matches(".*/[.-_a-zA-Z]*\\$.*/[0-9]*/")) {
             u = u.substring(0, u.lastIndexOf("/"));
             u = u.substring(0, u.lastIndexOf("/"));
             u = u.substring(0, u.lastIndexOf("/") + 1);
