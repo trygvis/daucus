@@ -54,8 +54,11 @@ public class JenkinsDao {
                 new DateTime(rs.getTimestamp(i).getTime()));
     }
 
-    public List<JenkinsServerDto> selectServer() throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_SERVER + " FROM jenkins_server")) {
+    public List<JenkinsServerDto> selectServer(boolean enabledOnly) throws SQLException {
+        String where = "WHERE ";
+        where += enabledOnly ? "enabled=true" : "";
+
+        try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_SERVER + " FROM jenkins_server " + where)) {
             ResultSet rs = s.executeQuery();
 
             List<JenkinsServerDto> servers = new ArrayList<>();

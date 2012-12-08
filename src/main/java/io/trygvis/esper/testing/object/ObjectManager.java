@@ -1,9 +1,13 @@
 package io.trygvis.esper.testing.object;
 
+import org.slf4j.*;
+
 import java.io.*;
 import java.util.*;
 
 public class ObjectManager<K, V extends Closeable> implements Closeable {
+    private static final Logger logger = LoggerFactory.getLogger(ObjectManager.class);
+
     private final String type;
     private final ObjectFactory<K, V> objectFactory;
     private Map<K, V> objects = new HashMap<>();
@@ -28,7 +32,7 @@ public class ObjectManager<K, V extends Closeable> implements Closeable {
 
         for (K k : gone) {
             try {
-                System.out.println("Removing " + type + " with id=" + k);
+                logger.debug("Removing " + type + " with id=" + k);
                 objects.remove(k).close();
             } catch (IOException e) {
                 e.printStackTrace(System.out);
@@ -36,14 +40,14 @@ public class ObjectManager<K, V extends Closeable> implements Closeable {
         }
 
         for (K k : found) {
-            System.out.println("Adding " + type + " with id=" + k);
+            logger.debug("Adding " + type + " with id=" + k);
             objects.put(k, objectFactory.create(k));
         }
     }
 
     public synchronized void close() throws IOException {
         if (closed) {
-            System.out.println("Already closed: type=" + type);
+            logger.warn("Already closed: type=" + type);
             return;
         }
         update(Collections.<K>emptyList());

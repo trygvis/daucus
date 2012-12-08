@@ -10,6 +10,7 @@ import org.apache.http.params.*;
 import org.codehaus.httpcache4j.*;
 import org.codehaus.httpcache4j.cache.*;
 import org.codehaus.httpcache4j.resolver.*;
+import org.slf4j.*;
 
 import java.io.*;
 import java.net.*;
@@ -17,6 +18,8 @@ import java.net.*;
 import static java.lang.System.*;
 
 public class HttpClient<A> {
+
+    private static final Logger logger = LoggerFactory.getLogger(HttpClient.class);
 
     private final HTTPCache http;
     private final F<HTTPResponse, Option<A>> f;
@@ -26,25 +29,25 @@ public class HttpClient<A> {
         this.f = f;
     }
 
-    public static <A> HttpClient<A> httpClient(HTTPCache http, final F<InputStream, Option<A>> f) {
-        return new HttpClient<>(http, new F<HTTPResponse, Option<A>>() {
+    public static <A> F<HTTPResponse, Option<A>> inputStreamOnly(final F<InputStream, Option<A>> f) {
+        return new F<HTTPResponse, Option<A>>() {
             @Override
             public Option<A> f(HTTPResponse response) {
                 return f.f(response.getPayload().getInputStream());
             }
-        });
+        };
     }
 
     public Option<A> fetch(URI uri) throws IOException {
         HTTPResponse response = null;
 
         try {
-            System.out.println("Fetching " + uri);
-            long start = currentTimeMillis();
+//            logger.debug("Fetching " + uri);
+//            long start = currentTimeMillis();
             response = http.execute(new HTTPRequest(uri));
-            long end = currentTimeMillis();
+//            long end = currentTimeMillis();
             int code = response.getStatus().getCode();
-            System.out.println("Fetched in " + (end - start) + "ms. Status: " + code);
+//            logger.debug("Fetched in " + (end - start) + "ms. Status: " + code);
 
             if (code != 200) {
                 throw new IOException("Did not get 200 back, got " + code);
@@ -88,7 +91,7 @@ public class HttpClient<A> {
         }
 
         public HTTPResponse resolve(HTTPRequest request) throws IOException {
-            System.out.println(request.getRequestURI() + ": Executing");
+            logger.debug(request.getRequestURI() + ": Executing");
             long start = currentTimeMillis();
             Status status = null;
             try {
@@ -106,7 +109,7 @@ public class HttpClient<A> {
                     s += "with exception";
                 }
 
-                System.out.println(s);
+                logger.debug(s);
             }
         }
 

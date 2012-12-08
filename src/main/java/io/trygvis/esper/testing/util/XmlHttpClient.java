@@ -6,22 +6,16 @@ import org.codehaus.httpcache4j.cache.*;
 import org.jdom2.*;
 
 import java.io.*;
-import java.net.*;
 
-public class XmlHttpClient {
-
-    private final HttpClient<Document> httpClient;
+public class XmlHttpClient extends HttpClient<Document> {
 
     public XmlHttpClient(HTTPCache http) {
-        final XmlParser parser = new XmlParser();
-        httpClient = HttpClient.httpClient(http, new F<InputStream, Option<Document>>() {
+        super(http, HttpClient.inputStreamOnly(new F<InputStream, Option<Document>>() {
+            final XmlParser parser = new XmlParser();
+
             public Option<Document> f(InputStream inputStream) {
                 return parser.parseDocument(inputStream);
             }
-        });
-    }
-
-    public Option<Document> fetch(URI uri) throws IOException {
-        return httpClient.fetch(uri);
+        }));
     }
 }

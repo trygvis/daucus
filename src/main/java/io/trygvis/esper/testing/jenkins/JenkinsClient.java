@@ -13,6 +13,7 @@ import org.codehaus.httpcache4j.cache.*;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.joda.time.DateTime;
+import org.slf4j.*;
 
 import java.io.*;
 import java.net.*;
@@ -24,6 +25,7 @@ import static io.trygvis.esper.testing.Util.*;
 import static org.apache.commons.lang.StringUtils.*;
 
 public class JenkinsClient {
+    private static final Logger logger = LoggerFactory.getLogger(JenkinsClient.class);
     private final XmlHttpClient xmlHttpClient;
     private final HttpClient<List<JenkinsEntryXml>> jenkinsEntryXmlClient;
     private final Parser parser;
@@ -101,7 +103,7 @@ public class JenkinsClient {
             case "mavenModuleSet":
                 return some(JenkinsJobXml.parse(uri, JenkinsJobType.MAVEN, root));
             default:
-                System.out.println("Unknown project type: " + name);
+                logger.warn("Unknown project type: " + name);
                 return Option.none();
         }
     }
@@ -124,11 +126,43 @@ public class JenkinsClient {
             case "freeStyleBuild":
                 return JenkinsBuildXml.parse(root);
             default:
-                System.out.println("Unknown build type: " + name);
+                logger.warn("Unknown build type: " + name);
                 return Option.none();
         }
     }
-}
+
+    public static class JenkinsBuildXml {
+
+        public final URI uri;
+        public final int number;
+        public final String result;
+        public final int duration;
+        public final long timestamp;
+
+        JenkinsBuildXml(URI uri, int number, String result, int duration, long timestamp) {
+            this.uri = uri;
+            this.number = number;
+            this.result = result;
+            this.duration = duration;
+            this.timestamp = timestamp;
+        }
+
+        public static Option<JenkinsBuildXml> parse(Element root) {
+
+            Option<URI> uri = childText(root, "url").bind(Util.parseUri);
+            Option<Integer> number = childText(root, "number").bind(Util.parseInt);
+            Option<String> result = childText(root, "result");
+            Option<Integer> duration = childText(root, "duration").bind(Util.parseInt);
+            Option<Long> timestamp = childText(root, "timestamp").bind(Util.parseLong);
+
+            if(uri.isNone() || number.isNone() || result.isNone() || duration.isNone() || timestamp.isNone()) {
+                logger.warn("Missing required fields.");
+                return none();
+            }
+
+            return some(new JenkinsBuildXml(uri.some(), number.some(), result.some(), duration.some(), timestamp.some()));
+        }
+    }}
 
 class JenkinsEntryXml {
     public final String id;
@@ -243,35 +277,3 @@ class JenkinsJobXml {
     }
 }
 
-class JenkinsBuildXml {
-
-    public final URI uri;
-    public final int number;
-    public final String result;
-    public final int duration;
-    public final long timestamp;
-
-    JenkinsBuildXml(URI uri, int number, String result, int duration, long timestamp) {
-        this.uri = uri;
-        this.number = number;
-        this.result = result;
-        this.duration = duration;
-        this.timestamp = timestamp;
-    }
-
-    public static Option<JenkinsBuildXml> parse(Element root) {
-
-        Option<URI> uri = childText(root, "url").bind(Util.parseUri);
-        Option<Integer> number = childText(root, "number").bind(Util.parseInt);
-        Option<String> result = childText(root, "result");
-        Option<Integer> duration = childText(root, "duration").bind(Util.parseInt);
-        Option<Long> timestamp = childText(root, "timestamp").bind(Util.parseLong);
-
-        if(uri.isNone() || number.isNone() || result.isNone() || duration.isNone() || timestamp.isNone()) {
-            System.out.println("Missing required fields.");
-            return none();
-        }
-
-        return some(new JenkinsBuildXml(uri.some(), number.some(), result.some(), duration.some(), timestamp.some()));
-    }
-}

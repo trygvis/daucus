@@ -1,5 +1,7 @@
 package io.trygvis.esper.testing.object;
 
+import org.slf4j.*;
+
 import javax.sql.*;
 import java.io.*;
 import java.sql.*;
@@ -16,6 +18,8 @@ public class ObjectUtil {
     }
 
     private static class TransactionalActorWrapper<A extends TransactionalActor> implements Runnable {
+        private static final Logger logger = LoggerFactory.getLogger(TransactionalActorWrapper.class);
+
         private final DataSource dataSource;
         private final String name;
         private final A actor;
@@ -47,7 +51,7 @@ public class ObjectUtil {
                     c.close();
                 }
             } catch (Throwable e) {
-                System.out.println("Exception in thread " + Thread.currentThread().getName());
+                logger.warn("Exception in thread " + Thread.currentThread().getName());
                 e.printStackTrace(System.out);
             }
         }

@@ -2,13 +2,17 @@ package io.trygvis.esper.testing.jenkins;
 
 import fj.data.*;
 import io.trygvis.esper.testing.object.*;
+import org.slf4j.*;
 
 import java.net.*;
 import java.sql.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
+
+import static io.trygvis.esper.testing.jenkins.JenkinsClient.*;
 
 public class JenkinsServer implements TransactionalActor {
+    private static final Logger logger = LoggerFactory.getLogger(JenkinsServer.class);
     private final JenkinsClient client;
     public final URI uri;
 
@@ -27,7 +31,7 @@ public class JenkinsServer implements TransactionalActor {
 
         List<JenkinsEntryXml> list = option.some();
 
-        System.out.println("Got " + list.size() + " entries.");
+        logger.info("Got " + list.size() + " entries.");
 
         int i = 0;
 
@@ -35,11 +39,11 @@ public class JenkinsServer implements TransactionalActor {
             Option<JenkinsBuildDto> o = dao.selectBuildByEntryId(entry.id);
 
             if(o.isSome()) {
-                System.out.println("Old event: " + entry.id);
+                logger.info("Old event: " + entry.id);
                 continue;
             }
 
-            System.out.println("New event: " + entry.id + ", fetching build info");
+            logger.info("New event: " + entry.id + ", fetching build info");
 
             i++;
 
@@ -53,13 +57,13 @@ public class JenkinsServer implements TransactionalActor {
 
             UUID uuid = dao.insertBuild(entry.id, build.uri, build.result, build.number, build.duration, build.timestamp);
 
-            System.out.println("Build inserted: " + uuid + ", i=" + i);
+            logger.info("Build inserted: " + uuid + ", i=" + i);
 
 //            if(i == 1) {
 //                break;
 //            }
         }
 
-        System.out.println("Inserted " + i + " new events.");
+        logger.info("Inserted " + i + " new events.");
     }
 }

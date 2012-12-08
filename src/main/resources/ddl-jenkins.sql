@@ -7,6 +7,7 @@ CREATE TABLE jenkins_server (
   uuid         CHAR(36)      NOT NULL,
   created_date TIMESTAMP     NOT NULL,
   url          VARCHAR(1000) NOT NULL,
+  enabled      BOOLEAN       NOT NULL,
   CONSTRAINT pk_jenkins_server PRIMARY KEY (uuid),
   CONSTRAINT uq_jenkins_server__url UNIQUE (url)
 );
@@ -26,7 +27,9 @@ CREATE TABLE jenkins_build (
   CONSTRAINT uq_jenkins_build__id UNIQUE (entry_id)
 );
 
--- INSERT INTO jenkins_server (uuid, url) VALUES ('782a75f6-40a4-11e2-aca6-20cf30557fa0', 'https://builds.apache.org');
-INSERT INTO jenkins_server (uuid, created_date, url) VALUES ('4c473c86-40ad-11e2-ae61-20cf30557fa0', current_timestamp, 'http://ci.jruby.org');
+INSERT INTO jenkins_server (uuid, created_date, url, enabled) VALUES
+('782a75f6-40a4-11e2-aca6-20cf30557fa0', CURRENT_TIMESTAMP, 'https://builds.apache.org', FALSE),
+('4c473c86-40ad-11e2-ae61-20cf30557fa0', CURRENT_TIMESTAMP, 'http://ci.jruby.org', FALSE),
+('518c6162-411b-11e2-b63c-20cf30557fa0', CURRENT_TIMESTAMP, 'http://www.simantics.org/jenkins', FALSE);
 
 COMMIT;

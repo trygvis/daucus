@@ -51,8 +51,4 @@ public class Daos implements Closeable {
     public void commit() throws SQLException {
         connection.commit();
     }
-
-    public static Daos lookup(DataSource dataSource) throws SQLException {
-        return new Daos(dataSource.getConnection());
-    }
 }

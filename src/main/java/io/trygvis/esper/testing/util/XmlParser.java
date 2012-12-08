@@ -1,16 +1,20 @@
 package io.trygvis.esper.testing.util;
 
 import fj.data.*;
-import static fj.data.Option.*;
-import static javax.xml.stream.XMLStreamConstants.*;
 import org.h2.util.*;
 import org.jdom2.*;
 import org.jdom2.input.*;
+import org.slf4j.*;
 
-import java.io.*;
 import javax.xml.stream.*;
+import java.io.*;
+
+import static fj.data.Option.*;
+import static javax.xml.stream.XMLStreamConstants.*;
 
 public class XmlParser {
+    private static final Logger logger = LoggerFactory.getLogger(XmlParser.class);
+
     public static boolean debugXml;
 
     private final XMLInputFactory xmlInputFactory;
@@ -29,10 +33,9 @@ public class XmlParser {
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
                 IOUtils.copy(stream, buffer);
                 byte[] bytes = buffer.toByteArray();
-                System.out.println("------------------------------------------------");
-                System.out.write(bytes);
-                System.out.println();
-                System.out.println("------------------------------------------------");
+                logger.debug("------------------------------------------------");
+                logger.debug(new String(bytes, "utf-8"));
+                logger.debug("------------------------------------------------");
                 stream = new ByteArrayInputStream(bytes);
             }
 
