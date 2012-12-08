@@ -12,7 +12,7 @@
   <!-- Gitorious spews out a few invalid cookies -->
   <logger name="org.apache.http.client.protocol.ResponseProcessCookies" level="ERROR"/>
 
-  <root level="DEBUG">
+  <root>
     <appender-ref ref="STDOUT"/>
   </root>
 </configuration>

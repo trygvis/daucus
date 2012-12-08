@@ -16,6 +16,8 @@ CREATE TABLE jenkins_build (
   uuid         CHAR(36)      NOT NULL,
   created_date TIMESTAMP     NOT NULL,
 
+  server       CHAR(36)      NOT NULL,
+
   entry_id     VARCHAR(1000) NOT NULL,
   url          VARCHAR(1000) NOT NULL,
   result       VARCHAR(100)  NOT NULL,
@@ -24,6 +26,7 @@ CREATE TABLE jenkins_build (
   timestamp    TIMESTAMP     NOT NULL,
 
   CONSTRAINT pk_jenkins_build PRIMARY KEY (UUID),
+  CONSTRAINT fk_jenkins_build__server FOREIGN KEY (server) REFERENCES jenkins_server (uuid),
   CONSTRAINT uq_jenkins_build__id UNIQUE (entry_id)
 );
 

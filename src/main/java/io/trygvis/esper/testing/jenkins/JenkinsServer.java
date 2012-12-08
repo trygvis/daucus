@@ -14,16 +14,16 @@ import static io.trygvis.esper.testing.jenkins.JenkinsClient.*;
 public class JenkinsServer implements TransactionalActor {
     private static final Logger logger = LoggerFactory.getLogger(JenkinsServer.class);
     private final JenkinsClient client;
-    public final URI uri;
+    public final JenkinsServerDto server;
 
-    public JenkinsServer(JenkinsClient client, URI uri) {
+    public JenkinsServer(JenkinsClient client, JenkinsServerDto server) {
         this.client = client;
-        this.uri = uri;
+        this.server = server;
     }
 
     public void act(Connection c) throws Exception {
         JenkinsDao dao = new JenkinsDao(c);
-        Option<List<JenkinsEntryXml>> option = client.fetchRss(URI.create(uri.toASCIIString() + "/rssAll"));
+        Option<List<JenkinsEntryXml>> option = client.fetchRss(URI.create(server.uri.toASCIIString() + "/rssAll"));
 
         if(option.isNone()) {
             return;
@@ -55,7 +55,14 @@ public class JenkinsServer implements TransactionalActor {
 
             JenkinsBuildXml build = o2.some();
 
-            UUID uuid = dao.insertBuild(entry.id, build.uri, build.result, build.number, build.duration, build.timestamp);
+            UUID uuid = dao.insertBuild(
+                    server.uuid,
+                    entry.id,
+                    build.uri,
+                    build.result,
+                    build.number,
+                    build.duration,
+                    build.timestamp);
 
             logger.info("Build inserted: " + uuid + ", i=" + i);
 

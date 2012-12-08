@@ -1,5 +1,7 @@
 package io.trygvis.esper.testing;
 
+import ch.qos.logback.classic.*;
+import ch.qos.logback.core.util.*;
 import com.jolbox.bonecp.*;
 import fj.data.*;
 import static fj.data.Option.*;

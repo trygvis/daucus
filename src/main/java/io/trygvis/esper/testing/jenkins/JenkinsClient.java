@@ -22,6 +22,7 @@ import java.util.List;
 
 import static fj.data.Option.*;
 import static io.trygvis.esper.testing.Util.*;
+import static io.trygvis.esper.testing.util.HttpClient.inputStreamOnly;
 import static org.apache.commons.lang.StringUtils.*;
 
 public class JenkinsClient {
@@ -34,9 +35,9 @@ public class JenkinsClient {
         this.xmlHttpClient = new XmlHttpClient(http);
         this.parser = abdera.getParser();
 
-        jenkinsEntryXmlClient = new HttpClient<>(http, new F<HTTPResponse, Option<List<JenkinsEntryXml>>>() {
-            public Option<List<JenkinsEntryXml>> f(HTTPResponse response) {
-                Feed feed = (Feed) parser.parse(response.getPayload().getInputStream()).getRoot();
+        jenkinsEntryXmlClient = new HttpClient<>(http, inputStreamOnly(new F<InputStream, Option<List<JenkinsEntryXml>>>() {
+            public Option<List<JenkinsEntryXml>> f(InputStream inputStream) {
+                Feed feed = (Feed) parser.parse(inputStream).getRoot();
 
                 List<JenkinsEntryXml> list = new ArrayList<>();
 
@@ -49,7 +50,7 @@ public class JenkinsClient {
 
                 return some(list);
             }
-        });
+        }));
     }
 
     public Option<List<JenkinsEntryXml>> fetchRss(URI uri) throws IOException {

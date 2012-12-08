@@ -29,7 +29,7 @@ public class JenkinsImporter {
         ObjectManager<JenkinsServerDto, ActorRef<JenkinsServer>> serverManager = new ObjectManager<>("JenkinsServerOld", servers, new ObjectFactory<JenkinsServerDto, ActorRef<JenkinsServer>>() {
             public ActorRef<JenkinsServer> create(JenkinsServerDto server) {
                 String name = "Jenkins: " + server.uri;
-                return threadedActor(name, config.jenkinsUpdateInterval, boneCp, name, new JenkinsServer(jenkinsClient, server.uri));
+                return threadedActor(name, config.jenkinsUpdateInterval, boneCp, name, new JenkinsServer(jenkinsClient, server));
             }
         });
 

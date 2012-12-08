@@ -19,7 +19,7 @@ public class JenkinsDao {
 
     private static final String JENKINS_SERVER = "uuid, created_date, url";
 
-    private static final String JENKINS_BUILD = "uuid, created_date, entry_id, url, result, number, duration, timestamp";
+    private static final String JENKINS_BUILD = "uuid, created_date, server, entry_id, url, result, number, duration, timestamp";
 
     public JenkinsDao(Connection c) {
         this.c = c;
@@ -46,6 +46,7 @@ public class JenkinsDao {
         return new JenkinsBuildDto(
                 UUID.fromString(rs.getString(i++)),
                 new DateTime(rs.getTimestamp(i++).getTime()),
+                UUID.fromString(rs.getString(i++)),
                 rs.getString(i++),
                 URI.create(rs.getString(i++)),
                 rs.getString(i++),
@@ -83,12 +84,13 @@ public class JenkinsDao {
         }
     }
 
-    public UUID insertBuild(String entryId, URI uri, String result, int number, int duration, long timestamp) throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("INSERT INTO jenkins_build(" + JENKINS_BUILD + ") VALUES(?, ?, ?, ?, ?, ?, ?, ?)")) {
+    public UUID insertBuild(UUID server, String entryId, URI uri, String result, int number, int duration, long timestamp) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("INSERT INTO jenkins_build(" + JENKINS_BUILD + ") VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
             UUID uuid = UUID.randomUUID();
             int i = 1;
             s.setString(i++, uuid.toString());
             s.setTimestamp(i++, new Timestamp(currentTimeMillis()));
+            s.setString(i++, server.toString());
             s.setString(i++, entryId);
             s.setString(i++, uri.toASCIIString());
             s.setString(i++, result);
@@ -146,6 +148,8 @@ class JenkinsJobDto {
 class JenkinsBuildDto {
     public final UUID uuid;
     public final DateTime created_date;
+    // TODO: should be job
+    public final UUID server;
     public final String entryId;
     public final URI uri;
     public final String result;
@@ -153,9 +157,10 @@ class JenkinsBuildDto {
     public final int duration;
     public final DateTime timestamp;
 
-    JenkinsBuildDto(UUID uuid, DateTime created_date, String entryId, URI uri, String result, int number, int duration, DateTime timestamp) {
+    JenkinsBuildDto(UUID uuid, DateTime created_date, UUID server, String entryId, URI uri, String result, int number, int duration, DateTime timestamp) {
         this.uuid = uuid;
         this.created_date = created_date;
+        this.server = server;
         this.entryId = entryId;
         this.uri = uri;
         this.result = result;

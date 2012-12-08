@@ -10,6 +10,7 @@ import org.apache.http.params.*;
 import org.codehaus.httpcache4j.*;
 import org.codehaus.httpcache4j.cache.*;
 import org.codehaus.httpcache4j.resolver.*;
+import org.h2.util.*;
 import org.slf4j.*;
 
 import java.io.*;
@@ -33,7 +34,12 @@ public class HttpClient<A> {
         return new F<HTTPResponse, Option<A>>() {
             @Override
             public Option<A> f(HTTPResponse response) {
-                return f.f(response.getPayload().getInputStream());
+                InputStream inputStream = response.getPayload().getInputStream();
+                try {
+                    return f.f(inputStream);
+                } finally {
+                    IOUtils.closeSilently(inputStream);
+                }
             }
         };
     }
@@ -42,12 +48,8 @@ public class HttpClient<A> {
         HTTPResponse response = null;
 
         try {
-//            logger.debug("Fetching " + uri);
-//            long start = currentTimeMillis();
             response = http.execute(new HTTPRequest(uri));
-//            long end = currentTimeMillis();
             int code = response.getStatus().getCode();
-//            logger.debug("Fetched in " + (end - start) + "ms. Status: " + code);
 
             if (code != 200) {
                 throw new IOException("Did not get 200 back, got " + code);
