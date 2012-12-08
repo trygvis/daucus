@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static fj.data.Option.fromNull;
 import static fj.data.Option.none;
 import static fj.data.Option.some;
 import static java.lang.System.currentTimeMillis;
@@ -19,7 +20,9 @@ public class JenkinsDao {
 
     private static final String JENKINS_SERVER = "uuid, created_date, url";
 
-    private static final String JENKINS_BUILD = "uuid, created_date, server, entry_id, url, result, number, duration, timestamp";
+    private static final String JENKINS_JOB = "uuid, created_date, server, url, display_name";
+
+    private static final String JENKINS_BUILD = "uuid, created_date, job, entry_id, url, result, number, duration, timestamp";
 
     public JenkinsDao(Connection c) {
         this.c = c;
@@ -33,13 +36,15 @@ public class JenkinsDao {
                 URI.create(rs.getString(i)));
     }
 
-//    private JenkinsEventDto jenkinsEvent(ResultSet rs) throws SQLException {
-//        int i = 1;
-//        return new JenkinsEventDto(
-//                UUID.fromString(rs.getString(i++)),
-//                new DateTime(rs.getTimestamp(i++).getTime()),
-//                URI.create(rs.getString(i)));
-//    }
+    private JenkinsJobDto jenkinsJob(ResultSet rs) throws SQLException {
+        int i = 1;
+        return new JenkinsJobDto(
+                UUID.fromString(rs.getString(i++)),
+                new DateTime(rs.getTimestamp(i++).getTime()),
+                UUID.fromString(rs.getString(i++)),
+                URI.create(rs.getString(i++)),
+                fromNull(rs.getString(i)));
+    }
 
     private JenkinsBuildDto jenkinsBuild(ResultSet rs) throws SQLException {
         int i = 1;
@@ -70,6 +75,34 @@ public class JenkinsDao {
         }
     }
 
+    public Option<JenkinsJobDto> selectJobByUrl(URI url) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_JOB + " FROM jenkins_job WHERE url=?")) {
+            s.setString(1, url.toASCIIString());
+            ResultSet rs = s.executeQuery();
+
+            if(!rs.next()) {
+                return none();
+            }
+
+            return some(jenkinsJob(rs));
+        }
+    }
+
+    public UUID insertJob(UUID server, URI url, Option<String> displayName) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("INSERT INTO jenkins_job(" + JENKINS_JOB + ") VALUES(?, ?, ?, ?, ?)")) {
+            UUID uuid = UUID.randomUUID();
+            int i = 1;
+            s.setString(i++, uuid.toString());
+            s.setTimestamp(i++, new Timestamp(currentTimeMillis()));
+            s.setString(i++, server.toString());
+            s.setString(i++, url.toASCIIString());
+            s.setString(i, displayName.toNull());
+            s.executeUpdate();
+
+            return uuid;
+        }
+    }
+
     public Option<JenkinsBuildDto> selectBuildByEntryId(String id) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_BUILD + " FROM jenkins_build WHERE entry_id=?")) {
             int i = 1;
@@ -84,7 +117,7 @@ public class JenkinsDao {
         }
     }
 
-    public UUID insertBuild(UUID server, String entryId, URI uri, String result, int number, int duration, long timestamp) throws SQLException {
+    public UUID insertBuild(UUID server, String entryId, URI url, String result, int number, int duration, long timestamp) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("INSERT INTO jenkins_build(" + JENKINS_BUILD + ") VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
             UUID uuid = UUID.randomUUID();
             int i = 1;
@@ -92,7 +125,7 @@ public class JenkinsDao {
             s.setTimestamp(i++, new Timestamp(currentTimeMillis()));
             s.setString(i++, server.toString());
             s.setString(i++, entryId);
-            s.setString(i++, uri.toASCIIString());
+            s.setString(i++, url.toASCIIString());
             s.setString(i++, result);
             s.setInt(i++, number);
             s.setInt(i++, duration);
@@ -107,12 +140,12 @@ public class JenkinsDao {
 class JenkinsServerDto {
     public final UUID uuid;
     public final DateTime created_date;
-    public final URI uri;
+    public final URI url;
 
-    JenkinsServerDto(UUID uuid, DateTime created_date, URI uri) {
+    JenkinsServerDto(UUID uuid, DateTime created_date, URI url) {
         this.uuid = uuid;
         this.created_date = created_date;
-        this.uri = uri;
+        this.url = url;
     }
 
     @Override
@@ -134,52 +167,39 @@ class JenkinsServerDto {
 class JenkinsJobDto {
     public final UUID uuid;
     public final DateTime created_date;
-    public final URI uri;
-    public final String title;
+    public final UUID server;
+    public final URI url;
+    public final Option<String> displayName;
 
-    JenkinsJobDto(UUID uuid, DateTime created_date, URI uri, String title) {
+    JenkinsJobDto(UUID uuid, DateTime created_date, UUID server, URI url, Option<String> displayName) {
         this.uuid = uuid;
         this.created_date = created_date;
-        this.uri = uri;
-        this.title = title;
+        this.server = server;
+        this.url = url;
+        this.displayName = displayName;
     }
 }
 
 class JenkinsBuildDto {
     public final UUID uuid;
     public final DateTime created_date;
-    // TODO: should be job
-    public final UUID server;
+    public final UUID job;
     public final String entryId;
-    public final URI uri;
+    public final URI url;
     public final String result;
     public final int number;
     public final int duration;
     public final DateTime timestamp;
 
-    JenkinsBuildDto(UUID uuid, DateTime created_date, UUID server, String entryId, URI uri, String result, int number, int duration, DateTime timestamp) {
+    JenkinsBuildDto(UUID uuid, DateTime created_date, UUID job, String entryId, URI url, String result, int number, int duration, DateTime timestamp) {
         this.uuid = uuid;
         this.created_date = created_date;
-        this.server = server;
+        this.job = job;
         this.entryId = entryId;
-        this.uri = uri;
+        this.url = url;
         this.result = result;
         this.number = number;
         this.duration = duration;
-        this.timestamp = timestamp;
-    }
-}
-
-class JenkinsEventDto {
-    public final UUID uuid;
-    public final DateTime created_date;
-    public final String id;
-    public final DateTime timestamp;
-
-    JenkinsEventDto(UUID uuid, DateTime created_date, String id, DateTime timestamp) {
-        this.uuid = uuid;
-        this.created_date = created_date;
-        this.id = id;
         this.timestamp = timestamp;
     }
 }

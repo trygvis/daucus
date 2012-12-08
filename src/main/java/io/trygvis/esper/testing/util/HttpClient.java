@@ -16,6 +16,7 @@ import org.slf4j.*;
 import java.io.*;
 import java.net.*;
 
+import static fj.data.Option.none;
 import static java.lang.System.*;
 
 public class HttpClient<A> {
@@ -44,7 +45,7 @@ public class HttpClient<A> {
         };
     }
 
-    public Option<A> fetch(URI uri) throws IOException {
+    public Option<A> fetch(URI uri) {
         HTTPResponse response = null;
 
         try {
@@ -52,12 +53,14 @@ public class HttpClient<A> {
             int code = response.getStatus().getCode();
 
             if (code != 200) {
-                throw new IOException("Did not get 200 back, got " + code);
+                logger.warn("Did not get 200 back, got " + code);
+                return none();
             }
 
             return f.f(response);
         } catch (HTTPException e) {
-            throw new IOException(e);
+            logger.warn("Error while fetching: " + uri, e);
+            return none();
         } finally {
             if (response != null) {
                 try {

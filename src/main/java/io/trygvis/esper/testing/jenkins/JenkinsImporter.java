@@ -28,7 +28,7 @@ public class JenkinsImporter {
 
         ObjectManager<JenkinsServerDto, ActorRef<JenkinsServer>> serverManager = new ObjectManager<>("JenkinsServerOld", servers, new ObjectFactory<JenkinsServerDto, ActorRef<JenkinsServer>>() {
             public ActorRef<JenkinsServer> create(JenkinsServerDto server) {
-                String name = "Jenkins: " + server.uri;
+                String name = "Jenkins: " + server.url;
                 return threadedActor(name, config.jenkinsUpdateInterval, boneCp, name, new JenkinsServer(jenkinsClient, server));
             }
         });
@@ -56,7 +56,7 @@ public class JenkinsImporter {
 //                    P2<JenkinsXml, LocalDateTime> p = o.some();
 //                    System.out.println("Last update: " + p._2() + ", jobs=" + p._1().jobs.size());
 //                } else {
-//                    System.out.println("Never updated: url=" + server.uri);
+//                    System.out.println("Never updated: url=" + server.url);
 //                }
 //            }
 

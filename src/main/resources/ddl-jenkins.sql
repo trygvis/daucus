@@ -1,6 +1,7 @@
 BEGIN;
 
 DROP TABLE IF EXISTS jenkins_build;
+DROP TABLE IF EXISTS jenkins_job;
 DROP TABLE IF EXISTS jenkins_server;
 
 CREATE TABLE jenkins_server (
@@ -12,11 +13,25 @@ CREATE TABLE jenkins_server (
   CONSTRAINT uq_jenkins_server__url UNIQUE (url)
 );
 
-CREATE TABLE jenkins_build (
+CREATE TABLE jenkins_job (
   uuid         CHAR(36)      NOT NULL,
   created_date TIMESTAMP     NOT NULL,
 
   server       CHAR(36)      NOT NULL,
+
+  url          VARCHAR(1000) NOT NULL,
+  display_name VARCHAR(100),
+
+  CONSTRAINT pk_jenkins_job PRIMARY KEY (UUID),
+  CONSTRAINT fk_jenkins_job__server FOREIGN KEY (server) REFERENCES jenkins_server (uuid),
+  CONSTRAINT uq_jenkins_job__url UNIQUE (url)
+);
+
+CREATE TABLE jenkins_build (
+  uuid         CHAR(36)      NOT NULL,
+  created_date TIMESTAMP     NOT NULL,
+
+  job          CHAR(36)      NOT NULL,
 
   entry_id     VARCHAR(1000) NOT NULL,
   url          VARCHAR(1000) NOT NULL,
@@ -26,7 +41,7 @@ CREATE TABLE jenkins_build (
   timestamp    TIMESTAMP     NOT NULL,
 
   CONSTRAINT pk_jenkins_build PRIMARY KEY (UUID),
-  CONSTRAINT fk_jenkins_build__server FOREIGN KEY (server) REFERENCES jenkins_server (uuid),
+  CONSTRAINT fk_jenkins_build__job FOREIGN KEY (job) REFERENCES jenkins_job (uuid),
   CONSTRAINT uq_jenkins_build__id UNIQUE (entry_id)
 );
 

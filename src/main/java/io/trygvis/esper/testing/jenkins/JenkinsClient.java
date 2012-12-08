@@ -8,7 +8,6 @@ import io.trygvis.esper.testing.util.*;
 import org.apache.abdera.*;
 import org.apache.abdera.model.*;
 import org.apache.abdera.parser.*;
-import org.codehaus.httpcache4j.*;
 import org.codehaus.httpcache4j.cache.*;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -53,12 +52,22 @@ public class JenkinsClient {
         }));
     }
 
-    public Option<List<JenkinsEntryXml>> fetchRss(URI uri) throws IOException {
-        return jenkinsEntryXmlClient.fetch(uri);
+    public static URI apiXml(URI url) {
+        String u = url.toASCIIString();
+
+        if(u.endsWith("/")) {
+            u = u.substring(0, u.length() - 1);
+        }
+
+        return URI.create(u + "/api/xml");
     }
 
-    public JenkinsXml fetchJobs(URI uri) throws IOException {
-        Option<Document> d = xmlHttpClient.fetch(uri);
+    public Option<List<JenkinsEntryXml>> fetchRss(URI url) {
+        return jenkinsEntryXmlClient.fetch(url);
+    }
+
+    public JenkinsXml fetchJobs(URI url) {
+        Option<Document> d = xmlHttpClient.fetch(url);
 
         if (d.isNone()) {
             Option<String> n = Option.none();
@@ -71,14 +80,14 @@ public class JenkinsClient {
         List<JenkinsJobEntryXml> jobs = new ArrayList<>();
         for (Element job : root.getChildren("job")) {
             String name = trimToNull(job.getChildText("name"));
-            String url = trimToNull(job.getChildText("url"));
+            String u = trimToNull(job.getChildText("url"));
             String color = trimToNull(job.getChildText("color"));
 
-            if (name == null || url == null || color == null) {
+            if (name == null || u == null || color == null) {
                 continue;
             }
 
-            jobs.add(new JenkinsJobEntryXml(name, url, color));
+            jobs.add(new JenkinsJobEntryXml(name, u, color));
         }
 
         return new JenkinsXml(
@@ -87,8 +96,8 @@ public class JenkinsClient {
             Option.fromNull(root.getChildText("description")), jobs);
     }
 
-    public Option<JenkinsJobXml> fetchJob(URI uri) throws IOException {
-        Option<Document> d = xmlHttpClient.fetch(uri);
+    public Option<JenkinsJobXml> fetchJob(URI url) {
+        Option<Document> d = xmlHttpClient.fetch(url);
 
         if (d.isNone()) {
             return Option.none();
@@ -100,17 +109,19 @@ public class JenkinsClient {
 
         switch (name) {
             case "freeStyleProject":
-                return some(JenkinsJobXml.parse(uri, JenkinsJobType.FREE_STYLE, root));
+                return some(JenkinsJobXml.parse(url, JenkinsJobType.FREE_STYLE, root));
             case "mavenModuleSet":
-                return some(JenkinsJobXml.parse(uri, JenkinsJobType.MAVEN, root));
+                return some(JenkinsJobXml.parse(url, JenkinsJobType.MAVEN, root));
+            case "matrixProject":
+                return some(JenkinsJobXml.parse(url, JenkinsJobType.MATRIX, root));
             default:
                 logger.warn("Unknown project type: " + name);
                 return Option.none();
         }
     }
 
-    public Option<JenkinsBuildXml> fetchBuild(URI uri) throws IOException {
-        Option<Document> d = xmlHttpClient.fetch(uri);
+    public Option<JenkinsBuildXml> fetchBuild(URI url) {
+        Option<Document> d = xmlHttpClient.fetch(url);
 
         if (d.isNone()) {
             return Option.none();
@@ -134,14 +145,14 @@ public class JenkinsClient {
 
     public static class JenkinsBuildXml {
 
-        public final URI uri;
+        public final URI url;
         public final int number;
         public final String result;
         public final int duration;
         public final long timestamp;
 
-        JenkinsBuildXml(URI uri, int number, String result, int duration, long timestamp) {
-            this.uri = uri;
+        JenkinsBuildXml(URI url, int number, String result, int duration, long timestamp) {
+            this.url = url;
             this.number = number;
             this.result = result;
             this.duration = duration;
@@ -149,31 +160,30 @@ public class JenkinsClient {
         }
 
         public static Option<JenkinsBuildXml> parse(Element root) {
-
-            Option<URI> uri = childText(root, "url").bind(Util.parseUri);
+            Option<URI> url = childText(root, "url").bind(Util.parseUri);
             Option<Integer> number = childText(root, "number").bind(Util.parseInt);
             Option<String> result = childText(root, "result");
             Option<Integer> duration = childText(root, "duration").bind(Util.parseInt);
             Option<Long> timestamp = childText(root, "timestamp").bind(Util.parseLong);
 
-            if(uri.isNone() || number.isNone() || result.isNone() || duration.isNone() || timestamp.isNone()) {
+            if(url.isNone() || number.isNone() || result.isNone() || duration.isNone() || timestamp.isNone()) {
                 logger.warn("Missing required fields.");
                 return none();
             }
 
-            return some(new JenkinsBuildXml(uri.some(), number.some(), result.some(), duration.some(), timestamp.some()));
+            return some(new JenkinsBuildXml(url.some(), number.some(), result.some(), duration.some(), timestamp.some()));
         }
     }}
 
 class JenkinsEntryXml {
     public final String id;
     public final DateTime timestamp;
-    public final URI uri;
+    public final URI url;
 
-    JenkinsEntryXml(String id, DateTime timestamp, URI uri) {
+    JenkinsEntryXml(String id, DateTime timestamp, URI url) {
         this.id = id;
         this.timestamp = timestamp;
-        this.uri = uri;
+        this.url = url;
     }
 }
 
@@ -262,12 +272,12 @@ class JenkinsJobXml {
         }
     }
 
-    public static JenkinsJobXml parse(URI uri, JenkinsJobType type, Element root) {
+    public static JenkinsJobXml parse(URI url, JenkinsJobType type, Element root) {
         return new JenkinsJobXml(type,
             childText(root, "description"),
             childText(root, "displayName"),
             childText(root, "name"),
-            childText(root, "url").bind(Util.parseUri).orSome(uri),
+            childText(root, "url").bind(Util.parseUri).orSome(url),
             childText(root, "color"),
             childText(root, "buildable").bind(Util.parseBoolean).orSome(false),
             child(root, "lastBuild").bind(BuildXml.buildXml),

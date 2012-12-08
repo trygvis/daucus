@@ -3,8 +3,9 @@ package io.trygvis.esper.testing.jenkins;
 import fj.*;
 import fj.data.*;
 import static fj.data.Option.*;
+import static io.trygvis.esper.testing.jenkins.JenkinsClient.apiXml;
+
 import io.trygvis.esper.testing.object.*;
-import org.codehaus.httpcache4j.util.*;
 import org.joda.time.*;
 
 import java.io.*;
@@ -17,7 +18,7 @@ import java.util.concurrent.*;
 public class JenkinsServerOld implements Closeable {
 
     private final JenkinsClient client;
-    public final URI uri;
+    public final URI url;
     private final ObjectManager<URI, JenkinsJob> jobManager;
 
     private boolean shouldRun = true;
@@ -25,13 +26,13 @@ public class JenkinsServerOld implements Closeable {
 
     private Option<P2<JenkinsXml, LocalDateTime>> jenkins = none();
 
-    public JenkinsServerOld(final ScheduledExecutorService executorService, final JenkinsClient client, URI uri) {
+    public JenkinsServerOld(final ScheduledExecutorService executorService, final JenkinsClient client, URI url) {
         this.client = client;
-        this.uri = URIBuilder.fromURI(uri).addRawPath("api/xml").toURI();
+        this.url = apiXml(url);
 
         jobManager = new ObjectManager<>("JenkinsJob", Collections.<URI>emptySet(), new ObjectFactory<URI, JenkinsJob>() {
-            public JenkinsJob create(URI uri) {
-                return new JenkinsJob(executorService, client, uri);
+            public JenkinsJob create(URI url) {
+                return new JenkinsJob(executorService, client, url);
             }
         });
 
@@ -82,7 +83,7 @@ public class JenkinsServerOld implements Closeable {
 
     private void doWork() {
         try {
-            JenkinsXml xml = client.fetchJobs(uri);
+            JenkinsXml xml = client.fetchJobs(url);
 
             List<URI> jobUris = new ArrayList<>(xml.jobs.size());
             for (JenkinsJobEntryXml job : xml.jobs) {

@@ -1,12 +1,7 @@
 package io.trygvis.esper.testing;
 
-import ch.qos.logback.classic.*;
-import ch.qos.logback.core.util.*;
 import com.jolbox.bonecp.*;
 import fj.data.*;
-import static fj.data.Option.*;
-import static org.apache.commons.lang.StringUtils.*;
-
 import org.apache.abdera.*;
 import org.slf4j.*;
 
@@ -14,6 +9,9 @@ import java.io.*;
 import java.sql.*;
 import java.util.*;
 import java.util.concurrent.atomic.*;
+
+import static fj.data.Option.*;
+import static org.apache.commons.lang.StringUtils.*;
 
 public class Config {
     public static class GitoriousConfig {
