@@ -2,12 +2,13 @@ package io.trygvis.esper.testing.esper;
 
 import com.espertech.esper.client.*;
 import io.trygvis.esper.testing.*;
+import org.slf4j.*;
 
 import javax.sql.*;
 import java.sql.*;
 import java.util.*;
 
-public class Main2 {
+public class Test2 {
     private static Config config;
 
     @SuppressWarnings("UnusedDeclaration")
@@ -21,7 +22,7 @@ public class Main2 {
         Configuration c = new Configuration();
 
         ConfigurationDBRef configurationDBRef = new ConfigurationDBRef();
-        configurationDBRef.setDataSourceFactory(new Properties(), Main2.class.getName());
+        configurationDBRef.setDataSourceFactory(new Properties(), Test2.class.getName());
         configurationDBRef.setConnectionAutoCommit(true);
         c.addDatabaseReference("db1", configurationDBRef);
 
@@ -39,8 +40,9 @@ public class Main2 {
                 "select uuid, job, result from pattern [every timer:interval(1 sec)], " +
                 "sql:db1 ['SELECT uuid, job, result FROM jenkins_build WHERE extract(epoch from created_date) > ${VarLastTimestamp}']");
 
-        JenkinsBuildListener listener = new JenkinsBuildListener();
-        statement.addListener(listener);
+        Logger logger = LoggerFactory.getLogger("app");
+
+        statement.addListener(new GenericListener(logger));
 
         administrator.createEPL("on JenkinsBuild set VarLastTimestamp = current_timestamp()");
 
@@ -48,14 +50,6 @@ public class Main2 {
 
         while(true) {
             Thread.sleep(10000);
-        }
-    }
-}
-
-class JenkinsBuildListener implements UpdateListener {
-    public void update(EventBean[] newEvents, EventBean[] oldEvents) {
-        for (EventBean event : newEvents) {
-            System.out.println("uuid=" + event.get("uuid"));
         }
     }
 }
@@ -73,5 +67,4 @@ every build=JenkinsBuild(result='FAILURE') ->
   )
  )
 where timer:within(90 seconds))
-
 */
