@@ -26,7 +26,7 @@ public class JenkinsServer implements TransactionalActor {
         long start = currentTimeMillis();
 
         JenkinsDao dao = new JenkinsDao(c);
-        Option<List<JenkinsEntryXml>> option = client.fetchRss(URI.create(server.url.toASCIIString() + "/rssLatest"));
+        Option<List<JenkinsEntryXml>> option = client.fetchRss(URI.create(server.url.toASCIIString() + "/rssAll"));
 
         if (option.isNone()) {
             return;

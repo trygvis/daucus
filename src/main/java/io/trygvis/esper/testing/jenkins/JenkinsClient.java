@@ -140,7 +140,9 @@ public class JenkinsClient {
         String name = root.getName();
 
         switch (name) {
+            // I don't know the different between a "matrix build" and "matrix run"
             case "matrixBuild":
+            case "matrixRun":
             case "mavenModuleSetBuild":
             case "mavenBuild":
             case "freeStyleBuild":
