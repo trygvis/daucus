@@ -56,7 +56,7 @@ public class JenkinsServerActor implements TransactionalActor {
 
             JenkinsBuildXml build = buildXmlOption.some();
 
-            URI jobUrl = createJobUrl(build.url.toASCIIString());
+            URI jobUrl = extrapolateJobUrlFromBuildUrl(build.url.toASCIIString());
 
             Option<JenkinsJobDto> jobDtoOption = dao.selectJobByUrl(jobUrl);
 
@@ -102,7 +102,7 @@ public class JenkinsServerActor implements TransactionalActor {
     /**
      * This sucks, a build should really include the URL to the job.
      */
-    public static URI createJobUrl(String u) {
+    public static URI extrapolateJobUrlFromBuildUrl(String u) {
         if (!u.matches(".*/[0-9]*/")) {
             throw new RuntimeException("Not a valid build url: " + u);
         }
@@ -111,5 +111,18 @@ public class JenkinsServerActor implements TransactionalActor {
         u = u.substring(0, u.lastIndexOf("/") + 1);
 
         return URI.create(u);
+    }
+
+    public static String extrapolateMavenModuleFromMavenModuleSetUrl(String u) {
+        int i = u.lastIndexOf("/");
+        if (i == -1) {
+            throw new RuntimeException("Illegal URL");
+        }
+        u = u.substring(0, i);
+        i = u.lastIndexOf("/");
+        if (i == -1) {
+            throw new RuntimeException("Illegal URL");
+        }
+        return u.substring(0, i + 1);
     }
 }

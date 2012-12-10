@@ -18,11 +18,11 @@ public class JenkinsDao {
 
     private final Connection c;
 
-    private static final String JENKINS_SERVER = "uuid, created_date, url";
+    public static final String JENKINS_SERVER = "uuid, created_date, url";
 
-    private static final String JENKINS_JOB = "uuid, created_date, server, url, job_type, display_name";
+    public static final String JENKINS_JOB = "uuid, created_date, server, url, job_type, display_name";
 
-    private static final String JENKINS_BUILD = "uuid, created_date, job, entry_id, url, result, number, duration, timestamp";
+    public static final String JENKINS_BUILD = "uuid, created_date, job, entry_id, url, result, number, duration, timestamp";
 
     public JenkinsDao(Connection c) {
         this.c = c;
@@ -36,6 +36,14 @@ public class JenkinsDao {
                 URI.create(rs.getString(i)));
     }
 
+    public List<JenkinsServerDto> toServerList(ResultSet rs) throws SQLException {
+        List<JenkinsServerDto> list = new ArrayList<>();
+        while (rs.next()) {
+            list.add(jenkinsServer(rs));
+        }
+        return list;
+    }
+
     private JenkinsJobDto jenkinsJob(ResultSet rs) throws SQLException {
         int i = 1;
         return new JenkinsJobDto(
@@ -44,6 +52,14 @@ public class JenkinsDao {
                 UUID.fromString(rs.getString(i++)),
                 URI.create(rs.getString(i++)),
                 fromNull(rs.getString(i)));
+    }
+
+    public List<JenkinsJobDto> toJobList(ResultSet rs) throws SQLException {
+        List<JenkinsJobDto> list = new ArrayList<>();
+        while (rs.next()) {
+            list.add(jenkinsJob(rs));
+        }
+        return list;
     }
 
     private JenkinsBuildDto jenkinsBuild(ResultSet rs) throws SQLException {
@@ -65,13 +81,7 @@ public class JenkinsDao {
         where += enabledOnly ? "enabled=true" : "";
 
         try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_SERVER + " FROM jenkins_server " + where)) {
-            ResultSet rs = s.executeQuery();
-
-            List<JenkinsServerDto> servers = new ArrayList<>();
-            while (rs.next()) {
-                servers.add(jenkinsServer(rs));
-            }
-            return servers;
+            return toServerList(s.executeQuery());
         }
     }
 
