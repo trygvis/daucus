@@ -119,7 +119,9 @@ public class JenkinsClient {
             case "freeStyleProject":
                 return some(JenkinsJobXml.parse(url, JenkinsJobType.FREE_STYLE, root));
             case "mavenModuleSet":
-                return some(JenkinsJobXml.parse(url, JenkinsJobType.MAVEN, root));
+                return some(JenkinsJobXml.parse(url, JenkinsJobType.MAVEN_MODULE_SET, root));
+            case "mavenModule":
+                return some(JenkinsJobXml.parse(url, JenkinsJobType.MAVEN_MODULE, root));
             case "matrixProject":
                 return some(JenkinsJobXml.parse(url, JenkinsJobType.MATRIX, root));
             default:
@@ -241,7 +243,7 @@ class JenkinsJobEntryXml {
 
 class JenkinsJobXml {
     enum JenkinsJobType {
-        MAVEN, FREE_STYLE, MATRIX
+        FREE_STYLE, MAVEN_MODULE_SET, MAVEN_MODULE, MATRIX
     }
 
     public final JenkinsJobType type;
@@ -313,4 +315,3 @@ class JenkinsJobXml {
             child(root, "lastUnsuccessfulBuild").bind(BuildXml.buildXml));
     }
 }
-

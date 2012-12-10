@@ -12,12 +12,12 @@ import java.util.*;
 import static io.trygvis.esper.testing.jenkins.JenkinsClient.*;
 import static java.lang.System.*;
 
-public class JenkinsServer implements TransactionalActor {
-    private static final Logger logger = LoggerFactory.getLogger(JenkinsServer.class);
+public class JenkinsServerActor implements TransactionalActor {
+    private static final Logger logger = LoggerFactory.getLogger(JenkinsServerActor.class);
     private final JenkinsClient client;
     public final JenkinsServerDto server;
 
-    public JenkinsServer(JenkinsClient client, JenkinsServerDto server) {
+    public JenkinsServerActor(JenkinsClient client, JenkinsServerDto server) {
         this.client = client;
         this.server = server;
     }
@@ -42,7 +42,7 @@ public class JenkinsServer implements TransactionalActor {
             Option<JenkinsBuildDto> o = dao.selectBuildByEntryId(entry.id);
 
             if (o.isSome()) {
-                logger.debug("Old event: " + entry.id);
+                logger.debug("Old build: " + entry.id);
                 continue;
             }
 
@@ -75,7 +75,7 @@ public class JenkinsServer implements TransactionalActor {
 
                 JenkinsJobXml xml = jobXmlOption.some();
 
-                job = dao.insertJob(server.uuid, xml.url, xml.displayName);
+                job = dao.insertJob(server.uuid, xml.url, xml.type, xml.displayName);
 
                 logger.info("New job: " + xml.displayName.orSome(xml.url.toASCIIString()) + ", uuid=" + job);
             }
@@ -91,40 +91,25 @@ public class JenkinsServer implements TransactionalActor {
                     build.duration,
                     build.timestamp);
 
-            logger.info("Build inserted: " + uuid + ", i=" + i);
+            logger.info("Build inserted: " + uuid + ", item #" + i + "/" + list.size());
         }
 
         long end = currentTimeMillis();
 
-        logger.info("Inserted " + i + " new builds in " + (end - start) + "ms.");
+        logger.info("Inserted " + i + " of " + list.size() + " builds in " + (end - start) + "ms.");
     }
 
     /**
      * This sucks, a build should really include the URL to the job.
      */
     public static URI createJobUrl(String u) {
-        if (u.matches(".*/[-_a-zA-Z]*=.*/[0-9]*/")) {
-            u = u.substring(0, u.lastIndexOf("/"));
-            u = u.substring(0, u.lastIndexOf("/"));
-            u = u.substring(0, u.lastIndexOf("/") + 1);
-
-            return URI.create(u);
+        if (!u.matches(".*/[0-9]*/")) {
+            throw new RuntimeException("Not a valid build url: " + u);
         }
 
-        if (u.matches(".*/[.-_a-zA-Z]*\\$.*/[0-9]*/")) {
-            u = u.substring(0, u.lastIndexOf("/"));
-            u = u.substring(0, u.lastIndexOf("/"));
-            u = u.substring(0, u.lastIndexOf("/") + 1);
+        u = u.substring(0, u.lastIndexOf("/"));
+        u = u.substring(0, u.lastIndexOf("/") + 1);
 
-            return URI.create(u);
-        }
-
-        if (u.endsWith("/")) {
-            u = u.substring(0, u.length() - 1);
-        }
-        int i = u.lastIndexOf("/");
-        u = u.substring(0, i);
-
-        return URI.create(u + "/");
+        return URI.create(u);
     }
 }

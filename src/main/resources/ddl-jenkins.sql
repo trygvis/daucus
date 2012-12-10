@@ -20,6 +20,7 @@ CREATE TABLE jenkins_job (
   server       CHAR(36)      NOT NULL,
 
   url          VARCHAR(1000) NOT NULL,
+  job_type     VARCHAR(100)  NOT NULL,
   display_name VARCHAR(100),
 
   CONSTRAINT pk_jenkins_job PRIMARY KEY (UUID),
