@@ -86,7 +86,7 @@ public class JenkinsServerOld implements Closeable {
             JenkinsXml xml = client.fetchJobs(url);
 
             List<URI> jobUris = new ArrayList<>(xml.jobs.size());
-            for (JenkinsJobEntryXml job : xml.jobs) {
+            for (JenkinsXml.JobXml job : xml.jobs) {
                 jobUris.add(URI.create(job.url));
             }
 

@@ -46,7 +46,7 @@ public class JenkinsServerActor implements TransactionalActor {
                 continue;
             }
 
-            logger.info("New build: " + entry.id + ", fetching info");
+            logger.debug("Build: " + entry.id + ", fetching info");
 
             Option<JenkinsBuildXml> buildXmlOption = client.fetchBuild(apiXml(entry.url));
 
@@ -55,6 +55,12 @@ public class JenkinsServerActor implements TransactionalActor {
             }
 
             JenkinsBuildXml build = buildXmlOption.some();
+
+            if(build.result.isNone()) {
+                logger.debug("Not done building, <result> is not available.");
+                continue;
+            }
+            String result = build.result.some();
 
             URI jobUrl = extrapolateJobUrlFromBuildUrl(build.url.toASCIIString());
 
@@ -86,7 +92,7 @@ public class JenkinsServerActor implements TransactionalActor {
                     job,
                     entry.id,
                     build.url,
-                    build.result,
+                    result,
                     build.number,
                     build.duration,
                     build.timestamp);

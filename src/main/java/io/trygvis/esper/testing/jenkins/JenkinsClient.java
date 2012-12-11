@@ -2,7 +2,6 @@ package io.trygvis.esper.testing.jenkins;
 
 import fj.*;
 import fj.data.*;
-import io.trygvis.esper.testing.*;
 import io.trygvis.esper.testing.jenkins.JenkinsJobXml.*;
 import io.trygvis.esper.testing.util.*;
 import org.apache.abdera.*;
@@ -20,7 +19,6 @@ import java.util.*;
 import java.util.List;
 
 import static fj.data.Option.*;
-import static io.trygvis.esper.testing.Util.*;
 import static io.trygvis.esper.testing.util.HttpClient.inputStreamOnly;
 import static java.lang.System.currentTimeMillis;
 import static org.apache.commons.lang.StringUtils.*;
@@ -80,12 +78,12 @@ public class JenkinsClient {
         if (d.isNone()) {
             Option<String> n = Option.none();
 
-            return new JenkinsXml(n, n, n, Collections.<JenkinsJobEntryXml>emptyList());
+            return new JenkinsXml(n, n, n, Collections.<JenkinsXml.JobXml>emptyList());
         }
 
         Element root = d.some().getRootElement();
 
-        List<JenkinsJobEntryXml> jobs = new ArrayList<>();
+        List<JenkinsXml.JobXml> jobs = new ArrayList<>();
         for (Element job : root.getChildren("job")) {
             String name = trimToNull(job.getChildText("name"));
             String u = trimToNull(job.getChildText("url"));
@@ -95,7 +93,7 @@ public class JenkinsClient {
                 continue;
             }
 
-            jobs.add(new JenkinsJobEntryXml(name, u, color));
+            jobs.add(new JenkinsXml.JobXml(name, u, color));
         }
 
         return new JenkinsXml(
@@ -155,53 +153,7 @@ public class JenkinsClient {
         }
     }
 
-    public static class JenkinsBuildXml {
-
-        public final URI url;
-        public final int number;
-        public final String result;
-        public final int duration;
-        public final long timestamp;
-
-        JenkinsBuildXml(URI url, int number, String result, int duration, long timestamp) {
-            this.url = url;
-            this.number = number;
-            this.result = result;
-            this.duration = duration;
-            this.timestamp = timestamp;
-        }
-
-        public static Option<JenkinsBuildXml> parse(Element root) {
-            Option<URI> url = childText(root, "url").bind(Util.parseUri);
-            Option<Integer> number = childText(root, "number").bind(Util.parseInt);
-            Option<String> result = childText(root, "result");
-            Option<Integer> duration = childText(root, "duration").bind(Util.parseInt);
-            Option<Long> timestamp = childText(root, "timestamp").bind(Util.parseLong);
-
-            if(url.isNone()) {
-                logger.warn("Missing required field: <url>");
-                return none();
-            }
-            if(number.isNone()) {
-                logger.warn("Missing required field: <number>");
-                return none();
-            }
-            if(result.isNone()) {
-                logger.warn("Missing required field: <result>");
-                return none();
-            }
-            if(duration.isNone()) {
-                logger.warn("Missing required field: <duration>");
-                return none();
-            }
-            if(timestamp.isNone()) {
-                logger.warn("Missing required field: <timestamp>");
-                return none();
-            }
-
-            return some(new JenkinsBuildXml(url.some(), number.some(), result.some(), duration.some(), timestamp.some()));
-        }
-    }}
+}
 
 class JenkinsEntryXml {
     public final String id;
@@ -219,99 +171,24 @@ class JenkinsXml {
     public final Option<String> nodeName;
     public final Option<String> nodeDescription;
     public final Option<String> description;
-    public final List<JenkinsJobEntryXml> jobs;
+    public final List<JobXml> jobs;
 
-    JenkinsXml(Option<String> nodeName, Option<String> nodeDescription, Option<String> description, List<JenkinsJobEntryXml> jobs) {
+    JenkinsXml(Option<String> nodeName, Option<String> nodeDescription, Option<String> description, List<JobXml> jobs) {
         this.nodeName = nodeName;
         this.nodeDescription = nodeDescription;
         this.description = description;
         this.jobs = jobs;
     }
-}
 
-class JenkinsJobEntryXml {
-    public final String name;
-    public final String url;
-    public final String color;
+    public static class JobXml {
+        public final String name;
+        public final String url;
+        public final String color;
 
-    JenkinsJobEntryXml(String name, String url, String color) {
-        this.name = name;
-        this.url = url;
-        this.color = color;
-    }
-}
-
-class JenkinsJobXml {
-    enum JenkinsJobType {
-        FREE_STYLE, MAVEN_MODULE_SET, MAVEN_MODULE, MATRIX
-    }
-
-    public final JenkinsJobType type;
-    public final Option<String> description;
-    public final Option<String> displayName;
-    public final Option<String> name;
-    public final URI url;
-    public final Option<String> color;
-    public final boolean buildable;
-    public final Option<BuildXml> lastBuild;
-    public final Option<BuildXml> lastCompletedBuild;
-    public final Option<BuildXml> lastFailedBuild;
-    public final Option<BuildXml> lastSuccessfulBuild;
-    public final Option<BuildXml> lastUnsuccessfulBuild;
-
-    protected JenkinsJobXml(JenkinsJobType type, Option<String> description, Option<String> displayName,
-                            Option<String> name, URI url, Option<String> color, boolean buildable,
-                            Option<BuildXml> lastBuild, Option<BuildXml> lastCompletedBuild,
-                            Option<BuildXml> lastFailedBuild, Option<BuildXml> lastSuccessfulBuild,
-                            Option<BuildXml> lastUnsuccessfulBuild) {
-        this.type = type;
-        this.description = description;
-        this.displayName = displayName;
-        this.name = name;
-        this.url = url;
-        this.color = color;
-        this.buildable = buildable;
-        this.lastBuild = lastBuild;
-        this.lastCompletedBuild = lastCompletedBuild;
-        this.lastFailedBuild = lastFailedBuild;
-        this.lastSuccessfulBuild = lastSuccessfulBuild;
-        this.lastUnsuccessfulBuild = lastUnsuccessfulBuild;
-    }
-
-    static class BuildXml {
-        public final int number;
-        public final URI url;
-        public static F<Element, Option<BuildXml>> buildXml = new F<Element, Option<BuildXml>>() {
-            public Option<BuildXml> f(Element element) {
-                Option<Integer> number = childText(element, "number").bind(Util.parseInt);
-                Option<URI> url = childText(element, "url").bind(Util.parseUri);
-
-                if (number.isNone() || url.isNone()) {
-                    return Option.none();
-                }
-
-                return some(new BuildXml(number.some(), url.some()));
-            }
-        };
-
-        BuildXml(int number, URI url) {
-            this.number = number;
+        JobXml(String name, String url, String color) {
+            this.name = name;
             this.url = url;
+            this.color = color;
         }
-    }
-
-    public static JenkinsJobXml parse(URI url, JenkinsJobType type, Element root) {
-        return new JenkinsJobXml(type,
-            childText(root, "description"),
-            childText(root, "displayName"),
-            childText(root, "name"),
-            childText(root, "url").bind(Util.parseUri).orSome(url),
-            childText(root, "color"),
-            childText(root, "buildable").bind(Util.parseBoolean).orSome(false),
-            child(root, "lastBuild").bind(BuildXml.buildXml),
-            child(root, "lastCompletedBuild").bind(BuildXml.buildXml),
-            child(root, "lastFailedBuild").bind(BuildXml.buildXml),
-            child(root, "lastSuccessfulBuild").bind(BuildXml.buildXml),
-            child(root, "lastUnsuccessfulBuild").bind(BuildXml.buildXml));
     }
 }
