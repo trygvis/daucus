@@ -3,6 +3,11 @@
   <groupId>io.trygvis.esper.testing</groupId>
   <artifactId>esper-testing</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <properties>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <version.httpcache4>3.4</version.httpcache4>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>com.espertech</groupId>
@@ -87,9 +92,54 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <properties>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
-    <version.httpcache4>3.4</version.httpcache4>
-  </properties>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>appassembler-maven-plugin</artifactId>
+        <version>1.1.1</version>
+        <executions>
+          <execution>
+            <id>wat</id>
+            <goals>
+              <goal>assemble</goal>
+            </goals>
+            <configuration>
+              <programs>
+                <program>
+                  <name>nexus-importer</name>
+                  <mainClass>io.trygvis.esper.testing.nexus.NexusImporter</mainClass>
+                </program>
+                <program>
+                  <name>jenkins-importer</name>
+                  <mainClass>io.trygvis.esper.testing.jenkins.JenkinsImporter</mainClass>
+                </program>
+              </programs>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>no.arktekk.unix</groupId>
+        <artifactId>unix-maven-plugin</artifactId>
+        <version>1.0-alpha-6</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>package-zip-attached</goal>
+            </goals>
+            <configuration>
+              <contact>Trygve Laugstøl</contact>
+              <contactEmail>trygvis@inamo.no</contactEmail>
+              <assembly>
+                <copyDirectory>
+                  <from>target/appassembler</from>
+                </copyDirectory>
+              </assembly>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
