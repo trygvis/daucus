@@ -16,18 +16,20 @@ import junit.framework.TestCase;
 import static org.joda.time.DateTimeZone.forOffsetHours;
 import static org.joda.time.DateTimeZone.forOffsetHoursMinutes;
 import static org.joda.time.chrono.ISOChronology.getInstance;
+import static org.joda.time.chrono.ISOChronology.getInstanceUTC;
 
 public class JenkinsBuildXmlTest extends TestCase {
     XmlParser parser = new XmlParser();
     ISOChronology minus6 = getInstance(forOffsetHours(-6));
     ISOChronology minus5 = getInstance(forOffsetHours(-5));
     ISOChronology plus530 = getInstance(forOffsetHoursMinutes(5, 30));
+    ISOChronology utc = getInstanceUTC();
 
     public Option<Document> f(InputStream inputStream) {
         return parser.parseDocument(inputStream);
     }
 
-    public void testYo() throws IOException {
+    public void testGitCommitParsing() throws IOException {
         try (InputStream is = getClass().getResourceAsStream("/jenkins/build/build-with-git-commits.xml")) {
             Option<JenkinsBuildXml> option = JenkinsBuildXml.parse(parser.parseDocument(is).some().getRootElement());
 
@@ -51,6 +53,30 @@ public class JenkinsBuildXmlTest extends TestCase {
             assertItem(changeSet.items.get(5), "41b5de23dd2d7ccbc170252a43b8996316b93075", "No need to look up TZ here. In all cases leading up to here,", new DateTime(2012, 12, 6, 0, 5, 37, 0, minus5));
             assertItem(changeSet.items.get(6), "def4c054ae82848c92b015a3267ace2c2cedd193", "Identify the correct JIRA ticket.", new DateTime(2012, 12, 6, 0, 8, 8, 0, minus5));
             assertItem(changeSet.items.get(7), "82f12220d01c2c07398107fa5f5a2d50feb7c8c4", "As ugly as it might be, maintaining a map of exceptional time zone", new DateTime(2012, 12, 6, 0, 17, 26, 0, minus5));
+        }
+    }
+
+    public void testSvnCommitParsing() throws IOException {
+        try (InputStream is = getClass().getResourceAsStream("/jenkins/build/build-with-subversion-commits.xml")) {
+            Option<JenkinsBuildXml> option = JenkinsBuildXml.parse(parser.parseDocument(is).some().getRootElement());
+
+            assertTrue(option.isSome());
+            JenkinsBuildXml build = option.some();
+
+            assertEquals(URI.create("https://builds.apache.org/job/Lucene-Solr-Tests-4.x-Java6/1102/"), build.url);
+            assertEquals(1102, build.number);
+            assertTrue(build.result.isSome());
+            assertEquals(1646526, build.duration);
+            assertTrue(build.changeSet.isSome());
+            JenkinsBuildXml.ChangeSetXml changeSet = build.changeSet.some();
+            assertTrue(changeSet.revision.isSome());
+            assertEquals("http://svn.apache.org/repos/asf/lucene/dev/branches/branch_4x", changeSet.revision.some().module);
+            assertEquals(1419960, changeSet.revision.some().revision);
+            assertEquals(3, changeSet.items.size());
+
+            assertItem(changeSet.items.get(0), "1419960", "SOLR-2986: Add MoreLikeThis to warning about features that require uniqueKey. Also, change the warning to warn log level.", new DateTime(2012, 12, 11, 1, 8, 10, 682, utc));
+            assertItem(changeSet.items.get(1), "1419953", "SOLR-4071: Validate that name is pass to Collections API create, and behave the same way as on startup when collection.configName is not explicitly passed.", new DateTime(2012, 12, 11, 0, 56, 19, 684, utc));
+            assertItem(changeSet.items.get(2), "1419940", "SOLR-3948: Calculate/display deleted documents in admin interface.", new DateTime(2012, 12, 11, 0, 10, 12, 700, utc));
         }
     }
 

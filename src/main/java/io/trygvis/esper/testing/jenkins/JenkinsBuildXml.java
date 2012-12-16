@@ -8,6 +8,7 @@ import org.jdom2.Element;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +21,7 @@ import static fj.data.Option.none;
 import static fj.data.Option.some;
 import static fj.data.Option.somes;
 import static io.trygvis.esper.testing.Util.childText;
+import static io.trygvis.esper.testing.Util.parseInt;
 import static io.trygvis.esper.testing.jenkins.JenkinsBuildXml.ChangeSetItemXml.parseChangeSetItem;
 import static io.trygvis.esper.testing.jenkins.JenkinsBuildXml.RevisionXml.parseRevision;
 
@@ -120,13 +122,20 @@ public class JenkinsBuildXml {
         }
 
         private static final F<String, Option<DateTime>> parseDate = new F<String, Option<DateTime>>() {
+            // This variant is used by git
             DateTimeFormatter parser = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss Z");
+            // and this by subversion
+            DateTimeFormatter parser2 = ISODateTimeFormat.dateTime();
 
             public Option<DateTime> f(String s) {
                 try {
                     return some(parser.parseDateTime(s));
                 } catch (IllegalArgumentException e) {
-                    return none();
+                    try {
+                        return some(parser2.parseDateTime(s));
+                    } catch (IllegalArgumentException e2) {
+                        return none();
+                    }
                 }
             }
         };
@@ -150,9 +159,9 @@ public class JenkinsBuildXml {
     public static class RevisionXml {
         public final String module;
 
-        public final String revision;
+        public final int revision;
 
-        public RevisionXml(String module, String revision) {
+        public RevisionXml(String module, int revision) {
             this.module = module;
             this.revision = revision;
         }
@@ -160,7 +169,7 @@ public class JenkinsBuildXml {
         public static final F<Element, Option<RevisionXml>> parseRevision = new F<Element, Option<RevisionXml>>() {
             public Option<RevisionXml> f(Element e) {
                 Option<String> module = childText(e, "module");
-                Option<String> revision = childText(e, "revision");
+                Option<Integer> revision = childText(e, "revision").bind(parseInt);
 
                 if (module.isNone() || revision.isNone()) {
                     return none();
