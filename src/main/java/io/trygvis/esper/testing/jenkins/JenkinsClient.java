@@ -122,6 +122,8 @@ public class JenkinsClient {
                 return some(JenkinsJobXml.parse(url, JenkinsJobType.MAVEN_MODULE, root));
             case "matrixProject":
                 return some(JenkinsJobXml.parse(url, JenkinsJobType.MATRIX, root));
+            case "matrixConfiguration":
+                return some(JenkinsJobXml.parse(url, JenkinsJobType.MATRIX_CONFIGURATION, root));
             default:
                 logger.warn("Unknown project type: " + name);
                 return Option.none();
