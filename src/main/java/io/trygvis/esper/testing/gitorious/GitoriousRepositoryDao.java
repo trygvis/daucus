@@ -2,8 +2,8 @@ package io.trygvis.esper.testing.gitorious;
 
 import fj.data.*;
 import io.trygvis.esper.testing.*;
-import static io.trygvis.esper.testing.DaoUtil.dateToTimestamp;
-import static io.trygvis.esper.testing.DaoUtil.timestampToDate;
+import static io.trygvis.esper.testing.Util.dateToTimestamp;
+import static io.trygvis.esper.testing.Util.timestampToDate;
 
 import java.net.*;
 import java.sql.*;

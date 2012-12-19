@@ -41,7 +41,7 @@ public class JenkinsImporter {
                 java.util.List<JenkinsServerDto> newKeys;
 
                 try (Connection c = boneCp.getConnection()) {
-                    newKeys = new JenkinsDao(c).selectServer(true);
+                    newKeys = new JenkinsDao(c).selectServers(true);
                 }
 
                 serverManager.update(newKeys);

@@ -14,7 +14,7 @@ import static io.trygvis.esper.testing.Util.childText;
 
 class JenkinsJobXml {
     enum JenkinsJobType {
-        FREE_STYLE, MAVEN_MODULE_SET, MAVEN_MODULE, MATRIX
+        FREE_STYLE, MAVEN_MODULE_SET, MAVEN_MODULE, MATRIX, MATRIX_CONFIGURATION
     }
 
     public final JenkinsJobType type;

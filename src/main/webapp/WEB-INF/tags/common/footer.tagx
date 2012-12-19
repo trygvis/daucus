@@ -1,0 +1,9 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+  <footer id="footer">
+    <div class="container">
+
+      <p>Footer, yo!</p>
+
+    </div>
+  </footer>
+</jsp:root>

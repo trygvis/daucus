@@ -1,0 +1,32 @@
+<html xmlns:common="urn:jsptagdir:/WEB-INF/tags/common"
+      xmlns:jsp="http://java.sun.com/JSP/Page"
+      ng-app="arkivApp">
+<jsp:output doctype-root-element="HTML" doctype-system="about:legacy-compat"/>
+<jsp:directive.page contentType="text/html;charset=UTF-8"/>
+
+<common:head-element/>
+
+<body>
+
+<div id="content">
+  <div class="hero-unit">
+    <div class="container">
+      <h1>Fin header</h1>
+
+      <p>
+        Awesome
+      </p>
+    </div>
+  </div>
+
+  <div class="container">
+    <ul>
+      <li><a class="btn" href="/jenkins">Jenkins</a></li>
+    </ul>
+  </div>
+</div>
+
+<common:footer/>
+</body>
+
+</html>

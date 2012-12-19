@@ -3,22 +3,19 @@ package io.trygvis.esper.testing.jenkins;
 import fj.data.*;
 import org.joda.time.*;
 
-import java.net.URI;
+import java.net.*;
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.UUID;
 
-import static fj.data.Option.fromNull;
-import static fj.data.Option.none;
-import static fj.data.Option.some;
-import static java.lang.System.currentTimeMillis;
+import static fj.data.Option.*;
+import static java.lang.System.*;
 
 public class JenkinsDao {
 
     private final Connection c;
 
-    public static final String JENKINS_SERVER = "uuid, created_date, url";
+    public static final String JENKINS_SERVER = "uuid, created_date, url, enabled";
 
     public static final String JENKINS_JOB = "uuid, created_date, server, url, job_type, display_name";
 
@@ -33,10 +30,11 @@ public class JenkinsDao {
         return new JenkinsServerDto(
                 UUID.fromString(rs.getString(i++)),
                 new DateTime(rs.getTimestamp(i++).getTime()),
-                URI.create(rs.getString(i)));
+                URI.create(rs.getString(i++)),
+                rs.getBoolean(i));
     }
 
-    public List<JenkinsServerDto> toServerList(ResultSet rs) throws SQLException {
+    private List<JenkinsServerDto> toServerList(ResultSet rs) throws SQLException {
         List<JenkinsServerDto> list = new ArrayList<>();
         while (rs.next()) {
             list.add(jenkinsServer(rs));
@@ -76,12 +74,28 @@ public class JenkinsDao {
                 new DateTime(rs.getTimestamp(i).getTime()));
     }
 
-    public List<JenkinsServerDto> selectServer(boolean enabledOnly) throws SQLException {
-        String where = "WHERE ";
-        where += enabledOnly ? "enabled=true" : "";
+    public List<JenkinsServerDto> selectServers(boolean enabledOnly) throws SQLException {
+        String sql = "SELECT " + JENKINS_SERVER + " FROM jenkins_server ";
 
-        try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_SERVER + " FROM jenkins_server " + where)) {
+        if (enabledOnly) {
+            sql += " WHERE enabled=true";
+        }
+
+        sql += " ORDER BY url";
+
+        try (PreparedStatement s = c.prepareStatement(sql)) {
             return toServerList(s.executeQuery());
+        }
+    }
+
+    public Option<JenkinsServerDto> selectServer(UUID uuid) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_SERVER + " FROM jenkins_server WHERE uuid=?")) {
+            s.setString(1, uuid.toString());
+            ResultSet rs = s.executeQuery();
+            if (!rs.next()) {
+                return none();
+            }
+            return some(jenkinsServer(rs));
         }
     }
 
@@ -90,11 +104,20 @@ public class JenkinsDao {
             s.setString(1, url.toASCIIString());
             ResultSet rs = s.executeQuery();
 
-            if(!rs.next()) {
+            if (!rs.next()) {
                 return none();
             }
 
             return some(jenkinsJob(rs));
+        }
+    }
+
+    public Integer selectJobCountForServer(UUID uuid) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT count(1) FROM jenkins_job WHERE server=?")) {
+            s.setString(1, uuid.toString());
+            ResultSet rs = s.executeQuery();
+
+            return rs.getInt(1);
         }
     }
 
@@ -145,72 +168,5 @@ public class JenkinsDao {
 
             return uuid;
         }
-    }
-}
-
-class JenkinsServerDto {
-    public final UUID uuid;
-    public final DateTime created_date;
-    public final URI url;
-
-    JenkinsServerDto(UUID uuid, DateTime created_date, URI url) {
-        this.uuid = uuid;
-        this.created_date = created_date;
-        this.url = url;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        JenkinsServerDto that = (JenkinsServerDto) o;
-
-        return uuid.equals(that.uuid);
-    }
-
-    @Override
-    public int hashCode() {
-        return uuid.hashCode();
-    }
-}
-
-class JenkinsJobDto {
-    public final UUID uuid;
-    public final DateTime created_date;
-    public final UUID server;
-    public final URI url;
-    public final Option<String> displayName;
-
-    JenkinsJobDto(UUID uuid, DateTime created_date, UUID server, URI url, Option<String> displayName) {
-        this.uuid = uuid;
-        this.created_date = created_date;
-        this.server = server;
-        this.url = url;
-        this.displayName = displayName;
-    }
-}
-
-class JenkinsBuildDto {
-    public final UUID uuid;
-    public final DateTime created_date;
-    public final UUID job;
-    public final String entryId;
-    public final URI url;
-    public final String result;
-    public final int number;
-    public final int duration;
-    public final DateTime timestamp;
-
-    JenkinsBuildDto(UUID uuid, DateTime created_date, UUID job, String entryId, URI url, String result, int number, int duration, DateTime timestamp) {
-        this.uuid = uuid;
-        this.created_date = created_date;
-        this.job = job;
-        this.entryId = entryId;
-        this.url = url;
-        this.result = result;
-        this.number = number;
-        this.duration = duration;
-        this.timestamp = timestamp;
     }
 }

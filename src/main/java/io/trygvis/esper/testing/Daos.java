@@ -1,8 +1,8 @@
 package io.trygvis.esper.testing;
 
 import io.trygvis.esper.testing.gitorious.*;
+import io.trygvis.esper.testing.jenkins.*;
 
-import javax.sql.*;
 import java.io.*;
 import java.sql.*;
 
@@ -27,15 +27,17 @@ public class Daos implements Closeable {
     public final GitoriousEventDao gitoriousEventDao;
     public final GitoriousProjectDao gitoriousProjectDao;
     public final GitoriousRepositoryDao gitoriousRepositoryDao;
+    public final JenkinsDao jenkinsDao;
     public final int seq;
     public static int counter = 1;
 
-    public Daos(Connection connection) throws SQLException {
-        this.connection = connection;
+    public Daos(Connection c) throws SQLException {
+        this.connection = c;
         this.seq = counter++;
-        gitoriousEventDao = new GitoriousEventDao(connection);
-        gitoriousProjectDao = new GitoriousProjectDao(connection);
-        gitoriousRepositoryDao = new GitoriousRepositoryDao(connection);
+        gitoriousEventDao = new GitoriousEventDao(c);
+        gitoriousProjectDao = new GitoriousProjectDao(c);
+        gitoriousRepositoryDao = new GitoriousRepositoryDao(c);
+        jenkinsDao = new JenkinsDao(c);
     }
 
     public void close() throws IOException {

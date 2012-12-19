@@ -1,6 +1,6 @@
 package io.trygvis.esper.testing.gitorious;
 
-import static io.trygvis.esper.testing.DaoUtil.*;
+import static io.trygvis.esper.testing.Util.*;
 
 import java.sql.*;
 

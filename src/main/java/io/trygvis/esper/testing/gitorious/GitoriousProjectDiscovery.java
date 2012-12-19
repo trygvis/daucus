@@ -52,9 +52,11 @@ public class GitoriousProjectDiscovery {
         ObjectUtil.scheduledActorWithFixedDelay(service, config.gitorious.projectListUpdateDelay, config.gitorious.projectListUpdateInterval, TimeUnit.MILLISECONDS, boneCp, "Gitorious", new TransactionalActor() {
             @Override
             public void act(Connection c) throws Exception {
-                Daos daos = new Daos(c);
-                discoverProjects(daos);
-                repositoryManager.update(daos.gitoriousRepositoryDao.select(Daos.OrderDirection.NONE));
+                try (Daos daos = new Daos(c)) {
+                    discoverProjects(daos);
+                    repositoryManager.update(daos.gitoriousRepositoryDao.select(Daos.OrderDirection.NONE));
+                    daos.commit();
+                }
             }
         });
     }
@@ -120,8 +122,6 @@ public class GitoriousProjectDiscovery {
             repoDao.deleteForProject(project);
             projectDao.delete(project);
         }
-
-        daos.commit();
 
         long end = currentTimeMillis();
         System.out.println("Processed in " + (end - start) + " ms");

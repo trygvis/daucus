@@ -1,0 +1,22 @@
+<div class="page-header">
+  <h1>Jenkins Servers</h1>
+</div>
+<table class="table table-condensed">
+  <thead>
+  <tr>
+    <th class="header">URL</th>
+    <th class="header">Enabled</th>
+    <th class=""></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="server in servers">
+    <td>{{server.url}}</td>
+    <td>{{server.enabled}}</td>
+    <td>
+      <a href="{{server.url}}">Visit</a>
+      <a ng-click="showServer(server.uuid)">Details</a>
+    </td>
+  </tr>
+  </tbody>
+</table>

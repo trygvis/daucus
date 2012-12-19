@@ -1,0 +1,22 @@
+<html xmlns:common="urn:jsptagdir:/WEB-INF/tags/common"
+      xmlns:jsp="http://java.sun.com/JSP/Page"
+      ng-app="jenkinsApp">
+<jsp:output doctype-root-element="HTML" doctype-system="about:legacy-compat"/>
+<jsp:directive.page contentType="text/html;charset=UTF-8"/>
+
+<common:head-element>
+  <common:headjs label="JenkinsServerService" resource="/apps/jenkinsApp/JenkinsServerService.js"/>
+  <common:headjs label="jenkinsApp" resource="/apps/jenkinsApp/jenkinsApp.js"/>
+</common:head-element>
+
+<body>
+
+<div id="content">
+  <div class="container" ng-view=""><!-- --></div>
+</div>
+
+<common:footer/>
+
+</body>
+
+</html>
