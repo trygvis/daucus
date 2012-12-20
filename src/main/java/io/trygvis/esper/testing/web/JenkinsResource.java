@@ -60,7 +60,7 @@ public class JenkinsResource {
 
     private JenkinsServerJson getJenkinsServerJson(Daos daos, JenkinsServerDto server) throws SQLException {
         int count = daos.jenkinsDao.selectJobCountForServer(server.uuid);
-        return new JenkinsServerJson(server.uuid, server.created_date, server.url, server.enabled, count);
+        return new JenkinsServerJson(server.uuid, server.createdDate, server.url, server.enabled, count);
     }
 
     private <T> T get(DatabaseAccess.DaosCallback<Option<T>> callback) throws SQLException {

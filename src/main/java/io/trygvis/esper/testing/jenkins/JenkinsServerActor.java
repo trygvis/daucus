@@ -2,12 +2,14 @@ package io.trygvis.esper.testing.jenkins;
 
 import fj.data.*;
 import io.trygvis.esper.testing.object.*;
+import io.trygvis.esper.testing.sql.*;
 import org.slf4j.*;
 
 import java.net.*;
 import java.sql.*;
 import java.util.List;
 import java.util.*;
+import java.util.Set;
 
 import static io.trygvis.esper.testing.jenkins.JenkinsClient.*;
 import static java.lang.System.*;
@@ -38,8 +40,10 @@ public class JenkinsServerActor implements TransactionalActor {
 
         int i = 0;
 
+        Set<String> authorUrls = new TreeSet<>();
+
         for (JenkinsEntryXml entry : list) {
-            Option<JenkinsBuildDto> o = dao.selectBuildByEntryId(entry.id);
+            SqlOption<JenkinsBuildDto> o = dao.selectBuildByEntryId(entry.id);
 
             if (o.isSome()) {
                 logger.debug("Old build: " + entry.id);
@@ -62,6 +66,25 @@ public class JenkinsServerActor implements TransactionalActor {
             }
             String result = build.result.some();
 
+            if(build.changeSet.isSome()) {
+                JenkinsBuildXml.ChangeSetXml changeSetXml = build.changeSet.some();
+
+                for (JenkinsBuildXml.ChangeSetItemXml item : changeSetXml.items) {
+                    if(item.author.isNone()) {
+                        continue;
+                    }
+
+                    String url = item.author.some().absoluteUrl;
+
+                    boolean newUser = authorUrls.add(url);
+
+                    if(newUser && dao.selectUser(server.uuid, url).isNone()) {
+                        logger.info("New user: {}", url);
+                        dao.insertUser(server.uuid, url);
+                    }
+                }
+            }
+
             URI jobUrl = extrapolateJobUrlFromBuildUrl(build.url.toASCIIString());
 
             Option<JenkinsJobDto> jobDtoOption = dao.selectJobByUrl(jobUrl);
@@ -71,7 +94,7 @@ public class JenkinsServerActor implements TransactionalActor {
             if (jobDtoOption.isSome()) {
                 job = jobDtoOption.some().uuid;
             } else {
-                logger.info("New job: " + jobUrl + ", fetching info");
+                logger.info("New job: {}, fetching info", jobUrl);
 
                 Option<JenkinsJobXml> jobXmlOption = client.fetchJob(apiXml(jobUrl));
 
@@ -83,7 +106,7 @@ public class JenkinsServerActor implements TransactionalActor {
 
                 job = dao.insertJob(server.uuid, xml.url, xml.type, xml.displayName);
 
-                logger.info("New job: " + xml.displayName.orSome(xml.url.toASCIIString()) + ", uuid=" + job);
+                logger.info("New job: {}, uuid={}", xml.displayName.orSome(xml.url.toASCIIString()), job);
             }
 
             i++;

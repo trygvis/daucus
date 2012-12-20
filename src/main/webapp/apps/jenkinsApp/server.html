@@ -11,19 +11,15 @@
   <tbody>
   <tr>
     <th>URL</th>
-    <td>{{server.url}}</td>
+    <td><a href="{{server.url}}">{{server.url}}</a></td>
   </tr>
   <tr>
     <th>Enabled</th>
     <td>{{server.enabled}}</td>
   </tr>
   <tr>
-    <th>Visit</th>
-    <td><a href="{{server.url}}">{{server.url}}</a></td>
-  </tr>
-  <tr>
-    <th>Job Count</th>
-    <td>{{server.jobCount}}</td>
+    <th>Stats</th>
+    <td>{{server.jobCount}} jobs, {{server.buildCount}} builds</td>
   </tr>
   </tbody>
 </table>

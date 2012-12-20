@@ -17,9 +17,7 @@ import fj.data.Option;
 import io.trygvis.esper.testing.Util;
 
 import static fj.data.List.iterableList;
-import static fj.data.Option.none;
-import static fj.data.Option.some;
-import static fj.data.Option.somes;
+import static fj.data.Option.*;
 import static io.trygvis.esper.testing.Util.childText;
 import static io.trygvis.esper.testing.Util.parseInt;
 import static io.trygvis.esper.testing.jenkins.JenkinsBuildXml.ChangeSetItemXml.parseChangeSetItem;
@@ -109,16 +107,13 @@ public class JenkinsBuildXml {
 
         public final String msg;
 
-        /**
-         * Only subversion has this field
-         */
-        public final Option<String> user;
+        public final Option<AuthorXml> author;
 
-        public ChangeSetItemXml(String commitId, DateTime date, String msg, Option<String> user) {
+        public ChangeSetItemXml(String commitId, DateTime date, String msg, Option<AuthorXml> author) {
             this.commitId = commitId;
             this.date = date;
             this.msg = msg;
-            this.user = user;
+            this.author = author;
         }
 
         private static final F<String, Option<DateTime>> parseDate = new F<String, Option<DateTime>>() {
@@ -145,13 +140,37 @@ public class JenkinsBuildXml {
                 Option<String> commitId = childText(item, "commitId");
                 Option<DateTime> date = childText(item, "date").bind(parseDate);
                 Option<String> msg = childText(item, "msg");
-                Option<String> user = childText(item, "user");
 
                 if (commitId.isNone() || date.isNone() || msg.isNone()) {
                     return none();
                 }
 
-                return some(new ChangeSetItemXml(commitId.some(), date.some(), msg.some(), user));
+                Option<AuthorXml> author = fromNull(item.getChild("author")).bind(AuthorXml.parseAuthorXml);
+
+                return some(new ChangeSetItemXml(commitId.some(), date.some(), msg.some(), author));
+            }
+        };
+    }
+
+    public static class AuthorXml {
+        public final String absoluteUrl;
+        public final String fullName;
+
+        public AuthorXml(String absoluteUrl, String fullName) {
+            this.absoluteUrl = absoluteUrl;
+            this.fullName = fullName;
+        }
+
+        public static final F<Element, Option<AuthorXml>> parseAuthorXml = new F<Element, Option<AuthorXml>>() {
+            public Option<AuthorXml> f(Element element) {
+                Option<String> absoluteUrl = childText(element, "absoluteUrl");
+                Option<String> fullName = childText(element, "fullName");
+
+                if(absoluteUrl.isNone() || fullName.isNone()) {
+                    return none();
+                }
+
+                return some(new AuthorXml(absoluteUrl.some(), fullName.some()));
             }
         };
     }

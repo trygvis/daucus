@@ -1,13 +1,12 @@
 package io.trygvis.esper.testing.jenkins;
 
+import io.trygvis.esper.testing.*;
 import org.joda.time.*;
 
 import java.net.*;
 import java.util.*;
 
-public class JenkinsBuildDto {
-    public final UUID uuid;
-    public final DateTime created_date;
+public class JenkinsBuildDto extends AbstractDto {
     public final UUID job;
     public final String entryId;
     public final URI url;
@@ -16,9 +15,8 @@ public class JenkinsBuildDto {
     public final int duration;
     public final DateTime timestamp;
 
-    JenkinsBuildDto(UUID uuid, DateTime created_date, UUID job, String entryId, URI url, String result, int number, int duration, DateTime timestamp) {
-        this.uuid = uuid;
-        this.created_date = created_date;
+    JenkinsBuildDto(UUID uuid, DateTime createdDate, UUID job, String entryId, URI url, String result, int number, int duration, DateTime timestamp) {
+        super(uuid, createdDate);
         this.job = job;
         this.entryId = entryId;
         this.url = url;

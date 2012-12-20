@@ -53,6 +53,9 @@ public class JenkinsBuildXmlTest extends TestCase {
             assertItem(changeSet.items.get(5), "41b5de23dd2d7ccbc170252a43b8996316b93075", "No need to look up TZ here. In all cases leading up to here,", new DateTime(2012, 12, 6, 0, 5, 37, 0, minus5));
             assertItem(changeSet.items.get(6), "def4c054ae82848c92b015a3267ace2c2cedd193", "Identify the correct JIRA ticket.", new DateTime(2012, 12, 6, 0, 8, 8, 0, minus5));
             assertItem(changeSet.items.get(7), "82f12220d01c2c07398107fa5f5a2d50feb7c8c4", "As ugly as it might be, maintaining a map of exceptional time zone", new DateTime(2012, 12, 6, 0, 17, 26, 0, minus5));
+
+            assertTrue(changeSet.items.get(0).author.isSome());
+            assertEquals("http://ci.jruby.org/user/Charles%20Oliver%20Nutter", changeSet.items.get(0).author.some().absoluteUrl);
         }
     }
 

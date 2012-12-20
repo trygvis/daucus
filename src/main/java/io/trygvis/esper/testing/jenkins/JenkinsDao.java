@@ -1,6 +1,7 @@
 package io.trygvis.esper.testing.jenkins;
 
 import fj.data.*;
+import io.trygvis.esper.testing.sql.*;
 import org.joda.time.*;
 
 import java.net.*;
@@ -9,6 +10,7 @@ import java.util.*;
 import java.util.List;
 
 import static fj.data.Option.*;
+import static io.trygvis.esper.testing.sql.SqlOption.fromRs;
 import static java.lang.System.*;
 
 public class JenkinsDao {
@@ -20,6 +22,8 @@ public class JenkinsDao {
     public static final String JENKINS_JOB = "uuid, created_date, server, url, job_type, display_name";
 
     public static final String JENKINS_BUILD = "uuid, created_date, job, entry_id, url, result, number, duration, timestamp";
+
+    public static final String JENKINS_USER = "uuid, created_date, server, absolute_url";
 
     public JenkinsDao(Connection c) {
         this.c = c;
@@ -60,22 +64,35 @@ public class JenkinsDao {
         return list;
     }
 
-    private JenkinsBuildDto jenkinsBuild(ResultSet rs) throws SQLException {
-        int i = 1;
-        return new JenkinsBuildDto(
-                UUID.fromString(rs.getString(i++)),
-                new DateTime(rs.getTimestamp(i++).getTime()),
-                UUID.fromString(rs.getString(i++)),
-                rs.getString(i++),
-                URI.create(rs.getString(i++)),
-                rs.getString(i++),
-                rs.getInt(i++),
-                rs.getInt(i++),
-                new DateTime(rs.getTimestamp(i).getTime()));
-    }
+    public static final SqlF<ResultSet, JenkinsBuildDto> jenkinsBuild = new SqlF<ResultSet, JenkinsBuildDto>() {
+        public JenkinsBuildDto apply(ResultSet rs) throws SQLException {
+            int i = 1;
+            return new JenkinsBuildDto(
+                    UUID.fromString(rs.getString(i++)),
+                    new DateTime(rs.getTimestamp(i++).getTime()),
+                    UUID.fromString(rs.getString(i++)),
+                    rs.getString(i++),
+                    URI.create(rs.getString(i++)),
+                    rs.getString(i++),
+                    rs.getInt(i++),
+                    rs.getInt(i++),
+                    new DateTime(rs.getTimestamp(i).getTime()));
+        }
+    };
+
+    public static final SqlF<ResultSet, JenkinsUserDto> jenkinsUser = new SqlF<ResultSet, JenkinsUserDto>() {
+        public JenkinsUserDto apply(ResultSet rs) throws SQLException {
+            int i = 1;
+            return new JenkinsUserDto(
+                    UUID.fromString(rs.getString(i++)),
+                    new DateTime(rs.getTimestamp(i++).getTime()),
+                    UUID.fromString(rs.getString(i++)),
+                    rs.getString(i));
+        }
+    };
 
     public List<JenkinsServerDto> selectServers(boolean enabledOnly) throws SQLException {
-        String sql = "SELECT " + JENKINS_SERVER + " FROM jenkins_server ";
+        String sql = "SELECT " + JENKINS_SERVER + " FROM jenkins_server";
 
         if (enabledOnly) {
             sql += " WHERE enabled=true";
@@ -137,17 +154,11 @@ public class JenkinsDao {
         }
     }
 
-    public Option<JenkinsBuildDto> selectBuildByEntryId(String id) throws SQLException {
+    public SqlOption<JenkinsBuildDto> selectBuildByEntryId(String id) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_BUILD + " FROM jenkins_build WHERE entry_id=?")) {
             int i = 1;
             s.setString(i, id);
-            ResultSet rs = s.executeQuery();
-
-            if (!rs.next()) {
-                return none();
-            }
-
-            return some(jenkinsBuild(rs));
+            return fromRs(s.executeQuery()).map(jenkinsBuild);
         }
     }
 
@@ -167,6 +178,29 @@ public class JenkinsDao {
             s.executeUpdate();
 
             return uuid;
+        }
+    }
+
+    public UUID insertUser(UUID server, String absoluteUrl) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("INSERT INTO jenkins_user(" + JENKINS_USER + ") VALUES(?, ?, ?, ?)")) {
+            UUID uuid = UUID.randomUUID();
+            int i = 1;
+            s.setString(i++, uuid.toString());
+            s.setTimestamp(i++, new Timestamp(currentTimeMillis()));
+            s.setString(i++, server.toString());
+            s.setString(i, absoluteUrl);
+            s.executeUpdate();
+
+            return uuid;
+        }
+    }
+
+    public SqlOption<JenkinsUserDto> selectUser(UUID server, String absoluteUrl) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_USER + " FROM jenkins_user WHERE server=? AND absolute_url=?")) {
+            int i = 1;
+            s.setString(i++, server.toString());
+            s.setString(i, absoluteUrl);
+            return fromRs(s.executeQuery()).map(jenkinsUser);
         }
     }
 }

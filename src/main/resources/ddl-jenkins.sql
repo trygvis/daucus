@@ -46,6 +46,18 @@ CREATE TABLE jenkins_build (
   CONSTRAINT uq_jenkins_build__id UNIQUE (entry_id)
 );
 
+CREATE INDEX ix_jenkins_build__created_date ON jenkins_build (created_date);
+
+CREATE TABLE jenkins_user (
+  uuid         CHAR(36)      NOT NULL,
+  created_date TIMESTAMP     NOT NULL,
+  server       CHAR(36)      NOT NULL,
+  absolute_url VARCHAR(1000) NOT NULL,
+  CONSTRAINT pk_jenkins_user PRIMARY KEY (uuid),
+  CONSTRAINT fk_jenkins_user__server FOREIGN KEY (server) REFERENCES jenkins_server (uuid),
+  CONSTRAINT uq_jenkins_user__absolute_url UNIQUE (absolute_url)
+);
+
 INSERT INTO jenkins_server (uuid, created_date, url, enabled) VALUES
 ('782a75f6-40a4-11e2-aca6-20cf30557fa0', CURRENT_TIMESTAMP, 'https://builds.apache.org', FALSE),
 ('4c473c86-40ad-11e2-ae61-20cf30557fa0', CURRENT_TIMESTAMP, 'http://ci.jruby.org', FALSE),
