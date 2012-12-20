@@ -2,6 +2,11 @@
   <h1>Jenkins Server</h1>
 </div>
 
+<ul class="breadcrumb">
+  <li><a ng-click="showServers()">All Servers</a> <span class="divider">/</span></li>
+  <li class="active">Server</li>
+</ul>
+
 <table class="table">
   <tbody>
   <tr>
@@ -14,7 +19,11 @@
   </tr>
   <tr>
     <th>Visit</th>
-    <td>{{server.visit}}</td>
+    <td><a href="{{server.url}}">{{server.url}}</a></td>
+  </tr>
+  <tr>
+    <th>Job Count</th>
+    <td>{{server.jobCount}}</td>
   </tr>
   </tbody>
 </table>

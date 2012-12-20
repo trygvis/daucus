@@ -112,11 +112,11 @@ public class JenkinsDao {
         }
     }
 
-    public Integer selectJobCountForServer(UUID uuid) throws SQLException {
+    public int selectJobCountForServer(UUID uuid) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT count(1) FROM jenkins_job WHERE server=?")) {
             s.setString(1, uuid.toString());
             ResultSet rs = s.executeQuery();
-
+            rs.next();
             return rs.getInt(1);
         }
     }

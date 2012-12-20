@@ -11,19 +11,31 @@ var jenkinsApp = angular.module('jenkinsApp', ['jenkinsServerService']).config(f
 //  $locationProvider.html5Mode(true);
 });
 
-function ServerListCtrl($scope, $route, $routeParams, $location, JenkinsServerService) {
+function ServerListCtrl($scope, $location, JenkinsServerService) {
   JenkinsServerService.query(function (servers) {
     $scope.servers = servers;
   });
+
+  $scope.showServers = function (uuid) {
+    $location.path('/');
+  };
 
   $scope.showServer = function (uuid) {
     $location.path('/server/' + uuid);
   };
 }
 
-function ServerCtrl($scope, $routeParams, JenkinsServerService) {
+function ServerCtrl($scope, $location, $routeParams, JenkinsServerService) {
   window.x = $routeParams;
   JenkinsServerService.get({uuid: $routeParams.uuid}, function (server) {
     $scope.server = server;
   });
+
+  $scope.showServers = function (uuid) {
+    $location.path('/');
+  };
+
+  $scope.showServer = function (uuid) {
+    $location.path('/server/' + uuid);
+  };
 }
