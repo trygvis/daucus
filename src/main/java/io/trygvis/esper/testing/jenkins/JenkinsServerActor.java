@@ -7,6 +7,8 @@ import org.slf4j.*;
 
 import java.net.*;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.*;
 import java.util.Set;
@@ -40,7 +42,7 @@ public class JenkinsServerActor implements TransactionalActor {
 
         int i = 0;
 
-        Set<String> authorUrls = new TreeSet<>();
+        Map<String, UUID> authors = new HashMap<>();
 
         for (JenkinsEntryXml entry : list) {
             SqlOption<JenkinsBuildDto> o = dao.selectBuildByEntryId(entry.id);
@@ -66,6 +68,12 @@ public class JenkinsServerActor implements TransactionalActor {
             }
             String result = build.result.some();
 
+            // -----------------------------------------------------------------------
+            // Users
+            // -----------------------------------------------------------------------
+
+            Set<UUID> users = new HashSet<>();
+
             if(build.changeSet.isSome()) {
                 JenkinsBuildXml.ChangeSetXml changeSetXml = build.changeSet.some();
 
@@ -76,14 +84,25 @@ public class JenkinsServerActor implements TransactionalActor {
 
                     String url = item.author.some().absoluteUrl;
 
-                    boolean newUser = authorUrls.add(url);
+                    UUID uuid = authors.get(url);
 
-                    if(newUser && dao.selectUser(server.uuid, url).isNone()) {
-                        logger.info("New user: {}", url);
-                        dao.insertUser(server.uuid, url);
+                    if(uuid == null) {
+                        SqlOption<JenkinsUserDto> userO = dao.selectUser(server.uuid, url);
+                        if (userO.isNone()) {
+                            logger.info("New user: {}", url);
+                            uuid = dao.insertUser(server.uuid, url);
+                        } else {
+                            uuid = userO.get().uuid;
+                        }
                     }
+
+                    users.add(uuid);
                 }
             }
+
+            // -----------------------------------------------------------------------
+            // Job
+            // -----------------------------------------------------------------------
 
             URI jobUrl = extrapolateJobUrlFromBuildUrl(build.url.toASCIIString());
 
@@ -118,9 +137,10 @@ public class JenkinsServerActor implements TransactionalActor {
                     result,
                     build.number,
                     build.duration,
-                    build.timestamp);
+                    build.timestamp,
+                    users.toArray(new UUID[users.size()]));
 
-            logger.info("Build inserted: " + uuid + ", item #" + i + "/" + list.size());
+            logger.info("Build inserted: {}, #users={} item #{}/{}", uuid, users.size(), i, list.size());
         }
 
         long end = currentTimeMillis();

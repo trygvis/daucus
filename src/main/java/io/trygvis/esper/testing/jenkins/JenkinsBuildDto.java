@@ -14,8 +14,9 @@ public class JenkinsBuildDto extends AbstractDto {
     public final int number;
     public final int duration;
     public final DateTime timestamp;
+    public final UUID[] users;
 
-    JenkinsBuildDto(UUID uuid, DateTime createdDate, UUID job, String entryId, URI url, String result, int number, int duration, DateTime timestamp) {
+    public JenkinsBuildDto(UUID uuid, DateTime createdDate, UUID job, String entryId, URI url, String result, int number, int duration, DateTime timestamp, UUID[] users) {
         super(uuid, createdDate);
         this.job = job;
         this.entryId = entryId;
@@ -24,5 +25,6 @@ public class JenkinsBuildDto extends AbstractDto {
         this.number = number;
         this.duration = duration;
         this.timestamp = timestamp;
+        this.users = users;
     }
 }

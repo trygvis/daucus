@@ -40,6 +40,7 @@ CREATE TABLE jenkins_build (
   number       INT           NOT NULL,
   duration     INT           NOT NULL,
   timestamp    TIMESTAMP     NOT NULL,
+  users        CHAR(36) [],
 
   CONSTRAINT pk_jenkins_build PRIMARY KEY (UUID),
   CONSTRAINT fk_jenkins_build__job FOREIGN KEY (job) REFERENCES jenkins_job (uuid),

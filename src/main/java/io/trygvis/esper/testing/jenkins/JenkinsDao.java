@@ -6,6 +6,7 @@ import org.joda.time.*;
 
 import java.net.*;
 import java.sql.*;
+import java.sql.Array;
 import java.util.*;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class JenkinsDao {
 
     public static final String JENKINS_JOB = "uuid, created_date, server, url, job_type, display_name";
 
-    public static final String JENKINS_BUILD = "uuid, created_date, job, entry_id, url, result, number, duration, timestamp";
+    public static final String JENKINS_BUILD = "uuid, created_date, job, entry_id, url, result, number, duration, timestamp, users";
 
     public static final String JENKINS_USER = "uuid, created_date, server, absolute_url";
 
@@ -76,7 +77,8 @@ public class JenkinsDao {
                     rs.getString(i++),
                     rs.getInt(i++),
                     rs.getInt(i++),
-                    new DateTime(rs.getTimestamp(i).getTime()));
+                    new DateTime(rs.getTimestamp(i++).getTime()),
+                    toUuidArray(rs, i));
         }
     };
 
@@ -90,6 +92,19 @@ public class JenkinsDao {
                     rs.getString(i));
         }
     };
+
+    private static UUID[] toUuidArray(ResultSet rs, int index) throws SQLException {
+        Array array = rs.getArray(index);
+        if(array == null) {
+            return new UUID[0];
+        }
+        String[] strings = (String[]) array.getArray();
+        UUID[] uuids = new UUID[strings.length];
+        for (int i = 0; i < strings.length; i++) {
+            uuids[i] = UUID.fromString(strings[i]);
+        }
+        return uuids;
+    }
 
     public List<JenkinsServerDto> selectServers(boolean enabledOnly) throws SQLException {
         String sql = "SELECT " + JENKINS_SERVER + " FROM jenkins_server";
@@ -162,8 +177,8 @@ public class JenkinsDao {
         }
     }
 
-    public UUID insertBuild(UUID server, String entryId, URI url, String result, int number, int duration, long timestamp) throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("INSERT INTO jenkins_build(" + JENKINS_BUILD + ") VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+    public UUID insertBuild(UUID server, String entryId, URI url, String result, int number, int duration, long timestamp, UUID[] users) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("INSERT INTO jenkins_build(" + JENKINS_BUILD + ") VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
             UUID uuid = UUID.randomUUID();
             int i = 1;
             s.setString(i++, uuid.toString());
@@ -174,7 +189,8 @@ public class JenkinsDao {
             s.setString(i++, result);
             s.setInt(i++, number);
             s.setInt(i++, duration);
-            s.setTimestamp(i, new Timestamp(timestamp));
+            s.setTimestamp(i++, new Timestamp(timestamp));
+            s.setArray(i, c.createArrayOf("varchar", users));
             s.executeUpdate();
 
             return uuid;
