@@ -7,6 +7,8 @@ import java.io.*;
 import java.sql.*;
 import java.util.concurrent.*;
 
+import static java.lang.System.currentTimeMillis;
+
 public class ObjectUtil {
 
     public static <A extends TransactionalActor> ActorRef<A> threadedActor(String threadName, long delay, DataSource dataSource, String name, A actor) {
@@ -42,7 +44,10 @@ public class ObjectUtil {
                     }
 
                     actor.act(c);
+                    long start = currentTimeMillis();
                     c.commit();
+                    long end = currentTimeMillis();
+                    logger.debug("COMMIT performed in in " + (end - start) + "ms.");
                 }
                 catch(SQLException e) {
                     c.rollback();
