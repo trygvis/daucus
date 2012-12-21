@@ -43,6 +43,16 @@ public abstract class SqlOption<A> {
         return !isSome();
     }
 
+    public abstract A getOrElse(A a);
+
+    public static <A> SqlOption<A> fromNull(A a) {
+        if (a != null) {
+            return some(a);
+        } else {
+            return none();
+        }
+    }
+
     // -----------------------------------------------------------------------
     //
     // -----------------------------------------------------------------------
@@ -58,6 +68,14 @@ public abstract class SqlOption<A> {
 
         public boolean isSome() {
             return false;
+        }
+
+        public A getOrElse(A a) {
+            return a;
+        }
+
+        public String toString() {
+            return "None";
         }
     }
 
@@ -78,6 +96,14 @@ public abstract class SqlOption<A> {
 
         public boolean isSome() {
             return true;
+        }
+
+        public A getOrElse(A a) {
+            return this.a;
+        }
+
+        public String toString() {
+            return "Some(" + a + ")";
         }
     }
 }

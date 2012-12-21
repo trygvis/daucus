@@ -9,11 +9,11 @@ DROP TABLE IF EXISTS person;
 DROP TABLE IF EXISTS table_poller_status;
 
 CREATE TABLE table_poller_status (
-  poller_name       VARCHAR(100) NOT NULL,
-  last_created_date TIMESTAMP,
-  last_run          TIMESTAMP,
-  duration          INT,
-  status            VARCHAR(1000),
+  poller_name VARCHAR(100) NOT NULL,
+  last_seq    INT          NOT NULL,
+  last_run    TIMESTAMP,
+  duration    INT,
+  status      VARCHAR(1000),
   CONSTRAINT pk_job_status PRIMARY KEY (poller_name)
 );
 

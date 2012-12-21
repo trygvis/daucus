@@ -7,8 +7,10 @@ DROP TABLE IF EXISTS jenkins_server;
 CREATE TABLE jenkins_server (
   uuid         CHAR(36)      NOT NULL,
   created_date TIMESTAMP     NOT NULL,
+
   url          VARCHAR(1000) NOT NULL,
   enabled      BOOLEAN       NOT NULL,
+
   CONSTRAINT pk_jenkins_server PRIMARY KEY (uuid),
   CONSTRAINT uq_jenkins_server__url UNIQUE (url)
 );
@@ -31,6 +33,7 @@ CREATE TABLE jenkins_job (
 CREATE TABLE jenkins_build (
   uuid         CHAR(36)      NOT NULL,
   created_date TIMESTAMP     NOT NULL,
+  seq          INT           NOT NULL DEFAULT nextval('jenkins_build_seq'),
 
   job          CHAR(36)      NOT NULL,
 
@@ -44,7 +47,8 @@ CREATE TABLE jenkins_build (
 
   CONSTRAINT pk_jenkins_build PRIMARY KEY (UUID),
   CONSTRAINT fk_jenkins_build__job FOREIGN KEY (job) REFERENCES jenkins_job (uuid),
-  CONSTRAINT uq_jenkins_build__id UNIQUE (entry_id)
+  CONSTRAINT uq_jenkins_build__id UNIQUE (entry_id),
+  CONSTRAINT uq_jenkins_build__seq UNIQUE (seq)
 );
 
 CREATE INDEX ix_jenkins_build__created_date ON jenkins_build (created_date);
@@ -52,6 +56,7 @@ CREATE INDEX ix_jenkins_build__created_date ON jenkins_build (created_date);
 CREATE TABLE jenkins_user (
   uuid         CHAR(36)      NOT NULL,
   created_date TIMESTAMP     NOT NULL,
+
   server       CHAR(36)      NOT NULL,
   absolute_url VARCHAR(1000) NOT NULL,
   CONSTRAINT pk_jenkins_user PRIMARY KEY (uuid),
