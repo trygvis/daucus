@@ -59,6 +59,8 @@ public class Config {
     }
 
     public static Config loadFromDisk() throws IOException {
+        initSystemProperties();
+
         initLogging();
 
         Properties properties = new Properties();
@@ -72,6 +74,12 @@ public class Config {
                 trimToNull(properties.getProperty("database.url")),
                 trimToNull(properties.getProperty("database.username")),
                 trimToNull(properties.getProperty("database.password")));
+    }
+
+    private static void initSystemProperties() {
+        // Java 7 is more strict on checking matching host names or something similar.
+        // http://docs.oracle.com/javase/7/docs/technotes/guides/security/jsse/JSSERefGuide.html#Customization
+        System.setProperty("jsse.enableSNIExtension", "false");
     }
 
     private static void initLogging() {

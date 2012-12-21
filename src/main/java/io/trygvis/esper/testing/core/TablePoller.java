@@ -2,7 +2,6 @@ package io.trygvis.esper.testing.core;
 
 import fj.data.*;
 import io.trygvis.esper.testing.sql.*;
-import org.joda.time.format.*;
 import org.slf4j.*;
 
 import javax.sql.*;
@@ -13,8 +12,6 @@ import static io.trygvis.esper.testing.sql.SqlOption.*;
 import static java.lang.System.*;
 
 public class TablePoller<A> {
-
-    private static final DateTimeFormatter formatter = ISODateTimeFormat.dateTime();
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final String pollerName;
