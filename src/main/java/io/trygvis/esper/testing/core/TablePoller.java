@@ -1,14 +1,14 @@
 package io.trygvis.esper.testing.core;
 
 import fj.data.*;
-import io.trygvis.esper.testing.sql.*;
+import io.trygvis.esper.testing.util.sql.*;
 import org.slf4j.*;
 
 import javax.sql.*;
 import java.sql.*;
 
-import static io.trygvis.esper.testing.sql.ResultSetF.*;
-import static io.trygvis.esper.testing.sql.SqlOption.*;
+import static io.trygvis.esper.testing.util.sql.ResultSetF.*;
+import static io.trygvis.esper.testing.util.sql.SqlOption.*;
 import static java.lang.System.*;
 
 public class TablePoller<A> {

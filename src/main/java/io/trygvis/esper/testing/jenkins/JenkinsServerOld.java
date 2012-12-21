@@ -5,7 +5,7 @@ import fj.data.*;
 import static fj.data.Option.*;
 import static io.trygvis.esper.testing.jenkins.JenkinsClient.apiXml;
 
-import io.trygvis.esper.testing.object.*;
+import io.trygvis.esper.testing.util.object.*;
 import org.joda.time.*;
 
 import java.io.*;

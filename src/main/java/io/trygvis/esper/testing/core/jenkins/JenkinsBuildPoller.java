@@ -1,9 +1,11 @@
-package io.trygvis.esper.testing.core;
+package io.trygvis.esper.testing.core.jenkins;
 
 import com.jolbox.bonecp.*;
 import io.trygvis.esper.testing.*;
+import io.trygvis.esper.testing.core.*;
+import io.trygvis.esper.testing.core.db.*;
 import io.trygvis.esper.testing.jenkins.*;
-import io.trygvis.esper.testing.sql.*;
+import io.trygvis.esper.testing.util.sql.*;
 import org.slf4j.*;
 
 import java.sql.*;

@@ -4,11 +4,11 @@ import com.jolbox.bonecp.*;
 import fj.data.Option;
 import static fj.data.Option.*;
 import io.trygvis.esper.testing.*;
-import io.trygvis.esper.testing.object.ActorRef;
-import io.trygvis.esper.testing.object.ObjectFactory;
-import io.trygvis.esper.testing.object.ObjectManager;
-import io.trygvis.esper.testing.object.ObjectUtil;
-import io.trygvis.esper.testing.object.TransactionalActor;
+import io.trygvis.esper.testing.util.object.ActorRef;
+import io.trygvis.esper.testing.util.object.ObjectFactory;
+import io.trygvis.esper.testing.util.object.ObjectManager;
+import io.trygvis.esper.testing.util.object.ObjectUtil;
+import io.trygvis.esper.testing.util.object.TransactionalActor;
 
 import io.trygvis.esper.testing.util.*;
 import static java.lang.System.*;

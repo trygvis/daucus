@@ -1,6 +1,6 @@
 package io.trygvis.esper.testing;
 
-import io.trygvis.esper.testing.core.*;
+import io.trygvis.esper.testing.core.db.*;
 import io.trygvis.esper.testing.gitorious.*;
 import io.trygvis.esper.testing.jenkins.*;
 

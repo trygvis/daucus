@@ -2,7 +2,7 @@ package io.trygvis.esper.testing.jenkins;
 
 import com.jolbox.bonecp.*;
 import io.trygvis.esper.testing.*;
-import io.trygvis.esper.testing.object.*;
+import io.trygvis.esper.testing.util.object.*;
 import io.trygvis.esper.testing.util.*;
 import org.apache.abdera.*;
 import org.codehaus.httpcache4j.cache.*;
@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;
 
-import static io.trygvis.esper.testing.object.ObjectUtil.*;
+import static io.trygvis.esper.testing.util.object.ObjectUtil.*;
 import static java.lang.Thread.*;
 
 public class JenkinsImporter {

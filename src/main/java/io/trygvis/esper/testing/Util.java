@@ -4,7 +4,7 @@ import fj.*;
 import fj.data.*;
 import static fj.data.Option.*;
 
-import io.trygvis.esper.testing.sql.*;
+import io.trygvis.esper.testing.util.sql.*;
 import org.jdom2.*;
 import org.joda.time.*;
 

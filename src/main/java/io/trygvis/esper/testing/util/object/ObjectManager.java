@@ -1,4 +1,4 @@
-package io.trygvis.esper.testing.object;
+package io.trygvis.esper.testing.util.object;
 
 import org.slf4j.*;
 

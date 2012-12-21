@@ -1,4 +1,4 @@
-package io.trygvis.esper.testing.core;
+package io.trygvis.esper.testing.core.db;
 
 import io.trygvis.esper.testing.*;
 import org.joda.time.*;

@@ -1,7 +1,7 @@
 package io.trygvis.esper.testing.jenkins;
 
 import fj.data.*;
-import io.trygvis.esper.testing.sql.*;
+import io.trygvis.esper.testing.util.sql.*;
 import org.joda.time.*;
 
 import java.net.*;
@@ -11,7 +11,7 @@ import java.util.List;
 
 import static fj.data.Option.*;
 import static io.trygvis.esper.testing.Util.toUuidArray;
-import static io.trygvis.esper.testing.sql.SqlOption.fromRs;
+import static io.trygvis.esper.testing.util.sql.SqlOption.fromRs;
 import static java.lang.System.*;
 
 public class JenkinsDao {

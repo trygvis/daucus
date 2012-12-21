@@ -3,7 +3,7 @@ package io.trygvis.esper.testing.nexus;
 import com.jolbox.bonecp.*;
 import fj.data.*;
 import io.trygvis.esper.testing.*;
-import io.trygvis.esper.testing.object.*;
+import io.trygvis.esper.testing.util.object.*;
 import io.trygvis.esper.testing.util.*;
 import static java.lang.Thread.*;
 import static java.util.regex.Pattern.quote;

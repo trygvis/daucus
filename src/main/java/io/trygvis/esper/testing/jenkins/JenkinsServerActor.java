@@ -1,8 +1,8 @@
 package io.trygvis.esper.testing.jenkins;
 
 import fj.data.*;
-import io.trygvis.esper.testing.object.*;
-import io.trygvis.esper.testing.sql.*;
+import io.trygvis.esper.testing.util.object.*;
+import io.trygvis.esper.testing.util.sql.*;
 import org.slf4j.*;
 
 import java.net.*;

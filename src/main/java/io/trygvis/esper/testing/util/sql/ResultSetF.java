@@ -1,4 +1,4 @@
-package io.trygvis.esper.testing.sql;
+package io.trygvis.esper.testing.util.sql;
 
 import java.sql.*;
 

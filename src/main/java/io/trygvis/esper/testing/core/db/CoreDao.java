@@ -1,13 +1,13 @@
-package io.trygvis.esper.testing.core;
+package io.trygvis.esper.testing.core.db;
 
 import io.trygvis.esper.testing.*;
-import io.trygvis.esper.testing.sql.*;
+import io.trygvis.esper.testing.util.sql.*;
 import org.joda.time.*;
 
 import java.sql.*;
 import java.util.*;
 
-import static io.trygvis.esper.testing.sql.SqlOption.*;
+import static io.trygvis.esper.testing.util.sql.SqlOption.*;
 import static java.lang.System.*;
 
 public class CoreDao {
