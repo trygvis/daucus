@@ -87,13 +87,15 @@ public class JenkinsServerActor implements TransactionalActor {
                     UUID uuid = authors.get(url);
 
                     if(uuid == null) {
-                        SqlOption<JenkinsUserDto> userO = dao.selectUser(server.uuid, url);
+                        SqlOption<JenkinsUserDto> userO = dao.selectUserByAbsoluteUrl(server.uuid, url);
                         if (userO.isNone()) {
                             logger.info("New user: {}", url);
                             uuid = dao.insertUser(server.uuid, url);
                         } else {
                             uuid = userO.get().uuid;
                         }
+
+                        authors.put(url, uuid);
                     }
 
                     users.add(uuid);
@@ -106,12 +108,12 @@ public class JenkinsServerActor implements TransactionalActor {
 
             URI jobUrl = extrapolateJobUrlFromBuildUrl(build.url.toASCIIString());
 
-            Option<JenkinsJobDto> jobDtoOption = dao.selectJobByUrl(jobUrl);
+            SqlOption<JenkinsJobDto> jobDtoOption = dao.selectJobByUrl(jobUrl);
 
             UUID job;
 
             if (jobDtoOption.isSome()) {
-                job = jobDtoOption.some().uuid;
+                job = jobDtoOption.get().uuid;
             } else {
                 logger.info("New job: {}, fetching info", jobUrl);
 

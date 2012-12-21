@@ -6,7 +6,7 @@ import org.joda.time.*;
 import java.net.*;
 import java.util.*;
 
-public class JenkinsServerDto extends AbstractDto {
+public class JenkinsServerDto extends AbstractEntity {
     public final URI url;
     public final boolean enabled;
 

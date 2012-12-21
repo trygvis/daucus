@@ -3,11 +3,16 @@ package io.trygvis.esper.testing;
 import fj.*;
 import fj.data.*;
 import static fj.data.Option.*;
+
+import io.trygvis.esper.testing.sql.*;
 import org.jdom2.*;
 import org.joda.time.*;
 
 import java.net.*;
 import java.sql.*;
+import java.sql.Array;
+import java.util.*;
+import java.util.List;
 
 public class Util {
     public static final F<Timestamp, java.util.Date> timestampToDate = new F<Timestamp, java.util.Date>() {
@@ -74,5 +79,27 @@ public class Util {
 
     public static Option<Element> child(Element e, String childName) {
         return fromNull(e.getChild(childName));
+    }
+
+    public static UUID[] toUuidArray(ResultSet rs, int index) throws SQLException {
+        Array array = rs.getArray(index);
+        if(array == null) {
+            return new UUID[0];
+        }
+        String[] strings = (String[]) array.getArray();
+        UUID[] uuids = new UUID[strings.length];
+        for (int i = 0; i < strings.length; i++) {
+            uuids[i] = UUID.fromString(strings[i]);
+        }
+        return uuids;
+    }
+
+    public static <A> List<A> toList(PreparedStatement s, SqlF<ResultSet, A> f) throws SQLException {
+        List<A> list = new ArrayList<>();
+        ResultSet rs = s.executeQuery();
+        while(rs.next()) {
+            list.add(f.apply(rs));
+        }
+        return list;
     }
 }

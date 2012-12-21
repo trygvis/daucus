@@ -1,5 +1,6 @@
 package io.trygvis.esper.testing;
 
+import io.trygvis.esper.testing.core.*;
 import io.trygvis.esper.testing.gitorious.*;
 import io.trygvis.esper.testing.jenkins.*;
 
@@ -28,6 +29,7 @@ public class Daos implements Closeable {
     public final GitoriousProjectDao gitoriousProjectDao;
     public final GitoriousRepositoryDao gitoriousRepositoryDao;
     public final JenkinsDao jenkinsDao;
+    public final CoreDao coreDao;
     public final int seq;
     public static int counter = 1;
 
@@ -38,6 +40,7 @@ public class Daos implements Closeable {
         gitoriousProjectDao = new GitoriousProjectDao(c);
         gitoriousRepositoryDao = new GitoriousRepositoryDao(c);
         jenkinsDao = new JenkinsDao(c);
+        coreDao = new CoreDao(c);
     }
 
     public void close() throws IOException {

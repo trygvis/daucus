@@ -6,7 +6,7 @@ import org.joda.time.*;
 import java.net.*;
 import java.util.*;
 
-public class JenkinsBuildDto extends AbstractDto {
+public class JenkinsBuildDto extends AbstractEntity {
     public final UUID job;
     public final String entryId;
     public final URI url;

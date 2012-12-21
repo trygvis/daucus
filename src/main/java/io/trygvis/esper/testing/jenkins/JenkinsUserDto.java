@@ -5,7 +5,7 @@ import org.joda.time.*;
 
 import java.util.*;
 
-public class JenkinsUserDto extends AbstractDto {
+public class JenkinsUserDto extends AbstractEntity {
     public final UUID server;
     public final String absoluteUrl;
 

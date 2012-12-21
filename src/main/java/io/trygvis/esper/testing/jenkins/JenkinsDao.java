@@ -6,11 +6,11 @@ import org.joda.time.*;
 
 import java.net.*;
 import java.sql.*;
-import java.sql.Array;
 import java.util.*;
 import java.util.List;
 
 import static fj.data.Option.*;
+import static io.trygvis.esper.testing.Util.toUuidArray;
 import static io.trygvis.esper.testing.sql.SqlOption.fromRs;
 import static java.lang.System.*;
 
@@ -47,20 +47,22 @@ public class JenkinsDao {
         return list;
     }
 
-    private JenkinsJobDto jenkinsJob(ResultSet rs) throws SQLException {
-        int i = 1;
-        return new JenkinsJobDto(
-                UUID.fromString(rs.getString(i++)),
-                new DateTime(rs.getTimestamp(i++).getTime()),
-                UUID.fromString(rs.getString(i++)),
-                URI.create(rs.getString(i++)),
-                fromNull(rs.getString(i)));
-    }
+    public static final SqlF<ResultSet, JenkinsJobDto> jenkinsJob = new SqlF<ResultSet, JenkinsJobDto>() {
+        public JenkinsJobDto apply(ResultSet rs) throws SQLException {
+            int i = 1;
+            return new JenkinsJobDto(
+                    UUID.fromString(rs.getString(i++)),
+                    new DateTime(rs.getTimestamp(i++).getTime()),
+                    UUID.fromString(rs.getString(i++)),
+                    URI.create(rs.getString(i++)),
+                    fromNull(rs.getString(i)));
+        }
+    };
 
     public List<JenkinsJobDto> toJobList(ResultSet rs) throws SQLException {
         List<JenkinsJobDto> list = new ArrayList<>();
         while (rs.next()) {
-            list.add(jenkinsJob(rs));
+            list.add(jenkinsJob.apply(rs));
         }
         return list;
     }
@@ -93,19 +95,6 @@ public class JenkinsDao {
         }
     };
 
-    private static UUID[] toUuidArray(ResultSet rs, int index) throws SQLException {
-        Array array = rs.getArray(index);
-        if(array == null) {
-            return new UUID[0];
-        }
-        String[] strings = (String[]) array.getArray();
-        UUID[] uuids = new UUID[strings.length];
-        for (int i = 0; i < strings.length; i++) {
-            uuids[i] = UUID.fromString(strings[i]);
-        }
-        return uuids;
-    }
-
     public List<JenkinsServerDto> selectServers(boolean enabledOnly) throws SQLException {
         String sql = "SELECT " + JENKINS_SERVER + " FROM jenkins_server";
 
@@ -131,16 +120,17 @@ public class JenkinsDao {
         }
     }
 
-    public Option<JenkinsJobDto> selectJobByUrl(URI url) throws SQLException {
+    public SqlOption<JenkinsJobDto> selectJob(UUID uuid) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_JOB + " FROM jenkins_job WHERE uuid=?")) {
+            s.setString(1, uuid.toString());
+            return fromRs(s.executeQuery()).map(jenkinsJob);
+        }
+    }
+
+    public SqlOption<JenkinsJobDto> selectJobByUrl(URI url) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_JOB + " FROM jenkins_job WHERE url=?")) {
             s.setString(1, url.toASCIIString());
-            ResultSet rs = s.executeQuery();
-
-            if (!rs.next()) {
-                return none();
-            }
-
-            return some(jenkinsJob(rs));
+            return fromRs(s.executeQuery()).map(jenkinsJob);
         }
     }
 
@@ -211,7 +201,16 @@ public class JenkinsDao {
         }
     }
 
-    public SqlOption<JenkinsUserDto> selectUser(UUID server, String absoluteUrl) throws SQLException {
+    public SqlOption<JenkinsUserDto> selectUser(UUID uuid, UUID server) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_USER + " FROM jenkins_user WHERE uuid=? AND server=?")) {
+            int i = 1;
+            s.setString(i++, uuid.toString());
+            s.setString(i, server.toString());
+            return fromRs(s.executeQuery()).map(jenkinsUser);
+        }
+    }
+
+    public SqlOption<JenkinsUserDto> selectUserByAbsoluteUrl(UUID server, String absoluteUrl) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_USER + " FROM jenkins_user WHERE server=? AND absolute_url=?")) {
             int i = 1;
             s.setString(i++, server.toString());
