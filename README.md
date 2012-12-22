@@ -7,7 +7,15 @@
   developing the product (creates a team concept).
 * Gang Programming Session - a session with multiple people working together on the same problem.
 
+## Concepts needed(?)
+
+* A form of badges that goes away if the performance is not kept up.
+
 # Badges
+
+## Concepts
+
+* Can be repeatable, example of repeatable: commit in rows. Not repeatable: first commit.
 
 ## Unbreakable - Per Person
 

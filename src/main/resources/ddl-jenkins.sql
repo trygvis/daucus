@@ -30,6 +30,8 @@ CREATE TABLE jenkins_job (
   CONSTRAINT uq_jenkins_job__url UNIQUE (url)
 );
 
+CREATE SEQUENCE jenkins_build_seq;
+
 CREATE TABLE jenkins_build (
   uuid         CHAR(36)      NOT NULL,
   created_date TIMESTAMP     NOT NULL,

@@ -5,17 +5,15 @@ import org.joda.time.*;
 
 import java.util.*;
 
-class BuildDto extends AbstractEntity {
+public class BuildDto extends AbstractEntity {
     public final DateTime timestamp;
     public final boolean success;
-    public final UUID referenceUuid;
-    public final String referenceType;
+    public final EntityRef ref;
 
-    BuildDto(UUID uuid, DateTime createdDate, DateTime timestamp, boolean success, UUID referenceUuid, String referenceType) {
+    public BuildDto(UUID uuid, DateTime createdDate, DateTime timestamp, boolean success, EntityRef ref) {
         super(uuid, createdDate);
         this.timestamp = timestamp;
         this.success = success;
-        this.referenceUuid = referenceUuid;
-        this.referenceType = referenceType;
+        this.ref = ref;
     }
 }

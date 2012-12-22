@@ -29,7 +29,8 @@ public class Daos implements Closeable {
     public final GitoriousProjectDao gitoriousProjectDao;
     public final GitoriousRepositoryDao gitoriousRepositoryDao;
     public final JenkinsDao jenkinsDao;
-    public final CoreDao coreDao;
+    public final PersonDao personDao;
+    public final BuildDao buildDao;
     public final int seq;
     public static int counter = 1;
 
@@ -40,7 +41,8 @@ public class Daos implements Closeable {
         gitoriousProjectDao = new GitoriousProjectDao(c);
         gitoriousRepositoryDao = new GitoriousRepositoryDao(c);
         jenkinsDao = new JenkinsDao(c);
-        coreDao = new CoreDao(c);
+        personDao = new PersonDao(c);
+        buildDao = new BuildDao(c);
     }
 
     public void close() throws IOException {

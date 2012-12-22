@@ -21,6 +21,8 @@ public class TablePoller<A> {
     private final SqlF<ResultSet, A> f;
     private final NewRowCallback<A> callback;
 
+    private boolean testMode;
+
     public TablePoller(String pollerName, String tableName, String columnNames, Option<String> filter, SqlF<ResultSet, A> f, NewRowCallback<A> callback) {
         this.pollerName = pollerName;
         this.tableName = tableName;
@@ -69,17 +71,31 @@ public class TablePoller<A> {
                     logger.debug("No new rows.");
                 }
 
-                Thread.sleep(10 * 1000);
+//                if (testMode) {
+//                    logger.info("TEST MODE: rolling back");
+//                    c.rollback();
+//                }
 
                 dao.insertOrUpdate(o.isNone(), seq, new Timestamp(start), currentTimeMillis() - start, null);
 
+                start = currentTimeMillis();
                 c.commit();
+                long end = currentTimeMillis();
+
+                logger.info("COMMIT performed in {}ms", end - start);
+
+                Thread.sleep(10 * 1000);
             }
         }
     }
 
+    public TablePoller testMode(boolean testMode) {
+        this.testMode = testMode;
+        return this;
+    }
+
     public static interface NewRowCallback<A> {
-        void process(Connection c, A A) throws SQLException;
+        void process(Connection c, A A) throws Exception;
     }
 
     private class TablePollerDao {

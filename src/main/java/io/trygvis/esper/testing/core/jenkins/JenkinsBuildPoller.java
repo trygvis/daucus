@@ -11,9 +11,9 @@ import org.slf4j.*;
 import java.sql.*;
 import java.util.*;
 
-import static fj.data.Option.some;
+import static fj.data.Option.*;
 import static io.trygvis.esper.testing.Config.*;
-import static io.trygvis.esper.testing.EntityRef.jenkinsRef;
+import static io.trygvis.esper.testing.EntityRef.*;
 
 public class JenkinsBuildPoller implements TablePoller.NewRowCallback<JenkinsBuildDto> {
     Logger logger = LoggerFactory.getLogger(getClass());
@@ -34,22 +34,30 @@ public class JenkinsBuildPoller implements TablePoller.NewRowCallback<JenkinsBui
 
     public void process(Connection c, JenkinsBuildDto jenkinsBuild) throws SQLException {
         Daos daos = new Daos(c);
-        CoreDao coreDao = daos.coreDao;
+        BuildDao buildDao = daos.buildDao;
+        PersonDao personDao = daos.personDao;
 
-        UUID uuid = coreDao.insertBuild(jenkinsBuild.timestamp, "SUCCESS".equals(jenkinsBuild.result), jenkinsRef(jenkinsBuild.uuid));
-        logger.info("Created build uuid={}", uuid);
+        UUID uuid = buildDao.insertBuild(jenkinsBuild.timestamp, "SUCCESS".equals(jenkinsBuild.result), jenkinsRef(jenkinsBuild.uuid));
+
+        int knownPersons = 0, unknownPersons = 0;
 
         for (UUID user : jenkinsBuild.users) {
-            SqlOption<PersonDto> personO = coreDao.selectPersonByJenkinsUuid(user);
+            SqlOption<PersonDto> personO = personDao.selectPersonByJenkinsUuid(user);
 
             // This happens if no one has claimed the user id.
-            if(personO.isNone()) {
+            if (personO.isNone()) {
+                unknownPersons++;
                 continue;
             }
 
+            knownPersons++;
+
             UUID person = personO.get().uuid;
             logger.info("Created build participant, person={}", person);
-            coreDao.insertBuildParticipant(uuid, person);
+            buildDao.insertBuildParticipant(uuid, person);
         }
+
+        logger.info("Created build uuid={}, #participants={}, #knownPersons={}, #unknonwnPersons={}", uuid,
+                jenkinsBuild.users.length, knownPersons, unknownPersons);
     }
 }
