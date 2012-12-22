@@ -68,13 +68,13 @@ public class UnbreakablePoller implements TablePoller.NewRowCallback<BuildDto> {
                 throw new RuntimeException(e);
             }
 
-            logger.info("Existing badge progress: count={}", person, badge.count);
+            logger.info("Existing badge progress: count={}", badge.count);
 
             P2<UnbreakableBadgeProgress, Option<UnbreakableBadge>> p = badge.onBuild(build);
 
             badge = p._1();
 
-            logger.info("New badge progress: count={}", person, badge.count);
+            logger.info("New badge progress: count={}", badge.count);
 
             if (p._2().isSome()) {
                 UnbreakableBadge b = p._2().some();
