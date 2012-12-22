@@ -83,7 +83,13 @@ public class JenkinsServerOld implements Closeable {
 
     private void doWork() {
         try {
-            JenkinsXml xml = client.fetchJobs(url);
+            Option<P2<JenkinsXml, byte[]>> o = client.fetchJobs(url);
+
+            if(o.isNone()) {
+                return;
+            }
+
+            JenkinsXml xml = o.some()._1();
 
             List<URI> jobUris = new ArrayList<>(xml.jobs.size());
             for (JenkinsXml.JobXml job : xml.jobs) {

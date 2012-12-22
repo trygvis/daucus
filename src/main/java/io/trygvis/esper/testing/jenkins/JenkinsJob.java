@@ -1,5 +1,6 @@
 package io.trygvis.esper.testing.jenkins;
 
+import fj.*;
 import fj.data.*;
 import static fj.data.Option.*;
 import static io.trygvis.esper.testing.jenkins.JenkinsClient.apiXml;
@@ -23,7 +24,7 @@ public class JenkinsJob implements Closeable {
         this.client = client;
         this.url = apiXml(url);
 
-        long initialDelay = (long) Math.random() + 1;
+        long initialDelay = (long) (Math.random() + 1);
         long period = (long) (Math.random() * 100d) + 1;
         future = executorService.scheduleAtFixedRate(new Runnable() {
             public void run() {
@@ -48,7 +49,7 @@ public class JenkinsJob implements Closeable {
         try {
             logger.info("Updating " + name);
             long start = currentTimeMillis();
-            latestStatus = client.fetchJob(url);
+            latestStatus = client.fetchJob(url).map(P2.<JenkinsJobXml, byte[]>__1());
             long end = currentTimeMillis();
             logger.info("Updated " + name + " in " + (end - start) + "ms");
         } catch (Throwable e) {

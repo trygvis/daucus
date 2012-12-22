@@ -1,6 +1,8 @@
 package io.trygvis.esper.testing.jenkins;
 
+import fj.*;
 import fj.data.*;
+import io.trygvis.esper.testing.core.db.*;
 import io.trygvis.esper.testing.util.object.*;
 import io.trygvis.esper.testing.util.sql.*;
 import org.slf4j.*;
@@ -30,13 +32,18 @@ public class JenkinsServerActor implements TransactionalActor {
         long start = currentTimeMillis();
 
         JenkinsDao dao = new JenkinsDao(c);
-        Option<List<JenkinsEntryXml>> option = client.fetchRss(URI.create(server.url.toASCIIString() + "/rssAll"));
+        FileDao fileDao = new FileDao(c);
+
+        URI rssUrl = URI.create(server.url.toASCIIString() + "/rssAll");
+        Option<P2<List<JenkinsEntryXml>, byte[]>> option = client.fetchRss(rssUrl);
 
         if (option.isNone()) {
             return;
         }
 
-        List<JenkinsEntryXml> list = option.some();
+        fileDao.store(rssUrl, "application/xml", option.some()._2());
+
+        List<JenkinsEntryXml> list = option.some()._1();
 
         logger.info("Got " + list.size() + " entries.");
 
@@ -54,18 +61,23 @@ public class JenkinsServerActor implements TransactionalActor {
 
             logger.debug("Build: " + entry.id + ", fetching info");
 
-            Option<JenkinsBuildXml> buildXmlOption = client.fetchBuild(apiXml(entry.url));
+            URI buildUrl = apiXml(entry.url);
+
+            Option<P2<JenkinsBuildXml, byte[]>> buildXmlOption = client.fetchBuild(buildUrl);
 
             if (buildXmlOption.isNone()) {
                 continue;
             }
 
-            JenkinsBuildXml build = buildXmlOption.some();
+            JenkinsBuildXml build = buildXmlOption.some()._1();
 
-            if(build.result.isNone()) {
+            if (build.result.isNone()) {
                 logger.debug("Not done building, <result> is not available.");
                 continue;
             }
+
+            fileDao.store(buildUrl, "application/xml", buildXmlOption.some()._2());
+
             String result = build.result.some();
 
             // -----------------------------------------------------------------------
@@ -74,11 +86,11 @@ public class JenkinsServerActor implements TransactionalActor {
 
             Set<UUID> users = new HashSet<>();
 
-            if(build.changeSet.isSome()) {
+            if (build.changeSet.isSome()) {
                 JenkinsBuildXml.ChangeSetXml changeSetXml = build.changeSet.some();
 
                 for (JenkinsBuildXml.ChangeSetItemXml item : changeSetXml.items) {
-                    if(item.author.isNone()) {
+                    if (item.author.isNone()) {
                         continue;
                     }
 
@@ -86,7 +98,7 @@ public class JenkinsServerActor implements TransactionalActor {
 
                     UUID uuid = authors.get(url);
 
-                    if(uuid == null) {
+                    if (uuid == null) {
                         SqlOption<JenkinsUserDto> userO = dao.selectUserByAbsoluteUrl(server.uuid, url);
                         if (userO.isNone()) {
                             logger.info("New user: {}", url);
@@ -117,13 +129,17 @@ public class JenkinsServerActor implements TransactionalActor {
             } else {
                 logger.info("New job: {}, fetching info", jobUrl);
 
-                Option<JenkinsJobXml> jobXmlOption = client.fetchJob(apiXml(jobUrl));
+                URI uri = apiXml(jobUrl);
+
+                Option<P2<JenkinsJobXml, byte[]>> jobXmlOption = client.fetchJob(uri);
 
                 if (jobXmlOption.isNone()) {
                     continue;
                 }
 
-                JenkinsJobXml xml = jobXmlOption.some();
+                fileDao.store(uri, "application/xml", jobXmlOption.some()._2());
+
+                JenkinsJobXml xml = jobXmlOption.some()._1();
 
                 job = dao.insertJob(server.uuid, xml.url, xml.type, xml.displayName);
 

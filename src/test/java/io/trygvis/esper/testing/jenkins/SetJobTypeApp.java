@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 
+import fj.*;
 import org.apache.abdera.Abdera;
 import org.codehaus.httpcache4j.cache.HTTPCache;
 
@@ -40,14 +41,14 @@ public class SetJobTypeApp {
             for (JenkinsJobDto jobDto : jobs) {
                 System.out.println("job = " + jobDto.url);
 
-                Option<JenkinsJobXml> xmlOption = jenkinsClient.fetchJob(apiXml(jobDto.url));
+                Option<P2<JenkinsJobXml,byte[]>> xmlOption = jenkinsClient.fetchJob(apiXml(jobDto.url));
 
                 if(xmlOption.isNone()) {
                     System.out.println("None");
                     continue;
                 }
 
-                JenkinsJobXml jobXml = xmlOption.some();
+                JenkinsJobXml jobXml = xmlOption.some()._1();
 
                 System.out.println("jobXml.type = " + jobXml.type);
 

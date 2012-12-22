@@ -3,14 +3,15 @@ package io.trygvis.esper.testing.util;
 import fj.*;
 import fj.data.*;
 import io.trygvis.esper.testing.*;
+import org.apache.commons.io.*;
 import org.apache.http.conn.scheme.*;
 import org.apache.http.impl.client.*;
 import org.apache.http.impl.conn.tsccm.*;
 import org.apache.http.params.*;
 import org.codehaus.httpcache4j.*;
 import org.codehaus.httpcache4j.cache.*;
+import org.codehaus.httpcache4j.payload.*;
 import org.codehaus.httpcache4j.resolver.*;
-import org.h2.util.*;
 import org.slf4j.*;
 
 import java.io.*;
@@ -39,13 +40,13 @@ public class HttpClient<A> {
                 try {
                     return f.f(inputStream);
                 } finally {
-                    IOUtils.closeSilently(inputStream);
+                    IOUtils.closeQuietly(inputStream);
                 }
             }
         };
     }
 
-    public Option<A> fetch(URI uri) {
+    public Option<P2<A, byte[]>> fetch(URI uri) {
         HTTPResponse response = null;
 
         try {
@@ -57,8 +58,23 @@ public class HttpClient<A> {
                 return none();
             }
 
-            return f.f(response);
+            final ByteArrayOutputStream buffer = new ByteArrayOutputStream(1024 * 1024);
+
+            IOUtils.copy(response.getPayload().getInputStream(), buffer);
+
+            final byte[] bytes = buffer.toByteArray();
+
+            response = new HTTPResponse(new ByteArrayPayload(new ByteArrayInputStream(bytes), response.getPayload().getMimeType()), response.getStatusLine(), response.getHeaders());
+
+            return f.f(response).map(new F<A, P2<A, byte[]>>() {
+                public P2<A, byte[]> f(A a) {
+                    return P.p(a, bytes);
+                }
+            });
         } catch (HTTPException e) {
+            logger.warn("Error while fetching: " + uri, e);
+            return none();
+        } catch (IOException e) {
             logger.warn("Error while fetching: " + uri, e);
             return none();
         } finally {

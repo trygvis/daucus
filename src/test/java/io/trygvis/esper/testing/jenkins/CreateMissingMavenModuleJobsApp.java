@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.UUID;
 
+import fj.*;
 import org.apache.abdera.Abdera;
 import org.codehaus.httpcache4j.cache.HTTPCache;
 
@@ -48,14 +49,14 @@ public class CreateMissingMavenModuleJobsApp {
 
                 URI url = URI.create(u);
 
-                Option<JenkinsJobXml> xmlOption = client.fetchJob(apiXml(url));
+                Option<P2<JenkinsJobXml,byte[]>> xmlOption = client.fetchJob(apiXml(url));
 
                 if(xmlOption.isNone()) {
                     System.out.println("None");
                     continue;
                 }
 
-                JenkinsJobXml jobXml = xmlOption.some();
+                JenkinsJobXml jobXml = xmlOption.some()._1();
 
                 if(dao.selectJobByUrl(jobXml.url).isSome()) {
                     System.out.println("Duplicate");

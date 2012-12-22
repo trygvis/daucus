@@ -77,13 +77,15 @@ public class GitoriousClient {
 
         Set<GitoriousProjectXml> all = new HashSet<>();
         while (true) {
-            Option<List<GitoriousProjectXml>> option = http.fetch(new URI(projectsUri + "?page=" + page));
+            Option<P2<List<GitoriousProjectXml>, byte[]>> option = http.fetch(new URI(projectsUri + "?page=" + page));
 
             if (option.isNone()) {
                 return all;
             }
 
-            List<GitoriousProjectXml> list = option.some();
+            List<GitoriousProjectXml> list = option.some()._1();
+
+            // TODO: store data
 
             // This indicates the last page.
             if (list.size() == 0) {

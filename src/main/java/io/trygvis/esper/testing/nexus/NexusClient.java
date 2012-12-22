@@ -1,5 +1,6 @@
 package io.trygvis.esper.testing.nexus;
 
+import fj.*;
 import fj.data.*;
 import static fj.data.Option.*;
 import static io.trygvis.esper.testing.nexus.SearchNGResponseParser.*;
@@ -45,13 +46,15 @@ public class NexusClient {
         System.out.println("args = " + args);
         URI uri = URI.create(nexusUrl.toASCIIString() + "/service/local/feeds/" + timeline + args);
 
-        Option<Document> d = xmlHttpClient.fetch(uri);
+        Option<P2<Document,byte[]>> d = xmlHttpClient.fetch(uri);
 
         if (d.isNone()) {
             return new NexusFeed(Collections.<HasNexusEvent>emptyList());
         }
 
-        Document document = d.some();
+        Document document = d.some()._1();
+
+        // TODO: store data
 
         return NexusFeedParser.parseDocument(document);
     }

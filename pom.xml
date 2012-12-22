@@ -178,6 +178,10 @@
                   <name>jenkins-build-poller</name>
                   <mainClass>io.trygvis.esper.testing.core.jenkins.JenkinsBuildPoller</mainClass>
                 </program>
+                <program>
+                  <name>unbreakable-poller</name>
+                  <mainClass>io.trygvis.esper.testing.core.badge.UnbreakablePoller</mainClass>
+                </program>
               </programs>
             </configuration>
           </execution>

@@ -18,6 +18,7 @@ import java.net.*;
 import java.util.*;
 import java.util.List;
 
+import static fj.P.p;
 import static fj.data.Option.*;
 import static io.trygvis.esper.testing.util.HttpClient.inputStreamOnly;
 import static java.lang.System.currentTimeMillis;
@@ -68,20 +69,18 @@ public class JenkinsClient {
         return URI.create(u + "/api/xml");
     }
 
-    public Option<List<JenkinsEntryXml>> fetchRss(URI url) {
+    public Option<P2<List<JenkinsEntryXml>, byte[]>> fetchRss(URI url) {
         return jenkinsEntryXmlClient.fetch(url);
     }
 
-    public JenkinsXml fetchJobs(URI url) {
-        Option<Document> d = xmlHttpClient.fetch(url);
+    public Option<P2<JenkinsXml, byte[]>> fetchJobs(URI url) {
+        Option<P2<Document, byte[]>> d = xmlHttpClient.fetch(url);
 
         if (d.isNone()) {
-            Option<String> n = Option.none();
-
-            return new JenkinsXml(n, n, n, Collections.<JenkinsXml.JobXml>emptyList());
+            return none();
         }
 
-        Element root = d.some().getRootElement();
+        Element root = d.some()._1().getRootElement();
 
         List<JenkinsXml.JobXml> jobs = new ArrayList<>();
         for (Element job : root.getChildren("job")) {
@@ -96,48 +95,48 @@ public class JenkinsClient {
             jobs.add(new JenkinsXml.JobXml(name, u, color));
         }
 
-        return new JenkinsXml(
-            Option.fromNull(root.getChildText("nodeName")),
-            Option.fromNull(root.getChildText("nodeDescription")),
-            Option.fromNull(root.getChildText("description")), jobs);
+        return some(p(new JenkinsXml(
+                Option.fromNull(root.getChildText("nodeName")),
+                Option.fromNull(root.getChildText("nodeDescription")),
+                Option.fromNull(root.getChildText("description")), jobs), d.some()._2()));
     }
 
-    public Option<JenkinsJobXml> fetchJob(URI url) {
-        Option<Document> d = xmlHttpClient.fetch(url);
+    public Option<P2<JenkinsJobXml, byte[]>> fetchJob(URI url) {
+        Option<P2<Document, byte[]>> d = xmlHttpClient.fetch(url);
 
         if (d.isNone()) {
             return Option.none();
         }
 
-        Element root = d.some().getRootElement();
+        Element root = d.some()._1().getRootElement();
 
         String name = root.getName();
 
         switch (name) {
             case "freeStyleProject":
-                return some(JenkinsJobXml.parse(url, JenkinsJobType.FREE_STYLE, root));
+                return some(p(JenkinsJobXml.parse(url, JenkinsJobType.FREE_STYLE, root), d.some()._2()));
             case "mavenModuleSet":
-                return some(JenkinsJobXml.parse(url, JenkinsJobType.MAVEN_MODULE_SET, root));
+                return some(p(JenkinsJobXml.parse(url, JenkinsJobType.MAVEN_MODULE_SET, root), d.some()._2()));
             case "mavenModule":
-                return some(JenkinsJobXml.parse(url, JenkinsJobType.MAVEN_MODULE, root));
+                return some(p(JenkinsJobXml.parse(url, JenkinsJobType.MAVEN_MODULE, root), d.some()._2()));
             case "matrixProject":
-                return some(JenkinsJobXml.parse(url, JenkinsJobType.MATRIX, root));
+                return some(p(JenkinsJobXml.parse(url, JenkinsJobType.MATRIX, root), d.some()._2()));
             case "matrixConfiguration":
-                return some(JenkinsJobXml.parse(url, JenkinsJobType.MATRIX_CONFIGURATION, root));
+                return some(p(JenkinsJobXml.parse(url, JenkinsJobType.MATRIX_CONFIGURATION, root), d.some()._2()));
             default:
                 logger.warn("Unknown project type: " + name);
                 return Option.none();
         }
     }
 
-    public Option<JenkinsBuildXml> fetchBuild(URI url) {
-        Option<Document> d = xmlHttpClient.fetch(url);
+    public Option<P2<JenkinsBuildXml, byte[]>> fetchBuild(URI url) {
+        final Option<P2<Document, byte[]>> d = xmlHttpClient.fetch(url);
 
         if (d.isNone()) {
             return Option.none();
         }
 
-        Element root = d.some().getRootElement();
+        Element root = d.some()._1().getRootElement();
 
         String name = root.getName();
 
@@ -148,7 +147,11 @@ public class JenkinsClient {
             case "mavenModuleSetBuild":
             case "mavenBuild":
             case "freeStyleBuild":
-                return JenkinsBuildXml.parse(root);
+                return JenkinsBuildXml.parse(root).map(new F<JenkinsBuildXml, P2<JenkinsBuildXml, byte[]>>() {
+                    public P2<JenkinsBuildXml, byte[]> f(JenkinsBuildXml x) {
+                        return p(x, d.some()._2());
+                    }
+                });
             default:
                 logger.warn("Unknown build type: " + name);
                 return Option.none();
