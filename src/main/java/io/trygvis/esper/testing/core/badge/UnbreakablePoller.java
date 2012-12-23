@@ -43,7 +43,7 @@ public class UnbreakablePoller implements TablePoller.NewRowCallback<BuildDto> {
         Daos daos = new Daos(c);
 
         List<UUID> persons = daos.buildDao.selectPersonsFromBuildParticipant(build.uuid);
-        logger.info("Processing build={}, #persons={}", build.uuid, persons.size());
+        logger.info("Processing build={}, success={}, #persons={}", build.uuid, build.success, persons.size());
 
         for (UUID person : persons) {
             logger.info("person={}", person);

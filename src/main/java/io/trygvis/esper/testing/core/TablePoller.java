@@ -82,7 +82,7 @@ public class TablePoller<A> {
                 c.commit();
                 long end = currentTimeMillis();
 
-                logger.info("COMMIT performed in {}ms", end - start);
+                logger.debug("COMMIT performed in {}ms", end - start);
 
                 Thread.sleep(10 * 1000);
             }
