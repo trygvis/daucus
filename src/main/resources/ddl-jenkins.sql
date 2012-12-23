@@ -21,12 +21,14 @@ CREATE TABLE jenkins_job (
 
   server       CHAR(36)      NOT NULL,
 
+  file         CHAR(36)      NOT NULL,
   url          VARCHAR(1000) NOT NULL,
   job_type     VARCHAR(100)  NOT NULL,
   display_name VARCHAR(100),
 
   CONSTRAINT pk_jenkins_job PRIMARY KEY (UUID),
   CONSTRAINT fk_jenkins_job__server FOREIGN KEY (server) REFERENCES jenkins_server (uuid),
+  CONSTRAINT fk_jenkins_job__file FOREIGN KEY (file) REFERENCES file (uuid),
   CONSTRAINT uq_jenkins_job__url UNIQUE (url)
 );
 
@@ -39,6 +41,7 @@ CREATE TABLE jenkins_build (
 
   job          CHAR(36)      NOT NULL,
 
+  file         CHAR(36)      NOT NULL,
   entry_id     VARCHAR(1000) NOT NULL,
   url          VARCHAR(1000) NOT NULL,
   result       VARCHAR(100)  NOT NULL,
@@ -49,6 +52,7 @@ CREATE TABLE jenkins_build (
 
   CONSTRAINT pk_jenkins_build PRIMARY KEY (UUID),
   CONSTRAINT fk_jenkins_build__job FOREIGN KEY (job) REFERENCES jenkins_job (uuid),
+  CONSTRAINT fk_jenkins_build__file FOREIGN KEY (file) REFERENCES file (uuid),
   CONSTRAINT uq_jenkins_build__id UNIQUE (entry_id),
   CONSTRAINT uq_jenkins_build__seq UNIQUE (seq)
 );

@@ -20,9 +20,7 @@ public class JenkinsDao {
 
     public static final String JENKINS_SERVER = "uuid, created_date, url, enabled";
 
-    public static final String JENKINS_JOB = "uuid, created_date, server, url, job_type, display_name";
-
-    public static final String JENKINS_BUILD = "uuid, created_date, job, entry_id, url, result, number, duration, timestamp, users";
+    public static final String JENKINS_JOB = "uuid, created_date, server, file, url, job_type, display_name";
 
     public static final String JENKINS_USER = "uuid, created_date, server, absolute_url";
 
@@ -67,12 +65,15 @@ public class JenkinsDao {
         return list;
     }
 
+    public static final String JENKINS_BUILD = "uuid, created_date, job, file, entry_id, url, result, number, duration, timestamp, users";
+
     public static final SqlF<ResultSet, JenkinsBuildDto> jenkinsBuild = new SqlF<ResultSet, JenkinsBuildDto>() {
         public JenkinsBuildDto apply(ResultSet rs) throws SQLException {
             int i = 1;
             return new JenkinsBuildDto(
                     UUID.fromString(rs.getString(i++)),
                     new DateTime(rs.getTimestamp(i++).getTime()),
+                    UUID.fromString(rs.getString(i++)),
                     UUID.fromString(rs.getString(i++)),
                     rs.getString(i++),
                     URI.create(rs.getString(i++)),
@@ -143,13 +144,14 @@ public class JenkinsDao {
         }
     }
 
-    public UUID insertJob(UUID server, URI url, JenkinsJobXml.JenkinsJobType type, Option<String> displayName) throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("INSERT INTO jenkins_job(" + JENKINS_JOB + ") VALUES(?, ?, ?, ?, ?, ?)")) {
+    public UUID insertJob(UUID server, UUID file, URI url, JenkinsJobXml.JenkinsJobType type, Option<String> displayName) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("INSERT INTO jenkins_job(" + JENKINS_JOB + ") VALUES(?, ?, ?, ?, ?, ?, ?)")) {
             UUID uuid = UUID.randomUUID();
             int i = 1;
             s.setString(i++, uuid.toString());
             s.setTimestamp(i++, new Timestamp(currentTimeMillis()));
             s.setString(i++, server.toString());
+            s.setString(i++, file.toString());
             s.setString(i++, url.toASCIIString());
             s.setString(i++, type.name());
             s.setString(i, displayName.toNull());
@@ -167,13 +169,14 @@ public class JenkinsDao {
         }
     }
 
-    public UUID insertBuild(UUID server, String entryId, URI url, String result, int number, int duration, long timestamp, UUID[] users) throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("INSERT INTO jenkins_build(" + JENKINS_BUILD + ") VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+    public UUID insertBuild(UUID job, UUID file, String entryId, URI url, String result, int number, int duration, long timestamp, UUID[] users) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("INSERT INTO jenkins_build(" + JENKINS_BUILD + ") VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
             UUID uuid = UUID.randomUUID();
             int i = 1;
             s.setString(i++, uuid.toString());
             s.setTimestamp(i++, new Timestamp(currentTimeMillis()));
-            s.setString(i++, server.toString());
+            s.setString(i++, job.toString());
+            s.setString(i++, file.toString());
             s.setString(i++, entryId);
             s.setString(i++, url.toASCIIString());
             s.setString(i++, result);

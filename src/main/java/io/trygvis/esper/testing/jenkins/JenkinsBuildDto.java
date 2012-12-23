@@ -8,6 +8,7 @@ import java.util.*;
 
 public class JenkinsBuildDto extends AbstractEntity {
     public final UUID job;
+    public final UUID file;
     public final String entryId;
     public final URI url;
     public final String result;
@@ -16,9 +17,10 @@ public class JenkinsBuildDto extends AbstractEntity {
     public final DateTime timestamp;
     public final UUID[] users;
 
-    public JenkinsBuildDto(UUID uuid, DateTime createdDate, UUID job, String entryId, URI url, String result, int number, int duration, DateTime timestamp, UUID[] users) {
+    public JenkinsBuildDto(UUID uuid, DateTime createdDate, UUID job, UUID file, String entryId, URI url, String result, int number, int duration, DateTime timestamp, UUID[] users) {
         super(uuid, createdDate);
         this.job = job;
+        this.file = file;
         this.entryId = entryId;
         this.url = url;
         this.result = result;

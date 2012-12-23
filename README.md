@@ -30,3 +30,7 @@ Product P has increased the number of tests the last N (commits|days).
 Level 1: 3 programmers
 Level 2: 4 programmers
 Level 3: 5 programmers
+
+# BF3 Nomenclature
+
+Two types of "awards": "ribbons" and "medals". A medal is given for repeatedly awarded a ribbon.

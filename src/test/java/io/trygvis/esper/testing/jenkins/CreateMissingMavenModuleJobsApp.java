@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 import fj.*;
+import io.trygvis.esper.testing.core.db.*;
 import org.apache.abdera.Abdera;
 import org.codehaus.httpcache4j.cache.HTTPCache;
 
@@ -35,6 +36,7 @@ public class CreateMissingMavenModuleJobsApp {
             ResultSet rs = s.executeQuery();
 
             JenkinsDao dao = new JenkinsDao(c);
+            FileDao fileDao = new FileDao(c);
 
             List<JenkinsJobDto> jobs = dao.toJobList(rs);
 
@@ -49,7 +51,9 @@ public class CreateMissingMavenModuleJobsApp {
 
                 URI url = URI.create(u);
 
-                Option<P2<JenkinsJobXml,byte[]>> xmlOption = client.fetchJob(apiXml(url));
+                URI uri = apiXml(url);
+
+                Option<P2<JenkinsJobXml,byte[]>> xmlOption = client.fetchJob(uri);
 
                 if(xmlOption.isNone()) {
                     System.out.println("None");
@@ -63,7 +67,9 @@ public class CreateMissingMavenModuleJobsApp {
                     continue;
                 }
 
-                UUID uuid = dao.insertJob(jobDto.server, url, jobXml.type, jobXml.displayName);
+                UUID file = fileDao.store(uri, "application/xml", xmlOption.some()._2());
+
+                UUID uuid = dao.insertJob(jobDto.server, file, url, jobXml.type, jobXml.displayName);
 
                 System.out.println("New job: " + uuid);
             }

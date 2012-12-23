@@ -14,7 +14,7 @@ public class FileDao {
         this.c = c;
     }
 
-    public void store(URI url, String contentType, byte[] data) throws SQLException {
+    public UUID store(URI url, String contentType, byte[] data) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("INSERT INTO file(uuid, created_date, url, content_type, data) VALUES(?, ?, ?, ?, ?)")) {
             UUID uuid = UUID.randomUUID();
             int i = 1;
@@ -24,6 +24,7 @@ public class FileDao {
             s.setString(i++, contentType);
             s.setBinaryStream(i, new ByteArrayInputStream(data), data.length);
             s.executeUpdate();
+            return uuid;
         }
     }
 }

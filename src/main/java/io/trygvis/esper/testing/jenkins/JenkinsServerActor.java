@@ -76,7 +76,7 @@ public class JenkinsServerActor implements TransactionalActor {
                 continue;
             }
 
-            fileDao.store(buildUrl, "application/xml", buildXmlOption.some()._2());
+            UUID buildXmlFile = fileDao.store(buildUrl, "application/xml", buildXmlOption.some()._2());
 
             String result = build.result.some();
 
@@ -137,11 +137,11 @@ public class JenkinsServerActor implements TransactionalActor {
                     continue;
                 }
 
-                fileDao.store(uri, "application/xml", jobXmlOption.some()._2());
+                UUID jobXmlFile = fileDao.store(uri, "application/xml", jobXmlOption.some()._2());
 
                 JenkinsJobXml xml = jobXmlOption.some()._1();
 
-                job = dao.insertJob(server.uuid, xml.url, xml.type, xml.displayName);
+                job = dao.insertJob(server.uuid, jobXmlFile, xml.url, xml.type, xml.displayName);
 
                 logger.info("New job: {}, uuid={}", xml.displayName.orSome(xml.url.toASCIIString()), job);
             }
@@ -150,6 +150,7 @@ public class JenkinsServerActor implements TransactionalActor {
 
             UUID uuid = dao.insertBuild(
                     job,
+                    buildXmlFile,
                     entry.id,
                     build.url,
                     result,
