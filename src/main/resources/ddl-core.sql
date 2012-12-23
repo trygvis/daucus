@@ -8,16 +8,6 @@ DROP TABLE IF EXISTS person_badge;
 DROP TABLE IF EXISTS person_jenkins_user;
 DROP TABLE IF EXISTS person;
 DROP TABLE IF EXISTS table_poller_status;
-DROP TABLE IF EXISTS file;
-
-CREATE TABLE file (
-  uuid         CHAR(36)      NOT NULL,
-  created_date TIMESTAMP     NOT NULL,
-  url          VARCHAR(1000) NOT NULL,
-  content_type VARCHAR(100)  NOT NULL,
-  data         BYTEA,
-  CONSTRAINT pk_file PRIMARY KEY (uuid)
-);
 
 CREATE TABLE table_poller_status (
   poller_name VARCHAR(100) NOT NULL,
@@ -32,6 +22,7 @@ CREATE TABLE person (
   uuid         CHAR(36)  NOT NULL,
   created_date TIMESTAMP NOT NULL,
   name         VARCHAR(100),
+  mail         VARCHAR(100),
   CONSTRAINT pk_person PRIMARY KEY (uuid)
 );
 

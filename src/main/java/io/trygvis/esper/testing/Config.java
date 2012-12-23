@@ -48,6 +48,8 @@ public class Config {
     public final String databaseUsername;
     public final String databasePassword;
 
+    private BoneCPDataSource dataSource;
+
     public Config(GitoriousConfig gitorious, long nexusUpdateInterval, long jenkinsUpdateInterval, String databaseUrl,
                   String databaseUsername, String databasePassword) {
         this.gitorious = gitorious;
@@ -89,12 +91,16 @@ public class Config {
     }
 
     public BoneCPDataSource createBoneCp() throws SQLException {
-        return new BoneCPDataSource(new BoneCPConfig(){{
+        if (dataSource != null) {
+            return dataSource;
+        }
+
+        return dataSource = new BoneCPDataSource(new BoneCPConfig() {{
             setJdbcUrl(databaseUrl);
             setUsername(databaseUsername);
             setPassword(databasePassword);
             setDefaultAutoCommit(false);
-            setCloseConnectionWatch(true);
+            setCloseConnectionWatch(false);
             setMaxConnectionsPerPartition(10);
         }});
     }

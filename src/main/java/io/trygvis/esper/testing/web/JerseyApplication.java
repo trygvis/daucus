@@ -10,8 +10,7 @@ public class JerseyApplication extends Application {
     private final DatabaseAccess da;
 
     public JerseyApplication() throws Exception {
-        Config config = Config.loadFromDisk();
-        this.da = new DatabaseAccess(config.createBoneCp());
+        this.da = new DatabaseAccess(WebConfig.config.createBoneCp());
     }
 
     @Override
