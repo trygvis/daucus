@@ -1,0 +1,37 @@
+#!/bin/bash
+
+. $APPSH_HOME/.app/lib/app-common
+
+method=$APPSH_METHOD
+
+if [ -z "$1" ]
+then
+  echo "Missing required argument: app" >&2
+  exit 1
+fi
+
+app=$1
+shift
+
+run() {
+  app=$1; shift
+
+  if [ ! -x bin/$app ]
+  then
+    echo "Unknown app: $app" >&2
+    exit 1
+  fi
+
+  exec "bin/$app" "$@"
+}
+
+case "$method" in
+  run)
+    run "$app" "$@"
+    ;;
+  *)
+    echo "Unknown method: $method" >&2
+    exit 1
+    ;;
+esac
+exit $?

@@ -202,7 +202,20 @@
               <assembly>
                 <copyDirectory>
                   <from>target/appassembler</from>
+                  <to>root</to>
                 </copyDirectory>
+                <setAttributes>
+                  <includes>
+                    <include>root/bin/*</include>
+                    <include>scripts/*</include>
+                  </includes>
+                  <excludes>
+                    <exclude>root/bin/*.bat</exclude>
+                  </excludes>
+                  <fileAttributes>
+                    <mode>0755</mode>
+                  </fileAttributes>
+                </setAttributes>
               </assembly>
             </configuration>
           </execution>

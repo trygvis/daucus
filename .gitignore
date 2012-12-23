@@ -2,6 +2,6 @@ target
 .idea
 *.iml
 
-config.properties
+etc/config.properties
 
 *tmp*

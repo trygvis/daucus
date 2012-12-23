@@ -64,7 +64,7 @@ public class Config {
         initLogging();
 
         Properties properties = new Properties();
-        try (FileInputStream inputStream = new FileInputStream("config.properties")) {
+        try (FileInputStream inputStream = new FileInputStream("etc/config.properties")) {
             properties.load(inputStream);
         }
 
