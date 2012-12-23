@@ -37,7 +37,7 @@ public class JenkinsClient {
         jenkinsEntryXmlClient = new HttpClient<>(http, inputStreamOnly(new F<InputStream, Option<List<JenkinsEntryXml>>>() {
             public Option<List<JenkinsEntryXml>> f(InputStream inputStream) {
                 long start = currentTimeMillis();
-                Feed feed = (Feed) parser.parse(inputStream).getRoot();
+                Feed feed = (Feed) parser.parse(inputStream).getRoot().complete();
                 long end = currentTimeMillis();
                 logger.info("Parsed document in " + (end - start) + "ms.");
 
