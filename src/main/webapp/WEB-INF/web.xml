@@ -11,16 +11,31 @@
     <filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
   </filter>
 
-  <filter-mapping>
-    <filter-name>ShiroFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
+  <filter>
+    <filter-name>Url Rewrite Filter</filter-name>
+    <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+
+    <!-- set the amount of seconds the conf file will be checked for reload
+    can be a valid integer (0 denotes check every time,
+    -1 denotes no reload check, default -1) -->
+    <init-param>
+      <param-name>confReloadCheckInterval</param-name>
+      <param-value>60</param-value>
+    </init-param>
+
+    <!-- sets up log level (will be logged to context log)
+    can be: slf4j, TRACE, DEBUG, INFO (default), WARN, ERROR, FATAL,
+    sysout:{level} (ie, sysout:DEBUG)
+    if you are having trouble using normal levels use sysout:DEBUG
+    (default WARN) -->
+    <init-param>
+        <param-name>logLevel</param-name>
+        <param-value>slf4j</param-value>
+    </init-param>
+  </filter>
 
   <filter>
     <filter-name>Jersey</filter-name>
-    <!--
-    <filter-class>org.glassfish.jersey.servlet.ServletContainer</filter-class>
-    -->
     <filter-class>com.sun.jersey.spi.container.servlet.ServletContainer</filter-class>
     <init-param>
       <param-name>javax.ws.rs.Application</param-name>
@@ -39,6 +54,17 @@
       <param-value>true</param-value>
     </init-param>
   </filter>
+
+  <filter-mapping>
+    <filter-name>ShiroFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>Url Rewrite Filter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
   <filter-mapping>
     <filter-name>Jersey</filter-name>
     <url-pattern>/*</url-pattern>

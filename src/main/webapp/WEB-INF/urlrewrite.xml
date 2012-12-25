@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 4.0//EN"
+        "http://www.tuckey.org/res/dtds/urlrewrite4.0.dtd">
+
+<!--
+
+  See http://urlrewritefilter.googlecode.com/svn/trunk/src/doc/manual/4.0/index.html
+
+-->
+
+<urlrewrite>
+
+  <rule match-type="wildcard">
+    <from>/</from>
+    <to type="forward">/index.jspx</to>
+  </rule>
+
+</urlrewrite>

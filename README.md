@@ -31,6 +31,10 @@ Level 1: 3 programmers
 Level 2: 4 programmers
 Level 3: 5 programmers
 
+## Aggressive
+
+N commits per day/week
+
 # BF3 Nomenclature
 
 Two types of "awards": "ribbons" and "medals". A medal is given for repeatedly awarded a ribbon.
