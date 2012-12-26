@@ -1,0 +1,45 @@
+<html xmlns:common="urn:jsptagdir:/WEB-INF/tags/common"
+      xmlns:jsp="http://java.sun.com/JSP/Page"
+      xmlns:shiro="http://shiro.apache.org/tags">
+<jsp:output doctype-root-element="HTML" doctype-system="about:legacy-compat"/>
+<jsp:directive.page contentType="text/html;charset=UTF-8"/>
+
+<common:head-element/>
+
+<body>
+
+<div id="content">
+
+  <div class="container">
+    <div class="page-header">
+      <h1>Shiro Values</h1>
+    </div>
+
+    <p>
+      <table>
+        <tr>
+          <th>guest</th>
+          <td><shiro:guest>Yes</shiro:guest></td>
+        </tr>
+        <tr>
+          <th>authenticated</th>
+          <td><shiro:authenticated>Yes</shiro:authenticated></td>
+        </tr>
+        <tr>
+          <th>notAuthenticated</th>
+          <td><shiro:notAuthenticated>Yes</shiro:notAuthenticated></td>
+        </tr>
+        <tr>
+          <th>principal</th>
+          <td><shiro:principal>Yes</shiro:principal></td>
+        </tr>
+      </table>
+    </p>
+  </div>
+
+</div>
+
+<common:footer/>
+</body>
+
+</html>

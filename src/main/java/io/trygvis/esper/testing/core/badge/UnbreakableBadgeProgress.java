@@ -1,25 +1,27 @@
 package io.trygvis.esper.testing.core.badge;
 
+import static fj.P.*;
 import fj.*;
 import fj.data.*;
+import static fj.data.Option.*;
 import io.trygvis.esper.testing.core.db.*;
+import io.trygvis.esper.testing.core.db.PersonBadgeDto.*;
 
 import java.util.*;
 
-import static fj.P.p;
-import static fj.data.Option.some;
-
-class UnbreakableBadgeProgress {
+public class UnbreakableBadgeProgress extends BadgeProgress {
     public final UUID person;
     public final int count;
 
     private UnbreakableBadgeProgress(UUID person, int count) {
+        super(BadgeType.UNBREAKABLE);
         this.person = person;
         this.count = count;
     }
 
     @SuppressWarnings("UnusedDeclaration")
     private UnbreakableBadgeProgress() {
+        super(BadgeType.UNBREAKABLE);
         person = null;
         count = -1;
     }
@@ -48,6 +50,34 @@ class UnbreakableBadgeProgress {
         }
 
         return p(new UnbreakableBadgeProgress(person, count), Option.<UnbreakableBadge>none());
+    }
+
+    public int progression() {
+        return count;
+    }
+
+    public int goal() {
+        if (count > UnbreakableBadge.LEVEL_2_COUNT) {
+            return UnbreakableBadge.LEVEL_3_COUNT;
+        }
+
+        if (count > UnbreakableBadge.LEVEL_1_COUNT) {
+            return UnbreakableBadge.LEVEL_2_COUNT;
+        }
+
+        return UnbreakableBadge.LEVEL_1_COUNT;
+    }
+
+    public int progressingAgainstLevel() {
+        if (count > UnbreakableBadge.LEVEL_2_COUNT) {
+            return 3;
+        }
+
+        if (count > UnbreakableBadge.LEVEL_1_COUNT) {
+            return 2;
+        }
+
+        return 1;
     }
 
     @Override

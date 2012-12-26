@@ -14,7 +14,7 @@ import java.util.List;
 
 import static fj.data.Option.*;
 
-@Path("/")
+@Path("/resource/jenkins")
 public class JenkinsResource {
 
     private final DatabaseAccess da;
@@ -24,7 +24,7 @@ public class JenkinsResource {
     }
 
     @GET
-    @Path("/resource/jenkins/server")
+    @Path("/server")
     @Produces(MediaType.APPLICATION_JSON)
     public List<JenkinsServerJson> getServers() throws Exception {
         return da.inTransaction(new DatabaseAccess.DaosCallback<List<JenkinsServerJson>>() {
@@ -40,7 +40,7 @@ public class JenkinsResource {
     }
 
     @GET
-    @Path("/resource/jenkins/server/{uuid}")
+    @Path("/server/{uuid}")
     @Produces(MediaType.APPLICATION_JSON)
     public JenkinsServerJson getServer(@PathParam("uuid") String s) throws Exception {
         final UUID uuid = parseUuid(s);

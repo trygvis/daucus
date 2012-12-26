@@ -7,21 +7,19 @@ import io.trygvis.esper.testing.*;
 import io.trygvis.esper.testing.core.*;
 import io.trygvis.esper.testing.core.db.*;
 import io.trygvis.esper.testing.util.sql.*;
-import org.codehaus.jackson.map.*;
 import org.slf4j.*;
 
-import java.io.*;
 import java.sql.*;
 import java.util.List;
 import java.util.*;
 
 import static io.trygvis.esper.testing.Config.*;
-import static io.trygvis.esper.testing.core.db.PersonBadgeDto.Type.*;
+import static io.trygvis.esper.testing.core.db.PersonBadgeDto.BadgeType.*;
 
 public class UnbreakablePoller implements TablePoller.NewRowCallback<BuildDto> {
-    Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private final BadgeService badgeService = new BadgeService();
 
     public static void main(String[] args) throws Exception {
         String pollerName = "unbreakable";
@@ -50,23 +48,15 @@ public class UnbreakablePoller implements TablePoller.NewRowCallback<BuildDto> {
 
             SqlOption<PersonBadgeProgressDto> o = daos.personDao.selectBadgeProgress(person, UNBREAKABLE);
 
-            UnbreakableBadgeProgress badge;
-
             if (o.isNone()) {
-                badge = UnbreakableBadgeProgress.initial(person);
+                UnbreakableBadgeProgress badge = UnbreakableBadgeProgress.initial(person);
                 logger.info("New badge progress");
-                String state = serialize(badge);
+                String state = badgeService.serialize(badge);
                 daos.personDao.insertBadgeProgress(person, UNBREAKABLE, state);
                 continue;
             }
 
-            String state = o.get().state;
-            try {
-                badge = objectMapper.readValue(state, UnbreakableBadgeProgress.class);
-            } catch (IOException e) {
-                logger.error("Could not de-serialize badge state: {}", state);
-                throw new RuntimeException(e);
-            }
+            UnbreakableBadgeProgress badge = badgeService.unbreakable(o.get());
 
             logger.info("Existing badge progress: count={}", badge.count);
 
@@ -90,20 +80,9 @@ public class UnbreakablePoller implements TablePoller.NewRowCallback<BuildDto> {
                 }
             }
 
-            state = serialize(badge);
+            String state = badgeService.serialize(badge);
 
             daos.personDao.updateBadgeProgress(person, UNBREAKABLE, state);
-        }
-    }
-
-    private String serialize(UnbreakableBadgeProgress badge) {
-        try {
-            CharArrayWriter writer = new CharArrayWriter();
-            objectMapper.writeValue(writer, badge);
-            return writer.toString();
-        } catch (IOException e) {
-            logger.error("Could not serialize badge.", e);
-            throw new RuntimeException(e);
         }
     }
 }

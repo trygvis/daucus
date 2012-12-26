@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 function JenkinsServerService($resource) {
   return $resource('/resource/jenkins/server/:uuid', {uuid: '@uuid'});
