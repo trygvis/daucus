@@ -1,5 +1,6 @@
 package io.trygvis.esper.testing.web;
 
+import fj.data.*;
 import io.trygvis.esper.testing.*;
 import io.trygvis.esper.testing.core.badge.*;
 import io.trygvis.esper.testing.core.db.*;
@@ -10,30 +11,64 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.sql.*;
 import java.util.*;
+import java.util.List;
+
+import static io.trygvis.esper.testing.util.sql.PageRequest.*;
+import static io.trygvis.esper.testing.web.JenkinsResource.*;
 
 @Path("/resource/core")
-public class CoreResource {
+@Produces(MediaType.APPLICATION_JSON)
+public class CoreResource extends AbstractResource {
 
-    private final DatabaseAccess da;
     private final BadgeService badgeService;
 
     public CoreResource(DatabaseAccess da, BadgeService badgeService) {
-        this.da = da;
+        super(da);
         this.badgeService = badgeService;
     }
 
     @GET
     @Path("/person")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<PersonJson> getServers(@Context final HttpServletRequest req) throws Exception {
+    public List<PersonJson> getPersons(@Context final HttpServletRequest req) throws Exception {
+        final PageRequest pageRequest = pageReq(req);
+
         return da.inTransaction(new DatabaseAccess.DaosCallback<List<PersonJson>>() {
-            @Override
             public List<PersonJson> run(Daos daos) throws SQLException {
                 List<PersonJson> list = new ArrayList<>();
-                for (PersonDto person : daos.personDao.selectPerson(PageRequest.fromReq(req))) {
+                for (PersonDto person : daos.personDao.selectPerson(pageRequest)) {
                     list.add(getPersonJson(daos, person));
                 }
                 return list;
+            }
+        });
+    }
+
+    /**
+     * This is wrong, but Angular's $resource is a bit dumb.
+     */
+    @GET
+    @Path("/person-count")
+    public int getPersonCount() throws Exception {
+        return da.inTransaction(new DatabaseAccess.DaosCallback<Integer>() {
+            public Integer run(Daos daos) throws SQLException {
+                return daos.personDao.selectPersonCount();
+            }
+        });
+    }
+
+    @GET
+    @Path("/person/{uuid}")
+    public PersonJson getPerson(@PathParam("uuid") final String s) throws Exception {
+        final UUID uuid = parseUuid(s);
+
+        return get(new DatabaseAccess.DaosCallback<Option<PersonJson>>() {
+            public Option<PersonJson> run(Daos daos) throws SQLException {
+                SqlOption<PersonDto> o = daos.personDao.selectPerson(uuid);
+                if (o.isNone()) {
+                    return Option.none();
+                }
+
+                return Option.some(getPersonJson(daos, o.get()));
             }
         });
     }
@@ -45,16 +80,19 @@ public class CoreResource {
             badges.add(new BadgeJson(badge.type.name(), badge.level, badge.count, 100, 100));
         }
 
+        List<BadgeJson> badgesInProgress = new ArrayList<>();
+
         for (PersonBadgeProgressDto badgeProgressDto : daos.personDao.selectBadgeProgresses(person.uuid)) {
             UnbreakableBadgeProgress progress = badgeService.unbreakable(badgeProgressDto);
-            badges.add(new BadgeJson(progress.type.name(), progress.progressingAgainstLevel(), 0,
-                progress.progression(), progress.goal()));
+            badgesInProgress.add(new BadgeJson(progress.type.name(), progress.progressingAgainstLevel(), 0,
+                    progress.progression(), progress.goal()));
         }
 
         return new PersonJson(
-            person.uuid,
-            person.name,
-            badges
+                person.uuid,
+                person.name,
+                badges,
+                badgesInProgress
         );
     }
 
@@ -62,11 +100,13 @@ public class CoreResource {
         public final UUID uuid;
         public final String name;
         public final List<BadgeJson> badges;
+        public final List<BadgeJson> badgesInProgress;
 
-        public PersonJson(UUID uuid, String name, List<BadgeJson> badges) {
+        public PersonJson(UUID uuid, String name, List<BadgeJson> badges, List<BadgeJson> badgesInProgress) {
             this.uuid = uuid;
             this.name = name;
             this.badges = badges;
+            this.badgesInProgress = badgesInProgress;
         }
     }
 

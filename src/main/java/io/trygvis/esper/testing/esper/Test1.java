@@ -68,7 +68,6 @@ public class Test1 {
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
             public void run() {
                 logger.info("tick");
             }

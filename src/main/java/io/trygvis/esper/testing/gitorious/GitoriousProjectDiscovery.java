@@ -50,7 +50,6 @@ public class GitoriousProjectDiscovery {
         });
 
         ObjectUtil.scheduledActorWithFixedDelay(service, config.gitorious.projectListUpdateDelay, config.gitorious.projectListUpdateInterval, TimeUnit.MILLISECONDS, boneCp, "Gitorious", new TransactionalActor() {
-            @Override
             public void act(Connection c) throws Exception {
                 try (Daos daos = new Daos(c)) {
                     discoverProjects(daos);

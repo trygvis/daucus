@@ -34,7 +34,6 @@ public class HttpClient<A> {
 
     public static <A> F<HTTPResponse, Option<A>> inputStreamOnly(final F<InputStream, Option<A>> f) {
         return new F<HTTPResponse, Option<A>>() {
-            @Override
             public Option<A> f(HTTPResponse response) {
                 InputStream inputStream = response.getPayload().getInputStream();
                 try {

@@ -71,7 +71,6 @@ class NexusServer implements TransactionalActor {
         this.xmlParser = xmlParser;
     }
 
-    @Override
     public void act(Connection c) throws Exception {
 
         NexusDao dao = new NexusDao(c);

@@ -50,7 +50,6 @@ public class NexusFeedParser {
         Option<String> guid = Option.fromNull(item.getChildText("guid"));
         Option<String> creator = Option.fromNull(item.getChildText("creator", dc));
         Option<DateTime> date = Option.fromNull(item.getChildText("date", dc)).bind(new F<String, Option<DateTime>>() {
-            @Override
             public Option<DateTime> f(String s) {
                 try {
                     return some(ISODateTimeFormat.dateTimeNoMillis().parseDateTime(s));

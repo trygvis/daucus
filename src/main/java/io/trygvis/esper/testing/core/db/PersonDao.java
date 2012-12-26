@@ -1,6 +1,5 @@
 package io.trygvis.esper.testing.core.db;
 
-import static io.trygvis.esper.testing.Util.toList;
 import io.trygvis.esper.testing.core.db.PersonBadgeDto.*;
 import io.trygvis.esper.testing.util.sql.*;
 import org.joda.time.*;
@@ -8,6 +7,7 @@ import org.joda.time.*;
 import java.sql.*;
 import java.util.*;
 
+import static io.trygvis.esper.testing.Util.*;
 import static io.trygvis.esper.testing.util.sql.SqlOption.*;
 import static java.lang.System.*;
 
@@ -36,7 +36,7 @@ public class PersonDao {
                     new DateTime(rs.getTimestamp(i++).getTime()),
                     UUID.fromString(rs.getString(i++)),
                     BadgeType.valueOf(rs.getString(i++)),
-                    rs.getInt(i),
+                    rs.getInt(i++),
                     rs.getInt(i));
         }
     };
@@ -63,20 +63,26 @@ public class PersonDao {
     // Person
     // -----------------------------------------------------------------------
 
-    public SqlOption<PersonDto> selectPerson(String id) throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("SELECT " + PERSON + " FROM person WHERE id=?")) {
+    public SqlOption<PersonDto> selectPerson(UUID uuid) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + PERSON + " FROM person WHERE uuid=?")) {
             int i = 1;
-            s.setString(i, id);
+            s.setString(i, uuid.toString());
             return fromRs(s.executeQuery()).map(person);
         }
     }
 
     public List<PersonDto> selectPerson(PageRequest pageRequest) throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("SELECT " + PERSON + " FROM person ORDER BY created_date LIMIT ? OFFSET ?")) {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + PERSON + " FROM person ORDER BY created_date, name LIMIT ? OFFSET ?")) {
             int i = 1;
             s.setInt(i++, pageRequest.count.orSome(10));
             s.setInt(i, pageRequest.startIndex.orSome(0));
             return toList(s, person);
+        }
+    }
+
+    public int selectPersonCount() throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT count(1) FROM person")) {
+            return fromRs(s.executeQuery()).map(ResultSetF.getInt).get();
         }
     }
 

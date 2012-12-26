@@ -15,7 +15,7 @@ public class PageRequest {
         this.count = count;
     }
 
-    public static PageRequest fromReq(HttpServletRequest req) {
+    public static PageRequest pageReq(HttpServletRequest req) {
         return new PageRequest(
             fromNull(req.getParameter("startIndex")).bind(Util.parseInt),
             fromNull(req.getParameter("count")).bind(Util.parseInt));

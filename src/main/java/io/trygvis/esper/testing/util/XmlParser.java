@@ -46,7 +46,6 @@ public class XmlParser {
 
                 boolean seenStartDocument;
 
-                @Override
                 public boolean accept(XMLStreamReader reader) {
                     if(reader.getEventType() == SPACE && !seenStartDocument) {
                         return false;

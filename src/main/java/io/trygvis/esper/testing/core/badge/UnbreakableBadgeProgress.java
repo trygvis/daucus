@@ -80,7 +80,6 @@ public class UnbreakableBadgeProgress extends BadgeProgress {
         return 1;
     }
 
-    @Override
     public String toString() {
         return "UnbreakableBadgeProgress{person=" + person + ", count=" + count + '}';
     }

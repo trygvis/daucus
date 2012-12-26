@@ -31,7 +31,6 @@ public class GitoriousClient {
     private final GitoriousAtomFeedParser parser;
 
     private final F<HTTPResponse, Option<List<GitoriousProjectXml>>> parseDocument = new F<HTTPResponse, Option<List<GitoriousProjectXml>>>() {
-        @Override
         public Option<List<GitoriousProjectXml>> f(HTTPResponse response) {
             MIMEType mimeType = MIMEType.valueOf(trimToEmpty(response.getHeaders().getFirstHeaderValue("Content-Type")));
             if (!mimeType.getPrimaryType().equals("application") || !mimeType.getSubType().equals("xml")) {

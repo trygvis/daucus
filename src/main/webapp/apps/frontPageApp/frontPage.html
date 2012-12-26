@@ -1,24 +1,15 @@
 <div class="container">
 
-<div class="page-header">
-  <h1>Users</h1>
-</div>
+  <div class="page-header">
+    <h1>Newcomers</h1>
+  </div>
 
-<p>
-  <table>
-    <thead>
-      <th>Name</th>
-      <th>Level</th>
-      <th>Count</th>
-      <th>Progress</th>
-      <th>Goal</th>
-    </thead>
-    <tbody ng-repeat="person in persons">
-    <tr>
-      <td>{{person.name}}</td>
-      <td>{{person.badges.length}}</td>
-    </tr>
-  </table>
-</p>
+  <style>
+    .personsGrid {
+      height: 400px;
+    }
+  </style>
+
+  <div class="personsGrid" ng-grid="personsGridOptions"><!-- --></div>
 
 </div>

@@ -1,5 +1,5 @@
-<html xmlns:common="urn:jsptagdir:/WEB-INF/tags/common"
-      xmlns:jsp="http://java.sun.com/JSP/Page"
+<html jsp:version="2.0" xmlns:jsp="http://java.sun.com/JSP/Page"
+      xmlns:common="urn:jsptagdir:/WEB-INF/tags/common"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
 <jsp:output doctype-root-element="HTML" doctype-system="about:legacy-compat"/>
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>

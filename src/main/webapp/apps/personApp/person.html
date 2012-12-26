@@ -1,0 +1,17 @@
+<div class="container">
+
+  <div class="page-header">
+    <h1>{{person.name}}</h1>
+  </div>
+
+  <h3>Badges</h3>
+  <p ng-repeat="badge in person.badges">
+    <span class="badge-level-{{badge.level}} badge">{{badge.name}}</span><span ng-show="badge.count > 1"> x {{badge.count}}</span>
+  </p>
+
+  <h3>Badges in progress</h3>
+  <p ng-repeat="badge in person.badgesInProgress">
+    <span class="badge badge-level-{{badge.level}}">{{badge.name}}</span> progress: {{badge.progress}} of {{badge.goal}}
+  </p>
+
+</div>

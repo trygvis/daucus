@@ -15,13 +15,12 @@ public class JerseyApplication extends Application {
 
         BadgeService badgeService = new BadgeService();
 
-        singletons = new HashSet<>(Arrays.asList(
+        singletons = new HashSet<Object>(Arrays.asList(
             new CoreResource(da, badgeService),
             new JenkinsResource(da)
         ));
     }
 
-    @Override
     public Set<Object> getSingletons() {
         return singletons;
     }

@@ -1,0 +1,41 @@
+/*
+    bronze = #8c7853
+    bronze ii = #a67d3d
+    */
+
+.badge-level-1 { background-color: #a67d3d; }
+.badge-level-2 { background-color: silver; }
+.badge-level-3 { background-color: #ffd700; }
+
+#content {
+    background-color: #ffffff;
+    padding-bottom: 60px;
+}
+
+#footer {
+    background-color: #f5f5f5;
+    border-top: 1px solid #ccc;
+    color: #000000;
+}
+
+#footer .container {
+    padding: 60px 0;
+}
+
+#footer abbr[title] {
+    border-bottom: 1px dotted #000;
+}
+
+#footer p {
+    margin-bottom: 0;
+    color: #777;
+}
+
+#footer-links {
+    margin: 10px 0;
+}
+
+#footer-links li {
+    display: inline;
+    margin-right: 10px;
+}

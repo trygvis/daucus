@@ -15,12 +15,10 @@ import java.util.List;
 import static fj.data.Option.*;
 
 @Path("/resource/jenkins")
-public class JenkinsResource {
-
-    private final DatabaseAccess da;
+public class JenkinsResource extends AbstractResource {
 
     public JenkinsResource(DatabaseAccess da) {
-        this.da = da;
+        super(da);
     }
 
     @GET
@@ -28,7 +26,6 @@ public class JenkinsResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<JenkinsServerJson> getServers() throws Exception {
         return da.inTransaction(new DatabaseAccess.DaosCallback<List<JenkinsServerJson>>() {
-            @Override
             public List<JenkinsServerJson> run(Daos daos) throws SQLException {
                 List<JenkinsServerJson> list = new ArrayList<>();
                 for (JenkinsServerDto server : daos.jenkinsDao.selectServers(false)) {
@@ -63,17 +60,7 @@ public class JenkinsResource {
         return new JenkinsServerJson(server.uuid, server.createdDate, server.url, server.enabled, count);
     }
 
-    private <T> T get(DatabaseAccess.DaosCallback<Option<T>> callback) throws SQLException {
-        Option<T> server = da.inTransaction(callback);
-
-        if(server.isNone()) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
-        }
-
-        return server.some();
-    }
-
-    private UUID parseUuid(String s) {
+    public static UUID parseUuid(String s) {
         try {
             return UUID.fromString(s);
         } catch (IllegalArgumentException e) {

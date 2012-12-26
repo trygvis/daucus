@@ -1,7 +1,6 @@
 <!--suppress JspAbsolutePathInspection -->
-<jsp:root version="2.0"
-          xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page">
+<jsp:root version="2.0" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
   <jsp:output omit-xml-declaration="yes"/>
   <jsp:directive.attribute name="title" type="java.lang.String" required="false"/>
   <jsp:directive.attribute name="app" type="java.lang.String" required="false"/>
@@ -11,13 +10,16 @@
     <title><c:if test="${not empty title }">${title } - </c:if>Yeah</title>
 
     <link type="text/css" rel="stylesheet" href="/external/bootstrap-2.2.2/css/bootstrap.css"/>
+    <link type="text/css" rel="stylesheet" href="/external/angular-ui/ng-grid-1.5.0/ng-grid.css"/>
+    <link type="text/css" rel="stylesheet" href="/apps/app.css"/>
 
     <script type="text/javascript" src="/external/headjs-0.99/head.min.js"><!-- --></script>
     <script type="text/javascript">
       head.js(
           {jquery: "/external/jquery-1.7.1.js"},
           {angularjs: "/external/angular-1.0.3/angular.js"},
-          {angularjsResource: "/external/angular-1.0.3/angular-resource.js"}
+          {angularjsResource: "/external/angular-1.0.3/angular-resource.js"},
+          {angularUiNgGrid: "/external/angular-ui/ng-grid-1.5.0/ng-grid-1.5.0.js"}
       );
     </script>
     <script>var noCache = new Date().getTime();</script>
