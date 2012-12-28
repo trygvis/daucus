@@ -15,7 +15,8 @@ public class UnbreakableBadgeProgressTest extends TestCase {
     UUID uuid = randomUUID();
 
     public void testBadge() {
-        BuildDto build = new BuildDto(uuid, new DateTime(), new DateTime(), true, null);
+        BuildDto success = new BuildDto(uuid, new DateTime(), new DateTime(), true, null);
+        BuildDto failure = new BuildDto(uuid, new DateTime(), new DateTime(), false, null);
 
         UUID person = randomUUID();
 
@@ -24,7 +25,7 @@ public class UnbreakableBadgeProgressTest extends TestCase {
         List<UnbreakableBadge> badges = new ArrayList<>();
 
         for (int i = 0; i < 55; i++) {
-            P2<UnbreakableBadgeProgress, Option<UnbreakableBadge>> p2 = p.onBuild(build);
+            P2<UnbreakableBadgeProgress, Option<UnbreakableBadge>> p2 = p.onBuild(success);
 
             if (p2._2().isSome()) {
                 badges.add(p2._2().some());
@@ -38,5 +39,10 @@ public class UnbreakableBadgeProgressTest extends TestCase {
         assertEquals(1, badges.get(0).level);
         assertEquals(2, badges.get(1).level);
         assertEquals(3, badges.get(2).level);
+
+        P2<UnbreakableBadgeProgress, Option<UnbreakableBadge>> p2 = p.onBuild(failure);
+
+        assertEquals(0, p2._1().count);
+        assertFalse(p2._2().isSome());
     }
 }

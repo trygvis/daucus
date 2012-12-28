@@ -4,32 +4,71 @@
     <h1>{{person.name}}</h1>
   </div>
 
-  <h3>Badges</h3>
+  <ul class="nav nav-tabs">
+    <li ng-class="{active: mode == 'overview'}"><a ng-click="setMode('overview')">Overview</a></li>
+    <li ng-class="{active: mode == 'builds'}"><a ng-click="setMode('builds')">Builds</a></li>
+  </ul>
 
-  <p ng-repeat="badge in person.badges">
-    <span class="badge-level-{{badge.level}} badge">{{badge.name}}</span><span ng-show="badge.count > 1"> x {{badge.count}}</span>
-  </p>
+  <div id="overview" ng-show="mode == 'overview'">
+    <h3>Badges</h3>
 
-  <div ng-repeat="badge in person.badgesInProgress">
-    <div class="progress">
-      <div class="bar" style="width: {{badge.progress / badge.goal * 100}}%;">{{badge.name}}</div>
+    <p ng-repeat="badge in person.badges">
+      <span class="badge-level-{{badge.level}} badge">{{badge.name}}</span><span ng-show="badge.count > 1"> x {{badge.count}}</span>
+    </p>
+
+    <div ng-repeat="badge in person.badgesInProgress">
+      <div class="progress">
+        <div class="bar" style="width: {{badge.progress / badge.goal * 100}}%;">{{badge.name}}</div>
+      </div>
     </div>
+
+    <h3>Recent builds</h3>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Date</th>
+        <th>Success</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="build in recentBuilds" class="{{{true: 'success', false: 'error'}[build.success]}}">
+        <td>{{build.date | date:'medium'}}</td>
+        <td>{{build.success}}</td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 
-  <h3>Recent builds</h3>
-  <table class="table">
-    <thead>
-    <tr>
-      <th>Date</th>
-      <th>Success</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="build in builds" class="{{{true: 'success', false: 'error'}[build.success]}}">
-      <td>{{build.date | date:'medium'}}</td>
-      <td>{{build.success}}</td>
-    </tr>
-    </tbody>
-  </table>
+  <div id="builds" ng-show="mode == 'builds'">
+    <h3>Builds</h3>
+    <table class="table .table-bordered">
+      <thead>
+      <tr>
+        <th>Date</th>
+        <th>Success</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="build in builds.rows" class="{{{true: 'success', false: 'error'}[build.success]}}">
+        <td>{{build.date | date:'medium'}}</td>
+        <td>{{build.success}}</td>
+      </tr>
+      </tbody>
+      <tfoot>
+      <tr>
+        <td colspan="2">
+          <ul class="pager">
+            <li class="previous" ng-class="{disabled: builds.startIndex == 0}">
+              <a ng-click="builds.prev()">&larr; Older</a>
+            </li>
+            <li class="next">
+              <a ng-click="builds.next()">Newer &rarr;</a>
+            </li>
+          </ul>
+        </td>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
 
 </div>

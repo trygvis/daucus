@@ -4,6 +4,7 @@ import com.jolbox.bonecp.*;
 import fj.data.*;
 import org.apache.abdera.*;
 import org.slf4j.*;
+import org.slf4j.bridge.*;
 
 import java.io.*;
 import java.sql.*;
@@ -101,6 +102,9 @@ public class Config {
         LoggerFactory.getILoggerFactory();
 //        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
 //        StatusPrinter.print(lc);
+
+        SLF4JBridgeHandler.removeHandlersForRootLogger();
+        SLF4JBridgeHandler.install();
     }
 
     public BoneCPDataSource createBoneCp() throws SQLException {
