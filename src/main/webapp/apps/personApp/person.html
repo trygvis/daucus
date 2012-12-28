@@ -5,20 +5,31 @@
   </div>
 
   <h3>Badges</h3>
+
   <p ng-repeat="badge in person.badges">
     <span class="badge-level-{{badge.level}} badge">{{badge.name}}</span><span ng-show="badge.count > 1"> x {{badge.count}}</span>
   </p>
 
-  <h3>Badges in progress</h3>
-  <p ng-repeat="badge in person.badgesInProgress">
-    <span class="badge badge-level-{{badge.level}}">{{badge.name}}</span> progress: {{badge.progress}} of {{badge.goal}}
-  </p>
+  <div ng-repeat="badge in person.badgesInProgress">
+    <div class="progress">
+      <div class="bar" style="width: {{badge.progress / badge.goal * 100}}%;">{{badge.name}}</div>
+    </div>
+  </div>
 
-  <h3>Builds</h3>
-  <ul>
-    <li ng-repeat="build in builds">
-      {{build.uuid}}
-    </li>
-  </ul>
+  <h3>Recent builds</h3>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Date</th>
+      <th>Success</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="build in builds" class="{{{true: 'success', false: 'error'}[build.success]}}">
+      <td>{{build.date | date:'medium'}}</td>
+      <td>{{build.success}}</td>
+    </tr>
+    </tbody>
+  </table>
 
 </div>

@@ -6,6 +6,7 @@ import io.trygvis.esper.testing.core.badge.*;
 import io.trygvis.esper.testing.core.db.*;
 import io.trygvis.esper.testing.util.sql.*;
 import io.trygvis.esper.testing.web.*;
+import org.joda.time.*;
 
 import javax.servlet.http.*;
 import javax.ws.rs.*;
@@ -98,10 +99,9 @@ public class CoreResource extends AbstractResource {
             public List<BuildJson> run(Daos daos) throws SQLException {
                 List<BuildDto> buildDtos;
 
-                if(person != null) {
+                if (person != null) {
                     buildDtos = daos.buildDao.selectBuildsByPerson(person, page);
-                }
-                else {
+                } else {
                     buildDtos = daos.buildDao.selectBuilds(page);
                 }
 
@@ -130,14 +130,18 @@ public class CoreResource extends AbstractResource {
     }
 
     private BuildJson getBuildJson(Daos daos, BuildDto build) {
-        return new BuildJson(build.uuid);
+        return new BuildJson(build.uuid, build.createdDate, build.success);
     }
 
     public static class BuildJson {
         public final UUID uuid;
+        public final DateTime date;
+        public final boolean success;
 
-        public BuildJson(UUID uuid) {
+        public BuildJson(UUID uuid, DateTime date, boolean success) {
             this.uuid = uuid;
+            this.date = date;
+            this.success = success;
         }
     }
 }
