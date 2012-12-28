@@ -11,6 +11,8 @@ import java.util.*;
 import java.util.concurrent.atomic.*;
 
 import static fj.data.Option.*;
+import static java.lang.System.err;
+import static java.lang.System.exit;
 import static org.apache.commons.lang.StringUtils.*;
 
 public class Config {
@@ -60,10 +62,10 @@ public class Config {
         this.databasePassword = databasePassword;
     }
 
-    public static Config loadFromDisk() throws IOException {
+    public static Config loadFromDisk(String appName) throws IOException {
         initSystemProperties();
 
-        initLogging();
+        initLogging(appName);
 
         Properties properties = new Properties();
         try (FileInputStream inputStream = new FileInputStream("etc/config.properties")) {
@@ -84,7 +86,18 @@ public class Config {
         System.setProperty("jsse.enableSNIExtension", "false");
     }
 
-    private static void initLogging() {
+    private static void initLogging(String appName) {
+        System.setProperty("logging.app", appName);
+
+        File logs = new File("logs");
+
+        if(!logs.isDirectory()) {
+            if(!logs.mkdirs()) {
+                err.println("Could not create logs directory: " + logs.getAbsolutePath());
+                exit(1);
+            }
+        }
+
         LoggerFactory.getILoggerFactory();
 //        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
 //        StatusPrinter.print(lc);

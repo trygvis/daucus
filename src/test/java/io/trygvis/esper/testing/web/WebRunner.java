@@ -1,6 +1,7 @@
 package io.trygvis.esper.testing.web;
 
 import io.trygvis.appsh.booter.jetty.*;
+import io.trygvis.esper.testing.*;
 import org.slf4j.bridge.*;
 
 import java.io.*;
@@ -8,8 +9,8 @@ import java.io.*;
 public class WebRunner {
 
     public static void main(String[] args) throws Exception {
-        SLF4JBridgeHandler.removeHandlersForRootLogger();
-        SLF4JBridgeHandler.install();
+        // Ensures that the system has been initialized
+        @SuppressWarnings("UnusedDeclaration") Config config = WebConfig.config;
 
         JettyWebServer server = new JettyWebServer();
         server.setHttpPort(1337);

@@ -9,7 +9,7 @@ public class WebConfig {
 
     static {
         try {
-            config = Config.loadFromDisk();
+            config = Config.loadFromDisk("web");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

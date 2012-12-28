@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.*;
 
 public class NexusImporter {
     public static void main(String[] args) throws Exception {
-        final Config config = Config.loadFromDisk();
+        final Config config = Config.loadFromDisk("nexus-importer");
         final HTTPCache http = HttpClient.createHttpCache(config);
         final XmlParser xmlParser = new XmlParser();
         final BoneCPDataSource boneCp = config.createBoneCp();

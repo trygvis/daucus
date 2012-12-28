@@ -19,7 +19,7 @@ import static io.trygvis.esper.testing.jenkins.JenkinsClient.apiXml;
 
 public class SetJobTypeApp {
     public static void main(String[] args) throws Exception {
-        final Config config = Config.loadFromDisk();
+        final Config config = Config.loadFromDisk("set-job-type");
         final BoneCPDataSource boneCp = config.createBoneCp();
         HTTPCache httpCache = HttpClient.createHttpCache(config);
         Abdera abdera = config.createAbdera();

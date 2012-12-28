@@ -25,7 +25,7 @@ public class GitoriousProjectDiscovery {
     private final GitoriousClient gitoriousClient;
 
     public static void main(String[] args) throws Exception {
-        Config config = Config.loadFromDisk();
+        Config config = Config.loadFromDisk("gitorious-project-discovery");
         new GitoriousProjectDiscovery(config);
     }
 

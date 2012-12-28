@@ -1,6 +1,20 @@
 <configuration debug="false">
 
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>logs/${logging.app}.log</file>
+    <append>true</append>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>logs/${logging.app}-%d.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %-30logger{1} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>DEBUG</level>
+    </filter>
     <encoder>
       <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %-30logger{1} - %msg%n</pattern>
     </encoder>
@@ -14,9 +28,10 @@
 
   <logger name="io.trygvis.esper.testing.util.HttpClient" level="INFO"/>
 
-  <logger name="org.apache.shiro" level="DEBGU"/>
+  <logger name="org.apache.shiro" level="DEBUG"/>
 
-  <root level="INFO">
+  <root>
     <appender-ref ref="STDOUT"/>
+    <appender-ref ref="FILE"/>
   </root>
 </configuration>

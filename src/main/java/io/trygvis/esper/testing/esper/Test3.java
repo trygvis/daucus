@@ -16,7 +16,7 @@ public class Test3 {
     EPRuntime runtime;
 
     public static void main(String[] args) throws Exception {
-        Config.loadFromDisk();
+        Config.loadFromDisk("test-3");
         new Test3().work();
     }
 

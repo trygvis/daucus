@@ -22,7 +22,7 @@ import static io.trygvis.esper.testing.jenkins.JenkinsClient.apiXml;
 
 public class CreateMissingMavenModuleJobsApp {
     public static void main(String[] args) throws Exception {
-        final Config config = Config.loadFromDisk();
+        final Config config = Config.loadFromDisk("create-missing-maven-module");
         final BoneCPDataSource boneCp = config.createBoneCp();
         HTTPCache httpCache = HttpClient.createHttpCache(config);
         Abdera abdera = config.createAbdera();

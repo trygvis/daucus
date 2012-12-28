@@ -17,7 +17,7 @@ import static java.lang.Thread.*;
 
 public class JenkinsImporter {
     public static void main(String[] args) throws Exception {
-        final Config config = Config.loadFromDisk();
+        final Config config = Config.loadFromDisk("jenkins-importer");
         final BoneCPDataSource boneCp = config.createBoneCp();
         HTTPCache httpCache = HttpClient.createHttpCache(config);
         Abdera abdera = config.createAbdera();

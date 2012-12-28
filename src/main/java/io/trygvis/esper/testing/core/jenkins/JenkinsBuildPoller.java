@@ -25,7 +25,7 @@ public class JenkinsBuildPoller implements TablePoller.NewRowCallback<JenkinsBui
         SqlF<ResultSet, JenkinsBuildDto> f = JenkinsDao.jenkinsBuild;
         TablePoller.NewRowCallback<JenkinsBuildDto> callback = new JenkinsBuildPoller();
 
-        Config config = loadFromDisk();
+        Config config = loadFromDisk("jenkins-build-poller");
 
         BoneCPDataSource dataSource = config.createBoneCp();
 

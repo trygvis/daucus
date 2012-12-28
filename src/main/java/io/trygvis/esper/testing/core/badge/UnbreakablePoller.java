@@ -28,7 +28,7 @@ public class UnbreakablePoller implements TablePoller.NewRowCallback<BuildDto> {
         SqlF<ResultSet, BuildDto> f = BuildDao.build;
         TablePoller.NewRowCallback<BuildDto> callback = new UnbreakablePoller();
 
-        Config config = loadFromDisk();
+        Config config = loadFromDisk("unbreakable-poller");
 
         BoneCPDataSource dataSource = config.createBoneCp();
 

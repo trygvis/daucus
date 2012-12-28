@@ -17,7 +17,7 @@ public class Test2 {
     }
 
     public static void main(String[] args) throws Exception {
-        config = Config.loadFromDisk();
+        config = Config.loadFromDisk("test-2");
 
         Configuration c = new Configuration();
 
