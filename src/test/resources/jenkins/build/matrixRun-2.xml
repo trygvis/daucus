@@ -1,0 +1,54 @@
+<!--
+https://jenkins.puppetlabs.com/job/Puppet%20Module%20-%20glance/PUPPET_VERSION=2.6.9,ruby=ruby-1.8.7-p358,rvm=%23rvm/536/api/xml
+-->
+<matrixRun>
+  <action></action>
+  <action>
+    <cause>
+      <shortDescription>Started by upstream project "Puppet Module - glance" build number 536</shortDescription>
+      <upstreamBuild>536</upstreamBuild>
+      <upstreamProject>Puppet Module - glance</upstreamProject>
+      <upstreamUrl>job/Puppet%20Module%20-%20glance/</upstreamUrl>
+    </cause>
+  </action>
+  <action>
+    <buildsByBranchName>
+      <originmaster>
+        <buildNumber>536</buildNumber>
+        <revision>
+          <SHA1>6f16dc953aaaf4cc8fb29289549e6ca2e899ea65</SHA1>
+          <branch>
+            <SHA1>6f16dc953aaaf4cc8fb29289549e6ca2e899ea65</SHA1>
+            <name>origin/master</name>
+          </branch>
+        </revision>
+      </originmaster>
+    </buildsByBranchName>
+    <lastBuiltRevision>
+      <SHA1>6f16dc953aaaf4cc8fb29289549e6ca2e899ea65</SHA1>
+      <branch>
+        <SHA1>6f16dc953aaaf4cc8fb29289549e6ca2e899ea65</SHA1>
+        <name>origin/master</name>
+      </branch>
+    </lastBuiltRevision>
+    <scmName></scmName>
+  </action>
+  <action></action>
+  <action></action>
+  <action></action>
+  <action></action>
+  <building>false</building>
+  <duration>40023</duration>
+  <estimatedDuration>40000</estimatedDuration>
+  <fullDisplayName>Puppet Module - glance » 2.6.9,ruby-1.8.7-p358,#rvm #536</fullDisplayName>
+  <id>2012-12-09_10-31-25</id>
+  <keepLog>false</keepLog>
+  <number>536</number>
+  <result>SUCCESS</result>
+  <timestamp>1355077885071</timestamp>
+  <url>
+    https://jenkins.puppetlabs.com/job/Puppet%20Module%20-%20glance/PUPPET_VERSION=2.6.9,ruby=ruby-1.8.7-p358,rvm=%23rvm/536/
+  </url>
+  <builtOn>ec2-184-73-143-9.compute-1.amazonaws.com</builtOn>
+  <changeSet></changeSet>
+</matrixRun>

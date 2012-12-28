@@ -15,6 +15,10 @@ public class PageRequest {
         this.count = count;
     }
 
+    public String toString() {
+        return "PageRequest{startIndex=" + startIndex + ", count=" + count + '}';
+    }
+
     public static PageRequest pageReq(HttpServletRequest req) {
         return new PageRequest(
             fromNull(req.getParameter("startIndex")).bind(Util.parseInt),

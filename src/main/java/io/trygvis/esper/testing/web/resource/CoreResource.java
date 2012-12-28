@@ -1,10 +1,11 @@
-package io.trygvis.esper.testing.web;
+package io.trygvis.esper.testing.web.resource;
 
 import fj.data.*;
 import io.trygvis.esper.testing.*;
 import io.trygvis.esper.testing.core.badge.*;
 import io.trygvis.esper.testing.core.db.*;
 import io.trygvis.esper.testing.util.sql.*;
+import io.trygvis.esper.testing.web.*;
 
 import javax.servlet.http.*;
 import javax.ws.rs.*;
@@ -14,7 +15,6 @@ import java.util.*;
 import java.util.List;
 
 import static io.trygvis.esper.testing.util.sql.PageRequest.*;
-import static io.trygvis.esper.testing.web.JenkinsResource.*;
 
 @Path("/resource/core")
 @Produces(MediaType.APPLICATION_JSON)
@@ -26,6 +26,10 @@ public class CoreResource extends AbstractResource {
         super(da);
         this.badgeService = badgeService;
     }
+
+    // -----------------------------------------------------------------------
+    // Person
+    // -----------------------------------------------------------------------
 
     @GET
     @Path("/person")
@@ -43,23 +47,10 @@ public class CoreResource extends AbstractResource {
         });
     }
 
-    /**
-     * This is wrong, but Angular's $resource is a bit dumb.
-     */
-    @GET
-    @Path("/person-count")
-    public int getPersonCount() throws Exception {
-        return da.inTransaction(new DatabaseAccess.DaosCallback<Integer>() {
-            public Integer run(Daos daos) throws SQLException {
-                return daos.personDao.selectPersonCount();
-            }
-        });
-    }
-
     @GET
     @Path("/person/{uuid}")
     public PersonJson getPerson(@PathParam("uuid") final String s) throws Exception {
-        final UUID uuid = parseUuid(s);
+        final UUID uuid = JenkinsResource.parseUuid(s);
 
         return get(new DatabaseAccess.DaosCallback<Option<PersonJson>>() {
             public Option<PersonJson> run(Daos daos) throws SQLException {
@@ -96,37 +87,57 @@ public class CoreResource extends AbstractResource {
         );
     }
 
-    public static class PersonJson {
-        public final UUID uuid;
-        public final String name;
-        public final List<BadgeJson> badges;
-        public final List<BadgeJson> badgesInProgress;
+    // -----------------------------------------------------------------------
+    // Build
+    // -----------------------------------------------------------------------
 
-        public PersonJson(UUID uuid, String name, List<BadgeJson> badges, List<BadgeJson> badgesInProgress) {
-            this.uuid = uuid;
-            this.name = name;
-            this.badges = badges;
-            this.badgesInProgress = badgesInProgress;
-        }
+    @GET
+    @Path("/build")
+    public List<BuildJson> getBuilds(@MagicParam final PageRequest page, @MagicParam(query = "person") final UUID person) throws Exception {
+        return da.inTransaction(new DatabaseAccess.DaosCallback<List<BuildJson>>() {
+            public List<BuildJson> run(Daos daos) throws SQLException {
+                List<BuildDto> buildDtos;
+
+                if(person != null) {
+                    buildDtos = daos.buildDao.selectBuildsByPerson(person, page);
+                }
+                else {
+                    buildDtos = daos.buildDao.selectBuilds(page);
+                }
+
+                List<BuildJson> list = new ArrayList<>();
+                for (BuildDto build : buildDtos) {
+                    list.add(getBuildJson(daos, build));
+                }
+                return list;
+            }
+        });
     }
 
-    public static class BadgeJson {
-        public final String name;
-        public final int level;
+    @GET
+    @Path("/build/{uuid}")
+    public BuildJson getBuild(@MagicParam final UUID uuid) throws Exception {
+        return get(new DatabaseAccess.DaosCallback<Option<BuildJson>>() {
+            public Option<BuildJson> run(Daos daos) throws SQLException {
+                SqlOption<BuildDto> o = daos.buildDao.selectBuild(uuid);
+                if (o.isNone()) {
+                    return Option.none();
+                }
 
-        /**
-         * Number of times this badge has been received.
-         */
-        public final int count;
-        public final int progress;
-        public final int goal;
+                return Option.some(getBuildJson(daos, o.get()));
+            }
+        });
+    }
 
-        public BadgeJson(String name, int level, int count, int progress, int goal) {
-            this.name = name;
-            this.level = level;
-            this.count = count;
-            this.progress = progress;
-            this.goal = goal;
+    private BuildJson getBuildJson(Daos daos, BuildDto build) {
+        return new BuildJson(build.uuid);
+    }
+
+    public static class BuildJson {
+        public final UUID uuid;
+
+        public BuildJson(UUID uuid) {
+            this.uuid = uuid;
         }
     }
 }

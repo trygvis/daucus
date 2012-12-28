@@ -7,7 +7,9 @@ import org.joda.time.*;
 import java.sql.*;
 import java.util.*;
 
+import static io.trygvis.esper.testing.Util.toList;
 import static io.trygvis.esper.testing.util.sql.ResultSetF.*;
+import static io.trygvis.esper.testing.util.sql.SqlOption.fromRs;
 import static java.lang.System.*;
 
 public class BuildDao {
@@ -59,7 +61,34 @@ public class BuildDao {
         try (PreparedStatement s = c.prepareStatement("SELECT person FROM build_participant WHERE build=?")) {
             int i = 1;
             s.setString(i, build.toString());
-            return Util.toList(s, getUuid);
+            return toList(s, getUuid);
+        }
+    }
+
+    public SqlOption<BuildDto> selectBuild(UUID uuid) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + BUILD + " FROM build WHERE uuid=?")) {
+            int i = 1;
+            s.setString(i, uuid.toString());
+            return fromRs(s.executeQuery()).map(build);
+        }
+    }
+
+    public List<BuildDto> selectBuildsByPerson(UUID person, PageRequest page) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + BUILD + " FROM build b, build_participant bp WHERE bp.person=? AND b.uuid = bp.build ORDER BY created_date LIMIT ? OFFSET ?")) {
+            int i = 1;
+            s.setString(i++, person.toString());
+            s.setInt(i++, page.count.orSome(10));
+            s.setInt(i, page.startIndex.orSome(0));
+            return toList(s, build);
+        }
+    }
+
+    public List<BuildDto> selectBuilds(PageRequest page) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + BUILD + " FROM build ORDER BY created_date LIMIT ? OFFSET ?")) {
+            int i = 1;
+            s.setInt(i++, page.count.orSome(10));
+            s.setInt(i, page.startIndex.orSome(0));
+            return toList(s, build);
         }
     }
 }

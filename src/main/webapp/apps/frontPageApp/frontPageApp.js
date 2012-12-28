@@ -1,11 +1,11 @@
 'use strict';
 
-var frontPageApp = angular.module('frontPageApp', ['ngGrid', 'personService']).config(function ($routeProvider, $locationProvider) {
+var frontPageApp = angular.module('frontPageApp', ['ngGrid', 'person']).config(function ($routeProvider, $locationProvider) {
   $routeProvider.
       when('/', {controller: FrontPageCtrl, templateUrl: '/apps/frontPageApp/frontPage.html?noCache=' + noCache});
 });
 
-function FrontPageCtrl($scope, $http, PersonService) {
+function FrontPageCtrl($scope, $http, Person) {
   $scope.persons = [];
 
   $scope.pagingOptions = {
@@ -19,6 +19,8 @@ function FrontPageCtrl($scope, $http, PersonService) {
     data: 'persons',
     displayFooter: true,
     enablePaging: true,
+    enableRowReordering: false,
+    enableColumnReordering: false,
     showFilter: false,
     showColumnMenu: false,
     canSelectRows: false,
@@ -41,7 +43,8 @@ function FrontPageCtrl($scope, $http, PersonService) {
   $scope.setPagingData = function(data, page, pageSize){
 //    $scope.persons = data.slice((page - 1) * pageSize, page * pageSize);
     $scope.persons = data;
-    $scope.personsGridOptions.totalServerItems = data.length;
+//    $scope.personsGridOptions.totalServerItems = data.length;
+    window.x = $scope.personsGridOptions;
     if (!$scope.$$phase) {
       $scope.$apply();
     }
@@ -50,7 +53,7 @@ function FrontPageCtrl($scope, $http, PersonService) {
   $scope.getPagedDataAsync = function (pageSize, page/*, searchText*/) {
     setTimeout(function () {
 
-      PersonService.query({startIndex: page * pageSize, count: pageSize}, function (persons) {
+      Person.query({startIndex: page * pageSize, count: pageSize}, function (persons) {
         $scope.setPagingData(persons, page, pageSize);
       });
     }, 100);
@@ -60,9 +63,9 @@ function FrontPageCtrl($scope, $http, PersonService) {
     $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
   }, true);
 
-  $http.get('/resource/core/person-count').success(function(count) {
-    $scope.pagingOptions.totalServerItems = count;
-
-    $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
-  });
+//  $http.get('/resource/core/person-count').success(function(count) {
+//    $scope.pagingOptions.totalServerItems = count;
+//
+//    $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+//  });
 }

@@ -14,4 +14,11 @@
     <span class="badge badge-level-{{badge.level}}">{{badge.name}}</span> progress: {{badge.progress}} of {{badge.goal}}
   </p>
 
+  <h3>Builds</h3>
+  <ul>
+    <li ng-repeat="build in builds">
+      {{build.uuid}}
+    </li>
+  </ul>
+
 </div>

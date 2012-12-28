@@ -1,4 +1,4 @@
-package io.trygvis.esper.testing.web;
+package io.trygvis.esper.testing.web.resource;
 
 import fj.data.*;
 import io.trygvis.esper.testing.*;

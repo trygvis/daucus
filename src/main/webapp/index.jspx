@@ -4,10 +4,10 @@
 <jsp:output doctype-root-element="HTML" doctype-system="about:legacy-compat"/>
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 
-<common:head-element>
-  <common:headjs label="PersonService" resource="/apps/core/PersonService.js"/>
+<common:head>
+  <common:headjs label="CoreResources" resource="/apps/core/CoreResources.js"/>
   <common:headjs label="frontPageApp" resource="/apps/frontPageApp/frontPageApp.js"/>
-</common:head-element>
+</common:head>
 
 <body>
 
