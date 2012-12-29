@@ -12,6 +12,7 @@ import java.util.List;
 import static fj.data.Option.*;
 import static io.trygvis.esper.testing.Util.toList;
 import static io.trygvis.esper.testing.Util.toUuidArray;
+import static io.trygvis.esper.testing.util.sql.ResultSetF.getInt;
 import static io.trygvis.esper.testing.util.sql.SqlOption.fromRs;
 import static java.lang.System.*;
 
@@ -29,22 +30,16 @@ public class JenkinsDao {
         this.c = c;
     }
 
-    private JenkinsServerDto jenkinsServer(ResultSet rs) throws SQLException {
-        int i = 1;
-        return new JenkinsServerDto(
-                UUID.fromString(rs.getString(i++)),
-                new DateTime(rs.getTimestamp(i++).getTime()),
-                URI.create(rs.getString(i++)),
-                rs.getBoolean(i));
-    }
-
-    private List<JenkinsServerDto> toServerList(ResultSet rs) throws SQLException {
-        List<JenkinsServerDto> list = new ArrayList<>();
-        while (rs.next()) {
-            list.add(jenkinsServer(rs));
+    private SqlF<ResultSet,JenkinsServerDto> jenkinsServer = new SqlF<ResultSet, JenkinsServerDto>() {
+        public JenkinsServerDto apply(ResultSet rs) throws SQLException {
+            int i = 1;
+            return new JenkinsServerDto(
+                    UUID.fromString(rs.getString(i++)),
+                    new DateTime(rs.getTimestamp(i++).getTime()),
+                    URI.create(rs.getString(i++)),
+                    rs.getBoolean(i));
         }
-        return list;
-    }
+    };
 
     public static final SqlF<ResultSet, JenkinsJobDto> jenkinsJob = new SqlF<ResultSet, JenkinsJobDto>() {
         public JenkinsJobDto apply(ResultSet rs) throws SQLException {
@@ -57,14 +52,6 @@ public class JenkinsDao {
                     fromNull(rs.getString(i)));
         }
     };
-
-    public List<JenkinsJobDto> toJobList(ResultSet rs) throws SQLException {
-        List<JenkinsJobDto> list = new ArrayList<>();
-        while (rs.next()) {
-            list.add(jenkinsJob.apply(rs));
-        }
-        return list;
-    }
 
     public static final String JENKINS_BUILD = "uuid, created_date, job, file, entry_id, url, result, number, duration, timestamp, users";
 
@@ -111,18 +98,14 @@ public class JenkinsDao {
         sql += " ORDER BY url";
 
         try (PreparedStatement s = c.prepareStatement(sql)) {
-            return toServerList(s.executeQuery());
+            return toList(s, jenkinsServer);
         }
     }
 
-    public Option<JenkinsServerDto> selectServer(UUID uuid) throws SQLException {
+    public SqlOption<JenkinsServerDto> selectServer(UUID uuid) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_SERVER + " FROM jenkins_server WHERE uuid=?")) {
             s.setString(1, uuid.toString());
-            ResultSet rs = s.executeQuery();
-            if (!rs.next()) {
-                return none();
-            }
-            return some(jenkinsServer(rs));
+            return fromRs(s.executeQuery()).map(jenkinsServer);
         }
     }
 
@@ -138,7 +121,7 @@ public class JenkinsDao {
     }
 
     public List<JenkinsJobDto> selectJobsByServer(UUID server, PageRequest page) throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_JOB + " FROM jenkins_job WHERE server=? ORDER BY created_date LIMIT ? OFFSET ?")) {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_JOB + " FROM jenkins_job WHERE server=? ORDER BY created_date DESC LIMIT ? OFFSET ?")) {
             int i = 1;
             s.setString(i++, server.toString());
             s.setInt(i++, page.count.orSome(10));
@@ -157,9 +140,7 @@ public class JenkinsDao {
     public int selectJobCountForServer(UUID uuid) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT count(1) FROM jenkins_job WHERE server=?")) {
             s.setString(1, uuid.toString());
-            ResultSet rs = s.executeQuery();
-            rs.next();
-            return rs.getInt(1);
+            return fromRs(s.executeQuery()).map(getInt).get();
         }
     }
 
@@ -189,6 +170,24 @@ public class JenkinsDao {
             int i = 1;
             s.setString(i, id);
             return fromRs(s.executeQuery()).map(jenkinsBuild);
+        }
+    }
+
+    public List<JenkinsBuildDto> selectBuildByJob(UUID job, PageRequest page) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_BUILD + " FROM jenkins_build WHERE job=? ORDER BY created_date DESC LIMIT ? OFFSET ?")) {
+            int i = 1;
+            s.setString(i++, job.toString());
+            s.setInt(i++, page.count.orSome(10));
+            s.setInt(i, page.startIndex.orSome(0));
+            return toList(s, jenkinsBuild);
+        }
+    }
+
+    public int selectBuildCountByJob(UUID job) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT count(1) FROM jenkins_build WHERE job=?")) {
+            int i = 1;
+            s.setString(i, job.toString());
+            return fromRs(s.executeQuery()).map(getInt).get();
         }
     }
 

@@ -1,21 +1,18 @@
 package io.trygvis.esper.testing.jenkins;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import com.jolbox.bonecp.*;
+import fj.*;
+import fj.data.*;
+import io.trygvis.esper.testing.*;
+import io.trygvis.esper.testing.util.*;
+import org.apache.abdera.*;
+import org.codehaus.httpcache4j.cache.*;
+
+import java.sql.*;
 import java.util.List;
 
-import fj.*;
-import org.apache.abdera.Abdera;
-import org.codehaus.httpcache4j.cache.HTTPCache;
-
-import com.jolbox.bonecp.BoneCPDataSource;
-
-import fj.data.Option;
-import io.trygvis.esper.testing.Config;
-import io.trygvis.esper.testing.util.HttpClient;
-
-import static io.trygvis.esper.testing.jenkins.JenkinsClient.apiXml;
+import static io.trygvis.esper.testing.jenkins.JenkinsClient.*;
+import static io.trygvis.esper.testing.jenkins.JenkinsDao.*;
 
 public class SetJobTypeApp {
     public static void main(String[] args) throws Exception {
@@ -30,11 +27,8 @@ public class SetJobTypeApp {
             PreparedStatement s2 = c.prepareStatement("UPDATE jenkins_job SET job_type=? WHERE uuid=?");
 
             PreparedStatement s = c.prepareStatement("SELECT " + JenkinsDao.JENKINS_JOB + " FROM jenkins_job WHERE job_type IS NULL");
-            ResultSet rs = s.executeQuery();
 
-            JenkinsDao dao = new JenkinsDao(c);
-
-            List<JenkinsJobDto> jobs = dao.toJobList(rs);
+            List<JenkinsJobDto> jobs = Util.toList(s, jenkinsJob);
 
             System.out.println("jobs.size() = " + jobs.size());
 

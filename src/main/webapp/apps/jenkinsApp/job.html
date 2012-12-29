@@ -1,0 +1,59 @@
+<div class="container">
+
+  <div class="page-header">
+    <h1>Jenkins Job</h1>
+  </div>
+
+  <ul class="breadcrumb">
+    <li><a ng-click="showServers()">All Servers</a> <span class="divider">/</span></li>
+    <li><a ng-click="showServer()">Servers</a> <span class="divider">/</span></li>
+    <li class="active">Job</li>
+  </ul>
+
+  <h3>Overview</h3>
+
+  <table class="table">
+    <tbody>
+    <tr>
+      <th>URL</th>
+      <td><a href="{{job.displayName}}">{{job.displayName}}</a></td>
+    </tr>
+    <tr>
+      <th>Build count</th>
+      <td>{{job.buildCount}}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h3>Recent Builds</h3>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Build</th>
+      <th>Result</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="build in builds.rows" class="{{{true: 'success', false: 'error'}[build.success]}}">
+      <td>{{build.createdDate | date:'medium'}}</td>
+      <td>{{build.result}}</td>
+      <td><a class="btn" ng-click="showBuild(build.uuid)"><i class="icon-chevron-right"></i></a></td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+      <td colspan="3">
+        <ul class="pager">
+          <li class="previous" ng-class="{disabled: builds.startIndex == 0}">
+            <a ng-click="builds.prev()">&larr; Older</a>
+          </li>
+          <li class="next">
+            <a ng-click="builds.next()">Newer &rarr;</a>
+          </li>
+        </ul>
+      </td>
+    </tr>
+    </tfoot>
+  </table>
+</div>

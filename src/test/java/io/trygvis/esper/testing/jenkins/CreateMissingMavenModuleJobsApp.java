@@ -1,24 +1,20 @@
 package io.trygvis.esper.testing.jenkins;
 
-import java.net.URI;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.List;
-import java.util.UUID;
-
+import com.jolbox.bonecp.*;
 import fj.*;
+import fj.data.*;
+import io.trygvis.esper.testing.*;
 import io.trygvis.esper.testing.core.db.*;
-import org.apache.abdera.Abdera;
-import org.codehaus.httpcache4j.cache.HTTPCache;
+import io.trygvis.esper.testing.util.*;
+import org.apache.abdera.*;
+import org.codehaus.httpcache4j.cache.*;
 
-import com.jolbox.bonecp.BoneCPDataSource;
+import java.net.*;
+import java.sql.*;
+import java.util.List;
+import java.util.*;
 
-import fj.data.Option;
-import io.trygvis.esper.testing.Config;
-import io.trygvis.esper.testing.util.HttpClient;
-
-import static io.trygvis.esper.testing.jenkins.JenkinsClient.apiXml;
+import static io.trygvis.esper.testing.jenkins.JenkinsClient.*;
 
 public class CreateMissingMavenModuleJobsApp {
     public static void main(String[] args) throws Exception {
@@ -33,12 +29,11 @@ public class CreateMissingMavenModuleJobsApp {
 //            PreparedStatement s2 = c.prepareStatement("UPDATE jenkins_job SET job_type=? WHERE uuid=?");
 
             PreparedStatement s = c.prepareStatement("SELECT " + JenkinsDao.JENKINS_JOB + " FROM jenkins_job WHERE job_type='MAVEN_MODULE'");
-            ResultSet rs = s.executeQuery();
 
             JenkinsDao dao = new JenkinsDao(c);
             FileDao fileDao = new FileDao(c);
 
-            List<JenkinsJobDto> jobs = dao.toJobList(rs);
+            List<JenkinsJobDto> jobs = Util.toList(s, JenkinsDao.jenkinsJob);
 
             System.out.println("jobs.size() = " + jobs.size());
 

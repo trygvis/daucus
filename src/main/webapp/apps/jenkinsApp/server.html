@@ -39,6 +39,7 @@
       <td>{{job.createdDate | date:'medium'}}</td>
       <td>{{job.displayName}}</td>
       <td>{{job.uuid}}</td>
+      <td><a class="btn" ng-click="showJob(job.uuid)"><i class="icon-chevron-right"></i></a></td>
     </tr>
     </tbody>
     <tfoot>

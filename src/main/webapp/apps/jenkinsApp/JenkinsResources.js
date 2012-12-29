@@ -15,3 +15,11 @@ function JenkinsJob($resource) {
 angular.
     module('jenkinsJob', ['ngResource']).
     factory('JenkinsJob', JenkinsJob);
+
+function JenkinsBuild($resource) {
+  return $resource('/resource/jenkins/build/:uuid', {uuid: '@uuid'});
+}
+
+angular.
+    module('jenkinsBuild', ['ngResource']).
+    factory('JenkinsBuild', JenkinsBuild);
