@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.List;
 
 import static fj.data.Option.*;
+import static io.trygvis.esper.testing.Util.toList;
 import static io.trygvis.esper.testing.Util.toUuidArray;
 import static io.trygvis.esper.testing.util.sql.SqlOption.fromRs;
 import static java.lang.System.*;
@@ -96,6 +97,10 @@ public class JenkinsDao {
         }
     };
 
+    // -----------------------------------------------------------------------
+    // Server
+    // -----------------------------------------------------------------------
+
     public List<JenkinsServerDto> selectServers(boolean enabledOnly) throws SQLException {
         String sql = "SELECT " + JENKINS_SERVER + " FROM jenkins_server";
 
@@ -121,10 +126,24 @@ public class JenkinsDao {
         }
     }
 
+    // -----------------------------------------------------------------------
+    // Job
+    // -----------------------------------------------------------------------
+
     public SqlOption<JenkinsJobDto> selectJob(UUID uuid) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_JOB + " FROM jenkins_job WHERE uuid=?")) {
             s.setString(1, uuid.toString());
             return fromRs(s.executeQuery()).map(jenkinsJob);
+        }
+    }
+
+    public List<JenkinsJobDto> selectJobsByServer(UUID server, PageRequest page) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_JOB + " FROM jenkins_job WHERE server=? ORDER BY created_date LIMIT ? OFFSET ?")) {
+            int i = 1;
+            s.setString(i++, server.toString());
+            s.setInt(i++, page.count.orSome(10));
+            s.setInt(i, page.startIndex.orSome(0));
+            return toList(s, jenkinsJob);
         }
     }
 
@@ -161,6 +180,10 @@ public class JenkinsDao {
         }
     }
 
+    // -----------------------------------------------------------------------
+    // Build
+    // -----------------------------------------------------------------------
+
     public SqlOption<JenkinsBuildDto> selectBuildByEntryId(String id) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_BUILD + " FROM jenkins_build WHERE entry_id=?")) {
             int i = 1;
@@ -189,6 +212,10 @@ public class JenkinsDao {
             return uuid;
         }
     }
+
+    // -----------------------------------------------------------------------
+    // User
+    // -----------------------------------------------------------------------
 
     public UUID insertUser(UUID server, String absoluteUrl) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("INSERT INTO jenkins_user(" + JENKINS_USER + ") VALUES(?, ?, ?, ?)")) {

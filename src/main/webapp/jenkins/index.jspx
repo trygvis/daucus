@@ -5,15 +5,14 @@
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 
 <common:head>
-  <common:headjs label="JenkinsServerService" resource="/apps/jenkinsApp/JenkinsServerService.js"/>
+  <common:headjs label="JenkinsResources" resource="/apps/jenkinsApp/JenkinsResources.js"/>
+  <common:headjs label="PagingTableService" resource="/apps/core/PagingTableService.js"/>
   <common:headjs label="jenkinsApp" resource="/apps/jenkinsApp/jenkinsApp.js"/>
 </common:head>
 
 <body>
 
-<div id="content">
-  <div class="container" ng-view=""><!-- --></div>
-</div>
+<div id="content" ng-view=""><!-- --></div>
 
 <common:footer/>
 

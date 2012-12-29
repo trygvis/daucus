@@ -4,14 +4,16 @@ function Person($resource) {
   return $resource('/resource/core/person/:uuid', {uuid: '@uuid'});
 }
 
-angular.
-    module('person', ['ngResource']).
-    factory('Person', Person);
+angular.module('person', ['ngResource']).factory('Person', Person);
 
 function Build($resource) {
   return $resource('/resource/core/build/:uuid', {uuid: '@uuid'});
 }
 
-angular.
-    module('build', ['ngResource']).
-    factory('Build', Build);
+angular.module('build', ['ngResource']).factory('Build', Build);
+
+function BuildParticipant($resource) {
+  return $resource('/resource/core/build-participant/:uuid', {uuid: '@uuid'});
+}
+
+angular.module('buildParticipant', ['ngResource']).factory('BuildParticipant', BuildParticipant);

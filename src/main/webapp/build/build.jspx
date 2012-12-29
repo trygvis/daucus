@@ -1,13 +1,13 @@
 <html xmlns:jsp="http://java.sun.com/JSP/Page" jsp:version="2.0"
       xmlns:common="urn:jsptagdir:/WEB-INF/tags/common"
-      ng-app="personApp">
+      ng-app="buildApp">
 <jsp:output doctype-root-element="HTML" doctype-system="about:legacy-compat"/>
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 
 <common:head>
   <script>var uuid = '${param.uuid}';</script>
   <common:headjs label="CoreResources" resource="/apps/core/CoreResources.js"/>
-  <common:headjs label="personApp" resource="/apps/personApp/personApp.js"/>
+  <common:headjs label="buildApp" resource="/apps/buildApp/buildApp.js"/>
 </common:head>
 
 <body>

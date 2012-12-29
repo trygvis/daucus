@@ -1,25 +1,60 @@
-<div class="page-header">
-  <h1>Jenkins Server</h1>
+<div class="container">
+
+  <div class="page-header">
+    <h1>Jenkins Server</h1>
+  </div>
+
+  <ul class="breadcrumb">
+    <li><a ng-click="showServers()">All Servers</a> <span class="divider">/</span></li>
+    <li class="active">Server</li>
+  </ul>
+
+  <h3>Overview</h3>
+  <table class="table">
+    <tbody>
+    <tr>
+      <th>URL</th>
+      <td><a href="{{server.url}}">{{server.url}}</a></td>
+    </tr>
+    <tr>
+      <th>Enabled</th>
+      <td>{{server.enabled}}</td>
+    </tr>
+    <tr>
+      <th>Stats</th>
+      <td>{{server.jobCount}} jobs, {{server.buildCount}} builds</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h3>Recent Jobs</h3>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Job</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="job in jobs.rows">
+      <td>{{job.createdDate | date:'medium'}}</td>
+      <td>{{job.displayName}}</td>
+      <td>{{job.uuid}}</td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+      <td colspan="3">
+        <ul class="pager">
+          <li class="previous" ng-class="{disabled: jobs.startIndex == 0}">
+            <a ng-click="jobs.prev()">&larr; Older</a>
+          </li>
+          <li class="next">
+            <a ng-click="jobs.next()">Newer &rarr;</a>
+          </li>
+        </ul>
+      </td>
+    </tr>
+    </tfoot>
+  </table>
+
 </div>
-
-<ul class="breadcrumb">
-  <li><a ng-click="showServers()">All Servers</a> <span class="divider">/</span></li>
-  <li class="active">Server</li>
-</ul>
-
-<table class="table">
-  <tbody>
-  <tr>
-    <th>URL</th>
-    <td><a href="{{server.url}}">{{server.url}}</a></td>
-  </tr>
-  <tr>
-    <th>Enabled</th>
-    <td>{{server.enabled}}</td>
-  </tr>
-  <tr>
-    <th>Stats</th>
-    <td>{{server.jobCount}} jobs, {{server.buildCount}} builds</td>
-  </tr>
-  </tbody>
-</table>

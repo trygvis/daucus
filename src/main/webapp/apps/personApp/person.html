@@ -28,12 +28,14 @@
       <tr>
         <th>Date</th>
         <th>Success</th>
+        <th></th>
       </tr>
       </thead>
       <tbody>
       <tr ng-repeat="build in recentBuilds" class="{{{true: 'success', false: 'error'}[build.success]}}">
         <td>{{build.date | date:'medium'}}</td>
         <td>{{build.success}}</td>
+        <td><a href="/build/{{build.uuid}}">Details</a></td>
       </tr>
       </tbody>
     </table>
@@ -41,7 +43,7 @@
 
   <div id="builds" ng-show="mode == 'builds'">
     <h3>Builds</h3>
-    <table class="table .table-bordered">
+    <table class="table">
       <thead>
       <tr>
         <th>Date</th>

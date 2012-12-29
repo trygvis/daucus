@@ -9,6 +9,7 @@ import javax.servlet.http.*;
 public class PageRequest {
     public final Option<Integer> startIndex;
     public final Option<Integer> count;
+    public static final PageRequest FIRST_PAGE = new PageRequest(Option.<Integer>none(), Option.<Integer>none());
 
     public PageRequest(Option<Integer> startIndex, Option<Integer> count) {
         this.startIndex = startIndex;

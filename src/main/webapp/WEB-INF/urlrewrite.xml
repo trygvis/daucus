@@ -21,4 +21,11 @@
     <to type="forward">/person/person.jspx</to>
   </rule>
 
+
+  <rule match-type="regex">
+    <from>^/build/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$</from>
+    <set type="parameter" name="uuid">$1</set>
+    <to type="forward">/build/build.jspx</to>
+  </rule>
+
 </urlrewrite>

@@ -115,6 +115,20 @@ public class CoreResource extends AbstractResource {
     }
 
     @GET
+    @Path("/build-participant/{uuid}")
+    public List<PersonJson> getBuildParticipants(@MagicParam final UUID build) throws Exception {
+        return da.inTransaction(new DatabaseAccess.DaosCallback<List<PersonJson>>() {
+            public List<PersonJson> run(Daos daos) throws SQLException {
+                List<PersonJson> list = new ArrayList<>();
+                for (PersonDto person : daos.buildDao.selectPersonsFromBuildParticipant(build)) {
+                    list.add(getPersonJson(daos, person));
+                }
+                return list;
+            }
+        });
+    }
+
+    @GET
     @Path("/build/{uuid}")
     public BuildJson getBuild(@MagicParam final UUID uuid) throws Exception {
         return get(new DatabaseAccess.DaosCallback<Option<BuildJson>>() {

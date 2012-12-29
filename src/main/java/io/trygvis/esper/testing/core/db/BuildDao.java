@@ -57,11 +57,19 @@ public class BuildDao {
         }
     }
 
-    public List<UUID> selectPersonsFromBuildParticipant(UUID build) throws SQLException {
+    public List<UUID> selectBuildParticipantByBuild(UUID build) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT person FROM build_participant WHERE build=?")) {
             int i = 1;
             s.setString(i, build.toString());
             return toList(s, getUuid);
+        }
+    }
+
+    public List<PersonDto> selectPersonsFromBuildParticipant(UUID build) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + PersonDao.PERSON + " FROM person p, build_participant bp WHERE bp.person = p.uuid AND build=?")) {
+            int i = 1;
+            s.setString(i, build.toString());
+            return toList(s, PersonDao.person);
         }
     }
 

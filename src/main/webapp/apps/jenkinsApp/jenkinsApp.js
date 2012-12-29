@@ -1,6 +1,6 @@
 'use strict';
 
-var jenkinsApp = angular.module('jenkinsApp', ['jenkinsServerService']).config(function ($routeProvider, $locationProvider) {
+var jenkinsApp = angular.module('jenkinsApp', ['jenkinsServer', 'jenkinsJob', 'pagingTableService']).config(function ($routeProvider) {
   $routeProvider.
       when('/', {controller: ServerListCtrl, templateUrl: '/apps/jenkinsApp/server-list.html?noCache=' + noCache});
   $routeProvider.
@@ -11,12 +11,12 @@ var jenkinsApp = angular.module('jenkinsApp', ['jenkinsServerService']).config(f
 //  $locationProvider.html5Mode(true);
 });
 
-function ServerListCtrl($scope, $location, JenkinsServerService) {
-  JenkinsServerService.query(function (servers) {
+function ServerListCtrl($scope, $location, JenkinsServer) {
+  JenkinsServer.query(function (servers) {
     $scope.servers = servers;
   });
 
-  $scope.showServers = function (uuid) {
+  $scope.showServers = function () {
     $location.path('/');
   };
 
@@ -25,13 +25,16 @@ function ServerListCtrl($scope, $location, JenkinsServerService) {
   };
 }
 
-function ServerCtrl($scope, $location, $routeParams, JenkinsServerService) {
-  window.x = $routeParams;
-  JenkinsServerService.get({uuid: $routeParams.uuid}, function (server) {
+function ServerCtrl($scope, $location, $routeParams, JenkinsServer, JenkinsJob, PagingTableService) {
+  var serverUuid = $routeParams.uuid;
+
+  JenkinsServer.get({uuid: serverUuid}, function (server) {
     $scope.server = server;
   });
 
-  $scope.showServers = function (uuid) {
+  $scope.jobs = PagingTableService.create($scope, PagingTableService.defaultCallback(JenkinsJob, {server: serverUuid}));
+
+  $scope.showServers = function () {
     $location.path('/');
   };
 
