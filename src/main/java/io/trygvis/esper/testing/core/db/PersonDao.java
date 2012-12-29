@@ -95,7 +95,7 @@ public class PersonDao {
     }
 
     public List<PersonDto> selectPersons(PageRequest pageRequest) throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("SELECT " + PERSON + " FROM person ORDER BY created_date, name LIMIT ? OFFSET ?")) {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + PERSON + " FROM person ORDER BY created_date DESC, name LIMIT ? OFFSET ?")) {
             int i = 1;
             s.setInt(i++, pageRequest.count.orSome(10));
             s.setInt(i, pageRequest.startIndex.orSome(0));
