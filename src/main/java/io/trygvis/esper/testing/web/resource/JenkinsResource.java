@@ -1,7 +1,5 @@
 package io.trygvis.esper.testing.web.resource;
 
-import fj.*;
-import fj.data.*;
 import io.trygvis.esper.testing.*;
 import io.trygvis.esper.testing.jenkins.*;
 import io.trygvis.esper.testing.jenkins.xml.*;
@@ -70,9 +68,9 @@ public class JenkinsResource extends AbstractResource {
     @GET
     @Path("/job/{uuid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public JenkinsJobJson getJob(@MagicParam final UUID uuid) throws Exception {
-        return sql(new JenkinsDaosCallback<SqlOption<JenkinsJobJson>>() {
-            protected SqlOption<JenkinsJobJson> run() throws SQLException {
+    public JenkinsJobJsonDetail getJob(@MagicParam final UUID uuid) throws Exception {
+        return sql(new JenkinsDaosCallback<SqlOption<JenkinsJobJsonDetail>>() {
+            protected SqlOption<JenkinsJobJsonDetail> run() throws SQLException {
                 return daos.jenkinsDao.selectJob(uuid).map(getJenkinsJobJsonDetail);
             }
         });
@@ -89,6 +87,17 @@ public class JenkinsResource extends AbstractResource {
                     builds.add(getJenkinsBuildJson.apply(dto));
                 }
                 return builds;
+            }
+        });
+    }
+
+    @GET
+    @Path("/build/{uuid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public JenkinsBuildJsonDetail getBuild(@MagicParam final UUID build) throws Exception {
+        return sql(new JenkinsDaosCallback<SqlOption<JenkinsBuildJsonDetail>>() {
+            protected SqlOption<JenkinsBuildJsonDetail> run() throws SQLException {
+                return daos.jenkinsDao.selectBuild(build).map(getJenkinsBuildJsonDetail);
             }
         });
     }
@@ -132,24 +141,40 @@ public class JenkinsResource extends AbstractResource {
             }
         };
 
-        protected SqlF<JenkinsJobDto, JenkinsJobJson> getJenkinsJobJsonDetail = new SqlF<JenkinsJobDto, JenkinsJobJson>() {
-            public JenkinsJobJson apply(JenkinsJobDto job) throws SQLException {
-                int buildCount = daos.jenkinsDao.selectBuildCountByJob(job.uuid);
-                return new JenkinsJobJson(job.uuid, job.createdDate, job.server, job.displayName.toNull(), buildCount);
+        protected SqlF<JenkinsJobDto,JenkinsJobJsonDetail> getJenkinsJobJsonDetail = new SqlF<JenkinsJobDto, JenkinsJobJsonDetail>() {
+            public JenkinsJobJsonDetail apply(JenkinsJobDto dto) throws SQLException {
+                return new JenkinsJobJsonDetail(
+                        getJenkinsJobJson.apply(dto),
+                        daos.jenkinsDao.selectBuildCountByJob(dto.uuid));
             }
         };
 
         protected SqlF<JenkinsBuildDto, JenkinsBuildJson> getJenkinsBuildJson = new SqlF<JenkinsBuildDto, JenkinsBuildJson>() {
             public JenkinsBuildJson apply(JenkinsBuildDto dto) throws SQLException {
-                Option<String> result = daos.fileDao.load(dto.file).toFj().
+                JenkinsBuildXml xml = daos.fileDao.load(dto.file).toFj().
                         bind(xmlParser.parseDocument).
-                        bind(JenkinsBuildXml.parse).map(new F<JenkinsBuildXml, String>() {
-                    public String f(JenkinsBuildXml xml) {
-                        return xml.result.orSome("unknown");
-                    }
-                });
+                        bind(JenkinsBuildXml.parse).some();
 
-                return new JenkinsBuildJson(dto.uuid, dto.createdDate, result.orSome("unknown"));
+                return new JenkinsBuildJson(dto.uuid, dto.createdDate, new DateTime(xml.timestamp),
+                        xml.result.orSome("unknown"), xml.number, xml.duration);
+            }
+        };
+
+        protected SqlF<JenkinsBuildDto,JenkinsBuildJsonDetail> getJenkinsBuildJsonDetail = new SqlF<JenkinsBuildDto, JenkinsBuildJsonDetail>() {
+            public JenkinsBuildJsonDetail apply(JenkinsBuildDto dto) throws SQLException {
+                List<JenkinsUserJson> users = new ArrayList<>();
+                for (UUID user : dto.users) {
+                    users.add(daos.jenkinsDao.selectUser(user).map(getJenkinsUserJson).get());
+                }
+                return new JenkinsBuildJsonDetail(
+                        getJenkinsBuildJson.apply(dto),
+                        users);
+            }
+        };
+
+        protected SqlF<JenkinsUserDto,JenkinsUserJson> getJenkinsUserJson = new SqlF<JenkinsUserDto, JenkinsUserJson>() {
+            public JenkinsUserJson apply(JenkinsUserDto dto) throws SQLException {
+                return new JenkinsUserJson(dto.uuid, dto.createdDate, dto.absoluteUrl);
             }
         };
     }
@@ -179,21 +204,20 @@ class JenkinsJobJson {
     public final UUID server;
     public final String displayName;
 
-    public final Integer buildCount;
-
     JenkinsJobJson(UUID uuid, DateTime createdDate, UUID server, String displayName) {
         this.uuid = uuid;
         this.createdDate = createdDate;
         this.server = server;
         this.displayName = displayName;
-        this.buildCount = null;
     }
+}
 
-    JenkinsJobJson(UUID uuid, DateTime createdDate, UUID server, String displayName, int buildCount) {
-        this.uuid = uuid;
-        this.createdDate = createdDate;
-        this.server = server;
-        this.displayName = displayName;
+class JenkinsJobJsonDetail {
+    public final JenkinsJobJson job;
+    public final Integer buildCount;
+
+    JenkinsJobJsonDetail(JenkinsJobJson job, Integer buildCount) {
+        this.job = job;
         this.buildCount = buildCount;
     }
 }
@@ -201,11 +225,39 @@ class JenkinsJobJson {
 class JenkinsBuildJson {
     public final UUID uuid;
     public final DateTime createdDate;
+    public final DateTime timestamp;
     public final String result;
+    public final int number;
+    public final int duration;
 
-    JenkinsBuildJson(UUID uuid, DateTime createdDate, String result) {
+    JenkinsBuildJson(UUID uuid, DateTime createdDate, DateTime timestamp, String result, int number, int duration) {
         this.uuid = uuid;
         this.createdDate = createdDate;
+        this.timestamp = timestamp;
         this.result = result;
+        this.number = number;
+        this.duration = duration;
+    }
+}
+
+class JenkinsBuildJsonDetail {
+    public final JenkinsBuildJson build;
+    public final List<JenkinsUserJson> participants;
+
+    JenkinsBuildJsonDetail(JenkinsBuildJson build, List<JenkinsUserJson> participants) {
+        this.build = build;
+        this.participants = participants;
+    }
+}
+
+class JenkinsUserJson {
+    public final UUID uuid;
+    public final DateTime createdDate;
+    public final String absoluteUrl;
+
+    JenkinsUserJson(UUID uuid, DateTime createdDate, String absoluteUrl) {
+        this.uuid = uuid;
+        this.createdDate = createdDate;
+        this.absoluteUrl = absoluteUrl;
     }
 }

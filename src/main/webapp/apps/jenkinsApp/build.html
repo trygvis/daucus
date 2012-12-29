@@ -1,0 +1,41 @@
+<div class="container">
+
+  <div class="page-header">
+    <h1>Jenkins Build</h1>
+  </div>
+
+  <ul class="breadcrumb">
+    <li><a ng-click="showServers()">All Servers</a> <span class="divider">/</span></li>
+    <li><a ng-click="showServer()">Servers</a> <span class="divider">/</span></li>
+    <li><a ng-click="showJob()">Job</a> <span class="divider">/</span></li>
+    <li class="active">Build</li>
+  </ul>
+
+  <h3>Overview</h3>
+  <table class="table">
+    <tbody>
+    <tr>
+      <th>Timestamp</th>
+      <td>{{details.build.timestamp | date:'medium'}}</td>
+    </tr>
+    <tr>
+      <th>Number</th>
+      <td>{{details.build.number}}</td>
+    </tr>
+    <tr>
+      <th>Duration</th>
+      <td>{{details.build.duration / 1000 | number:0}}s</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h3>Users</h3>
+  <table>
+    <tbody>
+    <tr ng-repeat="user in details.participants">
+      <td>{{user.uuid}}</td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>

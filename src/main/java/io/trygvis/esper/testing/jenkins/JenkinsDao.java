@@ -180,6 +180,14 @@ public class JenkinsDao {
         }
     }
 
+    public SqlOption<JenkinsBuildDto> selectBuild(UUID uuid) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_BUILD + " FROM jenkins_build WHERE uuid=?")) {
+            int i = 1;
+            s.setString(i, uuid.toString());
+            return fromRs(s.executeQuery()).map(jenkinsBuild);
+        }
+    }
+
     public int selectBuildCountByJob(UUID job) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT count(1) FROM jenkins_build WHERE job=?")) {
             int i = 1;
@@ -223,11 +231,10 @@ public class JenkinsDao {
         }
     }
 
-    public SqlOption<JenkinsUserDto> selectUser(UUID uuid, UUID server) throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_USER + " FROM jenkins_user WHERE uuid=? AND server=?")) {
+    public SqlOption<JenkinsUserDto> selectUser(UUID uuid) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_USER + " FROM jenkins_user WHERE uuid=?")) {
             int i = 1;
-            s.setString(i++, uuid.toString());
-            s.setString(i, server.toString());
+            s.setString(i, uuid.toString());
             return fromRs(s.executeQuery()).map(jenkinsUser);
         }
     }
