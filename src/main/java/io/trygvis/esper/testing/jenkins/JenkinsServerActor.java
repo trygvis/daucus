@@ -3,6 +3,7 @@ package io.trygvis.esper.testing.jenkins;
 import fj.*;
 import fj.data.*;
 import io.trygvis.esper.testing.core.db.*;
+import io.trygvis.esper.testing.jenkins.xml.*;
 import io.trygvis.esper.testing.util.object.*;
 import io.trygvis.esper.testing.util.sql.*;
 import org.slf4j.*;
@@ -153,10 +154,6 @@ public class JenkinsServerActor implements TransactionalActor {
                     buildXmlFile,
                     entry.id,
                     build.url,
-                    result,
-                    build.number,
-                    build.duration,
-                    build.timestamp,
                     users.toArray(new UUID[users.size()]));
 
             logger.info("Build inserted: {}, #users={} item #{}/{}", uuid, users.size(), i, list.size());

@@ -1,10 +1,13 @@
 package io.trygvis.esper.testing.core.db;
 
+import io.trygvis.esper.testing.util.sql.*;
+
 import java.io.*;
 import java.net.*;
 import java.sql.*;
 import java.util.*;
 
+import static io.trygvis.esper.testing.util.sql.SqlOption.*;
 import static java.lang.System.*;
 
 public class FileDao {
@@ -25,6 +28,17 @@ public class FileDao {
             s.setBinaryStream(i, new ByteArrayInputStream(data), data.length);
             s.executeUpdate();
             return uuid;
+        }
+    }
+
+    public SqlOption<InputStream> load(UUID uuid) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT data FROM file WHERE uuid=?")) {
+            s.setString(1, uuid.toString());
+            ResultSet rs = s.executeQuery();
+            if(!rs.next()) {
+                return none();
+            }
+            return some(rs.getBinaryStream(1));
         }
     }
 }

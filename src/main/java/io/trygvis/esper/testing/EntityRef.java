@@ -3,6 +3,8 @@ package io.trygvis.esper.testing;
 import java.sql.*;
 import java.util.*;
 
+import static io.trygvis.esper.testing.EntityRef.JenkinsBuildRef.*;
+
 public abstract class EntityRef {
     public final UUID uuid;
     public final String type;
@@ -22,20 +24,22 @@ public abstract class EntityRef {
         UUID uuid = UUID.fromString(rs.getString(i));
 
         switch (type) {
-            case "jenkins":
-                return new JenkinsRef(uuid);
+            case JENKINS_BUILD_REF:
+                return new JenkinsBuildRef(uuid);
             default:
                 throw new SQLException("Unknown reference type: " + type);
         }
     }
 
-    public static class JenkinsRef extends EntityRef {
-        private JenkinsRef(UUID uuid) {
-            super(uuid, "jenkins");
+    public static class JenkinsBuildRef extends EntityRef {
+        public static final String JENKINS_BUILD_REF = "jenkins-build";
+
+        private JenkinsBuildRef(UUID uuid) {
+            super(uuid, JENKINS_BUILD_REF);
         }
     }
 
-    public static JenkinsRef jenkinsRef(UUID uuid) {
-        return new JenkinsRef(uuid);
+    public static JenkinsBuildRef jenkinsBuildRef(UUID uuid) {
+        return new JenkinsBuildRef(uuid);
     }
 }

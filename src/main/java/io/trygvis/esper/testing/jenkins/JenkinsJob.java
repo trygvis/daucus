@@ -2,6 +2,8 @@ package io.trygvis.esper.testing.jenkins;
 
 import fj.*;
 import fj.data.*;
+import io.trygvis.esper.testing.jenkins.xml.JenkinsJobXml;
+
 import static fj.data.Option.*;
 import static io.trygvis.esper.testing.jenkins.JenkinsClient.apiXml;
 import static java.lang.System.currentTimeMillis;

@@ -1,17 +1,21 @@
 package io.trygvis.esper.testing.web.resource;
 
+import fj.*;
+import fj.data.*;
 import io.trygvis.esper.testing.*;
 import io.trygvis.esper.testing.jenkins.*;
+import io.trygvis.esper.testing.jenkins.xml.*;
+import io.trygvis.esper.testing.util.*;
 import io.trygvis.esper.testing.util.sql.*;
 import io.trygvis.esper.testing.web.*;
 import org.joda.time.*;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
 import java.net.*;
 import java.sql.*;
 import java.util.*;
 import java.util.List;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 
 @Path("/resource/jenkins")
 public class JenkinsResource extends AbstractResource {
@@ -102,6 +106,8 @@ public class JenkinsResource extends AbstractResource {
 
         protected abstract T run() throws SQLException;
 
+        private final XmlParser xmlParser = new XmlParser();
+
         public T run(Daos daos) throws SQLException {
             this.daos = daos;
             return run();
@@ -120,22 +126,30 @@ public class JenkinsResource extends AbstractResource {
             }
         };
 
-        protected SqlF<JenkinsJobDto,JenkinsJobJson> getJenkinsJobJson = new SqlF<JenkinsJobDto, JenkinsJobJson>() {
+        protected SqlF<JenkinsJobDto, JenkinsJobJson> getJenkinsJobJson = new SqlF<JenkinsJobDto, JenkinsJobJson>() {
             public JenkinsJobJson apply(JenkinsJobDto job) throws SQLException {
                 return new JenkinsJobJson(job.uuid, job.createdDate, job.server, job.displayName.toNull());
             }
         };
 
-        protected SqlF<JenkinsJobDto,JenkinsJobJson> getJenkinsJobJsonDetail = new SqlF<JenkinsJobDto, JenkinsJobJson>() {
+        protected SqlF<JenkinsJobDto, JenkinsJobJson> getJenkinsJobJsonDetail = new SqlF<JenkinsJobDto, JenkinsJobJson>() {
             public JenkinsJobJson apply(JenkinsJobDto job) throws SQLException {
                 int buildCount = daos.jenkinsDao.selectBuildCountByJob(job.uuid);
                 return new JenkinsJobJson(job.uuid, job.createdDate, job.server, job.displayName.toNull(), buildCount);
             }
         };
 
-        protected SqlF<JenkinsBuildDto,JenkinsBuildJson> getJenkinsBuildJson = new SqlF<JenkinsBuildDto, JenkinsBuildJson>() {
+        protected SqlF<JenkinsBuildDto, JenkinsBuildJson> getJenkinsBuildJson = new SqlF<JenkinsBuildDto, JenkinsBuildJson>() {
             public JenkinsBuildJson apply(JenkinsBuildDto dto) throws SQLException {
-                return new JenkinsBuildJson(dto.uuid, dto.createdDate, dto.result);
+                Option<String> result = daos.fileDao.load(dto.file).toFj().
+                        bind(xmlParser.parseDocument).
+                        bind(JenkinsBuildXml.parse).map(new F<JenkinsBuildXml, String>() {
+                    public String f(JenkinsBuildXml xml) {
+                        return xml.result.orSome("unknown");
+                    }
+                });
+
+                return new JenkinsBuildJson(dto.uuid, dto.createdDate, result.orSome("unknown"));
             }
         };
     }

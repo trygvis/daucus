@@ -2,7 +2,8 @@ package io.trygvis.esper.testing.jenkins;
 
 import fj.*;
 import fj.data.*;
-import io.trygvis.esper.testing.jenkins.JenkinsJobXml.*;
+import io.trygvis.esper.testing.jenkins.xml.*;
+import io.trygvis.esper.testing.jenkins.xml.JenkinsJobXml.*;
 import io.trygvis.esper.testing.util.*;
 import org.apache.abdera.*;
 import org.apache.abdera.model.*;
@@ -18,10 +19,10 @@ import java.net.*;
 import java.util.*;
 import java.util.List;
 
-import static fj.P.p;
+import static fj.P.*;
 import static fj.data.Option.*;
-import static io.trygvis.esper.testing.util.HttpClient.inputStreamOnly;
-import static java.lang.System.currentTimeMillis;
+import static io.trygvis.esper.testing.util.HttpClient.*;
+import static java.lang.System.*;
 import static org.apache.commons.lang.StringUtils.*;
 
 public class JenkinsClient {
@@ -147,7 +148,7 @@ public class JenkinsClient {
             case "mavenModuleSetBuild":
             case "mavenBuild":
             case "freeStyleBuild":
-                return JenkinsBuildXml.parse(root).map(new F<JenkinsBuildXml, P2<JenkinsBuildXml, byte[]>>() {
+                return JenkinsBuildXml.parse(root.getDocument()).map(new F<JenkinsBuildXml, P2<JenkinsBuildXml, byte[]>>() {
                     public P2<JenkinsBuildXml, byte[]> f(JenkinsBuildXml x) {
                         return p(x, d.some()._2());
                     }
@@ -155,45 +156,6 @@ public class JenkinsClient {
             default:
                 logger.warn("Unknown build type: " + name);
                 return Option.none();
-        }
-    }
-
-}
-
-class JenkinsEntryXml {
-    public final String id;
-    public final DateTime timestamp;
-    public final URI url;
-
-    JenkinsEntryXml(String id, DateTime timestamp, URI url) {
-        this.id = id;
-        this.timestamp = timestamp;
-        this.url = url;
-    }
-}
-
-class JenkinsXml {
-    public final Option<String> nodeName;
-    public final Option<String> nodeDescription;
-    public final Option<String> description;
-    public final List<JobXml> jobs;
-
-    JenkinsXml(Option<String> nodeName, Option<String> nodeDescription, Option<String> description, List<JobXml> jobs) {
-        this.nodeName = nodeName;
-        this.nodeDescription = nodeDescription;
-        this.description = description;
-        this.jobs = jobs;
-    }
-
-    public static class JobXml {
-        public final String name;
-        public final String url;
-        public final String color;
-
-        JobXml(String name, String url, String color) {
-            this.name = name;
-            this.url = url;
-            this.color = color;
         }
     }
 }

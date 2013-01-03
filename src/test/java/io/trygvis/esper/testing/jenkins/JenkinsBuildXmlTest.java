@@ -6,10 +6,10 @@ import java.net.URI;
 
 import org.jdom2.Document;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDateTime;
 import org.joda.time.chrono.ISOChronology;
 
 import fj.data.Option;
+import io.trygvis.esper.testing.jenkins.xml.JenkinsBuildXml;
 import io.trygvis.esper.testing.util.XmlParser;
 import junit.framework.TestCase;
 
@@ -31,7 +31,7 @@ public class JenkinsBuildXmlTest extends TestCase {
 
     public void testGitCommitParsing() throws IOException {
         try (InputStream is = getClass().getResourceAsStream("/jenkins/build/build-with-git-commits.xml")) {
-            Option<JenkinsBuildXml> option = JenkinsBuildXml.parse(parser.parseDocument(is).some().getRootElement());
+            Option<JenkinsBuildXml> option = parser.parseDocument(is).bind(JenkinsBuildXml.parse);
 
             assertTrue(option.isSome());
             JenkinsBuildXml build = option.some();
@@ -61,7 +61,7 @@ public class JenkinsBuildXmlTest extends TestCase {
 
     public void testSvnCommitParsing() throws IOException {
         try (InputStream is = getClass().getResourceAsStream("/jenkins/build/build-with-subversion-commits.xml")) {
-            Option<JenkinsBuildXml> option = JenkinsBuildXml.parse(parser.parseDocument(is).some().getRootElement());
+            Option<JenkinsBuildXml> option = parser.parseDocument(is).bind(JenkinsBuildXml.parse);
 
             assertTrue(option.isSome());
             JenkinsBuildXml build = option.some();

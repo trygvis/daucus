@@ -1,4 +1,4 @@
-package io.trygvis.esper.testing.jenkins;
+package io.trygvis.esper.testing.jenkins.xml;
 
 import java.net.URI;
 
@@ -12,8 +12,8 @@ import static fj.data.Option.some;
 import static io.trygvis.esper.testing.Util.child;
 import static io.trygvis.esper.testing.Util.childText;
 
-class JenkinsJobXml {
-    enum JenkinsJobType {
+public class JenkinsJobXml {
+    public enum JenkinsJobType {
         FREE_STYLE, MAVEN_MODULE_SET, MAVEN_MODULE, MATRIX, MATRIX_CONFIGURATION
     }
 

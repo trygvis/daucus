@@ -1,9 +1,10 @@
-package io.trygvis.esper.testing.jenkins;
+package io.trygvis.esper.testing.jenkins.xml;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jdom2.Document;
 import org.jdom2.Element;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -20,8 +21,8 @@ import static fj.data.List.iterableList;
 import static fj.data.Option.*;
 import static io.trygvis.esper.testing.Util.childText;
 import static io.trygvis.esper.testing.Util.parseInt;
-import static io.trygvis.esper.testing.jenkins.JenkinsBuildXml.ChangeSetItemXml.parseChangeSetItem;
-import static io.trygvis.esper.testing.jenkins.JenkinsBuildXml.RevisionXml.parseRevision;
+import static io.trygvis.esper.testing.jenkins.xml.JenkinsBuildXml.ChangeSetItemXml.parseChangeSetItem;
+import static io.trygvis.esper.testing.jenkins.xml.JenkinsBuildXml.RevisionXml.parseRevision;
 
 public class JenkinsBuildXml {
     private static final Logger logger = LoggerFactory.getLogger(JenkinsBuildXml.class);
@@ -47,7 +48,15 @@ public class JenkinsBuildXml {
         this.changeSet = changeSet;
     }
 
-    public static Option<JenkinsBuildXml> parse(Element root) {
+    public static F<Document, Option<JenkinsBuildXml>> parse = new F<Document, Option<JenkinsBuildXml>>() {
+        public Option<JenkinsBuildXml> f(Document document) {
+            return parse(document);
+        }
+    };
+
+    public static Option<JenkinsBuildXml> parse(Document doc) {
+        Element root = doc.getRootElement();
+
         Option<URI> url = childText(root, "url").bind(Util.parseUri);
         Option<Integer> number = childText(root, "number").bind(Util.parseInt);
         Option<String> result = childText(root, "result");
@@ -92,7 +101,7 @@ public class JenkinsBuildXml {
 
         public static Option<ChangeSetXml> parse(Element changeSet) {
 
-            List<ChangeSetItemXml> items = new ArrayList<>(somes(iterableList(changeSet.getChildren("item")).map(parseChangeSetItem)).toCollection());
+            List<ChangeSetItemXml> items = new ArrayList<>(Option.somes(iterableList(changeSet.getChildren("item")).map(parseChangeSetItem)).toCollection());
 
             Option<RevisionXml> revision = Option.fromNull(changeSet.getChild("revision")).bind(parseRevision);
 

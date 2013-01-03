@@ -40,7 +40,7 @@ public class CoreResource extends AbstractResource {
         return da.inTransaction(new DatabaseAccess.DaosCallback<List<PersonJson>>() {
             public List<PersonJson> run(Daos daos) throws SQLException {
                 List<PersonJson> list = new ArrayList<>();
-                for (PersonDto person : daos.personDao.selectPerson(pageRequest)) {
+                for (PersonDto person : daos.personDao.selectPersons(pageRequest)) {
                     list.add(getPersonJson(daos, person));
                 }
                 return list;

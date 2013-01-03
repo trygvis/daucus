@@ -14,7 +14,7 @@ import static java.lang.System.*;
 public class PersonDao {
     private final Connection c;
 
-    public static final String PERSON = "uuid, created_date, name";
+    public static final String PERSON = "uuid, created_date, name, mail";
 
     public static final SqlF<ResultSet, PersonDto> person = new SqlF<ResultSet, PersonDto>() {
         public PersonDto apply(ResultSet rs) throws SQLException {
@@ -22,6 +22,7 @@ public class PersonDao {
             return new PersonDto(
                     UUID.fromString(rs.getString(i++)),
                     new DateTime(rs.getTimestamp(i++).getTime()),
+                    rs.getString(i++),
                     rs.getString(i));
         }
     };
@@ -63,6 +64,19 @@ public class PersonDao {
     // Person
     // -----------------------------------------------------------------------
 
+    public UUID insertPerson(String mail, String name) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("INSERT INTO person(" + PERSON + ") VALUES(?, ?, ?, ?)")) {
+            UUID uuid = UUID.randomUUID();
+            int i = 1;
+            s.setString(i++, uuid.toString());
+            s.setTimestamp(i++, new Timestamp(currentTimeMillis()));
+            s.setString(i++, name);
+            s.setString(i, mail);
+            s.executeUpdate();
+            return uuid;
+        }
+    }
+
     public SqlOption<PersonDto> selectPerson(UUID uuid) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT " + PERSON + " FROM person WHERE uuid=?")) {
             int i = 1;
@@ -71,7 +85,15 @@ public class PersonDao {
         }
     }
 
-    public List<PersonDto> selectPerson(PageRequest pageRequest) throws SQLException {
+    public SqlOption<PersonDto> selectPersonByMail(String mail) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + PERSON + " FROM person WHERE mail=?")) {
+            int i = 1;
+            s.setString(i, mail);
+            return fromRs(s.executeQuery()).map(person);
+        }
+    }
+
+    public List<PersonDto> selectPersons(PageRequest pageRequest) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT " + PERSON + " FROM person ORDER BY created_date, name LIMIT ? OFFSET ?")) {
             int i = 1;
             s.setInt(i++, pageRequest.count.orSome(10));
@@ -91,6 +113,29 @@ public class PersonDao {
             int i = 1;
             s.setString(i, jenkinsUser.toString());
             return fromRs(s.executeQuery()).map(person);
+        }
+    }
+
+    // -----------------------------------------------------------------------
+    // Person Jenkins User
+    // -----------------------------------------------------------------------
+
+    public void insertPersonJenkinsUser(UUID person, UUID jenkinsUser) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("INSERT INTO person_jenkins_user(person, jenkins_user) VALUES(?, ?)")) {
+            int i = 1;
+            s.setString(i++, person.toString());
+            s.setString(i, jenkinsUser.toString());
+            s.executeUpdate();
+        }
+    }
+
+    public boolean hasPersonJenkinsUser(UUID person, UUID jenkinsUser) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT 1 FROM person_jenkins_user WHERE person=? AND jenkins_user=?")) {
+            int i = 1;
+            s.setString(i++, person.toString());
+            s.setString(i, jenkinsUser.toString());
+            ResultSet rs = s.executeQuery();
+            return rs.next();
         }
     }
 

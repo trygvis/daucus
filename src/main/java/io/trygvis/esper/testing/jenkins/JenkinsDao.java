@@ -1,19 +1,19 @@
 package io.trygvis.esper.testing.jenkins;
 
 import fj.data.*;
+import io.trygvis.esper.testing.jenkins.xml.*;
 import io.trygvis.esper.testing.util.sql.*;
 import org.joda.time.*;
 
 import java.net.*;
 import java.sql.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
-import static fj.data.Option.*;
-import static io.trygvis.esper.testing.Util.toList;
-import static io.trygvis.esper.testing.Util.toUuidArray;
-import static io.trygvis.esper.testing.util.sql.ResultSetF.getInt;
-import static io.trygvis.esper.testing.util.sql.SqlOption.fromRs;
+import static fj.data.Option.fromNull;
+import static io.trygvis.esper.testing.Util.*;
+import static io.trygvis.esper.testing.util.sql.ResultSetF.*;
+import static io.trygvis.esper.testing.util.sql.SqlOption.*;
 import static java.lang.System.*;
 
 public class JenkinsDao {
@@ -53,7 +53,7 @@ public class JenkinsDao {
         }
     };
 
-    public static final String JENKINS_BUILD = "uuid, created_date, job, file, entry_id, url, result, number, duration, timestamp, users";
+    public static final String JENKINS_BUILD = "uuid, created_date, job, file, entry_id, url, users";
 
     public static final SqlF<ResultSet, JenkinsBuildDto> jenkinsBuild = new SqlF<ResultSet, JenkinsBuildDto>() {
         public JenkinsBuildDto apply(ResultSet rs) throws SQLException {
@@ -65,10 +65,6 @@ public class JenkinsDao {
                     UUID.fromString(rs.getString(i++)),
                     rs.getString(i++),
                     URI.create(rs.getString(i++)),
-                    rs.getString(i++),
-                    rs.getInt(i++),
-                    rs.getInt(i++),
-                    new DateTime(rs.getTimestamp(i++).getTime()),
                     toUuidArray(rs, i));
         }
     };
@@ -191,8 +187,8 @@ public class JenkinsDao {
         }
     }
 
-    public UUID insertBuild(UUID job, UUID file, String entryId, URI url, String result, int number, int duration, long timestamp, UUID[] users) throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("INSERT INTO jenkins_build(" + JENKINS_BUILD + ") VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+    public UUID insertBuild(UUID job, UUID file, String entryId, URI url, UUID[] users) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("INSERT INTO jenkins_build(" + JENKINS_BUILD + ") VALUES(?, ?, ?, ?, ?, ?, ?)")) {
             UUID uuid = UUID.randomUUID();
             int i = 1;
             s.setString(i++, uuid.toString());
@@ -200,11 +196,7 @@ public class JenkinsDao {
             s.setString(i++, job.toString());
             s.setString(i++, file.toString());
             s.setString(i++, entryId);
-            s.setString(i++, url.toASCIIString());
-            s.setString(i++, result);
-            s.setInt(i++, number);
-            s.setInt(i++, duration);
-            s.setTimestamp(i++, new Timestamp(timestamp));
+            s.setString(i, url.toASCIIString());
             s.setArray(i, c.createArrayOf("varchar", users));
             s.executeUpdate();
 

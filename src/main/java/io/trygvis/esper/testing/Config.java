@@ -41,6 +41,7 @@ public class Config {
         }
     }
 
+    public final String appName;
     public final GitoriousConfig gitorious;
 
     public final long nexusUpdateInterval;
@@ -53,8 +54,10 @@ public class Config {
 
     private BoneCPDataSource dataSource;
 
-    public Config(GitoriousConfig gitorious, long nexusUpdateInterval, long jenkinsUpdateInterval, String databaseUrl,
-                  String databaseUsername, String databasePassword) {
+    public Config(String appName, GitoriousConfig gitorious,
+                  long nexusUpdateInterval, long jenkinsUpdateInterval,
+                  String databaseUrl, String databaseUsername, String databasePassword) {
+        this.appName = appName;
         this.gitorious = gitorious;
         this.nexusUpdateInterval = nexusUpdateInterval;
         this.jenkinsUpdateInterval = jenkinsUpdateInterval;
@@ -73,7 +76,8 @@ public class Config {
             properties.load(inputStream);
         }
 
-        return new Config(GitoriousConfig.fromProperties(properties),
+        return new Config(appName,
+                GitoriousConfig.fromProperties(properties),
                 getProperty(properties, "nexus.updateInterval").bind(parseInt).valueE("Missing required property: nexus.updateInterval") * 1000,
                 getProperty(properties, "jenkins.updateInterval").bind(parseInt).valueE("Missing required property: jenkins.updateInterval") * 1000,
                 trimToNull(properties.getProperty("database.url")),

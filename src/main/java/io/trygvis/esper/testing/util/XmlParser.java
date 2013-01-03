@@ -1,5 +1,6 @@
 package io.trygvis.esper.testing.util;
 
+import fj.F;
 import fj.data.*;
 import org.h2.util.*;
 import org.jdom2.*;
@@ -25,8 +26,13 @@ public class XmlParser {
         xmlInputFactory = XMLInputFactory.newFactory();
     }
 
-    public Option<Document> parseDocument(InputStream stream) {
+    public F<InputStream, Option<Document>> parseDocument = new F<InputStream, Option<Document>>() {
+        public Option<Document> f(InputStream inputStream) {
+            return parseDocument(inputStream);
+        }
+    };
 
+    public Option<Document> parseDocument(InputStream stream) {
         try {
             if (debugXml) {
                 // TODO: Pretty print

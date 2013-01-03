@@ -81,6 +81,15 @@ public class BuildDao {
         }
     }
 
+    public SqlOption<UUID> findBuildByReference(EntityRef ref) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT uuid FROM build WHERE reference_type=? AND reference_uuid=?")) {
+            int i = 1;
+            s.setString(i++, ref.type);
+            s.setString(i, ref.uuid.toString());
+            return fromRs(s.executeQuery()).map(getUuid);
+        }
+    }
+
     public List<BuildDto> selectBuildsByPerson(UUID person, PageRequest page) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT " + BUILD + " FROM build b, build_participant bp WHERE bp.person=? AND b.uuid = bp.build ORDER BY created_date LIMIT ? OFFSET ?")) {
             int i = 1;

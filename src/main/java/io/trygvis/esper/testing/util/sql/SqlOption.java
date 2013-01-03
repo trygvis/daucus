@@ -1,5 +1,7 @@
 package io.trygvis.esper.testing.util.sql;
 
+import fj.data.*;
+
 import java.sql.*;
 
 public abstract class SqlOption<A> {
@@ -45,6 +47,10 @@ public abstract class SqlOption<A> {
 
     public abstract A getOrElse(A a);
 
+    public abstract A getOrElse(SqlP0<A> p) throws SQLException;
+
+    public abstract Option<A> toFj();
+
     public static <A> SqlOption<A> fromNull(A a) {
         if (a != null) {
             return some(a);
@@ -74,6 +80,14 @@ public abstract class SqlOption<A> {
             return a;
         }
 
+        public A getOrElse(SqlP0<A> p) throws SQLException {
+            return p.apply();
+        }
+
+        public Option<A> toFj() {
+            return Option.none();
+        }
+
         public String toString() {
             return "None";
         }
@@ -100,6 +114,14 @@ public abstract class SqlOption<A> {
 
         public A getOrElse(A a) {
             return this.a;
+        }
+
+        public A getOrElse(SqlP0<A> p) throws SQLException {
+            return a;
+        }
+
+        public Option<A> toFj() {
+            return Option.some(a);
         }
 
         public String toString() {

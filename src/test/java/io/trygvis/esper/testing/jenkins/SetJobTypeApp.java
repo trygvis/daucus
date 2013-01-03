@@ -4,6 +4,7 @@ import com.jolbox.bonecp.*;
 import fj.*;
 import fj.data.*;
 import io.trygvis.esper.testing.*;
+import io.trygvis.esper.testing.jenkins.xml.JenkinsJobXml;
 import io.trygvis.esper.testing.util.*;
 import org.apache.abdera.*;
 import org.codehaus.httpcache4j.cache.*;

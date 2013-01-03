@@ -25,6 +25,7 @@ public class Daos implements Closeable {
     }
 
     private final Connection connection;
+    public final FileDao fileDao;
     public final GitoriousEventDao gitoriousEventDao;
     public final GitoriousProjectDao gitoriousProjectDao;
     public final GitoriousRepositoryDao gitoriousRepositoryDao;
@@ -37,6 +38,7 @@ public class Daos implements Closeable {
     public Daos(Connection c) throws SQLException {
         this.connection = c;
         this.seq = counter++;
+        fileDao = new FileDao(c);
         gitoriousEventDao = new GitoriousEventDao(c);
         gitoriousProjectDao = new GitoriousProjectDao(c);
         gitoriousRepositoryDao = new GitoriousRepositoryDao(c);
@@ -57,5 +59,9 @@ public class Daos implements Closeable {
 
     public void commit() throws SQLException {
         connection.commit();
+    }
+
+    public void rollback() throws SQLException {
+        connection.rollback();
     }
 }
