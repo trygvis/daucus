@@ -107,7 +107,7 @@ public class CoreResource extends AbstractResource {
 
                 List<BuildJson> list = new ArrayList<>();
                 for (BuildDto build : buildDtos) {
-                    list.add(getBuildJson(daos, build));
+                    list.add(getBuildJson(build));
                 }
                 return list;
             }
@@ -138,23 +138,23 @@ public class CoreResource extends AbstractResource {
                     return Option.none();
                 }
 
-                return Option.some(getBuildJson(daos, o.get()));
+                return Option.some(getBuildJson(o.get()));
             }
         });
     }
 
-    private BuildJson getBuildJson(Daos daos, BuildDto build) {
-        return new BuildJson(build.uuid, build.createdDate, build.success);
+    private BuildJson getBuildJson(BuildDto build) {
+        return new BuildJson(build.uuid, build.timestamp, build.success);
     }
 
     public static class BuildJson {
         public final UUID uuid;
-        public final DateTime date;
+        public final DateTime timestamp;
         public final boolean success;
 
-        public BuildJson(UUID uuid, DateTime date, boolean success) {
+        public BuildJson(UUID uuid, DateTime timestamp, boolean success) {
             this.uuid = uuid;
-            this.date = date;
+            this.timestamp = timestamp;
             this.success = success;
         }
     }

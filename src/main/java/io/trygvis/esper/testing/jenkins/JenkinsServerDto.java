@@ -17,6 +17,6 @@ public class JenkinsServerDto extends AbstractEntity {
     }
 
     public URI userUrl(String id) {
-        return URI.create(url.toASCIIString() + "/users/" + id);
+        return URI.create(url.toASCIIString() + "/user/" + id);
     }
 }

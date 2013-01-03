@@ -48,6 +48,7 @@ public class JenkinsDao {
                     UUID.fromString(rs.getString(i++)),
                     new DateTime(rs.getTimestamp(i++).getTime()),
                     UUID.fromString(rs.getString(i++)),
+                    UUID.fromString(rs.getString(i++)),
                     URI.create(rs.getString(i++)),
                     fromNull(rs.getString(i)));
         }

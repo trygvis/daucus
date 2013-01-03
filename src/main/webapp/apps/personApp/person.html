@@ -33,7 +33,7 @@
       </thead>
       <tbody>
       <tr ng-repeat="build in recentBuilds" class="{{{true: 'success', false: 'error'}[build.success]}}">
-        <td>{{build.date | date:'medium'}}</td>
+        <td>{{build.timestamp | date:'medium'}}</td>
         <td>{{build.success}}</td>
         <td><a href="/build/{{build.uuid}}">Details</a></td>
       </tr>
@@ -52,7 +52,7 @@
       </thead>
       <tbody>
       <tr ng-repeat="build in builds.rows" class="{{{true: 'success', false: 'error'}[build.success]}}">
-        <td>{{build.date | date:'medium'}}</td>
+        <td>{{build.timestamp | date:'medium'}}</td>
         <td>{{build.success}}</td>
       </tr>
       </tbody>
@@ -72,5 +72,4 @@
       </tfoot>
     </table>
   </div>
-
 </div>

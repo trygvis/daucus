@@ -2,19 +2,36 @@ package io.trygvis.esper.testing.jenkins.xml;
 
 import java.net.URI;
 
-import org.jdom2.Element;
+import org.jdom2.*;
 
 import fj.F;
 import fj.data.Option;
 import io.trygvis.esper.testing.Util;
 
-import static fj.data.Option.some;
+import static fj.data.Option.*;
 import static io.trygvis.esper.testing.Util.child;
 import static io.trygvis.esper.testing.Util.childText;
 
 public class JenkinsJobXml {
     public enum JenkinsJobType {
-        FREE_STYLE, MAVEN_MODULE_SET, MAVEN_MODULE, MATRIX, MATRIX_CONFIGURATION
+        FREE_STYLE, MAVEN_MODULE_SET, MAVEN_MODULE, MATRIX, MATRIX_CONFIGURATION;
+
+        public static Option<JenkinsJobType> fromElement(String name) {
+            switch (name) {
+                case "freeStyleProject":
+                    return some(FREE_STYLE);
+                case "mavenModuleSet":
+                    return some(MAVEN_MODULE_SET);
+                case "mavenModule":
+                    return some(MAVEN_MODULE);
+                case "matrixProject":
+                    return some(MATRIX);
+                case "matrixConfiguration":
+                    return some(MATRIX_CONFIGURATION);
+                default:
+                    return none();
+            }
+        }
     }
 
     public final JenkinsJobType type;
@@ -71,18 +88,31 @@ public class JenkinsJobXml {
         }
     }
 
-    public static JenkinsJobXml parse(URI url, JenkinsJobType type, Element root) {
-        return new JenkinsJobXml(type,
+    public static final F<Document, Option<JenkinsJobXml>> parse = new F<Document, Option<JenkinsJobXml>>() {
+        public Option<JenkinsJobXml> f(Document document) {
+            return parse(document.getRootElement());
+        }
+    };
+
+    public static Option<JenkinsJobXml> parse(Element root) {
+        Option<URI> uri = childText(root, "url").bind(Util.parseUri);
+        Option<JenkinsJobType> typeO = JenkinsJobType.fromElement(root.getName());
+
+        if (uri.isNone() || typeO.isNone()) {
+            return none();
+        }
+
+        return some(new JenkinsJobXml(typeO.some(),
             childText(root, "description"),
             childText(root, "displayName"),
             childText(root, "name"),
-            childText(root, "url").bind(Util.parseUri).orSome(url),
+            uri.some(),
             childText(root, "color"),
             childText(root, "buildable").bind(Util.parseBoolean).orSome(false),
             child(root, "lastBuild").bind(BuildXml.buildXml),
             child(root, "lastCompletedBuild").bind(BuildXml.buildXml),
             child(root, "lastFailedBuild").bind(BuildXml.buildXml),
             child(root, "lastSuccessfulBuild").bind(BuildXml.buildXml),
-            child(root, "lastUnsuccessfulBuild").bind(BuildXml.buildXml));
+            child(root, "lastUnsuccessfulBuild").bind(BuildXml.buildXml)));
     }
 }

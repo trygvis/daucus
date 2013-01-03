@@ -41,4 +41,15 @@ public class FileDao {
             return some(rs.getBinaryStream(1));
         }
     }
+
+    public SqlOption<InputStream> loadByUrl(URI uri) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT data FROM file WHERE url=?")) {
+            s.setString(1, uri.toASCIIString());
+            ResultSet rs = s.executeQuery();
+            if(!rs.next()) {
+                return none();
+            }
+            return some(rs.getBinaryStream(1));
+        }
+    }
 }

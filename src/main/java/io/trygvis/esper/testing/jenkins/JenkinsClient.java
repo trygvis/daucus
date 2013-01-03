@@ -3,7 +3,6 @@ package io.trygvis.esper.testing.jenkins;
 import fj.*;
 import fj.data.*;
 import io.trygvis.esper.testing.jenkins.xml.*;
-import io.trygvis.esper.testing.jenkins.xml.JenkinsJobXml.*;
 import io.trygvis.esper.testing.util.*;
 import org.apache.abdera.*;
 import org.apache.abdera.model.*;
@@ -111,23 +110,14 @@ public class JenkinsClient {
 
         Element root = d.some()._1().getRootElement();
 
-        String name = root.getName();
+        Option<JenkinsJobXml> xml = JenkinsJobXml.parse(root);
 
-        switch (name) {
-            case "freeStyleProject":
-                return some(p(JenkinsJobXml.parse(url, JenkinsJobType.FREE_STYLE, root), d.some()._2()));
-            case "mavenModuleSet":
-                return some(p(JenkinsJobXml.parse(url, JenkinsJobType.MAVEN_MODULE_SET, root), d.some()._2()));
-            case "mavenModule":
-                return some(p(JenkinsJobXml.parse(url, JenkinsJobType.MAVEN_MODULE, root), d.some()._2()));
-            case "matrixProject":
-                return some(p(JenkinsJobXml.parse(url, JenkinsJobType.MATRIX, root), d.some()._2()));
-            case "matrixConfiguration":
-                return some(p(JenkinsJobXml.parse(url, JenkinsJobType.MATRIX_CONFIGURATION, root), d.some()._2()));
-            default:
-                logger.warn("Unknown project type: " + name);
-                return Option.none();
+        if(xml.isNone()) {
+            logger.warn("Unable to parse xml");
+            return none();
         }
+
+        return some(p(xml.some(), d.some()._2()));
     }
 
     public Option<P2<JenkinsBuildXml, byte[]>> fetchBuild(URI url) {

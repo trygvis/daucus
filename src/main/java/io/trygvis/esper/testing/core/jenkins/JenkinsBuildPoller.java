@@ -42,10 +42,35 @@ public class JenkinsBuildPoller implements TablePoller.NewRowCallback<JenkinsBui
         Daos daos = new Daos(c);
         final BuildDao buildDao = daos.buildDao;
 
+        JenkinsJobDto jobDto = daos.jenkinsDao.selectJob(jenkinsBuild.job).get();
+
+        SqlOption<InputStream> jobXmlFileO = daos.fileDao.load(jobDto.file);
+
+        if (jobXmlFileO.isNone()) {
+            logger.warn("Job xml file unavailable: File.uuid={}", jobDto.file);
+            return;
+        }
+
+        Option<JenkinsJobXml> jobXmlO = xmlParser.parseDocument.f(jobXmlFileO.get()).
+                bind(JenkinsJobXml.parse);
+
+        if (jobXmlO.isNone()) {
+            logger.warn("Could not parse job file: File.uuid={}", jobDto.file);
+            return;
+        }
+
+        JenkinsJobXml jobXml = jobXmlO.some();
+
+        switch (jobXml.type) {
+            case MAVEN_MODULE:
+                logger.info("Skipping maven module, Job.uuid={}", jobDto.uuid);
+                return;
+        }
+
         SqlOption<InputStream> file = daos.fileDao.load(jenkinsBuild.file);
 
         if (file.isNone()) {
-            logger.warn("File unavailable: " + jenkinsBuild.file);
+            logger.warn("Build file unavailable: " + jenkinsBuild.file);
             return;
         }
 
@@ -78,6 +103,7 @@ public class JenkinsBuildPoller implements TablePoller.NewRowCallback<JenkinsBui
 
             // This happens if no one has claimed the user id.
             if (personO.isNone()) {
+                logger.info("unknown person: " + user);
                 unknownPersons++;
                 continue;
             }
@@ -91,7 +117,5 @@ public class JenkinsBuildPoller implements TablePoller.NewRowCallback<JenkinsBui
 
         logger.info("Created build uuid={}, #participants={}, #knownPersons={}, #unknonwnPersons={}", uuidBuild,
                 jenkinsBuild.users.length, knownPersons, unknownPersons);
-
-        throw new SQLException("wat");
     }
 }

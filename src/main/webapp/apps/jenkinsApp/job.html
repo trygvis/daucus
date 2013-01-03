@@ -36,7 +36,7 @@
     </thead>
     <tbody>
     <tr ng-repeat="build in builds.rows" class="{{{true: 'success', false: 'error'}[build.success]}}">
-      <td>{{build.createdDate | date:'medium'}}</td>
+      <td>{{build.timestamp | date:'medium'}}</td>
       <td>{{build.result}}</td>
       <td><a class="btn" ng-click="showBuild(build.uuid)"><i class="icon-chevron-right"></i></a></td>
     </tr>
