@@ -94,7 +94,7 @@ public class CoreResource extends AbstractResource {
 
     @GET
     @Path("/build")
-    public List<BuildJson> getBuilds(@MagicParam final PageRequest page, @MagicParam(query = "person") final UUID person) throws Exception {
+    public List<BuildJson> getBuilds(@MagicParam final PageRequest page, @MagicParam(query = "person") final Uuid person) throws Exception {
         return da.inTransaction(new DatabaseAccess.DaosCallback<List<BuildJson>>() {
             public List<BuildJson> run(Daos daos) throws SQLException {
                 List<BuildDto> buildDtos;

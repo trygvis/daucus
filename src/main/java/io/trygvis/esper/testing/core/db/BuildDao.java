@@ -90,10 +90,10 @@ public class BuildDao {
         }
     }
 
-    public List<BuildDto> selectBuildsByPerson(UUID person, PageRequest page) throws SQLException {
+    public List<BuildDto> selectBuildsByPerson(Uuid person, PageRequest page) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT " + BUILD + " FROM build b, build_participant bp WHERE bp.person=? AND b.uuid = bp.build ORDER BY created_date DESC LIMIT ? OFFSET ?")) {
             int i = 1;
-            s.setString(i++, person.toString());
+            s.setString(i++, person.toUuidString());
             s.setInt(i++, page.count.orSome(10));
             s.setInt(i, page.startIndex.orSome(0));
             return toList(s, build);
