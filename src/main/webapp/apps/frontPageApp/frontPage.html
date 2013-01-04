@@ -3,13 +3,33 @@
   <div class="page-header">
     <h1>Newcomers</h1>
   </div>
-
-  <style>
-    .personsGrid {
-      height: 400px;
-    }
-  </style>
-
-  <div class="personsGrid" ng-grid="personsGridOptions"><!-- --></div>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Badges</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="person in persons.rows">
+      <td><a href="/person/{{person.uuid}}">{{person.name}}</a></td>
+      <td>{{person.badges.length}}</td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+      <td colspan="2">
+        <ul class="pager">
+          <li class="previous" ng-class="{disabled: persons.startIndex == 0}">
+            <a ng-click="persons.prev()">&larr; Older</a>
+          </li>
+          <li class="next">
+            <a ng-click="persons.next()">Newer &rarr;</a>
+          </li>
+        </ul>
+      </td>
+    </tr>
+    </tfoot>
+  </table>
 
 </div>

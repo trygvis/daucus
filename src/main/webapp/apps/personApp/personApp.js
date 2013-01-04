@@ -1,39 +1,16 @@
 'use strict';
 
-var personApp = angular.module('personApp', ['person', 'build']).config(function ($routeProvider, $locationProvider) {
+var personApp = angular.module('personApp', ['person', 'build', 'pagingTableService']).config(function ($routeProvider, $locationProvider) {
   $routeProvider.
       when('/', {controller: PersonCtrl, templateUrl: '/apps/personApp/person.html?noCache=' + noCache});
 });
 
-function PersonCtrl($scope, $location, Person, Build) {
-  function queryBuilds() {
-    var builds = $scope.builds;
-    Build.query({person: uuid, startIndex: builds.startIndex, count: builds.count}, function (builds) {
-      $scope.builds.rows = builds;
-    });
-  }
+function PersonCtrl($scope, $routeParams, Person, Build, PagingTableService) {
+  var personUuid = uuid;
 
   $scope.mode = 'overview';
-  $scope.builds = {
-    rows: [],
-    startIndex: 0,
-    count: 10,
-    first: function() {
-      $scope.builds.startIndex = 0;
-      queryBuilds();
-    },
-    next: function() {
-      $scope.builds.startIndex += $scope.builds.count;
-      queryBuilds();
-    },
-    prev: function() {
-      if($scope.builds.startIndex == 0) {
-        return;
-      }
-      $scope.builds.startIndex -= $scope.builds.count;
-      queryBuilds();
-    }
-  };
+
+  $scope.builds = PagingTableService.create($scope, PagingTableService.defaultCallback(Build, {person: personUuid}));
 
   $scope.setMode = function(mode) {
     $scope.mode = mode;

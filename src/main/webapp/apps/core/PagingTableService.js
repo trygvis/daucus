@@ -37,6 +37,7 @@ function PagingTableService() {
   };
 
   var defaultCallback = function(Resource, args) {
+    args = args || {};
     return function(startIndex, count, cb) {
       console.log("fetching", arguments);
       args.startIndex = startIndex;

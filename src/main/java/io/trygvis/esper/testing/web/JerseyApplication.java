@@ -86,6 +86,10 @@ public class JerseyApplication extends Application {
                     }
 
                     private UUID parse(String s) {
+                        if(s == null) {
+                            return null;
+                        }
+
                         try {
                             return UUID.fromString(s);
                         } catch (IllegalArgumentException e) {
