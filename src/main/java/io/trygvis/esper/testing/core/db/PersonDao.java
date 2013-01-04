@@ -1,5 +1,6 @@
 package io.trygvis.esper.testing.core.db;
 
+import fj.data.*;
 import io.trygvis.esper.testing.*;
 import io.trygvis.esper.testing.core.db.PersonBadgeDto.*;
 import io.trygvis.esper.testing.util.sql.*;
@@ -7,6 +8,7 @@ import org.joda.time.*;
 
 import java.sql.*;
 import java.util.*;
+import java.util.List;
 
 import static io.trygvis.esper.testing.Util.*;
 import static io.trygvis.esper.testing.util.sql.SqlOption.*;
@@ -36,7 +38,7 @@ public class PersonDao {
             return new PersonBadgeDto(
                     UUID.fromString(rs.getString(i++)),
                     new DateTime(rs.getTimestamp(i++).getTime()),
-                    UUID.fromString(rs.getString(i++)),
+                    Uuid.fromString(rs.getString(i++)),
                     BadgeType.valueOf(rs.getString(i++)),
                     rs.getInt(i++),
                     rs.getInt(i));
@@ -184,6 +186,40 @@ public class PersonDao {
             s.setString(i++, type.toString());
             s.setInt(i, level);
             return fromRs(s.executeQuery()).map(personBadge);
+        }
+    }
+
+    public List<PersonBadgeDto> selectBadges(Option<Uuid> person, Option<BadgeType> type, Option<Integer> level, PageRequest page) throws SQLException {
+        String sql = "SELECT " + PERSON_BADGE + " FROM person_badge WHERE 1=1";
+
+        if (person.isSome()) {
+            sql += " AND person=?";
+        }
+
+        if (type.isSome()) {
+            sql += " AND name=?";
+        }
+
+        if (level.isSome()) {
+            sql += " AND level=?";
+        }
+
+        sql += " LIMIT ? OFFSET ?";
+
+        try (PreparedStatement s = c.prepareStatement(sql)) {
+            int i = 1;
+            if(person.isSome()) {
+                s.setString(i++, person.some().toUuidString());
+            }
+            if (type.isSome()) {
+                s.setString(i++, type.some().toString());
+            }
+            if (level.isSome()) {
+                s.setInt(i, level.some());
+            }
+            s.setInt(i++, page.count.orSome(10));
+            s.setInt(i, page.startIndex.orSome(0));
+            return toList(s, personBadge);
         }
     }
 

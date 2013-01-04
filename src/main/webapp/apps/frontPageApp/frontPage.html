@@ -1,10 +1,19 @@
 <div class="container">
   <navbar/>
-<!-- <ng-include src="'/apps/core/navbar.html'" /> -->
 
   <div class="page-header">
-    <h1>Newcomers</h1>
+    <h1>Recent</h1>
   </div>
+
+  <h3>Badges</h3>
+  <div>
+    <span ng-repeat="b in recentBadges">
+      <a href="/person/{{b.person.uuid}}/"> {{b.person.name}} </a>
+      <span class="badge-level-{{badge.level}} badge">{{b.badge.name}}</span>
+    </span>
+  </div>
+
+  <h3>Newcomers</h3>
   <table class="table">
     <thead>
     <tr>
@@ -14,7 +23,7 @@
     </thead>
     <tbody>
     <tr ng-repeat="person in persons.rows">
-      <td><a href="/person/{{person.uuid}}/">{{person.name}}</a></td>
+      <td><a href="/person/{{person.person.uuid}}/">{{person.person.name}}</a></td>
       <td>{{person.badges.length}}</td>
     </tr>
     </tbody>

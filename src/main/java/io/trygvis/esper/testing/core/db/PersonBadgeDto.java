@@ -10,12 +10,12 @@ public class PersonBadgeDto extends AbstractEntity {
         UNBREAKABLE
     }
 
-    public final UUID person;
+    public final Uuid person;
     public final BadgeType type;
     public final int level;
     public final int count;
 
-    public PersonBadgeDto(UUID uuid, DateTime createdDate, UUID person, BadgeType type, int level, int count) {
+    public PersonBadgeDto(UUID uuid, DateTime createdDate, Uuid person, BadgeType type, int level, int count) {
         super(uuid, createdDate);
         this.person = person;
         this.type = type;

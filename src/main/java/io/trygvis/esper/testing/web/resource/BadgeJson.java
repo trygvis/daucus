@@ -19,3 +19,13 @@ public class BadgeJson {
         this.goal = goal;
     }
 }
+
+class BadgeDetailJson {
+    public final BadgeJson badge;
+    public final PersonJson person;
+
+    BadgeDetailJson(BadgeJson badge, PersonJson person) {
+        this.badge = badge;
+        this.person = person;
+    }
+}

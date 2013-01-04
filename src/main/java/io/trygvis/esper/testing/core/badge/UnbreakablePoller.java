@@ -13,6 +13,7 @@ import java.sql.*;
 import java.util.List;
 import java.util.*;
 
+import static fj.data.Option.some;
 import static io.trygvis.esper.testing.Config.*;
 import static io.trygvis.esper.testing.core.db.PersonBadgeDto.BadgeType.*;
 

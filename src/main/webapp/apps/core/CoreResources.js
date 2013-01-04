@@ -17,3 +17,9 @@ function BuildParticipant($resource) {
 }
 
 angular.module('buildParticipant', ['ngResource']).factory('BuildParticipant', BuildParticipant);
+
+function Badge($resource) {
+  return $resource('/resource/core/badge');
+}
+
+angular.module('badge', ['ngResource']).factory('Badge', Badge);
