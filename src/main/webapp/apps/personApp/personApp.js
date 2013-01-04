@@ -1,6 +1,6 @@
 'use strict';
 
-var personApp = angular.module('personApp', ['person', 'build', 'pagingTableService']).config(function ($routeProvider, $locationProvider) {
+var personApp = angular.module('personApp', ['person', 'build', 'pagingTableService', 'core.directives']).config(function ($routeProvider, $locationProvider) {
   $routeProvider.
       when('/', {controller: PersonCtrl, templateUrl: '/apps/personApp/person.html?noCache=' + noCache});
 });
@@ -20,7 +20,7 @@ function PersonCtrl($scope, $routeParams, Person, Build, PagingTableService) {
 
         console.log("$scope.builds.length=" + builds.rows.length);
         if (builds.rows.length == 0) {
-          queryBuilds(builds);
+          $scope.builds.first();
         }
         break;
     }

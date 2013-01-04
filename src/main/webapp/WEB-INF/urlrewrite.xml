@@ -16,13 +16,13 @@
   </rule>
 
   <rule match-type="regex">
-    <from>^/person/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$</from>
+    <from>^/person/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/?$</from>
     <set type="parameter" name="uuid">$1</set>
     <to type="forward">/person/person.jspx</to>
   </rule>
 
   <rule match-type="regex">
-    <from>^/person/([-_0-9A-Za-z]{22})$</from>
+    <from>^/person/([-_0-9A-Za-z]{22})/?$</from>
     <set type="parameter" name="uuid">$1</set>
     <to type="forward">/person/person.jspx</to>
   </rule>

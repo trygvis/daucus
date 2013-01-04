@@ -9,7 +9,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title><c:if test="${not empty title }">${title } - </c:if>Yeah</title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link type="text/css" rel="stylesheet" href="/external/bootstrap-2.2.2/css/bootstrap.css"/>
+    <link type="text/css" rel="stylesheet" href="/external/bootstrap-2.2.2/css/bootstrap-responsive.css"/>
     <link type="text/css" rel="stylesheet" href="/external/angular-ui/ng-grid-1.5.0/ng-grid.css"/>
     <link type="text/css" rel="stylesheet" href="/apps/app.css"/>
 

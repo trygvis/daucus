@@ -1,6 +1,6 @@
 'use strict';
 
-var frontPageApp = angular.module('frontPageApp', ['ngGrid', 'person', 'pagingTableService']).config(function ($routeProvider, $locationProvider) {
+var frontPageApp = angular.module('frontPageApp', ['ngGrid', 'person', 'pagingTableService', 'core.directives']).config(function ($routeProvider, $locationProvider) {
   $routeProvider.
       when('/', {controller: FrontPageCtrl, templateUrl: '/apps/frontPageApp/frontPage.html?noCache=' + noCache});
 });

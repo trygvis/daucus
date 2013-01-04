@@ -11,11 +11,6 @@
 
 <body>
 
-<!--
-<div id="content">
-  <div class="container" ng-view="">&lt;!&ndash; &ndash;&gt;</div>
-</div>
--->
 <div id="content" ng-view=""><!-- --></div>
 
 <common:footer/>

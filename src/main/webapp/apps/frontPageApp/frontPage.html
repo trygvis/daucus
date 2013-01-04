@@ -1,4 +1,6 @@
 <div class="container">
+  <navbar/>
+<!-- <ng-include src="'/apps/core/navbar.html'" /> -->
 
   <div class="page-header">
     <h1>Newcomers</h1>
@@ -12,7 +14,7 @@
     </thead>
     <tbody>
     <tr ng-repeat="person in persons.rows">
-      <td><a href="/person/{{person.uuid}}">{{person.name}}</a></td>
+      <td><a href="/person/{{person.uuid}}/">{{person.name}}</a></td>
       <td>{{person.badges.length}}</td>
     </tr>
     </tbody>
