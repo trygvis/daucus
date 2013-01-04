@@ -48,11 +48,11 @@ public class BuildDao {
         }
     }
 
-    public void insertBuildParticipant(UUID build, UUID person) throws SQLException {
+    public void insertBuildParticipant(UUID build, Uuid person) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("INSERT INTO build_participant(build, person) VALUES(?, ?)")) {
             int i = 1;
             s.setString(i++, build.toString());
-            s.setString(i, person.toString());
+            s.setString(i, person.toUuidString());
             s.executeUpdate();
         }
     }

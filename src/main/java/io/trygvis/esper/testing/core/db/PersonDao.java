@@ -1,5 +1,6 @@
 package io.trygvis.esper.testing.core.db;
 
+import io.trygvis.esper.testing.*;
 import io.trygvis.esper.testing.core.db.PersonBadgeDto.*;
 import io.trygvis.esper.testing.util.sql.*;
 import org.joda.time.*;
@@ -20,7 +21,7 @@ public class PersonDao {
         public PersonDto apply(ResultSet rs) throws SQLException {
             int i = 1;
             return new PersonDto(
-                    UUID.fromString(rs.getString(i++)),
+                    Uuid.fromString(rs.getString(i++)),
                     new DateTime(rs.getTimestamp(i++).getTime()),
                     rs.getString(i++),
                     rs.getString(i));
@@ -64,11 +65,11 @@ public class PersonDao {
     // Person
     // -----------------------------------------------------------------------
 
-    public UUID insertPerson(String mail, String name) throws SQLException {
+    public Uuid insertPerson(String mail, String name) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("INSERT INTO person(" + PERSON + ") VALUES(?, ?, ?, ?)")) {
-            UUID uuid = UUID.randomUUID();
+            Uuid uuid = Uuid.randomUuid();
             int i = 1;
-            s.setString(i++, uuid.toString());
+            s.setString(i++, uuid.toUuidString());
             s.setTimestamp(i++, new Timestamp(currentTimeMillis()));
             s.setString(i++, name);
             s.setString(i, mail);
@@ -77,10 +78,10 @@ public class PersonDao {
         }
     }
 
-    public SqlOption<PersonDto> selectPerson(UUID uuid) throws SQLException {
+    public SqlOption<PersonDto> selectPerson(Uuid uuid) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT " + PERSON + " FROM person WHERE uuid=?")) {
             int i = 1;
-            s.setString(i, uuid.toString());
+            s.setString(i, uuid.toUuidString());
             return fromRs(s.executeQuery()).map(person);
         }
     }
@@ -120,19 +121,19 @@ public class PersonDao {
     // Person Jenkins User
     // -----------------------------------------------------------------------
 
-    public void insertPersonJenkinsUser(UUID person, UUID jenkinsUser) throws SQLException {
+    public void insertPersonJenkinsUser(Uuid person, UUID jenkinsUser) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("INSERT INTO person_jenkins_user(person, jenkins_user) VALUES(?, ?)")) {
             int i = 1;
-            s.setString(i++, person.toString());
+            s.setString(i++, person.toUuidString());
             s.setString(i, jenkinsUser.toString());
             s.executeUpdate();
         }
     }
 
-    public boolean hasPersonJenkinsUser(UUID person, UUID jenkinsUser) throws SQLException {
+    public boolean hasPersonJenkinsUser(Uuid person, UUID jenkinsUser) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT 1 FROM person_jenkins_user WHERE person=? AND jenkins_user=?")) {
             int i = 1;
-            s.setString(i++, person.toString());
+            s.setString(i++, person.toUuidString());
             s.setString(i, jenkinsUser.toString());
             ResultSet rs = s.executeQuery();
             return rs.next();
@@ -168,10 +169,10 @@ public class PersonDao {
         }
     }
 
-    public List<PersonBadgeDto> selectBadges(UUID person) throws SQLException {
+    public List<PersonBadgeDto> selectBadges(Uuid person) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT " + PERSON_BADGE + " FROM person_badge WHERE person=? ORDER BY name, level DESC")) {
             int i = 1;
-            s.setString(i, person.toString());
+            s.setString(i, person.toUuidString());
             return toList(s, personBadge);
         }
     }
@@ -199,32 +200,32 @@ public class PersonDao {
         }
     }
 
-    public List<PersonBadgeProgressDto> selectBadgeProgresses(UUID person) throws SQLException {
+    public List<PersonBadgeProgressDto> selectBadgeProgresses(Uuid person) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT " + PERSON_BADGE_PROGRESS + " FROM person_badge_progress WHERE person=? ORDER BY badge")) {
             int i = 1;
-            s.setString(i, person.toString());
+            s.setString(i, person.toUuidString());
             return toList(s, personBadgeProgress);
         }
     }
 
-    public void insertBadgeProgress(UUID person, BadgeType type, String state) throws SQLException {
+    public void insertBadgeProgress(Uuid person, BadgeType type, String state) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("INSERT INTO person_badge_progress (" + PERSON_BADGE_PROGRESS + ") VALUES(?, ?, ?, ?, ?)")) {
             UUID uuid = UUID.randomUUID();
             int i = 1;
             s.setString(i++, uuid.toString());
             s.setTimestamp(i++, new Timestamp(currentTimeMillis()));
-            s.setString(i++, person.toString());
+            s.setString(i++, person.toUuidString());
             s.setString(i++, type.toString());
             s.setString(i, state);
             s.executeUpdate();
         }
     }
 
-    public void updateBadgeProgress(UUID person, BadgeType type, String state) throws SQLException {
+    public void updateBadgeProgress(Uuid person, BadgeType type, String state) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("UPDATE person_badge_progress SET state=? WHERE person=? AND badge=?")) {
             int i = 1;
             s.setString(i++, state);
-            s.setString(i++, person.toString());
+            s.setString(i++, person.toUuidString());
             s.setString(i, type.toString());
             s.executeUpdate();
         }

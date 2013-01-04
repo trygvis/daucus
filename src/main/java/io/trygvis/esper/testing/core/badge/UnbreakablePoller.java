@@ -52,7 +52,7 @@ public class UnbreakablePoller implements TablePoller.NewRowCallback<BuildDto> {
                 UnbreakableBadgeProgress badge = UnbreakableBadgeProgress.initial(person);
                 logger.info("New badge progress");
                 String state = badgeService.serialize(badge);
-                daos.personDao.insertBadgeProgress(person, UNBREAKABLE, state);
+                daos.personDao.insertBadgeProgress(new Uuid(person), UNBREAKABLE, state);
                 continue;
             }
 
@@ -82,7 +82,7 @@ public class UnbreakablePoller implements TablePoller.NewRowCallback<BuildDto> {
 
             String state = badgeService.serialize(badge);
 
-            daos.personDao.updateBadgeProgress(person, UNBREAKABLE, state);
+            daos.personDao.updateBadgeProgress(new Uuid(person), UNBREAKABLE, state);
         }
     }
 }

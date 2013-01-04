@@ -34,7 +34,7 @@ public class JerseyApplication extends Application {
     }
 
     public Set<Class<?>> getClasses() {
-        return new HashSet<>(Arrays.<Class<?>>asList(ResourceParamInjector.class));
+        return new HashSet<>(Arrays.<Class<?>>asList(ResourceParamInjector.class, MyObjectMapper.class));
     }
 
     public Set<Object> getSingletons() {
@@ -92,6 +92,38 @@ public class JerseyApplication extends Application {
 
                         try {
                             return UUID.fromString(s);
+                        } catch (IllegalArgumentException e) {
+                            throw new WebApplicationException(400);
+                        }
+                    }
+                };
+            } else if (Uuid.class.equals(type)) {
+
+                return new AbstractHttpContextInjectable() {
+                    public Object getValue(HttpContext hc) {
+
+                        if (a.query().length() > 0) {
+                            return parse(hc.getRequest().getQueryParameters().getFirst(a.query()));
+                        } else {
+                            MultivaluedMap<String, String> pathParameters = hc.getUriInfo().getPathParameters();
+
+                            for (Map.Entry<String, List<String>> entry : pathParameters.entrySet()) {
+                                if ("uuid".equals(entry.getKey())) {
+                                    return parse(entry.getValue().get(0));
+                                }
+                            }
+                        }
+
+                        throw new RuntimeException("@MagicParam used with Uuid argument with no {uuid} path variable.");
+                    }
+
+                    private Uuid parse(String s) {
+                        if(s == null) {
+                            return null;
+                        }
+
+                        try {
+                            return Uuid.fromString(s);
                         } catch (IllegalArgumentException e) {
                             throw new WebApplicationException(400);
                         }

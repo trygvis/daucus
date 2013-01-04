@@ -50,9 +50,9 @@ public class CoreResource extends AbstractResource {
 
     @GET
     @Path("/person/{uuid}")
-    public PersonJson getPerson(@PathParam("uuid") final String s) throws Exception {
-        final UUID uuid = JenkinsResource.parseUuid(s);
-
+    public PersonJson getPerson(@PathParam("uuid") final Uuid uuid) throws Exception {
+        System.out.println("uuid.toStringBase64() = " + uuid.toStringBase64());
+        System.out.println("uuid.toUuidString() = " + uuid.toUuidString());
         return get(new DatabaseAccess.DaosCallback<Option<PersonJson>>() {
             public Option<PersonJson> run(Daos daos) throws SQLException {
                 SqlOption<PersonDto> o = daos.personDao.selectPerson(uuid);

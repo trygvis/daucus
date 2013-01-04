@@ -110,7 +110,7 @@ public class JenkinsBuildPoller implements TablePoller.NewRowCallback<JenkinsBui
 
             knownPersons++;
 
-            UUID person = personO.get().uuid;
+            Uuid person = personO.get().uuid;
             logger.info("Created build participant, person={}", person);
             buildDao.insertBuildParticipant(uuidBuild, person);
         }
