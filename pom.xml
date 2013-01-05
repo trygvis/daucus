@@ -172,7 +172,7 @@
         <configuration>
           <scriptdirectory>src/main/sql/dbdelta</scriptdirectory>
           <driver>org.postgresql.Driver</driver>
-          <url>jdbc:postgresql://localhost/esper-test</url>
+          <url>jdbc:postgresql://localhost/esper</url>
           <userid>esper</userid>
           <password>esper</password>
           <dbms>pgsql</dbms>

@@ -1,0 +1,5 @@
+\i src/main/sql/base-schema/ddl-file.sql
+\i src/main/sql/base-schema/ddl-gitorious.sql
+\i src/main/sql/base-schema/ddl-jenkins.sql
+\i src/main/sql/base-schema/ddl-nexus.sql
+\i src/main/sql/base-schema/ddl-core.sql
