@@ -1,5 +1,15 @@
 BEGIN;
 
+-- For dbdeploy
+CREATE TABLE changelog (
+  change_number INTEGER NOT NULL,
+  complete_dt TIMESTAMP NOT NULL,
+  applied_by VARCHAR(100) NOT NULL,
+  description VARCHAR(500) NOT NULL
+);
+
+ALTER TABLE changelog ADD CONSTRAINT pk_changelog PRIMARY KEY (change_number);
+
 DROP TABLE IF EXISTS build_participant;
 DROP TABLE IF EXISTS build;
 DROP SEQUENCE IF EXISTS build_seq;

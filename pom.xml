@@ -158,6 +158,30 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>com.dbdeploy</groupId>
+        <artifactId>maven-dbdeploy-plugin</artifactId>
+        <version>3.0M3</version>
+        <dependencies>
+          <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.1-901-1.jdbc4</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <scriptdirectory>src/main/sql/dbdelta</scriptdirectory>
+          <driver>org.postgresql.Driver</driver>
+          <url>jdbc:postgresql://localhost/esper-test</url>
+          <userid>esper</userid>
+          <password>esper</password>
+          <dbms>pgsql</dbms>
+          <delimiter>;</delimiter>
+          <delimiterType>row</delimiterType>
+          <outputfile>dbdeploy-outputfile</outputfile>
+          <undoOutputfile>dbdeploy-undoOutputfile</undoOutputfile>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>appassembler-maven-plugin</artifactId>
         <version>1.1.1</version>
