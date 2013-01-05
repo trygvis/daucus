@@ -205,7 +205,7 @@ public class JenkinsDao {
             s.setString(i++, job.toString());
             s.setString(i++, file.toString());
             s.setString(i++, entryId);
-            s.setString(i, url.toASCIIString());
+            s.setString(i++, url.toASCIIString());
             s.setArray(i, c.createArrayOf("varchar", users));
             s.executeUpdate();
 
