@@ -75,7 +75,7 @@ public class UnbreakablePoller implements TablePoller.NewRowCallback<BuildDto> {
 
                 logger.info("New unbreakable badge: person={}, level={}", person.toUuidString(), b.level);
 
-                daos.personDao.insertBadge(build.createdDate, person, UNBREAKABLE, b.level, badgeService.serialize(b));
+                daos.personDao.insertBadge(build.timestamp, person, UNBREAKABLE, b.level, badgeService.serialize(b));
             }
 
             String state = badgeService.serialize(badge);
