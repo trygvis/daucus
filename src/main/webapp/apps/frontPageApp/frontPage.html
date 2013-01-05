@@ -9,7 +9,7 @@
   <div>
     <ul class="inline">
       <li ng-repeat="b in recentBadges">
-        <a href="/person/{{b.person.uuid}}/"> {{b.person.name}} </a>
+        <a href="#/person/{{b.person.uuid}}"> {{b.person.name}} </a>
         <span class="badge-level-{{badge.level}} badge">{{b.badge.name}}</span>
       </li>
     </ul>
@@ -25,7 +25,7 @@
     </thead>
     <tbody>
     <tr ng-repeat="person in persons.rows">
-      <td><a href="/person/{{person.person.uuid}}/">{{person.person.name}}</a></td>
+      <td><a href="#/person/{{person.person.uuid}}">{{person.person.name}}</a></td>
       <td>{{person.badges.length}}</td>
     </tr>
     </tbody>
