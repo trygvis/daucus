@@ -7,10 +7,12 @@
 
   <h3>Badges</h3>
   <div>
-    <span ng-repeat="b in recentBadges">
-      <a href="/person/{{b.person.uuid}}/"> {{b.person.name}} </a>
-      <span class="badge-level-{{badge.level}} badge">{{b.badge.name}}</span>
-    </span>
+    <ul class="inline">
+      <li ng-repeat="b in recentBadges">
+        <a href="/person/{{b.person.uuid}}/"> {{b.person.name}} </a>
+        <span class="badge-level-{{badge.level}} badge">{{b.badge.name}}</span>
+      </li>
+    </ul>
   </div>
 
   <h3>Newcomers</h3>
