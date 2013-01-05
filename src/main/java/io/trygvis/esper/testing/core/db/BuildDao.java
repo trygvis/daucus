@@ -57,7 +57,7 @@ public class BuildDao {
         }
     }
 
-    public List<UUID> selectBuildParticipantByBuild(UUID build) throws SQLException {
+    public List<Uuid> selectBuildParticipantByBuild(UUID build) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT person FROM build_participant WHERE build=?")) {
             int i = 1;
             s.setString(i, build.toString());
@@ -86,7 +86,7 @@ public class BuildDao {
             int i = 1;
             s.setString(i++, ref.type);
             s.setString(i, ref.uuid.toString());
-            return fromRs(s.executeQuery()).map(getUuid);
+            return fromRs(s.executeQuery()).map(getUUID);
         }
     }
 

@@ -2,6 +2,7 @@ package io.trygvis.esper.testing.core.badge;
 
 import fj.*;
 import fj.data.*;
+import io.trygvis.esper.testing.*;
 import io.trygvis.esper.testing.core.db.*;
 import junit.framework.*;
 import org.joda.time.*;
@@ -9,6 +10,7 @@ import org.joda.time.*;
 import java.util.*;
 import java.util.List;
 
+import static io.trygvis.esper.testing.Uuid.randomUuid;
 import static java.util.UUID.*;
 
 public class UnbreakableBadgeProgressTest extends TestCase {
@@ -18,7 +20,7 @@ public class UnbreakableBadgeProgressTest extends TestCase {
         BuildDto success = new BuildDto(uuid, new DateTime(), new DateTime(), true, null);
         BuildDto failure = new BuildDto(uuid, new DateTime(), new DateTime(), false, null);
 
-        UUID person = randomUUID();
+        Uuid person = randomUuid();
 
         UnbreakableBadgeProgress p = UnbreakableBadgeProgress.initial(person);
 
@@ -34,7 +36,7 @@ public class UnbreakableBadgeProgressTest extends TestCase {
             p = p2._1();
         }
 
-        assertEquals(5, p.count);
+        assertEquals(5, p.builds.size());
         assertEquals(3, badges.size());
         assertEquals(1, badges.get(0).level);
         assertEquals(2, badges.get(1).level);
@@ -42,7 +44,7 @@ public class UnbreakableBadgeProgressTest extends TestCase {
 
         P2<UnbreakableBadgeProgress, Option<UnbreakableBadge>> p2 = p.onBuild(failure);
 
-        assertEquals(0, p2._1().count);
+        assertEquals(0, p2._1().builds.size());
         assertFalse(p2._2().isSome());
     }
 }

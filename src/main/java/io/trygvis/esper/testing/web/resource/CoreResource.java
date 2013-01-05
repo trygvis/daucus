@@ -124,14 +124,14 @@ public class CoreResource extends AbstractResource {
 
     @GET
     @Path("/badge")
-    public List<BadgeDetailJson> getBadges(@MagicParam final PageRequest page, @MagicParam(query = "person") final Uuid person) throws Exception {
-        return da.inTransaction(new CoreDaosCallback<List<BadgeDetailJson>>() {
-            protected List<BadgeDetailJson> run() throws SQLException {
-                List<PersonBadgeDto> badgeDtos = daos.personDao.selectBadges(fromNull(person), Option.<PersonBadgeDto.BadgeType>none(), Option.<Integer>none(), page);
+    public List<BadgeJson> getBadges(@MagicParam final PageRequest page, @MagicParam(query = "person") final Uuid person) throws Exception {
+        return da.inTransaction(new CoreDaosCallback<List<BadgeJson>>() {
+            protected List<BadgeJson> run() throws SQLException {
+                List<PersonalBadgeDto> badgeDtos = daos.personDao.selectBadges(fromNull(person), Option.<PersonalBadgeDto.BadgeType>none(), Option.<Integer>none(), page);
 
-                List<BadgeDetailJson> list = new ArrayList<>();
-                for (PersonBadgeDto badge : badgeDtos) {
-                    list.add(getBadgeDetailJson.apply(badge));
+                List<BadgeJson> list = new ArrayList<>();
+                for (PersonalBadgeDto badge : badgeDtos) {
+                    list.add(getBadgeJson.apply(badge));
                 }
                 return list;
             }
@@ -157,15 +157,13 @@ public class CoreResource extends AbstractResource {
         protected final SqlF<PersonDto, PersonDetailJson> getPersonDetailJson = new SqlF<PersonDto, PersonDetailJson>() {
             public PersonDetailJson apply(PersonDto person) throws SQLException {
                 List<BadgeJson> badges = new ArrayList<>();
-
-                for (PersonBadgeDto badge : daos.personDao.selectBadges(person.uuid)) {
-                    badges.add(getBadge(badge));
+                for (PersonalBadgeDto badge : daos.personDao.selectBadges(person.uuid)) {
+                    badges.add(getBadgeJson.apply(badge));
                 }
 
                 List<BadgeJson> badgesInProgress = new ArrayList<>();
-
                 for (PersonBadgeProgressDto badgeProgressDto : daos.personDao.selectBadgeProgresses(person.uuid)) {
-                    UnbreakableBadgeProgress progress = badgeService.unbreakable(badgeProgressDto);
+                    BadgeProgress progress = badgeService.badgeProgress(badgeProgressDto);
                     badgesInProgress.add(getBadge(progress));
                 }
 
@@ -177,17 +175,19 @@ public class CoreResource extends AbstractResource {
             }
         };
 
-        private BadgeJson getBadge(PersonBadgeDto badge) {
-            return new BadgeJson(badge.type.name(), badge.level, badge.count, 100, 100);
-        }
+        protected SqlF<PersonalBadgeDto, BadgeJson> getBadgeJson = new SqlF<PersonalBadgeDto, BadgeJson>() {
+            public BadgeJson apply(PersonalBadgeDto badge) throws SQLException {
+                return new BadgeJson(badge.createdDate, badge.type.name(), badge.level);
+            }
+        };
 
         private BadgeJson getBadge(BadgeProgress progress) {
-            return new BadgeJson(progress.type.name(), progress.progressingAgainstLevel(), 0, progress.progression(), progress.goal());
+            return new BadgeJson(null, progress.type.name(), progress.progressingAgainstLevel(), progress.progression(), progress.goal());
         }
 
-        protected final SqlF<PersonBadgeDto, BadgeDetailJson> getBadgeDetailJson = new SqlF<PersonBadgeDto, BadgeDetailJson>() {
-            public BadgeDetailJson apply(PersonBadgeDto badgeDto) throws SQLException {
-                return new BadgeDetailJson(getBadge(badgeDto),
+        protected final SqlF<PersonalBadgeDto, BadgeDetailJson> getBadgeDetailJson = new SqlF<PersonalBadgeDto, BadgeDetailJson>() {
+            public BadgeDetailJson apply(PersonalBadgeDto badgeDto) throws SQLException {
+                return new BadgeDetailJson(getBadgeJson.apply(badgeDto),
                         daos.personDao.selectPerson(badgeDto.person).map(getPersonJson).get());
             }
         };

@@ -1,20 +1,33 @@
 package io.trygvis.esper.testing.web.resource;
 
+import org.joda.time.*;
+
 public class BadgeJson {
+    public final DateTime createdDate;
     public final String name;
     public final int level;
 
-    /**
-     * Number of times this badge has been received.
-     */
-    public final int count;
-    public final int progress;
-    public final int goal;
+    public final Integer progress;
+    public final Integer goal;
 
-    public BadgeJson(String name, int level, int count, int progress, int goal) {
+    /**
+     * For completed badges.
+     */
+    public BadgeJson(DateTime createdDate, String name, int level) {
+        this.createdDate = createdDate;
         this.name = name;
         this.level = level;
-        this.count = count;
+        this.progress = null;
+        this.goal = null;
+    }
+
+    /**
+     * For badges in progress.
+     */
+    public BadgeJson(DateTime createdDate, String name, int level, int progress, int goal) {
+        this.createdDate = createdDate;
+        this.name = name;
+        this.level = level;
         this.progress = progress;
         this.goal = goal;
     }

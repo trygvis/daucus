@@ -1,5 +1,7 @@
 package io.trygvis.esper.testing.util.sql;
 
+import io.trygvis.esper.testing.*;
+
 import java.sql.*;
 import java.util.*;
 
@@ -17,9 +19,15 @@ public class ResultSetF {
         }
     };
 
-    public static final SqlF<ResultSet, UUID> getUuid = new SqlF<ResultSet, UUID>() {
+    public static final SqlF<ResultSet, UUID> getUUID = new SqlF<ResultSet, UUID>() {
         public UUID apply(ResultSet rs) throws SQLException {
             return UUID.fromString(rs.getString(1));
+        }
+    };
+
+    public static final SqlF<ResultSet, Uuid> getUuid = new SqlF<ResultSet, Uuid>() {
+        public Uuid apply(ResultSet rs) throws SQLException {
+            return Uuid.fromString(rs.getString(1));
         }
     };
 }

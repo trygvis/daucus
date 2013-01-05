@@ -178,8 +178,8 @@
           <dbms>pgsql</dbms>
           <delimiter>;</delimiter>
           <delimiterType>row</delimiterType>
-          <outputfile>dbdeploy-outputfile</outputfile>
-          <undoOutputfile>dbdeploy-undoOutputfile</undoOutputfile>
+          <outputfile>dbdeploy-outputfile.tmp.sql</outputfile>
+          <undoOutputfile>dbdeploy-undoOutputfile.tmp.sql</undoOutputfile>
         </configuration>
       </plugin>
       <plugin>

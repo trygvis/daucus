@@ -1,6 +1,6 @@
 package io.trygvis.esper.testing.core.badge;
 
-import io.trygvis.esper.testing.core.db.PersonBadgeDto.*;
+import io.trygvis.esper.testing.core.db.PersonalBadgeDto.*;
 
 public abstract class BadgeProgress {
     public final BadgeType type;

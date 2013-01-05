@@ -40,7 +40,7 @@ function PersonCtrl($scope, $routeParams, Person, Badge, Build, PagingTableServi
     $scope.recentBuilds = builds;
   });
 
-  Badge.query({person: personUuid}, function (badges) {
-    $scope.badges = badges;
-  });
+//  Badge.query({person: personUuid}, function (badges) {
+//    $scope.badges = badges;
+//  });
 }

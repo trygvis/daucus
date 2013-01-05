@@ -3,6 +3,9 @@ package io.trygvis.esper.testing;
 import com.jolbox.bonecp.*;
 import fj.data.*;
 import org.apache.abdera.*;
+import org.codehaus.jackson.*;
+import org.codehaus.jackson.map.*;
+import org.codehaus.jackson.map.module.*;
 import org.slf4j.*;
 import org.slf4j.bridge.*;
 
@@ -104,8 +107,8 @@ public class Config {
         }
 
         LoggerFactory.getILoggerFactory();
-//        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
-//        StatusPrinter.print(lc);
+//        ch.qos.logback.classic.LoggerContext lc = (ch.qos.logback.classic.LoggerContext) LoggerFactory.getILoggerFactory();
+//        ch.qos.logback.core.util.StatusPrinter.print(lc);
 
         SLF4JBridgeHandler.removeHandlersForRootLogger();
         SLF4JBridgeHandler.install();
@@ -130,6 +133,15 @@ public class Config {
         return new Abdera();
     }
 
+    public ObjectMapper createObjectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        SimpleModule module = new SimpleModule("wat", Version.unknownVersion());
+        module.addDeserializer(Uuid.class, new UuidDeserializer());
+        module.addSerializer(Uuid.class, new UuidSerializer());
+        objectMapper.registerModule(module);
+        return objectMapper;
+    }
+
     public void addShutdownHook(final Thread t, final AtomicBoolean shouldRun) {
         Runtime.getRuntime().addShutdownHook(new Thread() {
             {
@@ -148,5 +160,17 @@ public class Config {
 
     private static Option<String> getProperty(Properties properties, String key) {
         return fromNull(trimToNull(properties.getProperty(key)));
+    }
+
+    private static class UuidDeserializer extends JsonDeserializer<Uuid> {
+        public Uuid deserialize(JsonParser jp, DeserializationContext context) throws IOException {
+            return Uuid.fromString(jp.getText());
+        }
+    }
+
+    private static class UuidSerializer extends JsonSerializer<Uuid> {
+        public void serialize(Uuid value, JsonGenerator generator, SerializerProvider provider) throws IOException {
+            generator.writeString(value.toStringBase64());
+        }
     }
 }

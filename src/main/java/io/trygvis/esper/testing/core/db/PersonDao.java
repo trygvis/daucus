@@ -2,7 +2,7 @@ package io.trygvis.esper.testing.core.db;
 
 import fj.data.*;
 import io.trygvis.esper.testing.*;
-import io.trygvis.esper.testing.core.db.PersonBadgeDto.*;
+import io.trygvis.esper.testing.core.db.PersonalBadgeDto.*;
 import io.trygvis.esper.testing.util.sql.*;
 import org.joda.time.*;
 
@@ -30,18 +30,18 @@ public class PersonDao {
         }
     };
 
-    public static final String PERSON_BADGE = "uuid, created_date, person, name, level, count";
+    public static final String PERSON_BADGE = "uuid, created_date, person, name, level, state";
 
-    public static final SqlF<ResultSet, PersonBadgeDto> personBadge = new SqlF<ResultSet, PersonBadgeDto>() {
-        public PersonBadgeDto apply(ResultSet rs) throws SQLException {
+    public static final SqlF<ResultSet, PersonalBadgeDto> personBadge = new SqlF<ResultSet, PersonalBadgeDto>() {
+        public PersonalBadgeDto apply(ResultSet rs) throws SQLException {
             int i = 1;
-            return new PersonBadgeDto(
+            return new PersonalBadgeDto(
                     UUID.fromString(rs.getString(i++)),
                     new DateTime(rs.getTimestamp(i++).getTime()),
                     Uuid.fromString(rs.getString(i++)),
                     BadgeType.valueOf(rs.getString(i++)),
                     rs.getInt(i++),
-                    rs.getInt(i));
+                    rs.getString(i));
         }
     };
 
@@ -146,41 +146,31 @@ public class PersonDao {
     // Badge
     // -----------------------------------------------------------------------
 
-    public UUID insertBadge(UUID person, BadgeType type, int level, int count) throws SQLException {
+    public UUID insertBadge(DateTime createdDate, Uuid person, BadgeType type, int level, String state) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("INSERT INTO person_badge(" + PERSON_BADGE + ") VALUES(?, ?, ?, ?, ?, ?)")) {
             UUID uuid = UUID.randomUUID();
             int i = 1;
             s.setString(i++, uuid.toString());
-            s.setTimestamp(i++, new Timestamp(currentTimeMillis()));
-            s.setString(i++, person.toString());
+            s.setTimestamp(i++, new Timestamp(createdDate.getMillis()));
+            s.setString(i++, person.toUuidString());
             s.setString(i++, type.toString());
             s.setInt(i++, level);
-            s.setInt(i, count);
+            s.setString(i, state);
             s.executeUpdate();
             return uuid;
         }
     }
 
-    public void incrementBadgeCount(UUID person, BadgeType type, int level) throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("UPDATE person_badge SET count=count+1 WHERE person=? AND name=? AND level=?")) {
-            int i = 1;
-            s.setString(i++, person.toString());
-            s.setString(i++, type.toString());
-            s.setInt(i, level);
-            s.executeUpdate();
-        }
-    }
-
-    public List<PersonBadgeDto> selectBadges(Uuid person) throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("SELECT " + PERSON_BADGE + " FROM person_badge WHERE person=? ORDER BY name, level DESC")) {
+    public List<PersonalBadgeDto> selectBadges(Uuid person) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + PERSON_BADGE + " FROM person_badge WHERE person=? ORDER BY created_date DESC")) {
             int i = 1;
             s.setString(i, person.toUuidString());
             return toList(s, personBadge);
         }
     }
 
-    public SqlOption<PersonBadgeDto> selectBadge(UUID person, BadgeType type, int level) throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("SELECT " + PERSON_BADGE + " FROM person_badge WHERE person=? AND name=? AND level=?")) {
+    public SqlOption<PersonalBadgeDto> selectBadge(UUID person, BadgeType type, int level) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + PERSON_BADGE + " FROM person_badge WHERE person=? AND name=? AND level=? LIMIT 1")) {
             int i = 1;
             s.setString(i++, person.toString());
             s.setString(i++, type.toString());
@@ -189,7 +179,7 @@ public class PersonDao {
         }
     }
 
-    public List<PersonBadgeDto> selectBadges(Option<Uuid> person, Option<BadgeType> type, Option<Integer> level, PageRequest page) throws SQLException {
+    public List<PersonalBadgeDto> selectBadges(Option<Uuid> person, Option<BadgeType> type, Option<Integer> level, PageRequest page) throws SQLException {
         String sql = "SELECT " + PERSON_BADGE + " FROM person_badge WHERE 1=1";
 
         if (person.isSome()) {
@@ -227,10 +217,10 @@ public class PersonDao {
     // Badge Progress
     // -----------------------------------------------------------------------
 
-    public SqlOption<PersonBadgeProgressDto> selectBadgeProgress(UUID person, BadgeType type) throws SQLException {
+    public SqlOption<PersonBadgeProgressDto> selectBadgeProgress(Uuid person, BadgeType type) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("SELECT " + PERSON_BADGE_PROGRESS + " FROM person_badge_progress WHERE person=? AND badge=?")) {
             int i = 1;
-            s.setString(i++, person.toString());
+            s.setString(i++, person.toUuidString());
             s.setString(i, type.toString());
             return fromRs(s.executeQuery()).map(personBadgeProgress);
         }

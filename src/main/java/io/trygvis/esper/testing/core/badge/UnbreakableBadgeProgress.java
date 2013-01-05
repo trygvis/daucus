@@ -4,30 +4,34 @@ import static fj.P.*;
 import fj.*;
 import fj.data.*;
 import static fj.data.Option.*;
+import static java.util.Collections.singletonList;
+
+import io.trygvis.esper.testing.*;
 import io.trygvis.esper.testing.core.db.*;
-import io.trygvis.esper.testing.core.db.PersonBadgeDto.*;
+import io.trygvis.esper.testing.core.db.PersonalBadgeDto.*;
 
 import java.util.*;
+import java.util.List;
 
 public class UnbreakableBadgeProgress extends BadgeProgress {
-    public final UUID person;
-    public final int count;
+    public final Uuid person;
+    public final List<UUID> builds;
 
-    private UnbreakableBadgeProgress(UUID person, int count) {
+    private UnbreakableBadgeProgress(Uuid person, List<UUID> builds) {
         super(BadgeType.UNBREAKABLE);
         this.person = person;
-        this.count = count;
+        this.builds = Collections.unmodifiableList(builds);
     }
 
     @SuppressWarnings("UnusedDeclaration")
     private UnbreakableBadgeProgress() {
         super(BadgeType.UNBREAKABLE);
         person = null;
-        count = -1;
+        builds = null;
     }
 
-    public static UnbreakableBadgeProgress initial(UUID person) {
-        return new UnbreakableBadgeProgress(person, 0);
+    public static UnbreakableBadgeProgress initial(Uuid person) {
+        return new UnbreakableBadgeProgress(person, Collections.<UUID>emptyList());
     }
 
     public P2<UnbreakableBadgeProgress, Option<UnbreakableBadge>> onBuild(BuildDto build) {
@@ -35,33 +39,36 @@ public class UnbreakableBadgeProgress extends BadgeProgress {
             return p(initial(person), Option.<UnbreakableBadge>none());
         }
 
-        int count = this.count + 1;
+        List<UUID> builds = new ArrayList<>(this.builds);
+        builds.add(build.uuid);
 
-        if (count == UnbreakableBadge.LEVEL_3_COUNT) {
-            return p(initial(person), some(new UnbreakableBadge(3)));
+        if (progression() == UnbreakableBadge.LEVEL_3_COUNT) {
+            // You have to start from scratch now.
+            builds = singletonList(build.uuid);
+            return p(new UnbreakableBadgeProgress(person, builds), some(new UnbreakableBadge(person, 3, builds)));
         }
 
-        if (count == UnbreakableBadge.LEVEL_2_COUNT) {
-            return p(new UnbreakableBadgeProgress(person, count), some(new UnbreakableBadge(2)));
+        if (progression() == UnbreakableBadge.LEVEL_2_COUNT) {
+            return p(new UnbreakableBadgeProgress(person, builds), some(new UnbreakableBadge(person, 2, builds)));
         }
 
-        if (count == UnbreakableBadge.LEVEL_1_COUNT) {
-            return p(new UnbreakableBadgeProgress(person, count), some(new UnbreakableBadge(1)));
+        if (progression() == UnbreakableBadge.LEVEL_1_COUNT) {
+            return p(new UnbreakableBadgeProgress(person, builds), some(new UnbreakableBadge(person, 1, builds)));
         }
 
-        return p(new UnbreakableBadgeProgress(person, count), Option.<UnbreakableBadge>none());
+        return p(new UnbreakableBadgeProgress(person, builds), Option.<UnbreakableBadge>none());
     }
 
     public int progression() {
-        return count;
+        return builds.size();
     }
 
     public int goal() {
-        if (count > UnbreakableBadge.LEVEL_2_COUNT) {
+        if (progression() > UnbreakableBadge.LEVEL_2_COUNT) {
             return UnbreakableBadge.LEVEL_3_COUNT;
         }
 
-        if (count > UnbreakableBadge.LEVEL_1_COUNT) {
+        if (progression() > UnbreakableBadge.LEVEL_1_COUNT) {
             return UnbreakableBadge.LEVEL_2_COUNT;
         }
 
@@ -69,11 +76,11 @@ public class UnbreakableBadgeProgress extends BadgeProgress {
     }
 
     public int progressingAgainstLevel() {
-        if (count > UnbreakableBadge.LEVEL_2_COUNT) {
+        if (progression() > UnbreakableBadge.LEVEL_2_COUNT) {
             return 3;
         }
 
-        if (count > UnbreakableBadge.LEVEL_1_COUNT) {
+        if (progression() > UnbreakableBadge.LEVEL_1_COUNT) {
             return 2;
         }
 
@@ -81,6 +88,6 @@ public class UnbreakableBadgeProgress extends BadgeProgress {
     }
 
     public String toString() {
-        return "UnbreakableBadgeProgress{person=" + person + ", count=" + count + '}';
+        return "UnbreakableBadgeProgress{person=" + person + ", #builds=" + builds.size() + '}';
     }
 }

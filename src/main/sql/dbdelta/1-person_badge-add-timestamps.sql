@@ -1,21 +1,34 @@
-ALTER TABLE person_badge ADD timestamps TIMESTAMP[];
+ALTER TABLE person_badge ADD state VARCHAR(8000);
+
+ALTER TABLE person_badge DROP CONSTRAINT uq_person_badge__person__name__level;
 
 DO $$
 DECLARE r RECORD;
-DECLARE ts TIMESTAMP[];
 BEGIN
-  FOR r IN SELECT uuid, count FROM person_badge
+  FOR r IN SELECT uuid, created_date, person, count FROM person_badge
   LOOP
-    SELECT array_agg(x) FROM (SELECT current_timestamp FROM generate_series(1, r.count)) AS x INTO ts;
-    UPDATE person_badge SET timestamps=ts WHERE uuid=r.uuid;
+    FOR x IN SELECT x FROM generate_series(1, r.count)
+    LOOP
+      INSERT INTO person_badge(uuid, created_date, person, name, level, state) VALUES(
+        uuid_generate_v1(), r.created_date, r.person, r.name, r.level,
+        '{"type":"' || r.name || '","person":"' || r.person || '","builds":[]}');
+    END LOOP;
+
+    DELETE FROM person_badge WHERE uuid=r.uuid;
   END LOOP;
 END$$;
 
 ALTER TABLE person_badge DROP count;
 
+ALTER TABLE person_badge ALTER state SET NOT NULL;
+
 --//@UNDO
 
 ALTER TABLE person_badge ADD count INT;
-UPDATE person_badge SET count=array_length(timestamps, 1);
+
+INSERT into person_badge(uuid, created_date, name, person, level, count)
+  SELECT uuid_generate_v1(), min(created_date) as "created_date", name, person, level, count(level) from person_badge group by name, person, level;
+
 ALTER TABLE person_badge ALTER count SET NOT NULL;
-ALTER TABLE person_badge DROP timestamps;
+
+ALTER TABLE person_badge DROP state;

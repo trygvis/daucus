@@ -8,6 +8,7 @@ import io.trygvis.esper.testing.*;
 import io.trygvis.esper.testing.core.badge.*;
 import io.trygvis.esper.testing.util.sql.*;
 import io.trygvis.esper.testing.web.resource.*;
+import org.codehaus.jackson.map.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -23,18 +24,22 @@ public class JerseyApplication extends Application {
     private final HashSet<Object> singletons;
 
     public JerseyApplication() throws Exception {
-        DatabaseAccess da = new DatabaseAccess(WebConfig.config.createBoneCp());
+        Config config = WebConfig.config;
 
-        BadgeService badgeService = new BadgeService();
+        DatabaseAccess da = new DatabaseAccess(config.createBoneCp());
+        ObjectMapper objectMapper = config.createObjectMapper();
 
-        singletons = new HashSet<Object>(Arrays.asList(
+        BadgeService badgeService = new BadgeService(objectMapper);
+
+        singletons = new HashSet<>(Arrays.asList(
                 new CoreResource(da, badgeService),
-                new JenkinsResource(da)
+                new JenkinsResource(da),
+                new MyObjectMapper(objectMapper)
         ));
     }
 
     public Set<Class<?>> getClasses() {
-        return new HashSet<>(Arrays.<Class<?>>asList(ResourceParamInjector.class, MyObjectMapper.class));
+        return new HashSet<>(Arrays.<Class<?>>asList(ResourceParamInjector.class));
     }
 
     public Set<Object> getSingletons() {
@@ -43,12 +48,6 @@ public class JerseyApplication extends Application {
 
     @Provider
     public static class ResourceParamInjector implements InjectableProvider<MagicParam, Type> {
-
-        private final ResourceContext rc;
-
-        public ResourceParamInjector(@Context ResourceContext rc) {
-            this.rc = rc;
-        }
 
         public ComponentScope getScope() {
             return ComponentScope.PerRequest;

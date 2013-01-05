@@ -26,6 +26,8 @@
   <!-- Gitorious spews out a few invalid cookies -->
   <logger name="org.apache.http.client.protocol.ResponseProcessCookies" level="ERROR"/>
 
+  <logger name="org.eclipse.jetty" level="INFO"/>
+
   <logger name="io.trygvis.esper.testing.util.HttpClient" level="INFO"/>
 
   <logger name="org.apache.shiro" level="DEBUG"/>

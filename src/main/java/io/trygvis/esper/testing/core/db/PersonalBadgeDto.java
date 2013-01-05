@@ -5,7 +5,7 @@ import org.joda.time.*;
 
 import java.util.*;
 
-public class PersonBadgeDto extends AbstractEntity {
+public class PersonalBadgeDto extends AbstractEntity {
     public enum BadgeType {
         UNBREAKABLE
     }
@@ -13,13 +13,13 @@ public class PersonBadgeDto extends AbstractEntity {
     public final Uuid person;
     public final BadgeType type;
     public final int level;
-    public final int count;
+    public final String state;
 
-    public PersonBadgeDto(UUID uuid, DateTime createdDate, Uuid person, BadgeType type, int level, int count) {
+    public PersonalBadgeDto(UUID uuid, DateTime createdDate, Uuid person, BadgeType type, int level, String state) {
         super(uuid, createdDate);
         this.person = person;
         this.type = type;
         this.level = level;
-        this.count = count;
+        this.state = state;
     }
 }
