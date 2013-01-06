@@ -148,7 +148,7 @@ public class CoreResource extends AbstractResource {
 
         protected final SqlF<PersonDto, PersonJson> getPersonJson = new SqlF<PersonDto, PersonJson>() {
             public PersonJson apply(PersonDto person) throws SQLException {
-                return new PersonJson(person.uuid, person.name);
+                return new PersonJson(person.uuid, person.name, person.mail);
             }
         };
 

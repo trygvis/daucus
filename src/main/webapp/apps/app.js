@@ -1,5 +1,36 @@
 var directives = angular.module('core.directives', []);
 
+directives.filter('countBadgeByLevel', function () {
+  return function (badges) {
+    // 5 levels
+    var levels = [0, 0, 0, 0, 0];
+    angular.forEach(badges, function(value, key){
+      levels[value.level - 1]++;
+    });
+    return levels;
+  }
+});
+
+directives.filter('gz', function () {
+  return function (num) {
+    if(angular.isArray(num)) {
+      var out = [];
+      angular.forEach(num, function(x){
+        if(x > 0) {
+          out.push(x);
+        }
+      });
+
+      return out;
+    }
+    else if(angular.isNumber(num)) {
+      return num > 0;
+    }
+    console.log("fail");
+    return undefined;
+  }
+});
+
 directives.directive('navbar', function () {
   return {
     restrict: 'E',
@@ -7,7 +38,7 @@ directives.directive('navbar', function () {
   };
 });
 
-directives.directive('badge', function() {
+directives.directive('badge', function () {
   return {
     restrict: 'E',
     scope: {
@@ -19,19 +50,3 @@ directives.directive('badge', function() {
         '<a href="/#/person/{{badgeDetail.person.uuid}}">{{badgeDetail.person.name}}</a>'
   }
 });
-
-/*
- <!--
- <span class="badge-level-{{badge.level}} badge">{{badge.name}}</span>
- -->
- <strong>{{badge.name}}</strong>
- <!--
- <i class="icon-user ng-class: {{{1: 'badge-level-1', 2: 'badge-level-2', 3: 'badge-level-3'}[badge.level]}}"></i>
- -->
- <span class="badge-level-{{badge.level}} badge">
- <i class="icon-user"></i>
- </span>
-
- {{badge.createdDate | date:'medium'}}
-
-*/

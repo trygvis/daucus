@@ -1,14 +1,17 @@
 function PagingTableService() {
-  var create = function ($scope, fetchCallback) {
+  var create = function ($scope, fetchCallback, options) {
+    options = options || {};
+    var watcher = options.watcher || function(){};
     var self = {
       rows: [],
-      startIndex: 0,
-      count: 10
+      startIndex: options.startIndex || 0,
+      count: options.count
     };
 
     var update = function(){
       fetchCallback(self.startIndex, self.count, function(data) {
         self.rows = data.rows;
+        watcher();
       });
     };
 
@@ -40,12 +43,16 @@ function PagingTableService() {
     args = args || {};
     return function(startIndex, count, cb) {
       console.log("fetching", arguments);
-      args.startIndex = startIndex;
-      args.count = count;
+      if(startIndex) {
+        args.startIndex = startIndex;
+      }
+      if(count) {
+        args.count = count;
+      }
       Resource.query(args, function(data, headers) {
         var totalResults = headers("total-results");
-        console.log("got data", arguments);
         console.log("totalResults", totalResults);
+        console.log("got data", data);
         cb({
           totalResults: totalResults,
           rows: data

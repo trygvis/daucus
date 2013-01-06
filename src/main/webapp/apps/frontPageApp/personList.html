@@ -6,30 +6,42 @@
     <h1>People</h1>
   </div>
 
+  <style>
+    .avatar-image {
+      /* This has to match bootstrap's row margin. */
+      margin-left: 30px;
+      padding-right: 1em;
+      float: left;
+      margin-top: 0;
+
+      /* This has to match the Gravatar image */
+      width: 80px;
+      height: 80px;
+    }
+  </style>
+
   <div class="row">
     <div class="span12">
-      <table class="table">
-        <tbody>
-        <tr ng-repeat="person in persons.rows">
-          <td><a href="/#/person/{{person.person.uuid}}">{{person.person.name}}</a></td>
-        </tr>
-        </tbody>
-        <tfoot>
-        <tr>
-          <td colspan="2">
-            <ul class="pager">
-              <!--ng-class="{disabled: persons.startIndex == 0}"-->
-              <li class="previous" ng-hide="persons.startIndex == 0">
-                <a ng-click="persons.prev()">&larr; Prev</a>
-              </li>
-              <li class="next">
-                <a ng-click="persons.next()">Next &rarr;</a>
-              </li>
-            </ul>
-          </td>
-        </tr>
-        </tfoot>
-      </table>
+      <div class="row" ng-repeat="group in personGroups">
+        <div class="span3" ng-repeat="person in group" style="padding-bottom: 1em">
+          <div class="row">
+            <img ng-src="{{person.person.gravatar}}?default=identicon" class="avatar-image"/>
+            <a href="/#/person/{{person.person.uuid}}">{{person.person.name}}</a>
+            <br/>
+            <span ng-repeat="level in person.badges | countBadgeByLevel | gz">
+              <span class="badge-inverse badge-level-{{$index + 1}} badge"><i class="icon-user"></i> x {{level}}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <ul class="pager">
+        <li class="previous" ng-hide="persons.startIndex == 0">
+          <a ng-click="persons.prev()">&larr; Prev</a>
+        </li>
+        <li class="next">
+          <a ng-click="persons.next()">Next &rarr;</a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>

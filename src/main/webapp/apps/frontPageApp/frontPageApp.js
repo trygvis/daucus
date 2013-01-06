@@ -13,14 +13,35 @@ function FrontPageCtrl($scope, Person, Badge) {
 }
 
 function PersonListCtrl($scope, Person, PagingTableService) {
-  $scope.persons = PagingTableService.create($scope, PagingTableService.defaultCallback(Person, {orderBy: "name"}));
+  var personsWatcher = function () {
+    var array = $scope.persons.rows;
+
+    var group = [];
+    var groups = [];
+    angular.forEach(array, function(element) {
+      group.push(element);
+      if(group.length == 4) {
+        groups.push(group);
+        group = [];
+      }
+    });
+
+    if(group.length != 0) {
+      groups.push(group);
+    }
+
+    $scope.personGroups = groups;
+  };
+
+  $scope.persons = PagingTableService.create($scope, PagingTableService.defaultCallback(Person, {orderBy: "name"}), {count: 4 * 6, watcher: personsWatcher});
+
+  $scope.personGroups = [];
 }
 
 function PersonCtrl($scope, $routeParams, Person, Build, PagingTableService) {
   var personUuid = $routeParams.personUuid;
 
   $scope.mode = 'overview';
-
   $scope.builds = PagingTableService.create($scope, PagingTableService.defaultCallback(Build, {person: personUuid}));
 
   $scope.setMode = function(mode) {
@@ -44,8 +65,4 @@ function PersonCtrl($scope, $routeParams, Person, Build, PagingTableService) {
   Build.query({person: personUuid}, function (builds) {
     $scope.recentBuilds = builds;
   });
-
-//  Badge.query({person: personUuid}, function (badges) {
-//    $scope.badges = badges;
-//  });
 }
