@@ -5,44 +5,27 @@
     <h1>Recent</h1>
   </div>
 
-  <h3>Badges</h3>
-  <div>
-    <ul class="inline">
-      <li ng-repeat="b in recentBadges">
-        <a href="#/person/{{b.person.uuid}}"> {{b.person.name}} </a>
-        <span class="badge-level-{{badge.level}} badge">{{b.badge.name}}</span>
-      </li>
-    </ul>
-  </div>
+  <div class="row">
+    <div class="span6">
+      <h3>Badges</h3>
 
-  <h3>Newcomers</h3>
-  <table class="table">
-    <thead>
-    <tr>
-      <th>Name</th>
-      <th>Badges</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="person in persons.rows">
-      <td><a href="#/person/{{person.person.uuid}}">{{person.person.name}}</a></td>
-      <td>{{person.badges.length}}</td>
-    </tr>
-    </tbody>
-    <tfoot>
-    <tr>
-      <td colspan="2">
-        <ul class="pager">
-          <li class="previous" ng-class="{disabled: persons.startIndex == 0}">
-            <a ng-click="persons.prev()">&larr; Older</a>
-          </li>
-          <li class="next">
-            <a ng-click="persons.next()">Newer &rarr;</a>
+      <div>
+        <ul class="unstyled">
+          <li ng-repeat="b in recentBadges">
+            <badge badge-detail="b"/>
           </li>
         </ul>
-      </td>
-    </tr>
-    </tfoot>
-  </table>
+      </div>
+    </div>
 
+    <div class="span6">
+      <h3>Newcomers</h3>
+
+      <ul class="unstyled">
+        <li ng-repeat="person in persons.rows">
+          <a href="#/person/{{person.person.uuid}}">{{person.person.name}}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>

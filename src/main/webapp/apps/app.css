@@ -3,9 +3,9 @@
     bronze ii = #a67d3d
     */
 
-.badge-level-1 { background-color: #a67d3d; }
-.badge-level-2 { background-color: silver; }
-.badge-level-3 { background-color: #ffd700; }
+.badge-level-1 { background-color: #a67d3d; color: #000000 }
+.badge-level-2 { background-color: silver;  color: #000000 }
+.badge-level-3 { background-color: #ffd700; color: #000000 }
 
 #content {
     background-color: #ffffff;

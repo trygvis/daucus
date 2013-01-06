@@ -124,14 +124,14 @@ public class CoreResource extends AbstractResource {
 
     @GET
     @Path("/badge")
-    public List<BadgeJson> getBadges(@MagicParam final PageRequest page, @MagicParam(query = "person") final Uuid person) throws Exception {
-        return da.inTransaction(new CoreDaosCallback<List<BadgeJson>>() {
-            protected List<BadgeJson> run() throws SQLException {
+    public List<BadgeDetailJson> getBadges(@MagicParam final PageRequest page, @MagicParam(query = "person") final Uuid person) throws Exception {
+        return da.inTransaction(new CoreDaosCallback<List<BadgeDetailJson>>() {
+            protected List<BadgeDetailJson> run() throws SQLException {
                 List<PersonalBadgeDto> badgeDtos = daos.personDao.selectBadges(fromNull(person), Option.<PersonalBadgeDto.BadgeType>none(), Option.<Integer>none(), page);
 
-                List<BadgeJson> list = new ArrayList<>();
+                List<BadgeDetailJson> list = new ArrayList<>();
                 for (PersonalBadgeDto badge : badgeDtos) {
-                    list.add(getBadgeJson.apply(badge));
+                    list.add(getBadgeDetailJson.apply(badge));
                 }
                 return list;
             }
