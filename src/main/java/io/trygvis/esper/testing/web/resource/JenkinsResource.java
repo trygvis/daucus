@@ -1,5 +1,6 @@
 package io.trygvis.esper.testing.web.resource;
 
+import fj.data.*;
 import io.trygvis.esper.testing.*;
 import io.trygvis.esper.testing.jenkins.*;
 import io.trygvis.esper.testing.jenkins.xml.*;
@@ -151,9 +152,16 @@ public class JenkinsResource extends AbstractResource {
 
         protected SqlF<JenkinsBuildDto, JenkinsBuildJson> getJenkinsBuildJson = new SqlF<JenkinsBuildDto, JenkinsBuildJson>() {
             public JenkinsBuildJson apply(JenkinsBuildDto dto) throws SQLException {
-                JenkinsBuildXml xml = daos.fileDao.load(dto.file).toFj().
+                Option<JenkinsBuildXml> xmlO = daos.fileDao.load(dto.file).toFj().
                         bind(xmlParser.parseDocument).
-                        bind(JenkinsBuildXml.parse).some();
+                        bind(JenkinsBuildXml.parse);
+
+                if(xmlO.isNone()) {
+                    return new JenkinsBuildJson(dto.uuid, dto.createdDate, new DateTime(dto.createdDate),
+                            "unknown", 0, 0);
+                }
+
+                JenkinsBuildXml xml = xmlO.some();
 
                 return new JenkinsBuildJson(dto.uuid, dto.createdDate, new DateTime(xml.timestamp),
                         xml.result.orSome("unknown"), xml.number, xml.duration);

@@ -1,6 +1,6 @@
 'use strict';
 
-var jenkinsApp = angular.module('jenkinsApp', ['jenkinsServer', 'jenkinsJob', 'jenkinsBuild', 'pagingTableService']).config(function ($routeProvider) {
+var jenkinsApp = angular.module('jenkinsApp', ['jenkinsServer', 'jenkinsJob', 'jenkinsBuild', 'core.directives', 'pagingTableService']).config(function ($routeProvider) {
   $routeProvider.
       when('/', {controller: ServerListCtrl, templateUrl: '/apps/jenkinsApp/server-list.html?noCache=' + noCache}).
       when('/server/:uuid', {controller: ServerCtrl, templateUrl: '/apps/jenkinsApp/server.html?noCache=' + noCache}).
