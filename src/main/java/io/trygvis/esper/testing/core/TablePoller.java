@@ -43,7 +43,7 @@ public class TablePoller<A> {
                 if (o.isNone()) {
                     logger.info("First run of poller '{}'", pollerName);
                 } else {
-                    logger.info("Running poller '{}', last seq was {}", pollerName, o.get());
+                    logger.debug("Running poller '{}', last seq was {}", pollerName, o.get());
                 }
 
                 int seq = o.getOrElse(0);
