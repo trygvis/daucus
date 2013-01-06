@@ -35,7 +35,7 @@
         </div>
       </div>
       <ul class="pager">
-        <li class="previous" ng-hide="persons.startIndex == 0">
+        <li class="previous" ng-show="persons.startIndex > 0">
           <a ng-click="persons.prev()">&larr; Prev</a>
         </li>
         <li class="next">

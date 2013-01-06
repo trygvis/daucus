@@ -5,7 +5,7 @@ function PagingTableService() {
     var self = {
       rows: [],
       startIndex: options.startIndex || 0,
-      count: options.count
+      count: options.count || 10
     };
 
     var update = function(){
@@ -21,7 +21,7 @@ function PagingTableService() {
     };
 
     self.next = function () {
-      this.startIndex += this.count;
+      self.startIndex += self.count;
       update();
     };
 
@@ -42,13 +42,13 @@ function PagingTableService() {
   var defaultCallback = function(Resource, args) {
     args = args || {};
     return function(startIndex, count, cb) {
-      console.log("fetching", arguments);
       if(startIndex) {
         args.startIndex = startIndex;
       }
       if(count) {
         args.count = count;
       }
+      console.log("fetching", args);
       Resource.query(args, function(data, headers) {
         var totalResults = headers("total-results");
         console.log("totalResults", totalResults);
