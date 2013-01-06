@@ -35,9 +35,7 @@ public class CoreResource extends AbstractResource {
 
     @GET
     @Path("/person")
-    public List<PersonDetailJson> getPersons(@Context final HttpServletRequest req) throws Exception {
-        final PageRequest pageRequest = pageReq(req);
-
+    public List<PersonDetailJson> getPersons(@MagicParam final PageRequest pageRequest) throws Exception {
         return da.inTransaction(new CoreDaosCallback<List<PersonDetailJson>>() {
             protected List<PersonDetailJson> run() throws SQLException {
                 List<PersonDetailJson> list = new ArrayList<>();

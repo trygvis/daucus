@@ -1,0 +1,35 @@
+<div class="container">
+
+  <navbar/>
+
+  <div class="page-header">
+    <h1>People</h1>
+  </div>
+
+  <div class="row">
+    <div class="span12">
+      <table class="table">
+        <tbody>
+        <tr ng-repeat="person in persons.rows">
+          <td><a href="/#/person/{{person.person.uuid}}">{{person.person.name}}</a></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+          <td colspan="2">
+            <ul class="pager">
+              <!--ng-class="{disabled: persons.startIndex == 0}"-->
+              <li class="previous" ng-hide="persons.startIndex == 0">
+                <a ng-click="persons.prev()">&larr; Prev</a>
+              </li>
+              <li class="next">
+                <a ng-click="persons.next()">Next &rarr;</a>
+              </li>
+            </ul>
+          </td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>

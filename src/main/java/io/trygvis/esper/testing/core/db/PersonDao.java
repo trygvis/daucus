@@ -7,8 +7,8 @@ import io.trygvis.esper.testing.util.sql.*;
 import org.joda.time.*;
 
 import java.sql.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 import static io.trygvis.esper.testing.Util.*;
 import static io.trygvis.esper.testing.util.sql.SqlOption.*;
@@ -97,7 +97,13 @@ public class PersonDao {
     }
 
     public List<PersonDto> selectPersons(PageRequest pageRequest) throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("SELECT " + PERSON + " FROM person ORDER BY created_date DESC, name LIMIT ? OFFSET ?")) {
+        String sql = "SELECT " + PERSON + " FROM person";
+
+        sql += orderBy(pageRequest.orderBy, "name", "created_date");
+
+        sql += " LIMIT ? OFFSET ?";
+
+        try (PreparedStatement s = c.prepareStatement(sql)) {
             int i = 1;
             s.setInt(i++, pageRequest.count.orSome(10));
             s.setInt(i, pageRequest.startIndex.orSome(0));
@@ -199,7 +205,7 @@ public class PersonDao {
 
         try (PreparedStatement s = c.prepareStatement(sql)) {
             int i = 1;
-            if(person.isSome()) {
+            if (person.isSome()) {
                 s.setString(i++, person.some().toUuidString());
             }
             if (type.isSome()) {

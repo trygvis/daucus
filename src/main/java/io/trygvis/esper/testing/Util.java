@@ -73,12 +73,37 @@ public class Util {
         }
     };
 
-    public static Option<String> childText(Element e, String childName) {
-        return fromNull(e.getChildText(childName));
-    }
+    // -----------------------------------------------------------------------
+    // SQL
+    // -----------------------------------------------------------------------
 
-    public static Option<Element> child(Element e, String childName) {
-        return fromNull(e.getChild(childName));
+    public static String orderBy(Iterable<String> inputs, String... allowed) {
+        StringBuilder buffer = new StringBuilder();
+
+        for (String input : inputs) {
+            boolean desc = false;
+
+            if (input.endsWith("-")) {
+                desc = true;
+                input = input.substring(0, input.length() - 1);
+            }
+
+            for (String s : allowed) {
+                if (s.equals(input)) {
+                    if (buffer.length() == 0) {
+                        buffer.append(" ORDER BY ");
+                    } else {
+                        buffer.append(", ");
+                    }
+                    buffer.append(s);
+                    if (desc) {
+                        buffer.append(" DESC");
+                    }
+                }
+            }
+        }
+
+        return buffer.toString();
     }
 
     public static UUID[] toUuidArray(ResultSet rs, int index) throws SQLException {
@@ -101,5 +126,17 @@ public class Util {
             list.add(f.apply(rs));
         }
         return list;
+    }
+
+    // -----------------------------------------------------------------------
+    // XML
+    // -----------------------------------------------------------------------
+
+    public static Option<String> childText(Element e, String childName) {
+        return fromNull(e.getChildText(childName));
+    }
+
+    public static Option<Element> child(Element e, String childName) {
+        return fromNull(e.getChild(childName));
     }
 }

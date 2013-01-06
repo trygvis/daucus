@@ -15,7 +15,12 @@ import javax.ws.rs.core.*;
 import javax.ws.rs.ext.*;
 import java.lang.reflect.*;
 import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import static fj.data.List.iterableList;
+import static fj.data.List.nil;
 import static fj.data.Option.*;
 import static io.trygvis.esper.testing.Util.parseInt;
 
@@ -59,9 +64,18 @@ public class JerseyApplication extends Application {
                     public Object getValue(HttpContext hc) {
                         MultivaluedMap<String, String> queryParameters = hc.getRequest().getQueryParameters();
 
+                        List<String> list = queryParameters.get("orderBy");
+
+                        fj.data.List<String> orderBy = nil();
+
+                        if (list != null) {
+                            orderBy = iterableList(list);
+                        }
+
                         return new PageRequest(
                                 fromNull(queryParameters.getFirst("startIndex")).bind(parseInt),
-                                fromNull(queryParameters.getFirst("count")).bind(parseInt));
+                                fromNull(queryParameters.getFirst("count")).bind(parseInt),
+                                orderBy);
                     }
                 };
             } else if (UUID.class.equals(type)) {

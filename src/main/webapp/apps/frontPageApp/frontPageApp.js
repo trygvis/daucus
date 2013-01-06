@@ -3,15 +3,20 @@
 var frontPageApp = angular.module('frontPageApp', ['ngGrid', 'person', 'badge', 'build', 'pagingTableService', 'core.directives']).config(function ($routeProvider, $locationProvider) {
   $routeProvider.
       when('/', {controller: FrontPageCtrl, templateUrl: '/apps/frontPageApp/frontPage.html?noCache=' + noCache}).
+      when('/person/', {controller: PersonListCtrl, templateUrl: '/apps/frontPageApp/personList.html?noCache=' + noCache}).
       when('/person/:personUuid', {controller: PersonCtrl, templateUrl: '/apps/frontPageApp/person.html?noCache=' + noCache});
 });
 
-function FrontPageCtrl($scope, Person, Badge, PagingTableService) {
-  $scope.persons = PagingTableService.create($scope, PagingTableService.defaultCallback(Person));
+function FrontPageCtrl($scope, Person, Badge) {
+  $scope.persons = Person.query();
   $scope.recentBadges = Badge.query();
 }
 
-function PersonCtrl($scope, $routeParams, Person, Badge, Build, PagingTableService) {
+function PersonListCtrl($scope, Person, PagingTableService) {
+  $scope.persons = PagingTableService.create($scope, PagingTableService.defaultCallback(Person, {orderBy: "name"}));
+}
+
+function PersonCtrl($scope, $routeParams, Person, Build, PagingTableService) {
   var personUuid = $routeParams.personUuid;
 
   $scope.mode = 'overview';

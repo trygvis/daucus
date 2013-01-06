@@ -11,60 +11,58 @@
     <li ng-class="{active: mode == 'builds'}"><a ng-click="setMode('builds')">Builds</a></li>
   </ul>
 
-  <div id="overview" ng-show="mode == 'overview'">
-    <div class="row">
-      <div class="span6">
-        <h3>Upcoming</h3>
-        <table>
-          <tr ng-repeat="badge in person.badgesInProgress">
-            <td style="padding-right: 1em">{{badge.name}}</td>
-            <td style="width: 100%">
-              <div class="progress" style="margin-bottom: 0;" title="Progress: {{badge.progress}} of {{badge.goal}}">
-                <div class="bar" style="width: {{badge.progress / badge.goal * 100}}%;"></div>
-              </div>
-            </td>
-          </tr>
-        </table>
+  <div id="overview" ng-show="mode == 'overview'" class="row">
+    <div class="span6">
+      <h3>Upcoming</h3>
+      <table>
+        <tr ng-repeat="badge in person.badgesInProgress">
+          <td style="padding-right: 1em">{{badge.name}}</td>
+          <td style="width: 100%">
+            <div class="progress" style="margin-bottom: 0;" title="Progress: {{badge.progress}} of {{badge.goal}}">
+              <div class="bar" style="width: {{badge.progress / badge.goal * 100}}%;"></div>
+            </div>
+          </td>
+        </tr>
+      </table>
 
-        <h3>Badges</h3>
-        <ul class="unstyled">
-          <li ng-repeat="badge in person.badges">
-<!--
-            <span class="badge-level-{{badge.level}} badge">{{badge.name}}</span>
--->
-            <strong>{{badge.name}}</strong>
-<!--
-            <i class="icon-user ng-class: {{{1: 'badge-level-1', 2: 'badge-level-2', 3: 'badge-level-3'}[badge.level]}}"></i>
--->
-            <span class="badge-level-{{badge.level}} badge">
-                <i class="icon-user"></i>
-            </span>
+      <h3>Badges</h3>
+      <ul class="unstyled">
+        <li ng-repeat="badge in person.badges">
+          <!--
+          <span class="badge-level-{{badge.level}} badge">{{badge.name}}</span>
+          -->
+          <strong>{{badge.name}}</strong>
+          <!--
+          <i class="icon-user ng-class: {{{1: 'badge-level-1', 2: 'badge-level-2', 3: 'badge-level-3'}[badge.level]}}"></i>
+          -->
+          <span class="badge-level-{{badge.level}} badge">
+              <i class="icon-user"></i>
+          </span>
 
-            {{badge.createdDate | date:'medium'}}
-          </li>
-        </ul>
-      </div>
-      <div class="span6">
-        <h3>Recent builds</h3>
-        <table class="table">
-          <thead>
-<!--
-          <tr>
-            <th>Date</th>
-            <th>Success</th>
-            <th></th>
-          </tr>
--->
-          </thead>
-          <tbody>
-          <tr ng-repeat="build in recentBuilds" class="{{{true: 'success', false: 'error'}[build.success]}}">
-            <td>{{build.timestamp | date:'medium'}}</td>
-            <td>{{{true: 'Success', false: 'Failure'}[build.success]}}</td>
-            <td><a href="/build/{{build.uuid}}">Details</a></td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+          {{badge.createdDate | date:'medium'}}
+        </li>
+      </ul>
+    </div>
+    <div class="span6">
+      <h3>Recent builds</h3>
+      <table class="table">
+        <thead>
+        <!--
+        <tr>
+          <th>Date</th>
+          <th>Success</th>
+          <th></th>
+        </tr>
+        -->
+        </thead>
+        <tbody>
+        <tr ng-repeat="build in recentBuilds" class="{{{true: 'success', false: 'error'}[build.success]}}">
+          <td>{{build.timestamp | date:'medium'}}</td>
+          <td>{{{true: 'Success', false: 'Failure'}[build.success]}}</td>
+          <td><a href="/build/{{build.uuid}}">Details</a></td>
+        </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
