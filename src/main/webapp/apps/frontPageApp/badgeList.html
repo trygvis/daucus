@@ -1,0 +1,46 @@
+<div class="container">
+
+  <navbar/>
+
+  <div class="page-header">
+    <h1>Badges Awarded</h1>
+  </div>
+
+  <style>
+    .awarded-badge {
+      text-align: center;
+      margin-bottom: 1em;
+      margin-right: 1em;
+    }
+
+    .avatar-image {
+      margin-bottom: 1em;
+    }
+  </style>
+
+  <div class="row">
+    <div class="span12">
+      <div class="row" ng-repeat="(date, group) in badgeGroups">
+        <div class="span12">
+          <h2>{{date | date:'mediumDate'}}</h2>
+        </div>
+        <div class="span12">
+          <div class="awarded-badge pull-left" ng-repeat="badge in group">
+            <div><person-avatar person="badge.person"></person-avatar></div>
+
+            <badge-span badge="badge.badge" ></badge-span> <br/>
+            <!--was awarded to<br/>-->
+          </div>
+        </div>
+      </div>
+      <ul class="pager">
+        <li class="previous" ng-show="persons.startIndex > 0">
+          <a ng-click="persons.prev()">&larr; Prev</a>
+        </li>
+        <li class="next">
+          <a ng-click="persons.next()">Next &rarr;</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

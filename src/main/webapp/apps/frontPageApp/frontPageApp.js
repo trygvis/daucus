@@ -1,8 +1,9 @@
 'use strict';
 
-var frontPageApp = angular.module('frontPageApp', ['ngGrid', 'person', 'badge', 'build', 'pagingTableService', 'core.directives']).config(function ($routeProvider, $locationProvider) {
+var frontPageApp = angular.module('frontPageApp', ['ngGrid', 'person', 'badge', 'build', 'pagingTableService', 'core.directives']).config(function ($routeProvider) {
   $routeProvider.
       when('/', {controller: FrontPageCtrl, templateUrl: '/apps/frontPageApp/frontPage.html?noCache=' + noCache}).
+      when('/badge/', {controller: BadgeListCtrl, templateUrl: '/apps/frontPageApp/badgeList.html?noCache=' + noCache}).
       when('/person/', {controller: PersonListCtrl, templateUrl: '/apps/frontPageApp/personList.html?noCache=' + noCache}).
       when('/person/:personUuid', {controller: PersonCtrl, templateUrl: '/apps/frontPageApp/person.html?noCache=' + noCache});
 });
@@ -12,28 +13,56 @@ function FrontPageCtrl($scope, Person, Badge) {
   $scope.recentBadges = Badge.query();
 }
 
-function PersonListCtrl($scope, Person, PagingTableService) {
-  var personsWatcher = function () {
-    var array = $scope.persons.rows;
+function groupBy(array, size) {
+  var group = [];
+  var groups = [];
+  angular.forEach(array, function (element) {
+    group.push(element);
+    if (group.length == size) {
+      groups.push(group);
+      group = [];
+    }
+  });
 
-    var group = [];
-    var groups = [];
-    angular.forEach(array, function(element) {
-      group.push(element);
-      if(group.length == 4) {
-        groups.push(group);
-        group = [];
-      }
+  if (group.length != 0) {
+    groups.push(group);
+  }
+  return groups;
+}
+
+function BadgeListCtrl($scope, Badge, PagingTableService) {
+  var groupSize = 6;
+
+  var personsWatcher = function () {
+    var withDay = _.map($scope.badges.rows, function(badge) {
+      badge.day = new Date(badge.badge.createdDate).clearTime().getTime();
+//      badge.day.clearTime();
+      return badge;
     });
 
-    if(group.length != 0) {
-      groups.push(group);
-    }
+    var byDay = _.groupBy(withDay, 'day');
+    console.log("byDay", byDay);
+//    var dateGroups = _.map(byDay, function(group, date) {
+//      return {date: groupBy(group, groupSize)}
+//    });
 
-    $scope.personGroups = groups;
+    $scope.badgeGroups = byDay;
   };
 
-  $scope.persons = PagingTableService.create($scope, PagingTableService.defaultCallback(Person, {orderBy: "name"}), {count: 4 * 6, watcher: personsWatcher});
+  $scope.badges = PagingTableService.create($scope, PagingTableService.defaultCallback(Badge),
+      {count: groupSize * 6, watcher: personsWatcher});
+
+  $scope.badgeGroups = [];
+}
+
+function PersonListCtrl($scope, Person, PagingTableService) {
+  var groupSize = 4;
+  var personsWatcher = function () {
+    $scope.personGroups = groupBy($scope.persons.rows, groupSize);
+  };
+
+  $scope.persons = PagingTableService.create($scope, PagingTableService.defaultCallback(Person, {orderBy: "name"}),
+      {count: groupSize * 6, watcher: personsWatcher});
 
   $scope.personGroups = [];
 }

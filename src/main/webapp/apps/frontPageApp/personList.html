@@ -25,7 +25,7 @@
       <div class="row" ng-repeat="group in personGroups">
         <div class="span3" ng-repeat="person in group" style="padding-bottom: 1em">
           <div class="row">
-            <img ng-src="{{person.person.gravatar}}?default=identicon" class="avatar-image"/>
+            <person-avatar person="person.person"></person-avatar>
             <a href="/#/person/{{person.person.uuid}}">{{person.person.name}}</a>
             <br/>
             <span ng-repeat="level in person.badges | countBadgeByLevel | gz">
