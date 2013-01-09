@@ -38,3 +38,7 @@ N commits per day/week
 # BF3 Nomenclature
 
 Two types of "awards": "ribbons" and "medals". A medal is given for repeatedly awarded a ribbon.
+
+# TODO:
+
+* Convert UUIDs from char(36) to bigint	(8 bytes)

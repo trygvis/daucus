@@ -76,7 +76,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="build in builds.rows" class="{{{true: 'success', false: 'error'}[build.success]}}">
+      <tr ng-repeat="build in builds.rows" class="{{{true: 'build-success', false: 'build-error'}[build.success]}}">
         <td>{{build.timestamp | date:'medium'}}</td>
         <td>{{build.success}}</td>
       </tr>

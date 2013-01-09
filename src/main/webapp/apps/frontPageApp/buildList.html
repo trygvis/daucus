@@ -1,0 +1,50 @@
+<div class="container">
+
+  <navbar/>
+
+  <div class="page-header">
+    <h1>Builds</h1>
+  </div>
+
+  <style>
+    .avatar-image {
+      /* This has to match bootstrap's row margin. */
+      margin-left: 30px;
+      padding-right: 1em;
+      float: left;
+      margin-top: 0;
+    }
+  </style>
+
+  <div class="row">
+    <div class="span12">
+      <table class="table">
+        <tbody ng-repeat="build in builds.rows">
+        <tr class="{{{true: 'success', false: 'error'}[build.build.success]}}">
+          <td>{{build.build.timestamp | date:'medium'}}</td>
+          <td>
+            <span ng-show="build.build.success">SUCCESS</span>
+            <span ng-hide="build.build.success">FAILURE</span>
+          </td>
+          <td><a class="btn" href="/build/{{build.build.uuid}}"><i class="icon-chevron-right"></i></a></td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <span ng-repeat="p in build.participants">
+              <person-avatar person="p"/>
+            </span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <ul class="pager">
+        <li class="previous" ng-show="builds.startIndex > 0">
+          <a ng-click="builds.prev()">&larr; Prev</a>
+        </li>
+        <li class="next">
+          <a ng-click="builds.next()">Next &rarr;</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

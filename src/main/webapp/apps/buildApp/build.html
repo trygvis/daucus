@@ -9,19 +9,19 @@
     <table>
       <tr>
         <th>Date</th>
-        <td>{{build.timestamp | date:'medium'}}</td>
+        <td>{{build.build.timestamp | date:'medium'}}</td>
       </tr>
       <tr>
         <th>Status</th>
         <td>
-          <span ng-show="build.success">SUCCESS</span>
-          <span ng-hide="build.success">FAILURE</span>
+          <span ng-show="build.build.success">SUCCESS</span>
+          <span ng-hide="build.build.success">FAILURE</span>
         </td>
       </tr>
     </table>
     <h3>Participants</h3>
 
-    <p ng-repeat="participant in participants">
+    <p ng-repeat="participant in build.participants">
       <span>{{participant.name}}</span>
     </p>
 

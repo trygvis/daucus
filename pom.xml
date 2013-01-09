@@ -8,6 +8,10 @@
     <maven.compiler.target>1.7</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <version.httpcache4>3.4</version.httpcache4>
+    <dbdeploy.url>jdbc:postgresql://localhost/esper</dbdeploy.url>
+    <dbdeploy.userid>esper</dbdeploy.userid>
+    <dbdeploy.password>esper</dbdeploy.password>
+    <dbdeploy.dbms>pgsql</dbdeploy.dbms>
   </properties>
   <dependencies>
     <dependency>
@@ -172,10 +176,10 @@
         <configuration>
           <scriptdirectory>src/main/sql/dbdelta</scriptdirectory>
           <driver>org.postgresql.Driver</driver>
-          <url>jdbc:postgresql://localhost/esper</url>
-          <userid>esper</userid>
-          <password>esper</password>
-          <dbms>pgsql</dbms>
+          <url>${dbdeploy.url}</url>
+          <userid>${dbdeploy.userid}</userid>
+          <password>${dbdeploy.password}</password>
+          <dbms>${dbdeploy.dbms}</dbms>
           <delimiter>;</delimiter>
           <delimiterType>row</delimiterType>
           <outputfile>dbdeploy-outputfile.tmp.sql</outputfile>

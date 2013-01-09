@@ -5,7 +5,8 @@ var frontPageApp = angular.module('frontPageApp', ['ngGrid', 'person', 'badge', 
       when('/', {controller: FrontPageCtrl, templateUrl: '/apps/frontPageApp/frontPage.html?noCache=' + noCache}).
       when('/badge/', {controller: BadgeListCtrl, templateUrl: '/apps/frontPageApp/badgeList.html?noCache=' + noCache}).
       when('/person/', {controller: PersonListCtrl, templateUrl: '/apps/frontPageApp/personList.html?noCache=' + noCache}).
-      when('/person/:personUuid', {controller: PersonCtrl, templateUrl: '/apps/frontPageApp/person.html?noCache=' + noCache});
+      when('/person/:personUuid', {controller: PersonCtrl, templateUrl: '/apps/frontPageApp/person.html?noCache=' + noCache}).
+      when('/build/', {controller: BuildListCtrl, templateUrl: '/apps/frontPageApp/buildList.html?noCache=' + noCache});
 });
 
 function FrontPageCtrl($scope, Person, Badge) {
@@ -94,4 +95,8 @@ function PersonCtrl($scope, $routeParams, Person, Build, PagingTableService) {
   Build.query({person: personUuid}, function (builds) {
     $scope.recentBuilds = builds;
   });
+}
+
+function BuildListCtrl($scope, Build, PagingTableService) {
+    $scope.builds = PagingTableService.create($scope, PagingTableService.defaultCallback(Build, {fields: "detailed"}));
 }

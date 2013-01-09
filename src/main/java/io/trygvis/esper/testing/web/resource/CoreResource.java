@@ -8,7 +8,6 @@ import io.trygvis.esper.testing.util.sql.*;
 import io.trygvis.esper.testing.web.*;
 import org.joda.time.*;
 
-import javax.servlet.http.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.sql.*;
@@ -16,7 +15,6 @@ import java.util.*;
 import java.util.List;
 
 import static fj.data.Option.fromNull;
-import static io.trygvis.esper.testing.util.sql.PageRequest.*;
 
 @Path("/resource/core")
 @Produces(MediaType.APPLICATION_JSON)
@@ -49,7 +47,7 @@ public class CoreResource extends AbstractResource {
 
     @GET
     @Path("/person/{uuid}")
-    public PersonDetailJson getPerson(@PathParam("uuid") final Uuid uuid) throws Exception {
+    public PersonDetailJson getPerson(@MagicParam final Uuid uuid) throws Exception {
         return sql(new CoreDaosCallback<SqlOption<PersonDetailJson>>() {
             protected SqlOption<PersonDetailJson> run() throws SQLException {
                 return daos.personDao.selectPerson(uuid).map(super.getPersonDetailJson);
@@ -63,10 +61,14 @@ public class CoreResource extends AbstractResource {
 
     @GET
     @Path("/build")
-    public List<BuildJson> getBuilds(@MagicParam final PageRequest page, @MagicParam(query = "person") final Uuid person) throws Exception {
-        return da.inTransaction(new DatabaseAccess.DaosCallback<List<BuildJson>>() {
-            public List<BuildJson> run(Daos daos) throws SQLException {
+    public List<Object> getBuilds(@MagicParam final PageRequest page,
+                                  @MagicParam(query = "person") final Uuid person,
+                                  @QueryParam("fields") final List<String> fields) throws Exception {
+        return da.inTransaction(new CoreDaosCallback<List<Object>>() {
+            public List<Object> run() throws SQLException {
                 List<BuildDto> buildDtos;
+
+                boolean detailed = fields.contains("detailed");
 
                 if (person != null) {
                     buildDtos = daos.buildDao.selectBuildsByPerson(person, page);
@@ -74,9 +76,12 @@ public class CoreResource extends AbstractResource {
                     buildDtos = daos.buildDao.selectBuilds(page);
                 }
 
-                List<BuildJson> list = new ArrayList<>();
+                List<Object> list = new ArrayList<>();
+
+                SqlF<BuildDto, ?> buildDtoSqlF = detailed ? getBuildDetailJson : getBuildJson;
+
                 for (BuildDto build : buildDtos) {
-                    list.add(getBuildJson(build));
+                    list.add(buildDtoSqlF.apply(build));
                 }
                 return list;
             }
@@ -99,21 +104,12 @@ public class CoreResource extends AbstractResource {
 
     @GET
     @Path("/build/{uuid}")
-    public BuildJson getBuild(@MagicParam final UUID uuid) throws Exception {
-        return get(new DatabaseAccess.DaosCallback<Option<BuildJson>>() {
-            public Option<BuildJson> run(Daos daos) throws SQLException {
-                SqlOption<BuildDto> o = daos.buildDao.selectBuild(uuid);
-                if (o.isNone()) {
-                    return Option.none();
-                }
-
-                return Option.some(getBuildJson(o.get()));
+    public BuildDetailJson getBuild(@MagicParam final UUID uuid) throws Exception {
+        return sql(new CoreDaosCallback<SqlOption<BuildDetailJson>>() {
+            public SqlOption<BuildDetailJson> run() throws SQLException {
+                return daos.buildDao.selectBuild(uuid).map(getBuildDetailJson);
             }
         });
-    }
-
-    private BuildJson getBuildJson(BuildDto build) {
-        return new BuildJson(build.uuid, build.timestamp, build.success);
     }
 
     // -----------------------------------------------------------------------
@@ -146,6 +142,10 @@ public class CoreResource extends AbstractResource {
             return run();
         }
 
+        // -----------------------------------------------------------------------
+        // Person
+        // -----------------------------------------------------------------------
+
         protected final SqlF<PersonDto, PersonJson> getPersonJson = new SqlF<PersonDto, PersonJson>() {
             public PersonJson apply(PersonDto person) throws SQLException {
                 return new PersonJson(person.uuid, person.name, person.mail);
@@ -172,6 +172,32 @@ public class CoreResource extends AbstractResource {
                 );
             }
         };
+
+        // -----------------------------------------------------------------------
+        // Build
+        // -----------------------------------------------------------------------
+
+        protected final SqlF<BuildDto, BuildJson> getBuildJson = new SqlF<BuildDto, BuildJson>() {
+            public BuildJson apply(BuildDto dto) throws SQLException {
+                return new BuildJson(dto.uuid, dto.timestamp, dto.success);
+            }
+        };
+
+        protected final SqlF<BuildDto, BuildDetailJson> getBuildDetailJson = new SqlF<BuildDto, BuildDetailJson>() {
+            public BuildDetailJson apply(BuildDto build) throws SQLException {
+                List<PersonJson> list = new ArrayList<>();
+                for (PersonDto person : daos.buildDao.selectPersonsFromBuildParticipant(build.uuid)) {
+                    list.add(getPersonJson.apply(person));
+                }
+
+                return new BuildDetailJson(getBuildJson.apply(build),
+                        list);
+            }
+        };
+
+        // -----------------------------------------------------------------------
+        // Badge
+        // -----------------------------------------------------------------------
 
         protected SqlF<PersonalBadgeDto, BadgeJson> getBadgeJson = new SqlF<PersonalBadgeDto, BadgeJson>() {
             public BadgeJson apply(PersonalBadgeDto badge) throws SQLException {
@@ -201,5 +227,15 @@ class BuildJson {
         this.uuid = uuid;
         this.timestamp = timestamp;
         this.success = success;
+    }
+}
+
+class BuildDetailJson {
+    public final BuildJson build;
+    public final List<PersonJson> participants;
+
+    BuildDetailJson(BuildJson build, List<PersonJson> participants) {
+        this.build = build;
+        this.participants = participants;
     }
 }

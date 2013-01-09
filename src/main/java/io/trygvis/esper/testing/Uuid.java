@@ -17,6 +17,10 @@ public class Uuid {
         return uuid.toString();
     }
 
+    public UUID toUUID() {
+        return uuid;
+    }
+
     public String toString() {
         return toStringBase64();
     }
@@ -89,67 +93,71 @@ public class Uuid {
         }
 
         if (s.length() == 22) {
-            long most = 0;
-            int i = 0;
-            int shift = 64;
-            for(; i < 10; i++) {
-                char c = s.charAt(i);
-                long b = alphabetR[c];
-
-                if(b == 0) {
-                    throw new IllegalArgumentException(s);
-                }
-
-                b--;
-
-                shift -= 6;
-
-                long l = b << shift;
-
-                most |= l;
-            }
-
-            long least;
-
-            {
-                char c = s.charAt(i++);
-                long b = alphabetR[c];
-
-                if (b == 0) {
-                    throw new IllegalArgumentException(s);
-                }
-
-                b--;
-
-                long l = b >> 2;
-
-                most |= l;
-
-                shift = 64 - 2;
-
-                least = (b & 0x03) << shift;
-            }
-
-            for(; i < 22; i++) {
-                char c = s.charAt(i);
-                long b = alphabetR[c];
-
-                if(b == 0) {
-                    throw new IllegalArgumentException(s);
-                }
-
-                b--;
-
-                shift -= 6;
-
-                long l = b << shift;
-                least |= l;
-            }
-
-            return new Uuid(new UUID(most, least));
+            return parseBase64(s);
         }
 
         throw new IllegalArgumentException("Illegal: " + s);
+    }
+
+    public static Uuid parseBase64(String s) {
+        long most = 0;
+        int i = 0;
+        int shift = 64;
+        for(; i < 10; i++) {
+            char c = s.charAt(i);
+            long b = alphabetR[c];
+
+            if(b == 0) {
+                throw new IllegalArgumentException(s);
+            }
+
+            b--;
+
+            shift -= 6;
+
+            long l = b << shift;
+
+            most |= l;
+        }
+
+        long least;
+
+        {
+            char c = s.charAt(i++);
+            long b = alphabetR[c];
+
+            if (b == 0) {
+                throw new IllegalArgumentException(s);
+            }
+
+            b--;
+
+            long l = b >> 2;
+
+            most |= l;
+
+            shift = 64 - 2;
+
+            least = (b & 0x03) << shift;
+        }
+
+        for(; i < 22; i++) {
+            char c = s.charAt(i);
+            long b = alphabetR[c];
+
+            if(b == 0) {
+                throw new IllegalArgumentException(s);
+            }
+
+            b--;
+
+            shift -= 6;
+
+            long l = b << Math.max(shift, 0);
+            least |= l;
+        }
+
+        return new Uuid(new UUID(most, least));
     }
 
     // http://en.wikipedia.org/wiki/Base64
