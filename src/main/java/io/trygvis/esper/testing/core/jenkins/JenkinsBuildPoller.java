@@ -15,6 +15,8 @@ import org.slf4j.*;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 import static fj.data.Option.*;
 import static io.trygvis.esper.testing.Config.*;
@@ -98,6 +100,8 @@ public class JenkinsBuildPoller implements TablePoller.NewRowCallback<JenkinsBui
 
         int knownPersons = 0, unknownPersons = 0;
 
+        Set<Uuid> insertedParticipants = new HashSet<>();
+
         for (UUID user : jenkinsBuild.users) {
             SqlOption<PersonDto> personO = daos.personDao.selectPersonByJenkinsUuid(user);
 
@@ -111,6 +115,12 @@ public class JenkinsBuildPoller implements TablePoller.NewRowCallback<JenkinsBui
             knownPersons++;
 
             Uuid person = personO.get().uuid;
+
+            if (!insertedParticipants.add(person)) {
+                logger.info("Participant already inserted, person={}", person);
+                continue;
+            }
+
             logger.info("Created build participant, person={}", person);
             buildDao.insertBuildParticipant(uuidBuild, person);
         }
