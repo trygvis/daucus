@@ -4,6 +4,7 @@ var frontPageApp = angular.module('frontPageApp', ['ngGrid', 'person', 'badge', 
   $routeProvider.
       when('/', {controller: FrontPageCtrl, templateUrl: '/apps/frontPageApp/frontPage.html?noCache=' + noCache}).
       when('/badge/', {controller: BadgeListCtrl, templateUrl: '/apps/frontPageApp/badgeList.html?noCache=' + noCache}).
+      when('/badge/:badgeUuid', {controller: BadgeCtrl, templateUrl: '/apps/frontPageApp/badge.html?noCache=' + noCache}).
       when('/person/', {controller: PersonListCtrl, templateUrl: '/apps/frontPageApp/personList.html?noCache=' + noCache}).
       when('/person/:personUuid', {controller: PersonCtrl, templateUrl: '/apps/frontPageApp/person.html?noCache=' + noCache}).
       when('/build/', {controller: BuildListCtrl, templateUrl: '/apps/frontPageApp/buildList.html?noCache=' + noCache});
@@ -54,6 +55,13 @@ function BadgeListCtrl($scope, Badge, PagingTableService) {
       {count: groupSize * 6, watcher: personsWatcher});
 
   $scope.badgeGroups = [];
+}
+
+function BadgeCtrl($scope, $routeParams, Badge) {
+  var badgeUuid = $routeParams.badgeUuid;
+  Badge.get({uuid: badgeUuid}, function (badge) {
+    $scope.badge = badge;
+  });
 }
 
 function PersonListCtrl($scope, Person, PagingTableService) {

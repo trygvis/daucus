@@ -55,7 +55,8 @@ directives.directive('badge', function () {
         '  <i class="icon-user"></i>' +
         '</span>' +
         ' awarded to ' +
-        '<a href="/#/person/{{badgeDetail.person.uuid}}">{{badgeDetail.person.name}}</a>'
+        '<a href="/#/person/{{badgeDetail.person.uuid}}">{{badgeDetail.person.name}}</a>. ' +
+        '<a href="/#/badge/{{badgeDetail.badge.uuid}}">More</a>'
   }
 });
 

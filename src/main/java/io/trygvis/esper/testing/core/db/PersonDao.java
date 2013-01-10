@@ -175,12 +175,10 @@ public class PersonDao {
         }
     }
 
-    public SqlOption<PersonalBadgeDto> selectBadge(UUID person, BadgeType type, int level) throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("SELECT " + PERSON_BADGE + " FROM person_badge WHERE person=? AND name=? AND level=? LIMIT 1")) {
+    public SqlOption<PersonalBadgeDto> selectBadge(Uuid uuid) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT " + PERSON_BADGE + " FROM person_badge WHERE uuid=?")) {
             int i = 1;
-            s.setString(i++, person.toString());
-            s.setString(i++, type.toString());
-            s.setInt(i, level);
+            s.setString(i, uuid.toUuidString());
             return fromRs(s.executeQuery()).map(personBadge);
         }
     }

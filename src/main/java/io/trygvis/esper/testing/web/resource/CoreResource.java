@@ -116,6 +116,9 @@ public class CoreResource extends AbstractResource {
     // Badge
     // -----------------------------------------------------------------------
 
+    /**
+     * This shouldn't return a detailed list by default.
+     */
     @GET
     @Path("/badge")
     public List<BadgeDetailJson> getBadges(@MagicParam final PageRequest page, @MagicParam(query = "person") final Uuid person) throws Exception {
@@ -131,6 +134,22 @@ public class CoreResource extends AbstractResource {
             }
         });
     }
+
+    @GET
+    @Path("/badge/{uuid}")
+    public BadgeDetailJson getBadges(@MagicParam final Uuid uuid) throws Exception {
+        return sql(new CoreDaosCallback<SqlOption<BadgeDetailJson>>() {
+            protected SqlOption<BadgeDetailJson> run() throws SQLException {
+                return daos.personDao.selectBadge(uuid).map(getBadgeDetailJson);
+            }
+        });
+    }
+
+    SqlF<PersonalBadgeDto, PersonalBadge> badge = new SqlF<PersonalBadgeDto, PersonalBadge>() {
+        public PersonalBadge apply(PersonalBadgeDto dto) throws SQLException {
+            return badgeService.badge(dto);
+        }
+    };
 
     abstract class CoreDaosCallback<T> implements DatabaseAccess.DaosCallback<T> {
         protected Daos daos;
@@ -201,17 +220,19 @@ public class CoreResource extends AbstractResource {
 
         protected SqlF<PersonalBadgeDto, BadgeJson> getBadgeJson = new SqlF<PersonalBadgeDto, BadgeJson>() {
             public BadgeJson apply(PersonalBadgeDto badge) throws SQLException {
-                return new BadgeJson(badge.createdDate, badge.type.name(), badge.level);
+                return new BadgeJson(badge.uuid, badge.createdDate, badge.type.name(), badge.level);
             }
         };
 
         private BadgeJson getBadge(BadgeProgress progress) {
-            return new BadgeJson(null, progress.type.name(), progress.progressingAgainstLevel(), progress.progression(), progress.goal());
+            return new BadgeJson(progress.type.name(), progress.progressingAgainstLevel(), progress.progression(), progress.goal());
         }
 
         protected final SqlF<PersonalBadgeDto, BadgeDetailJson> getBadgeDetailJson = new SqlF<PersonalBadgeDto, BadgeDetailJson>() {
             public BadgeDetailJson apply(PersonalBadgeDto badgeDto) throws SQLException {
+
                 return new BadgeDetailJson(getBadgeJson.apply(badgeDto),
+                        badge.apply(badgeDto),
                         daos.personDao.selectPerson(badgeDto.person).map(getPersonJson).get());
             }
         };

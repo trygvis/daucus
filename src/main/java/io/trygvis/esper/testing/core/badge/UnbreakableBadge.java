@@ -12,6 +12,12 @@ class UnbreakableBadge extends PersonalBadge {
 
     public final List<UUID> builds;
 
+    @SuppressWarnings("UnusedDeclaration")
+    private UnbreakableBadge() {
+        super(null, 0);
+        builds = null;
+    }
+
     UnbreakableBadge(Uuid person, int level, List<UUID> builds) {
         super(person, level);
         this.builds = builds;

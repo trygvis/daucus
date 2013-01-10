@@ -15,6 +15,39 @@ public class BadgeService {
         this.objectMapper = objectMapper;
     }
 
+    public UnbreakableBadge unbreakable(PersonalBadgeDto dto) {
+        return getProgress(dto.state, UnbreakableBadge.class);
+    }
+
+    // -----------------------------------------------------------------------
+    // Badge
+    // -----------------------------------------------------------------------
+
+    public PersonalBadge badge(PersonalBadgeDto dto) {
+        switch (dto.type) {
+            case UNBREAKABLE:
+                return getProgress(dto.state, UnbreakableBadge.class);
+        }
+
+        throw new RuntimeException("Unknown badge type: " + dto.type);
+    }
+
+    public <T extends PersonalBadge> T badge(PersonalBadgeDto dto, Class<T> klass) {
+        switch (dto.type) {
+            case UNBREAKABLE:
+                if(!klass.equals(UnbreakableBadgeProgress.class)) {
+                    throw new RuntimeException("Badge is not of the expected type: UNBREAKABLE.");
+                }
+                return getProgress(dto.state, klass);
+        }
+
+        throw new RuntimeException("Unknown badge type: " + dto.type);
+    }
+
+    // -----------------------------------------------------------------------
+    // Badge Progress
+    // -----------------------------------------------------------------------
+
     public BadgeProgress badgeProgress(PersonBadgeProgressDto dto) {
         switch (PersonalBadgeDto.BadgeType.valueOf(dto.badge)) {
             case UNBREAKABLE:
@@ -36,9 +69,9 @@ public class BadgeService {
         throw new RuntimeException("Unknown badge type: " + dto.badge);
     }
 
-    public UnbreakableBadge unbreakable(PersonalBadgeDto dto) {
-        return getProgress(dto.state, UnbreakableBadge.class);
-    }
+    // -----------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------
 
     public String serialize(Object badge) {
         try {
