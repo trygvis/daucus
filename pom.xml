@@ -182,8 +182,8 @@
           <dbms>${dbdeploy.dbms}</dbms>
           <delimiter>;</delimiter>
           <delimiterType>row</delimiterType>
-          <outputfile>dbdeploy-outputfile.tmp.sql</outputfile>
-          <undoOutputfile>dbdeploy-undoOutputfile.tmp.sql</undoOutputfile>
+          <outputfile>dbdeploy.tmp.sql</outputfile>
+          <undoOutputfile>dbdeploy-undo.tmp.sql</undoOutputfile>
         </configuration>
       </plugin>
       <plugin>

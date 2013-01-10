@@ -27,13 +27,13 @@ public class JenkinsBuildPoller implements TablePoller.NewRowCallback<JenkinsBui
     private final XmlParser xmlParser = new XmlParser();
 
     public static void main(String[] args) throws Exception {
+        Config config = loadFromDisk("jenkins-build-poller");
+
         String pollerName = "jenkins_build";
         String tableName = "jenkins_build";
         String columnNames = JenkinsDao.JENKINS_BUILD;
         SqlF<ResultSet, JenkinsBuildDto> f = JenkinsDao.jenkinsBuild;
         TablePoller.NewRowCallback<JenkinsBuildDto> callback = new JenkinsBuildPoller();
-
-        Config config = loadFromDisk("jenkins-build-poller");
 
         BoneCPDataSource dataSource = config.createBoneCp();
 
@@ -43,6 +43,8 @@ public class JenkinsBuildPoller implements TablePoller.NewRowCallback<JenkinsBui
     public void process(Connection c, final JenkinsBuildDto jenkinsBuild) throws SQLException {
         Daos daos = new Daos(c);
         final BuildDao buildDao = daos.buildDao;
+
+        logger.info("Processing Jenkins Build uuid={}", jenkinsBuild.uuid);
 
         JenkinsJobDto jobDto = daos.jenkinsDao.selectJob(jenkinsBuild.job).get();
 
@@ -87,6 +89,8 @@ public class JenkinsBuildPoller implements TablePoller.NewRowCallback<JenkinsBui
 
         final JenkinsBuildXml jenkinsBuildXml = o.some();
 
+        logger.info("Build details: number={}, url={}", jenkinsBuildXml.number, jenkinsBuildXml.url);
+
         SqlOption<UUID> uuidBuildO = buildDao.findBuildByReference(jenkinsBuild.toRef());
 
         UUID uuidBuild = uuidBuildO.getOrElse(new SqlP0<UUID>() {
@@ -116,13 +120,12 @@ public class JenkinsBuildPoller implements TablePoller.NewRowCallback<JenkinsBui
 
             Uuid person = personO.get().uuid;
 
-            if (!insertedParticipants.add(person)) {
+            if (insertedParticipants.add(person)) {
+                logger.info("Created build participant, person={}", person);
+                buildDao.insertBuildParticipant(uuidBuild, person);
+            } else {
                 logger.info("Participant already inserted, person={}", person);
-                continue;
             }
-
-            logger.info("Created build participant, person={}", person);
-            buildDao.insertBuildParticipant(uuidBuild, person);
         }
 
         logger.info("Created build uuid={}, #participants={}, #knownPersons={}, #unknonwnPersons={}", uuidBuild,

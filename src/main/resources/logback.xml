@@ -1,10 +1,10 @@
 <configuration debug="false">
 
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>logs/${logging.app}.log</file>
+    <file>logs/${loggingApp}.log</file>
     <append>true</append>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>logs/${logging.app}-%d.log</fileNamePattern>
+      <fileNamePattern>logs/${loggingApp}-%d.log</fileNamePattern>
     </rollingPolicy>
     <encoder>
       <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %-30logger{1} - %msg%n</pattern>

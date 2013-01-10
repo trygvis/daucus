@@ -4,7 +4,6 @@ import static fj.P.*;
 import fj.*;
 import fj.data.*;
 import static fj.data.Option.*;
-import static java.util.Collections.singletonList;
 
 import io.trygvis.esper.testing.*;
 import io.trygvis.esper.testing.core.db.*;
@@ -42,17 +41,16 @@ public class UnbreakableBadgeProgress extends BadgeProgress {
         List<UUID> builds = new ArrayList<>(this.builds);
         builds.add(build.uuid);
 
-        if (progression() == UnbreakableBadge.LEVEL_3_COUNT) {
+        if (builds.size() == UnbreakableBadge.LEVEL_3_COUNT) {
             // You have to start from scratch now.
-            builds = singletonList(build.uuid);
-            return p(new UnbreakableBadgeProgress(person, builds), some(new UnbreakableBadge(person, 3, builds)));
+            return p(new UnbreakableBadgeProgress(person, Collections.<UUID>emptyList()), some(new UnbreakableBadge(person, 3, builds)));
         }
 
-        if (progression() == UnbreakableBadge.LEVEL_2_COUNT) {
+        if (builds.size() == UnbreakableBadge.LEVEL_2_COUNT) {
             return p(new UnbreakableBadgeProgress(person, builds), some(new UnbreakableBadge(person, 2, builds)));
         }
 
-        if (progression() == UnbreakableBadge.LEVEL_1_COUNT) {
+        if (builds.size() == UnbreakableBadge.LEVEL_1_COUNT) {
             return p(new UnbreakableBadgeProgress(person, builds), some(new UnbreakableBadge(person, 1, builds)));
         }
 

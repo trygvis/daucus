@@ -29,6 +29,14 @@ public class UnbreakableBadgeProgressTest extends TestCase {
         for (int i = 0; i < 55; i++) {
             P2<UnbreakableBadgeProgress, Option<UnbreakableBadge>> p2 = p.onBuild(success);
 
+            if (i < 50) {
+                assertEquals(i, p.builds.size());
+            }
+
+            if (i == 50) {
+                assertEquals(0, p.builds.size());
+            }
+
             if (p2._2().isSome()) {
                 badges.add(p2._2().some());
             }
@@ -39,8 +47,11 @@ public class UnbreakableBadgeProgressTest extends TestCase {
         assertEquals(5, p.builds.size());
         assertEquals(3, badges.size());
         assertEquals(1, badges.get(0).level);
+        assertEquals(10, badges.get(0).builds.size());
         assertEquals(2, badges.get(1).level);
+        assertEquals(20, badges.get(1).builds.size());
         assertEquals(3, badges.get(2).level);
+        assertEquals(50, badges.get(2).builds.size());
 
         P2<UnbreakableBadgeProgress, Option<UnbreakableBadge>> p2 = p.onBuild(failure);
 

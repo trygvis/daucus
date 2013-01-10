@@ -70,9 +70,9 @@ public class Config {
     }
 
     public static Config loadFromDisk(String appName) throws IOException {
-        initSystemProperties();
+        initSystemProperties(appName);
 
-        initLogging(appName);
+        initLogging();
 
         Properties properties = new Properties();
         try (FileInputStream inputStream = new FileInputStream("etc/config.properties")) {
@@ -88,15 +88,15 @@ public class Config {
                 trimToNull(properties.getProperty("database.password")));
     }
 
-    private static void initSystemProperties() {
+    private static void initSystemProperties(String appName) {
         // Java 7 is more strict on checking matching host names or something similar.
         // http://docs.oracle.com/javase/7/docs/technotes/guides/security/jsse/JSSERefGuide.html#Customization
         System.setProperty("jsse.enableSNIExtension", "false");
+
+        System.setProperty("loggingApp", appName);
     }
 
-    private static void initLogging(String appName) {
-        System.setProperty("logging.app", appName);
-
+    private static void initLogging() {
         File logs = new File("logs");
 
         if(!logs.isDirectory()) {
