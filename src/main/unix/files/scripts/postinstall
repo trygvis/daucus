@@ -1,10 +1,18 @@
 #!/bin/bash
 
-ln -s ../../../../etc/config.properties etc/config.properties
+case "`uname -s`" in
+  CYGWIN*)
+    cp ../../../etc/config.properties etc/config.properties
+    mkdir -p logs/
+    ;;
+  *)
+    ln -s ../../../../etc/config.properties etc/config.properties
 
-if [ ! -d ../../../logs ]
-then
-  mkdir ../../../logs
-fi
+    if [ ! -d ../../../logs ]
+    then
+      mkdir ../../../logs
+    fi
 
-ln -s ../../../logs
+    ln -s ../../../logs
+    ;;
+esac

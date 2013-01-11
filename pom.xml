@@ -214,6 +214,10 @@
                   <name>unbreakable-poller</name>
                   <mainClass>io.trygvis.esper.testing.core.badge.UnbreakablePoller</mainClass>
                 </program>
+                <program>
+                  <name>web</name>
+                  <mainClass>io.trygvis.appsh.booter.jetty.Main</mainClass>
+                </program>
               </programs>
             </configuration>
           </execution>
