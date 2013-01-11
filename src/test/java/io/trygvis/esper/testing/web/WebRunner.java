@@ -2,7 +2,8 @@ package io.trygvis.esper.testing.web;
 
 import io.trygvis.appsh.booter.jetty.*;
 import io.trygvis.esper.testing.*;
-import java.net.*;
+
+import java.io.*;
 
 public class WebRunner {
 
@@ -12,13 +13,8 @@ public class WebRunner {
 
         JettyWebServer server = new JettyWebServer();
         server.setHttpPort(1337);
-//        server.addContext("/", new File("src/main/resources/webapp").getAbsoluteFile());
-        URL resource = WebRunner.class.getResource("/webapp/index.jspx");
-        System.out.println("resource = " + resource);
-        System.out.println("resource.toExternalForm() = " + resource.toExternalForm());
-
-//        server.addContext("/", new File(resource.toExternalForm()));
-        server.addContext("/", resource);
+        File webapp = new File(WebRunner.class.getResource("/webapp").getPath());
+        server.addContext(new JettyWebServer.WarContext("/", webapp));
         server.run();
     }
 }
