@@ -80,7 +80,7 @@ function PersonCtrl($scope, $routeParams, Person, Build, PagingTableService) {
   var personUuid = $routeParams.personUuid;
 
   $scope.mode = 'overview';
-  $scope.builds = PagingTableService.create($scope, PagingTableService.defaultCallback(Build, {person: personUuid}));
+  $scope.builds = PagingTableService.create($scope, PagingTableService.defaultCallback(Build, {person: personUuid}), {count: 100});
 
   $scope.setMode = function(mode) {
     $scope.mode = mode;

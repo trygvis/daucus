@@ -21,7 +21,15 @@
 }
 
 /*
- *
+ * Common elements
+ */
+
+table.text-baseline td {
+    vertical-align: baseline
+}
+
+/*
+ * Other
  */
 
 #content {

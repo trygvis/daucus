@@ -46,15 +46,6 @@
     <div class="span6">
       <h3>Recent builds</h3>
       <table class="table">
-        <thead>
-        <!--
-        <tr>
-          <th>Date</th>
-          <th>Success</th>
-          <th></th>
-        </tr>
-        -->
-        </thead>
         <tbody>
         <tr ng-repeat="build in recentBuilds" class="{{{true: 'success', false: 'error'}[build.success]}}">
           <td>{{build.timestamp | date:'medium'}}</td>
@@ -68,7 +59,7 @@
 
   <div id="builds" ng-show="mode == 'builds'">
     <h3>Builds</h3>
-    <table class="table">
+    <table class="table text-baseline">
       <thead>
       <tr>
         <th>Date</th>
@@ -79,6 +70,9 @@
       <tr ng-repeat="build in builds.rows" class="{{{true: 'build-success', false: 'build-error'}[build.success]}}">
         <td>{{build.timestamp | date:'medium'}}</td>
         <td>{{build.success}}</td>
+        <td>
+          <a class="btn btn-small" href="/build/{{build.uuid}}"><i class="icon-chevron-right"></i></a>
+        </td>
       </tr>
       </tbody>
       <tfoot>
