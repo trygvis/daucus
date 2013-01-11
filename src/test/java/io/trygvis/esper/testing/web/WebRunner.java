@@ -2,8 +2,6 @@ package io.trygvis.esper.testing.web;
 
 import io.trygvis.appsh.booter.jetty.*;
 import io.trygvis.esper.testing.*;
-import org.slf4j.bridge.*;
-
 import java.io.*;
 
 public class WebRunner {

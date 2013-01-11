@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ln -s ../../../etc
+ln -s ../../../../etc/config.properties etc/config.properties
 
 if [ ! -d ../../../logs ]
 then
