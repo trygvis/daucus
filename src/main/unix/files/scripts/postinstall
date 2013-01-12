@@ -14,5 +14,10 @@ case "`uname -s`" in
     fi
 
     ln -s ../../../logs
+
+    if [ -r ../../../etc/app.conf ]
+    then
+      cat ../../../etc/app.conf >> etc/app.conf
+    fi
     ;;
 esac
