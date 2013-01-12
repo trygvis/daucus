@@ -13,7 +13,7 @@ public class WebRunner {
 
         JettyWebServer server = new JettyWebServer();
         server.setHttpPort(1337);
-        File webapp = new File(WebRunner.class.getResource("/webapp").getPath());
+        File webapp = new File("src/main/resources/webapp");
         server.addContext(new JettyWebServer.WarContext("/", webapp));
         server.run();
     }
