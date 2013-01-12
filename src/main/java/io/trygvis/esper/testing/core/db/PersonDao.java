@@ -198,7 +198,8 @@ public class PersonDao {
             sql += " AND level=?";
         }
 
-        sql += " ORDER BY created_date DESC";
+        sql += orderBy(page.orderBy, "name", "created_date");
+
         sql += " LIMIT ? OFFSET ?";
 
         try (PreparedStatement s = c.prepareStatement(sql)) {

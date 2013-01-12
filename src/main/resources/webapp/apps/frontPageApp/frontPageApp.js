@@ -7,7 +7,8 @@ var frontPageApp = angular.module('frontPageApp', ['ngGrid', 'person', 'badge', 
       when('/badge/:badgeUuid', {controller: BadgeCtrl, templateUrl: '/apps/frontPageApp/badge.html?noCache=' + noCache}).
       when('/person/', {controller: PersonListCtrl, templateUrl: '/apps/frontPageApp/personList.html?noCache=' + noCache}).
       when('/person/:personUuid', {controller: PersonCtrl, templateUrl: '/apps/frontPageApp/person.html?noCache=' + noCache}).
-      when('/build/', {controller: BuildListCtrl, templateUrl: '/apps/frontPageApp/buildList.html?noCache=' + noCache});
+      when('/build/', {controller: BuildListCtrl, templateUrl: '/apps/frontPageApp/buildList.html?noCache=' + noCache}).
+      when('/build/:buildUuid', {controller: BuildCtrl, templateUrl: '/apps/frontPageApp/build.html?noCache=' + noCache});
 });
 
 function FrontPageCtrl($scope, Person, Badge) {
@@ -33,8 +34,6 @@ function groupBy(array, size) {
 }
 
 function BadgeListCtrl($scope, Badge, PagingTableService) {
-  var groupSize = 6;
-
   var personsWatcher = function () {
     var withDay = _.map($scope.badges.rows, function(badge) {
       badge.day = new Date(badge.badge.createdDate).clearTime().getTime();
@@ -43,16 +42,22 @@ function BadgeListCtrl($scope, Badge, PagingTableService) {
     });
 
     var byDay = _.groupBy(withDay, 'day');
-    console.log("byDay", byDay);
-//    var dateGroups = _.map(byDay, function(group, date) {
-//      return {date: groupBy(group, groupSize)}
-//    });
+//    console.log("byDay", byDay);
+
+    byDay = _.map(byDay, function(value, key) {
+      var o = {};
+      o[key] = value;
+      return o;
+    });
+
+//    byDay = _.toArray(byDay).reverse();
+//    console.log("byDay", byDay);
 
     $scope.badgeGroups = byDay;
   };
 
-  $scope.badges = PagingTableService.create($scope, PagingTableService.defaultCallback(Badge),
-      {count: groupSize * 6, watcher: personsWatcher});
+  $scope.badges = PagingTableService.create($scope, PagingTableService.defaultCallback(Badge, {orderBy: "created_date-"}),
+      {count: 20, watcher: personsWatcher});
 
   $scope.badgeGroups = [];
 }
@@ -106,5 +111,13 @@ function PersonCtrl($scope, $routeParams, Person, Build, PagingTableService) {
 }
 
 function BuildListCtrl($scope, Build, PagingTableService) {
-    $scope.builds = PagingTableService.create($scope, PagingTableService.defaultCallback(Build, {fields: "detailed"}));
+  $scope.builds = PagingTableService.create($scope, PagingTableService.defaultCallback(Build, {fields: "detailed"}));
+}
+
+function BuildCtrl($scope, Build, PagingTableService) {
+  var buildUuid = $routeParams.buildUuid;
+
+  Build.get({uuid: buildUuid}, function (build) {
+    $scope.build = build;
+  });
 }

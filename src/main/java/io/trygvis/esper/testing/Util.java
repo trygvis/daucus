@@ -89,16 +89,20 @@ public class Util {
             }
 
             for (String s : allowed) {
-                if (s.equals(input)) {
-                    if (buffer.length() == 0) {
-                        buffer.append(" ORDER BY ");
-                    } else {
-                        buffer.append(", ");
-                    }
-                    buffer.append(s);
-                    if (desc) {
-                        buffer.append(" DESC");
-                    }
+                if (!s.equals(input)) {
+                    continue;
+                }
+
+                if (buffer.length() == 0) {
+                    buffer.append(" ORDER BY ");
+                } else {
+                    buffer.append(", ");
+                }
+
+                buffer.append(s);
+
+                if (desc) {
+                    buffer.append(" DESC");
                 }
             }
         }
