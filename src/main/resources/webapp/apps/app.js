@@ -92,6 +92,8 @@ directives.directive('personAvatar', function () {
     scope: {
       person: '=person'
     },
-    template: '<img ng-src="{{person.gravatar}}?default=identicon" class="avatar-image avatar80" title="{{person.name}}"/>'
+    template: '<a href="#/person/{{person.uuid}}">' +
+        '<img ng-src="{{person.gravatar}}?default=identicon" class="avatar-image avatar80" title="{{person.name}}"/>' +
+        '</a>'
   }
 });

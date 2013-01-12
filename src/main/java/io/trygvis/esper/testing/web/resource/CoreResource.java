@@ -33,11 +33,12 @@ public class CoreResource extends AbstractResource {
 
     @GET
     @Path("/person")
-    public List<PersonDetailJson> getPersons(@MagicParam final PageRequest pageRequest) throws Exception {
+    public List<PersonDetailJson> getPersons(@MagicParam final PageRequest pageRequest,
+                                             @QueryParam("query") final String query) throws Exception {
         return da.inTransaction(new CoreDaosCallback<List<PersonDetailJson>>() {
             protected List<PersonDetailJson> run() throws SQLException {
                 List<PersonDetailJson> list = new ArrayList<>();
-                for (PersonDto person : daos.personDao.selectPersons(pageRequest)) {
+                for (PersonDto person : daos.personDao.selectPersons(pageRequest, fromNull(query))) {
                     list.add(super.getPersonDetailJson.apply(person));
                 }
                 return list;

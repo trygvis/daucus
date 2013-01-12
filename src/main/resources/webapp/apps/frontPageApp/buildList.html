@@ -16,27 +16,23 @@
     }
   </style>
 
+  <div class="row" ng-repeat="build in builds.rows">
+    <div class="span12">
+      <h3>
+        {{build.build.timestamp | date:'medium'}}:
+        <span class="success" ng-show="build.build.success">SUCCESS</span>
+        <span class="error" ng-hide="build.build.success">FAILURE</span>
+      </h3>
+
+      <h4>Participants</h4>
+      <span ng-repeat="p in build.participants">
+        <person-avatar person="p"></person-avatar>
+      </span>
+    </div>
+  </div>
+
   <div class="row">
     <div class="span12">
-      <table class="table">
-        <tbody ng-repeat="build in builds.rows">
-        <tr class="{{{true: 'success', false: 'error'}[build.build.success]}}">
-          <td>{{build.build.timestamp | date:'medium'}}</td>
-          <td>
-            <span ng-show="build.build.success">SUCCESS</span>
-            <span ng-hide="build.build.success">FAILURE</span>
-          </td>
-          <td><a class="btn" href="/build/{{build.build.uuid}}"><i class="icon-chevron-right"></i></a></td>
-        </tr>
-        <tr>
-          <td colspan="3">
-            <span ng-repeat="p in build.participants">
-              <person-avatar person="p"/>
-            </span>
-          </td>
-        </tr>
-        </tbody>
-      </table>
       <ul class="pager">
         <li class="previous" ng-show="builds.startIndex > 0">
           <a ng-click="builds.prev()">&larr; Prev</a>

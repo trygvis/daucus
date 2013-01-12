@@ -96,8 +96,12 @@ public class PersonDao {
         }
     }
 
-    public List<PersonDto> selectPersons(PageRequest pageRequest) throws SQLException {
+    public List<PersonDto> selectPersons(PageRequest pageRequest, Option<String> query) throws SQLException {
         String sql = "SELECT " + PERSON + " FROM person";
+
+        if (query.isSome()) {
+            sql += " WHERE lower(name) LIKE '%' || ? || '%'";
+        }
 
         sql += orderBy(pageRequest.orderBy, "name", "created_date");
 
@@ -105,6 +109,11 @@ public class PersonDao {
 
         try (PreparedStatement s = c.prepareStatement(sql)) {
             int i = 1;
+
+            if (query.isSome()) {
+                s.setString(i++, query.some());
+            }
+
             s.setInt(i++, pageRequest.count.orSome(10));
             s.setInt(i, pageRequest.startIndex.orSome(0));
             return toList(s, person);

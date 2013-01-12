@@ -9,6 +9,7 @@ var frontPageApp = angular.module('frontPageApp', ['ngGrid', 'person', 'badge', 
       when('/person/:personUuid', {controller: PersonCtrl, templateUrl: '/apps/frontPageApp/person.html?noCache=' + noCache}).
       when('/build/', {controller: BuildListCtrl, templateUrl: '/apps/frontPageApp/buildList.html?noCache=' + noCache}).
       when('/build/:buildUuid', {controller: BuildCtrl, templateUrl: '/apps/frontPageApp/build.html?noCache=' + noCache});
+  // job/:jobUuid/build/:buildUuid
 });
 
 function FrontPageCtrl($scope, Person, Badge) {
@@ -77,6 +78,9 @@ function PersonListCtrl($scope, Person, PagingTableService) {
 
   $scope.persons = PagingTableService.create($scope, PagingTableService.defaultCallback(Person, {orderBy: "name"}),
       {count: groupSize * 6, watcher: personsWatcher});
+
+  console.log("$scope.persons.searchText", $scope.persons.searchText);
+  console.log("$scope.persons.rows", $scope.persons.rows);
 
   $scope.personGroups = [];
 }
