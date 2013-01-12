@@ -1,6 +1,7 @@
 package io.trygvis.esper.testing.jenkins;
 
 import com.jolbox.bonecp.*;
+import fj.data.*;
 import io.trygvis.esper.testing.*;
 import io.trygvis.esper.testing.util.object.*;
 import io.trygvis.esper.testing.util.*;
@@ -8,7 +9,7 @@ import org.apache.abdera.*;
 import org.codehaus.httpcache4j.cache.*;
 
 import java.sql.*;
-import java.util.*;
+import java.util.HashSet;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;
 
@@ -28,7 +29,7 @@ public class JenkinsImporter {
 
         ObjectManager<JenkinsServerDto, ActorRef<JenkinsServerActor>> serverManager = new ObjectManager<>("JenkinsServerOld", servers, new ObjectFactory<JenkinsServerDto, ActorRef<JenkinsServerActor>>() {
             public ActorRef<JenkinsServerActor> create(JenkinsServerDto server) {
-                String name = "Jenkins: " + server.url;
+                String name = "Jenkins: " + Option.fromNull(server.name).orSome(server.url.toASCIIString());
                 return threadedActor(name, config.jenkinsUpdateInterval, boneCp, name, new JenkinsServerActor(jenkinsClient, server));
             }
         });

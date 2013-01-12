@@ -132,7 +132,7 @@ public class JenkinsResource extends AbstractResource {
                     jobs.add(getJenkinsJobJson.apply(jobDto));
                 }
 
-                return new JenkinsServerJson(server.uuid, server.createdDate, server.url, server.enabled, count, jobs);
+                return new JenkinsServerJson(server.uuid, server.createdDate, server.name, server.url, server.enabled, count, jobs);
             }
         };
 
@@ -191,14 +191,16 @@ public class JenkinsResource extends AbstractResource {
 class JenkinsServerJson {
     public final UUID uuid;
     public final DateTime createdDate;
+    public final String name;
     public final URI url;
     public final boolean enabled;
     public final int jobCount;
     public final List<JenkinsJobJson> recentJobs;
 
-    JenkinsServerJson(UUID uuid, DateTime createdDate, URI url, boolean enabled, int jobCount, List<JenkinsJobJson> recentJobs) {
+    JenkinsServerJson(UUID uuid, DateTime createdDate, String name, URI url, boolean enabled, int jobCount, List<JenkinsJobJson> recentJobs) {
         this.uuid = uuid;
         this.createdDate = createdDate;
+        this.name = name;
         this.url = url;
         this.enabled = enabled;
         this.jobCount = jobCount;

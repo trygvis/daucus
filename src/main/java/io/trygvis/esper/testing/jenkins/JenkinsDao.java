@@ -20,7 +20,7 @@ public class JenkinsDao {
 
     private final Connection c;
 
-    public static final String JENKINS_SERVER = "uuid, created_date, url, enabled";
+    public static final String JENKINS_SERVER = "uuid, created_date, name, url, enabled";
 
     public static final String JENKINS_JOB = "uuid, created_date, server, file, url, job_type, display_name";
 
@@ -36,6 +36,7 @@ public class JenkinsDao {
             return new JenkinsServerDto(
                     UUID.fromString(rs.getString(i++)),
                     new DateTime(rs.getTimestamp(i++).getTime()),
+                    rs.getString(i++),
                     URI.create(rs.getString(i++)),
                     rs.getBoolean(i));
         }

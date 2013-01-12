@@ -7,11 +7,13 @@ import java.net.*;
 import java.util.*;
 
 public class JenkinsServerDto extends AbstractEntity {
+    public final String name;
     public final URI url;
     public final boolean enabled;
 
-    JenkinsServerDto(UUID uuid, DateTime createdDate, URI url, boolean enabled) {
+    public JenkinsServerDto(UUID uuid, DateTime createdDate, String name, URI url, boolean enabled) {
         super(uuid, createdDate);
+        this.name = name;
         this.url = url;
         this.enabled = enabled;
     }
