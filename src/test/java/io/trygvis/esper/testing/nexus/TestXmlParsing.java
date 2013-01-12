@@ -6,6 +6,7 @@ import static io.trygvis.esper.testing.nexus.ArtifactXml.repositoryFilter;
 import io.trygvis.esper.testing.util.*;
 import junit.framework.*;
 import org.jdom2.*;
+import org.joda.time.*;
 
 import java.io.*;
 import java.util.*;
@@ -57,7 +58,7 @@ public class TestXmlParsing extends TestCase {
 
             NewSnapshotEvent e = (NewSnapshotEvent) NexusFeedParser.parseEvent(items.get(0)).some();
             NexusEvent event = e.event;
-            assertEquals("2012-12-04T13:26:40.000+01:00", event.date.toString());
+            assertEquals("2012-12-04T12:26:40.000Z", event.date.withZone(DateTimeZone.UTC).toString());
             assertEquals("developer", event.creator);
             assertEquals("org.example", event.artifactId.groupId);
             assertEquals("example", event.artifactId.artifactId);
