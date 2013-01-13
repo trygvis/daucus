@@ -46,10 +46,10 @@
         </div>
       </div>
       <ul class="pager">
-        <li class="previous" ng-show="persons.startIndex > 0">
+        <li ng-show="persons.showPrev()" class="previous {{{true: 'disabled', false: ''}[persons.prevDisabled()]}}">
           <a ng-click="persons.prev()">&larr; Prev</a>
         </li>
-        <li class="next">
+        <li ng-show="persons.showNext()" class="next {{{true: 'disabled', false: ''}[persons.nextDisabled()]}}">
           <a ng-click="persons.next()">Next &rarr;</a>
         </li>
       </ul>
