@@ -11,7 +11,12 @@ function PagingTableService() {
       queryStart: 0
     };
 
-    var update = function(){
+    var update = function () {
+      var query = self.query;
+      if (self.currentlySearching) {
+        console.log("query active, storing =", query);
+        return;
+      }
       self.currentlySearching = true;
       self.queryStart = new Date().getTime();
 
@@ -20,16 +25,22 @@ function PagingTableService() {
         $scope.$apply();
       }, 500);
 
-      fetchCallback(self.startIndex, self.count, self.query, function(data) {
+      fetchCallback(self.startIndex, self.count, query, function (data) {
         var now = new Date().getTime();
         console.log("Query took " + (now - self.queryStart) + "ms");
 
         clearInterval(interval);
 
         self.rows = data.rows;
-        watcher();
         self.currentlySearching = false;
         self.queryStart = 0;
+
+        if(self.query != query) {
+          console.log("Had a new query requested, sending. query =", query, ", self.query =", self.query);
+          update();
+        }
+
+        watcher();
       });
     };
 
@@ -115,7 +126,7 @@ function PagingTableService() {
       if(count) {
         args.count = count;
       }
-      if(query) {
+      if(query || query == "") {
         args.query = query;
       }
       console.log("Fetching page. args =", args);
