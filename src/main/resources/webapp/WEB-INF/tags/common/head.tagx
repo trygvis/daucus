@@ -24,11 +24,12 @@
     <script type="text/javascript">
       head.js(
           {jquery: "/external/jquery-1.8.3/jquery-1.8.3.js"},
-          {angularjs: "/external/angular-1.0.3/angular.js"},
-          {angularjsResource: "/external/angular-1.0.3/angular-resource.js"},
-          {angularUiNgGrid: "/external/angular-ui/ng-grid-1.6.0/ng-grid-1.6.0.debug.js"},
+          {angular: "/external/angular-1.0.3/angular.js"},
+          {angularResource: "/external/angular-1.0.3/angular-resource.js"},
+          {ngGrid: "/external/angular-ui/ng-grid-1.6.0/ng-grid-1.6.0.debug.js"},
           {underscore: "/external/underscore-1.4.3/underscore.js"},
           {datejs: "/external/datejs-Alpha1/date.js"},
+          {spin: "/external/spin-1.2.7/spin.js"},
           {app: "/apps/app.js"},
           {PagingTableService: "/apps/core/PagingTableService.js"}
       );

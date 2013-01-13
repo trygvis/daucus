@@ -71,13 +71,13 @@ function BadgeCtrl($scope, $routeParams, Badge) {
 }
 
 function PersonListCtrl($scope, Person, PagingTableService) {
-  var groupSize = 4;
+  var groupSize = 4, rows = 6;
   var personsWatcher = function () {
     $scope.personGroups = groupBy($scope.persons.rows, groupSize);
   };
 
   $scope.persons = PagingTableService.create($scope, PagingTableService.defaultCallback(Person, {orderBy: "name"}),
-      {count: groupSize * 6, watcher: personsWatcher});
+      {count: groupSize * rows, watcher: personsWatcher});
 
   console.log("$scope.persons.searchText", $scope.persons.searchText);
   console.log("$scope.persons.rows", $scope.persons.rows);

@@ -33,7 +33,15 @@
 
   <div class="row">
     <div class="span12">
-      <div class="row" ng-repeat="group in personGroups">
+      <div class="row" ng-show="persons.showSpinner()">
+        <div class="span12">
+          <div style="height: 100px">
+            <div spinner spinner-class="wat" spinner-left="564px" spinner-top="50%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" ng-repeat="group in personGroups" ng-show="persons.showResults()">
         <div class="span3" ng-repeat="person in group" style="padding-bottom: 1em">
           <div class="row">
             <person-avatar person="person.person"></person-avatar>
@@ -45,6 +53,7 @@
           </div>
         </div>
       </div>
+
       <ul class="pager">
         <li ng-show="persons.showPrev()" class="previous {{{true: 'disabled', false: ''}[persons.prevDisabled()]}}">
           <a ng-click="persons.prev()">&larr; Prev</a>

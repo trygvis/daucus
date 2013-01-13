@@ -7,15 +7,29 @@ function PagingTableService() {
       query: "",
       startIndex: options.startIndex || 0,
       count: options.count || 10,
-      currentlySearching: false
+      currentlySearching: false,
+      queryStart: 0
     };
 
     var update = function(){
       self.currentlySearching = true;
+      self.queryStart = new Date().getTime();
+
+      // This will update the spinner if the user want to show it.
+      var interval = setInterval(function () {
+        $scope.$apply();
+      }, 500);
+
       fetchCallback(self.startIndex, self.count, self.query, function(data) {
+        var now = new Date().getTime();
+        console.log("Query took " + (now - self.queryStart) + "ms");
+
+        clearInterval(interval);
+
         self.rows = data.rows;
         watcher();
         self.currentlySearching = false;
+        self.queryStart = 0;
       });
     };
 
@@ -54,6 +68,20 @@ function PagingTableService() {
 
     self.onSearchChange = function () {
       update();
+    };
+
+    /*
+     * UI State queries
+     *
+     * TODO: the results should only be shown if the last query was successful. Add an 'error' state too.
+     */
+
+    self.showSpinner = function () {
+      return self.currentlySearching && new Date().getTime() - self.queryStart > 500;
+    };
+
+    self.showResults = function () {
+      return !self.currentlySearching;
     };
 
     self.showPrev = function () {
