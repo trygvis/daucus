@@ -1,0 +1,12 @@
+<div class="dogtag-big">
+  <a href="#/person/{{person.uuid}}">
+    <img width="80px" height="80px" ng-src="{{person.gravatar}}?default=identicon" title="{{person.name}}" style="float: left"/>
+  </a>
+  <a href="/#/person/{{person.uuid}}">{{person.name}}</a>
+  <br/>
+  <span ng-repeat="level in person.badges | countBadgeByLevel | gz">
+    <span class="badge-inverse badge-level-{{$index + 1}} badge">
+      <i class="icon-user"></i> x {{level}}
+    </span>
+  </span>
+</div>

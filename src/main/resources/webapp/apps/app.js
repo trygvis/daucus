@@ -97,3 +97,13 @@ directives.directive('personAvatar', function () {
         '</a>'
   }
 });
+
+directives.directive('dogtagxl', function () {
+  return {
+    restrict: 'EACM',
+    scope: {
+      person: '=person'
+    },
+    templateUrl: '/apps/dogtagBig.html'
+  }
+});

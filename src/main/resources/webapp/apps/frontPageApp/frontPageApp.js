@@ -118,7 +118,7 @@ function BuildListCtrl($scope, Build, PagingTableService) {
   $scope.builds = PagingTableService.create($scope, PagingTableService.defaultCallback(Build, {fields: "detailed"}));
 }
 
-function BuildCtrl($scope, Build, PagingTableService) {
+function BuildCtrl($scope, $routeParams, Build, PagingTableService) {
   var buildUuid = $routeParams.buildUuid;
 
   Build.get({uuid: buildUuid}, function (build) {

@@ -3,25 +3,21 @@
   <navbar/>
 
   <div class="page-header">
-    <h1>Badge</h1>
+    <h1>Build</h1>
   </div>
 
   <div class="row">
     <div class="span12">
-      The badge <badge-span badge="badge.badge"></badge-span> was awarded to <person-link person="badge.person"></person-link> at
-      {{badge.badge.createdDate | date:'medium'}}.
-    </div>
-  </div>
-
-  <div class="row" ng-switch="badge.badge.name">
-    <div class="span12" ng-switch-when="UNBREAKABLE">
-      <h2>Details</h2>
+      <p>
+        The badge <badge-span badge="badge.badge"></badge-span> was awarded to
+        <person-link person="badge.person"></person-link> at {{badge.badge.createdDate | date:'medium'}}.
+      </p>
       <p>
         The badge was awarded for having {{badge.personalBadge.builds.length}} successful builds in a row:
       </p>
       <ul class="unstyled">
         <li ng-repeat="b in badge.personalBadge.builds">
-          <a class="btn" href="/build/{{b}}">{{$index + 1}} <i class="icon-chevron-right"></i></a>
+          <a class="btn" href="#/build/{{b}}">{{$index + 1}} <i class="icon-chevron-right"></i></a>
         </li>
       </ul>
     </div>

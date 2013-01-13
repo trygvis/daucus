@@ -1,0 +1,29 @@
+<div class="container">
+
+  <navbar/>
+
+  <div class="page-header">
+    <h1>Build</h1>
+  </div>
+
+  <div class="row">
+    <div class="span12">
+      <table class="table table-bordered">
+        <tbody>
+        <tr>
+          <th>Type</th>
+          <td>Jenkins</td>
+        </tr>
+        <tr>
+          <th>Duration</th>
+          <td>{{build.build.timestamp | date:'medium'}}</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <h2>Participants</h2>
+      <span dogtagxl ng-repeat="p in build.participants" person="p"/>
+    </div>
+
+  </div>
+</div>
