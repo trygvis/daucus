@@ -56,7 +56,7 @@ public class JenkinsServerActor implements TransactionalActor {
             SqlOption<JenkinsBuildDto> o = dao.selectBuildByEntryId(entry.id);
 
             if (o.isSome()) {
-                logger.debug("Old build: " + entry.id);
+//                logger.debug("Old build: " + entry.id);
                 continue;
             }
 
@@ -78,8 +78,6 @@ public class JenkinsServerActor implements TransactionalActor {
             }
 
             UUID buildXmlFile = fileDao.store(buildUrl, "application/xml", buildXmlOption.some()._2());
-
-            String result = build.result.some();
 
             // -----------------------------------------------------------------------
             // Users
