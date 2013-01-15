@@ -204,6 +204,10 @@
             <configuration>
               <programs>
                 <program>
+                  <name>ldap-importer</name>
+                  <mainClass>io.trygvis.esper.testing.LdapImporter</mainClass>
+                </program>
+                <program>
                   <name>nexus-importer</name>
                   <mainClass>io.trygvis.esper.testing.nexus.NexusImporter</mainClass>
                 </program>

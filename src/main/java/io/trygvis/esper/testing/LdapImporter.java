@@ -11,20 +11,20 @@ import java.util.*;
 import javax.naming.*;
 import javax.naming.directory.*;
 
-public class PersonGenerator {
+public class LdapImporter {
     public static void main(String[] args) throws Exception {
         Config config = Config.loadFromDisk("person-generator");
 
         final Logger logger = LoggerFactory.getLogger(config.appName);
 
-        String ldapHost = System.getProperty("ldap.host", "localhost");
-        int ldapPort = Integer.parseInt(System.getProperty("ldap.port", "386"));
-        String baseDn = System.getProperty("ldap.base");
-
-        if(baseDn == null) {
-            System.err.println("Missing system property: ldap.base");
-            return;
+        if(args.length != 3) {
+            System.err.println("Usage: ldap-importer [ldap host] [ldap port] [base dn]");
+            System.exit(1);
         }
+
+        String ldapHost = args[0];
+        int ldapPort = Integer.parseInt(args[1]);
+        String baseDn = args[2];
 
         Properties properties = new Properties();
         properties.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
@@ -35,8 +35,7 @@ public class PersonGenerator {
         InitialDirContext context = new InitialDirContext(properties);
         SearchControls searchCtls = new SearchControls();
         searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
-        String returnedAtts[] = {"uid", "mail", "displayName"};
-        searchCtls.setReturningAttributes(returnedAtts);
+        searchCtls.setReturningAttributes(new String[]{"uid", "mail", "displayName"});
         NamingEnumeration answer = context.search(baseDn, "(&(uid=*)(mail=*)(displayName=*))", searchCtls);
 
         BoneCPDataSource dataSource = config.createBoneCp();
