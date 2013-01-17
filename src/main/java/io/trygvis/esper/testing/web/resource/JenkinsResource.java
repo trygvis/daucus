@@ -103,6 +103,17 @@ public class JenkinsResource extends AbstractResource {
         });
     }
 
+    @GET
+    @Path("/user/{uuid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public JenkinsUserJson getUser(@MagicParam final UUID user) throws Exception {
+        return sql(new JenkinsDaosCallback<SqlOption<JenkinsUserJson>>() {
+            protected SqlOption<JenkinsUserJson> run() throws SQLException {
+                return daos.jenkinsDao.selectUser(user).map(getJenkinsUserJson);
+            }
+        });
+    }
+
     public static UUID parseUuid(String s) {
         try {
             return UUID.fromString(s);

@@ -1,6 +1,6 @@
 'use strict';
 
-var frontPageApp = angular.module('frontPageApp', ['ngGrid', 'person', 'badge', 'build', 'pagingTableService', 'core.directives']).config(function ($routeProvider) {
+var frontPageApp = angular.module('frontPageApp', ['ngGrid', 'person', 'badge', 'build', 'jenkinsUser', 'pagingTableService', 'core.directives']).config(function ($routeProvider) {
   $routeProvider.
       when('/', {controller: FrontPageCtrl, templateUrl: '/apps/frontPageApp/frontPage.html?noCache=' + noCache}).
       when('/badge/', {controller: BadgeListCtrl, templateUrl: '/apps/frontPageApp/badgeList.html?noCache=' + noCache}).
@@ -85,7 +85,7 @@ function PersonListCtrl($scope, Person, PagingTableService) {
   $scope.personGroups = [];
 }
 
-function PersonCtrl($scope, $routeParams, Person, Build, PagingTableService) {
+function PersonCtrl($scope, $routeParams, Person, Build, JenkinsUser, PagingTableService) {
   var personUuid = $routeParams.personUuid;
 
   $scope.mode = 'overview';
@@ -107,6 +107,12 @@ function PersonCtrl($scope, $routeParams, Person, Build, PagingTableService) {
 
   Person.get({uuid: personUuid}, function (person) {
     $scope.person = person;
+
+    $scope.jenkinsUsers = person.jenkinsUsers;
+    _.forEach(person.jenkinsUsers, function(uuid, i) {
+      JenkinsUser.get({uuid: uuid}, function(user) {
+        $scope.jenkinsUsers[i] = user;
+      })});
   });
 
   Build.query({person: personUuid}, function (builds) {

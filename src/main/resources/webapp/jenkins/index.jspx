@@ -5,7 +5,6 @@
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 
 <common:head>
-  <common:headjs label="JenkinsResources" resource="/apps/jenkinsApp/JenkinsResources.js"/>
   <common:headjs label="PagingTableService" resource="/apps/core/PagingTableService.js"/>
   <common:headjs label="jenkinsApp" resource="/apps/jenkinsApp/jenkinsApp.js"/>
 </common:head>

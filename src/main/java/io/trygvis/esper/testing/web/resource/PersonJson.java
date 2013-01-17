@@ -25,10 +25,12 @@ class PersonDetailJson {
     public final PersonJson person;
     public final List<BadgeJson> badges;
     public final List<BadgeJson> badgesInProgress;
+    public final List<UUID> jenkinsUsers;
 
-    public PersonDetailJson(PersonJson person, List<BadgeJson> badges, List<BadgeJson> badgesInProgress) {
+    PersonDetailJson(PersonJson person, List<BadgeJson> badges, List<BadgeJson> badgesInProgress, List<UUID> jenkinsUsers) {
         this.person = person;
         this.badges = badges;
         this.badgesInProgress = badgesInProgress;
+        this.jenkinsUsers = jenkinsUsers;
     }
 }

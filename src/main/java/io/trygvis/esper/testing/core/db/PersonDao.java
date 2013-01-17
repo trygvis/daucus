@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.*;
 
 import static io.trygvis.esper.testing.Util.*;
+import static io.trygvis.esper.testing.util.sql.ResultSetF.getUUID;
 import static io.trygvis.esper.testing.util.sql.SqlOption.*;
 import static java.lang.System.*;
 
@@ -144,6 +145,14 @@ public class PersonDao {
             s.setString(i++, person.toUuidString());
             s.setString(i, jenkinsUser.toString());
             s.executeUpdate();
+        }
+    }
+
+    public List<UUID> selectJenkinsUserUuidsByPerson(Uuid person) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT jenkins_user FROM person_jenkins_user WHERE person=?")) {
+            int i = 1;
+            s.setString(i, person.toUuidString());
+            return toList(s, getUUID);
         }
     }
 

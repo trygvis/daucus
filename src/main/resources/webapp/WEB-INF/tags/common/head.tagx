@@ -31,6 +31,7 @@
           {datejs: "/external/datejs-Alpha1/date.js"},
           {spin: "/external/spin-1.2.7/spin.js"},
           {app: "/apps/app.js"},
+          {JenkinsResources: "/apps/jenkinsApp/JenkinsResources.js"},
           {PagingTableService: "/apps/core/PagingTableService.js"}
       );
     </script>

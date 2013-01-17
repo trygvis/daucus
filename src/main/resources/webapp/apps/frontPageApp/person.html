@@ -3,12 +3,13 @@
   <navbar/>
 
   <div class="page-header">
-    <h1>{{person.person.name}}</h1>
+    <h1><person-avatar person="person.person"></person-avatar> {{person.person.name}}</h1>
   </div>
 
   <ul class="nav nav-tabs">
     <li ng-class="{active: mode == 'overview'}"><a ng-click="setMode('overview')">Overview</a></li>
     <li ng-class="{active: mode == 'builds'}"><a ng-click="setMode('builds')">Builds</a></li>
+    <li ng-class="{active: mode == 'jenkins'}"><a ng-click="setMode('jenkins')">Jenkins</a></li>
   </ul>
 
   <div id="overview" ng-show="mode == 'overview'" class="row">
@@ -90,5 +91,15 @@
       </tr>
       </tfoot>
     </table>
+  </div>
+
+  <div id="jenkins" ng-show="mode == 'jenkins'">
+    <h3>Jenkins</h3>
+    <ul>
+      <li ng-repeat="user in jenkinsUsers">
+        <span ng-hide="user.uuid != null">Loading user: <code>{{user}}</code> -{{user.uuid != null}}-</span>
+        <span ng-show="user.uuid != null"><a href="{{user.absoluteUrl}}">{{user.absoluteUrl}}</a></span>
+      </li>
+    </ul>
   </div>
 </div>

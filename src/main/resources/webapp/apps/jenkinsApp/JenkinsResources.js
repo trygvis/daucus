@@ -23,3 +23,11 @@ function JenkinsBuild($resource) {
 angular.
     module('jenkinsBuild', ['ngResource']).
     factory('JenkinsBuild', JenkinsBuild);
+
+function JenkinsUser($resource) {
+  return $resource('/resource/jenkins/user/:uuid', {uuid: '@uuid'});
+}
+
+angular.
+    module('jenkinsUser', ['ngResource']).
+    factory('JenkinsUser', JenkinsUser);
