@@ -16,26 +16,32 @@
     }
   </style>
 
-  <div class="row" ng-repeat="build in builds.rows">
-    <div class="span12">
-      <h3>
-        {{build.build.timestamp | date:'medium'}}:
-        <span class="success" ng-show="build.build.success">SUCCESS</span>
-        <span class="error" ng-hide="build.build.success">FAILURE</span>
-        <a class="btn" href="#/build/{{build.build.uuid}}"><i class="icon-chevron-right"></i></a>
-      </h3>
-
-      <!--
-      <h4>Participants</h4>
-      -->
-      <span ng-repeat="p in build.participants">
-        <dogtag-xl person="p"></dogtag-xl>
-      </span>
-    </div>
-  </div>
-
   <div class="row">
     <div class="span12">
+      <div class="row" ng-repeat="g in buildGroups">
+        <x ng-repeat="(date, group) in g">
+          <div class="span12">
+            <h2>{{date | date:'mediumDate'}}</h2>
+          </div>
+          <div class="span12">
+            <table class="table">
+            <tr ng-repeat="build in group" class="{{{true: 'success', false: 'error'}[build.build.success]}}">
+              <td>
+                <h4>
+                  {{build.build.createdDate | date:'shortTime'}}:
+                  {{{true: 'SUCCESS', false: 'FAILURE'}[build.build.success]}}
+                </h4>
+
+                <span ng-repeat="p in build.participants">
+                  <dogtag-xl person="p"></dogtag-xl>
+                </span>
+                <a class="btn pull-right" href="#/build/{{build.build.uuid}}"><i class="icon-chevron-right"></i></a>
+              </td>
+            </tr>
+            </table>
+          </div>
+        </x>
+      </div>
       <ul class="pager">
         <li class="previous" ng-show="builds.startIndex > 0">
           <a ng-click="builds.prev()">&larr; Prev</a>

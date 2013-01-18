@@ -244,12 +244,12 @@ public class CoreResource extends AbstractResource {
 
 class BuildJson {
     public final UUID uuid;
-    public final DateTime timestamp;
+    public final DateTime createdDate;
     public final boolean success;
 
-    public BuildJson(UUID uuid, DateTime timestamp, boolean success) {
+    public BuildJson(UUID uuid, DateTime createdDate, boolean success) {
         this.uuid = uuid;
-        this.timestamp = timestamp;
+        this.createdDate = createdDate;
         this.success = success;
     }
 }

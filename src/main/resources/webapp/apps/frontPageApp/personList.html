@@ -44,7 +44,7 @@
       <div class="row" ng-repeat="group in personGroups" ng-show="persons.showResults()">
         <div class="span3" ng-repeat="person in group" style="padding-bottom: 1em">
           <div class="row">
-            <person-avatar person="person.person"></person-avatar>
+            <avatar-xl person="person.person"></avatar-xl>
             <a href="/#/person/{{person.person.uuid}}">{{person.person.name}}</a>
             <br/>
             <span ng-repeat="level in person.badges | countBadgeByLevel | gz">

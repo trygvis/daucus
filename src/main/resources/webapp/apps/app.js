@@ -86,7 +86,7 @@ directives.directive('personLink', function () {
   }
 });
 
-directives.directive('personAvatar', function () {
+directives.directive('avatarXl', function () {
   return {
     restrict: 'E',
     scope: {

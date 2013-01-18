@@ -34,25 +34,26 @@ function groupBy(array, size) {
   return groups;
 }
 
+function groupByDay(array, accessor) {
+  var withDay = _.map(array, function(item) {
+    item.day = new Date(accessor(item)).clearTime().getTime();
+    return item;
+  });
+
+  var byDay = _.groupBy(withDay, 'day');
+
+  byDay = _.map(byDay, function(value, key) {
+    var o = {};
+    o[key] = value;
+    return o;
+  });
+
+  return byDay;
+}
+
 function BadgeListCtrl($scope, Badge, PagingTableService) {
   var personsWatcher = function () {
-    var withDay = _.map($scope.badges.rows, function(badge) {
-      badge.day = new Date(badge.badge.createdDate).clearTime().getTime();
-//      badge.day.clearTime();
-      return badge;
-    });
-
-    var byDay = _.groupBy(withDay, 'day');
-//    console.log("byDay", byDay);
-
-    byDay = _.map(byDay, function(value, key) {
-      var o = {};
-      o[key] = value;
-      return o;
-    });
-
-//    byDay = _.toArray(byDay).reverse();
-//    console.log("byDay", byDay);
+    var byDay = groupByDay($scope.badges.rows, function(badge) { return badge.badge.createdDate});
 
     $scope.badgeGroups = byDay;
   };
@@ -121,7 +122,14 @@ function PersonCtrl($scope, $routeParams, Person, Build, JenkinsUser, PagingTabl
 }
 
 function BuildListCtrl($scope, Build, PagingTableService) {
-  $scope.builds = PagingTableService.create($scope, PagingTableService.defaultCallback(Build, {fields: "detailed"}));
+  var watcher = function () {
+    $scope.buildGroups = groupByDay($scope.builds.rows, function(build) { return build.build.createdDate});
+  };
+
+  $scope.builds = PagingTableService.create($scope, PagingTableService.defaultCallback(Build, {fields: "detailed"}),
+      { count: 100, watcher: watcher });
+
+  $scope.buildGroups = [];
 }
 
 function BuildCtrl($scope, $routeParams, Build, PagingTableService) {
