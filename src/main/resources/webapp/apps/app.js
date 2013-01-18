@@ -87,6 +87,8 @@ directives.directive('personLink', function () {
 });
 
 directives.directive('avatarXl', function () {
+  // TODO: set height="" and width=""
+  // TODO: do not return a useful url unless person.gravatar is set.
   return {
     restrict: 'E',
     scope: {

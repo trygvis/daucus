@@ -77,20 +77,23 @@ function PersonListCtrl($scope, Person, PagingTableService) {
     $scope.personGroups = groupBy($scope.persons.rows, groupSize);
   };
 
+  $scope.personGroups = [];
   $scope.persons = PagingTableService.create($scope, PagingTableService.defaultCallback(Person, {orderBy: "name"}),
       {count: groupSize * rows, watcher: personsWatcher});
-
-  console.log("$scope.persons.searchText", $scope.persons.searchText);
-  console.log("$scope.persons.rows", $scope.persons.rows);
-
-  $scope.personGroups = [];
 }
 
 function PersonCtrl($scope, $routeParams, Person, Build, JenkinsUser, PagingTableService) {
   var personUuid = $routeParams.personUuid;
 
   $scope.mode = 'overview';
-  $scope.builds = PagingTableService.create($scope, PagingTableService.defaultCallback(Build, {person: personUuid}), {count: 100});
+
+  var watcher = function () {
+    $scope.buildGroups = groupByDay($scope.builds.rows, function(build) { return build.createdDate});
+    console.log("$scope.buildGroups", $scope.buildGroups);
+  };
+  $scope.buildGroups = [];
+  $scope.builds = PagingTableService.create($scope, PagingTableService.defaultCallback(Build, {person: personUuid}),
+      {count: 50, watcher: watcher});
 
   $scope.setMode = function(mode) {
     $scope.mode = mode;
@@ -98,7 +101,6 @@ function PersonCtrl($scope, $routeParams, Person, Build, JenkinsUser, PagingTabl
       case 'builds':
         var builds = $scope.builds;
 
-        console.log("$scope.builds.length=" + builds.rows.length);
         if (builds.rows.length == 0) {
           $scope.builds.first();
         }
@@ -126,10 +128,9 @@ function BuildListCtrl($scope, Build, PagingTableService) {
     $scope.buildGroups = groupByDay($scope.builds.rows, function(build) { return build.build.createdDate});
   };
 
+  $scope.buildGroups = [];
   $scope.builds = PagingTableService.create($scope, PagingTableService.defaultCallback(Build, {fields: "detailed"}),
       { count: 100, watcher: watcher });
-
-  $scope.buildGroups = [];
 }
 
 function BuildCtrl($scope, $routeParams, Build, PagingTableService) {
