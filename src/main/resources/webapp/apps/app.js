@@ -98,13 +98,13 @@ directives.directive('personAvatar', function () {
   }
 });
 
-directives.directive('dogtagxl', function () {
+directives.directive('dogtagXl', function () {
   return {
     restrict: 'EACM',
     scope: {
       person: '=person'
     },
-    templateUrl: '/apps/dogtagBig.html'
+    templateUrl: '/apps/dogtag-xl.html'
   }
 });
 
