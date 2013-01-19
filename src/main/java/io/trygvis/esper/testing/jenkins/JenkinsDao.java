@@ -22,8 +22,6 @@ public class JenkinsDao {
 
     public static final String JENKINS_SERVER = "uuid, created_date, name, url, enabled";
 
-    public static final String JENKINS_JOB = "uuid, created_date, server, file, url, job_type, display_name";
-
     public static final String JENKINS_USER = "uuid, created_date, server, absolute_url";
 
     public JenkinsDao(Connection c) {
@@ -42,6 +40,8 @@ public class JenkinsDao {
         }
     };
 
+    public static final String JENKINS_JOB = "uuid, created_date, server, file, url, job_type, display_name";
+
     public static final SqlF<ResultSet, JenkinsJobDto> jenkinsJob = new SqlF<ResultSet, JenkinsJobDto>() {
         public JenkinsJobDto apply(ResultSet rs) throws SQLException {
             int i = 1;
@@ -51,6 +51,7 @@ public class JenkinsDao {
                     UUID.fromString(rs.getString(i++)),
                     UUID.fromString(rs.getString(i++)),
                     URI.create(rs.getString(i++)),
+                    rs.getString(i++),
                     fromNull(rs.getString(i)));
         }
     };
@@ -172,7 +173,11 @@ public class JenkinsDao {
     }
 
     public List<JenkinsBuildDto> selectBuildByJob(UUID job, PageRequest page) throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_BUILD + " FROM jenkins_build WHERE job=? ORDER BY created_date DESC LIMIT ? OFFSET ?")) {
+        String sql = "SELECT " + JENKINS_BUILD + " FROM jenkins_build WHERE job=?";
+        sql += orderBy(ifEmpty(page.orderBy, "created_date-"), "created_date", "timestamp");
+        sql += " LIMIT ? OFFSET ?";
+
+        try (PreparedStatement s = c.prepareStatement(sql)) {
             int i = 1;
             s.setString(i++, job.toString());
             s.setInt(i++, page.count.orSome(10));

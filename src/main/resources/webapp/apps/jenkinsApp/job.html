@@ -7,8 +7,8 @@
   </div>
 
   <ul class="breadcrumb">
-    <li><a ng-click="showServers()">All Servers</a> <span class="divider">/</span></li>
-    <li><a ng-click="showServer()">Servers</a> <span class="divider">/</span></li>
+    <li><a href="/jenkins/#/">All Servers</a> <span class="divider">/</span></li>
+    <li><a href="/jenkins/#/server/{{serverUuid}}">Server</a> <span class="divider">/</span></li>
     <li class="active">Job</li>
   </ul>
 
@@ -18,7 +18,7 @@
     <tbody>
     <tr>
       <th>URL</th>
-      <td><a href="{{details.job.displayName}}">{{details.job.displayName}}</a></td>
+      <td><a href="{{details.job.url}}">{{details.job.displayName}}</a></td>
     </tr>
     <tr>
       <th>Build count</th>
@@ -40,7 +40,7 @@
     <tr ng-repeat="build in builds.rows" class="{{{true: 'success', false: 'error'}[build.success]}}">
       <td>{{build.timestamp | date:'medium'}}</td>
       <td>{{build.result}}</td>
-      <td><a class="btn" ng-click="showBuild(build.uuid)"><i class="icon-chevron-right"></i></a></td>
+      <td><a class="btn" href="/jenkins/#/server/{{serverUuid}}/job/{{jobUuid}}/build/{{build.uuid}}"><i class="icon-chevron-right"></i></a></td>
     </tr>
     </tbody>
     <tfoot>

@@ -77,11 +77,19 @@ public class Util {
     // SQL
     // -----------------------------------------------------------------------
 
+    public static List<String> ifEmpty(List<String> inputs, String defaultValue) {
+        if (inputs.isEmpty()) {
+            return inputs;
+        }
+
+        return Collections.singletonList(defaultValue);
+    }
+
     public static String orderBy(String[] inputs, String... allowed) {
         return orderBy(Arrays.asList(inputs), allowed);
     }
 
-    public static String orderBy(Iterable<String> inputs, String... allowed) {
+    public static String orderBy(List<String> inputs, String... allowed) {
         StringBuilder buffer = new StringBuilder();
 
         for (String input : inputs) {

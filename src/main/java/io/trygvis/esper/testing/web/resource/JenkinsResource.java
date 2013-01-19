@@ -69,9 +69,9 @@ public class JenkinsResource extends AbstractResource {
     @GET
     @Path("/job/{uuid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public JenkinsJobJsonDetail getJob(@MagicParam final UUID uuid) throws Exception {
-        return sql(new JenkinsDaosCallback<SqlOption<JenkinsJobJsonDetail>>() {
-            protected SqlOption<JenkinsJobJsonDetail> run() throws SQLException {
+    public JenkinsJobDetailJson getJob(@MagicParam final UUID uuid) throws Exception {
+        return sql(new JenkinsDaosCallback<SqlOption<JenkinsJobDetailJson>>() {
+            protected SqlOption<JenkinsJobDetailJson> run() throws SQLException {
                 return daos.jenkinsDao.selectJob(uuid).map(getJenkinsJobJsonDetail);
             }
         });
@@ -149,13 +149,13 @@ public class JenkinsResource extends AbstractResource {
 
         protected SqlF<JenkinsJobDto, JenkinsJobJson> getJenkinsJobJson = new SqlF<JenkinsJobDto, JenkinsJobJson>() {
             public JenkinsJobJson apply(JenkinsJobDto job) throws SQLException {
-                return new JenkinsJobJson(job.uuid, job.createdDate, job.server, job.displayName.toNull());
+                return new JenkinsJobJson(job.uuid, job.createdDate, job.server, job.url, job.displayName.toNull());
             }
         };
 
-        protected SqlF<JenkinsJobDto,JenkinsJobJsonDetail> getJenkinsJobJsonDetail = new SqlF<JenkinsJobDto, JenkinsJobJsonDetail>() {
-            public JenkinsJobJsonDetail apply(JenkinsJobDto dto) throws SQLException {
-                return new JenkinsJobJsonDetail(
+        protected SqlF<JenkinsJobDto,JenkinsJobDetailJson> getJenkinsJobJsonDetail = new SqlF<JenkinsJobDto, JenkinsJobDetailJson>() {
+            public JenkinsJobDetailJson apply(JenkinsJobDto dto) throws SQLException {
+                return new JenkinsJobDetailJson(
                         getJenkinsJobJson.apply(dto),
                         daos.jenkinsDao.selectBuildCountByJob(dto.uuid));
             }
@@ -223,21 +223,23 @@ class JenkinsJobJson {
     public final UUID uuid;
     public final DateTime createdDate;
     public final UUID server;
+    public final URI url;
     public final String displayName;
 
-    JenkinsJobJson(UUID uuid, DateTime createdDate, UUID server, String displayName) {
+    JenkinsJobJson(UUID uuid, DateTime createdDate, UUID server, URI url, String displayName) {
         this.uuid = uuid;
         this.createdDate = createdDate;
         this.server = server;
+        this.url = url;
         this.displayName = displayName;
     }
 }
 
-class JenkinsJobJsonDetail {
+class JenkinsJobDetailJson {
     public final JenkinsJobJson job;
     public final Integer buildCount;
 
-    JenkinsJobJsonDetail(JenkinsJobJson job, Integer buildCount) {
+    JenkinsJobDetailJson(JenkinsJobJson job, Integer buildCount) {
         this.job = job;
         this.buildCount = buildCount;
     }

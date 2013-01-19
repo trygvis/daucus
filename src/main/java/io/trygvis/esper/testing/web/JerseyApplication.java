@@ -66,10 +66,10 @@ public class JerseyApplication extends Application {
 
                         List<String> list = queryParameters.get("orderBy");
 
-                        fj.data.List<String> orderBy = nil();
+                        List<String> orderBy = Collections.emptyList();
 
                         if (list != null) {
-                            orderBy = iterableList(list);
+                            orderBy = list;
                         }
 
                         return new PageRequest(

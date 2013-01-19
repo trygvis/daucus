@@ -97,14 +97,14 @@ public class PersonDao {
         }
     }
 
-    public List<PersonDto> selectPersons(PageRequest pageRequest, Option<String> query) throws SQLException {
+    public List<PersonDto> selectPersons(PageRequest page, Option<String> query) throws SQLException {
         String sql = "SELECT " + PERSON + " FROM person";
 
         if (query.isSome()) {
             sql += " WHERE lower(name) LIKE '%' || ? || '%'";
         }
 
-        sql += orderBy(pageRequest.orderBy, "name", "created_date");
+        sql += orderBy(ifEmpty(page.orderBy, "created_date-"), "name", "created_date");
 
         sql += " LIMIT ? OFFSET ?";
 
@@ -115,8 +115,8 @@ public class PersonDao {
                 s.setString(i++, query.some());
             }
 
-            s.setInt(i++, pageRequest.count.orSome(10));
-            s.setInt(i, pageRequest.startIndex.orSome(0));
+            s.setInt(i++, page.count.orSome(10));
+            s.setInt(i, page.startIndex.orSome(0));
             return toList(s, person);
         }
     }
@@ -216,7 +216,7 @@ public class PersonDao {
             sql += " AND level=?";
         }
 
-        sql += orderBy(page.orderBy, "name", "created_date");
+        sql += orderBy(ifEmpty(page.orderBy, "created_date-"), "name", "created_date");
 
         sql += " LIMIT ? OFFSET ?";
 

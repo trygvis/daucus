@@ -8,7 +8,7 @@
   </div>
 
   <ul class="breadcrumb">
-    <li><a ng-click="showServers()">All Servers</a> <span class="divider">/</span></li>
+    <li><a href="/jenkins/#/">All Servers</a> <span class="divider">/</span></li>
     <li class="active">Server</li>
   </ul>
 
@@ -25,24 +25,18 @@
     </tr>
     <tr>
       <th>Stats</th>
-      <td>{{server.jobCount}} jobs, {{server.buildCount}} builds</td>
+      <td>{{server.jobCount}} jobs</td>
     </tr>
     </tbody>
   </table>
 
   <h3>Recent Jobs</h3>
   <table class="table">
-    <thead>
-    <tr>
-      <th>Job</th>
-    </tr>
-    </thead>
     <tbody>
     <tr ng-repeat="job in jobs.rows">
-      <td>{{job.createdDate | date:'medium'}}</td>
       <td>{{job.displayName}}</td>
-      <td>{{job.uuid}}</td>
-      <td><a class="btn" ng-click="showJob(job.uuid)"><i class="icon-chevron-right"></i></a></td>
+      <td>{{job.createdDate | date:'medium'}}</td>
+      <td><a class="btn" href="/jenkins/#/server/{{server.uuid}}/job/{{job.uuid}}"><i class="icon-chevron-right"></i></a></td>
     </tr>
     </tbody>
     <tfoot>

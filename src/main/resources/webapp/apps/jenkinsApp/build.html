@@ -7,9 +7,9 @@
   </div>
 
   <ul class="breadcrumb">
-    <li><a ng-click="showServers()">All Servers</a> <span class="divider">/</span></li>
-    <li><a ng-click="showServer()">Servers</a> <span class="divider">/</span></li>
-    <li><a ng-click="showJob()">Job</a> <span class="divider">/</span></li>
+    <li><a href="/jenkins/#/">All Servers</a> <span class="divider">/</span></li>
+    <li><a href="/jenkins/#/server/{{serverUuid}}">Server</a> <span class="divider">/</span></li>
+    <li><a href="/jenkins/#/server/{{serverUuid}}/job/{{jobUuid}}">Job</a> <span class="divider">/</span></li>
     <li class="active">Build</li>
   </ul>
 

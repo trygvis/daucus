@@ -92,7 +92,7 @@ public class BuildDao {
 
     public List<BuildDto> selectBuildsByPerson(Uuid person, PageRequest page) throws SQLException {
         String sql = "SELECT " + BUILD + " FROM build b, build_participant bp WHERE bp.person=? AND b.uuid = bp.build";
-        sql += orderBy(page.orderBy, "created_date", "timestamp");
+        sql += orderBy(ifEmpty(page.orderBy, "created_date-"), "created_date", "timestamp");
         sql += " LIMIT ? OFFSET ?";
 
         try (PreparedStatement s = c.prepareStatement(sql)) {
@@ -106,7 +106,7 @@ public class BuildDao {
 
     public List<BuildDto> selectBuilds(PageRequest page) throws SQLException {
         String sql = "SELECT " + BUILD + " FROM build";
-        sql += orderBy(page.orderBy, "created_date", "timestamp");
+        sql += orderBy(ifEmpty(page.orderBy, "created_date-"), "created_date", "timestamp");
         sql += " LIMIT ? OFFSET ?";
 
         try (PreparedStatement s = c.prepareStatement(sql)) {
