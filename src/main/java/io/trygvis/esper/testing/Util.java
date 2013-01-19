@@ -77,6 +77,10 @@ public class Util {
     // SQL
     // -----------------------------------------------------------------------
 
+    public static String orderBy(String[] inputs, String... allowed) {
+        return orderBy(Arrays.asList(inputs), allowed);
+    }
+
     public static String orderBy(Iterable<String> inputs, String... allowed) {
         StringBuilder buffer = new StringBuilder();
 

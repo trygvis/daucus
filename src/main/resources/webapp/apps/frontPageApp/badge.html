@@ -15,11 +15,16 @@
       <p>
         The badge was awarded for having {{badge.personalBadge.builds.length}} successful builds in a row:
       </p>
-      <ul class="unstyled">
-        <li ng-repeat="b in badge.personalBadge.builds">
-          <a class="btn" href="#/build/{{b}}">{{$index + 1}} <i class="icon-chevron-right"></i></a>
-        </li>
-      </ul>
+      <table class="table table-striped">
+        <tr ng-repeat="b in badge.personalBadge.builds">
+          <td>
+            {{b.timestamp | date:'medium'}}
+          </td>
+          <td>
+            <a class="btn" href="#/build/{{b}}">{{$index + 1}} <i class="icon-chevron-right"></i></a>
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
 

@@ -28,7 +28,7 @@
             <tr ng-repeat="build in group" class="{{{true: 'success', false: 'error'}[build.build.success]}}">
               <td>
                 <h4>
-                  {{build.build.createdDate | date:'shortTime'}}:
+                  {{build.build.timestamp | date:'shortTime'}}:
                   {{{true: 'SUCCESS', false: 'FAILURE'}[build.build.success]}}
                 </h4>
 

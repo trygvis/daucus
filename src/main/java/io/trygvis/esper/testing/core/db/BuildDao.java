@@ -7,7 +7,7 @@ import org.joda.time.*;
 import java.sql.*;
 import java.util.*;
 
-import static io.trygvis.esper.testing.Util.toList;
+import static io.trygvis.esper.testing.Util.*;
 import static io.trygvis.esper.testing.util.sql.ResultSetF.*;
 import static io.trygvis.esper.testing.util.sql.SqlOption.fromRs;
 import static java.lang.System.*;
@@ -15,7 +15,7 @@ import static java.lang.System.*;
 public class BuildDao {
     private final Connection c;
 
-    public static final String BUILD = "uuid, created_date, timestamp, success, reference_type, reference_uuid";
+    public static final String BUILD = "UUID, created_date, TIMESTAMP, success, reference_type, reference_uuid";
 
     public static final SqlF<ResultSet, BuildDto> build = new SqlF<ResultSet, BuildDto>() {
         public BuildDto apply(ResultSet rs) throws SQLException {
@@ -91,7 +91,11 @@ public class BuildDao {
     }
 
     public List<BuildDto> selectBuildsByPerson(Uuid person, PageRequest page) throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("SELECT " + BUILD + " FROM build b, build_participant bp WHERE bp.person=? AND b.uuid = bp.build ORDER BY created_date DESC LIMIT ? OFFSET ?")) {
+        String sql = "SELECT " + BUILD + " FROM build b, build_participant bp WHERE bp.person=? AND b.uuid = bp.build";
+        sql += orderBy(page.orderBy, "created_date", "timestamp");
+        sql += " LIMIT ? OFFSET ?";
+
+        try (PreparedStatement s = c.prepareStatement(sql)) {
             int i = 1;
             s.setString(i++, person.toUuidString());
             s.setInt(i++, page.count.orSome(10));
@@ -101,7 +105,11 @@ public class BuildDao {
     }
 
     public List<BuildDto> selectBuilds(PageRequest page) throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("SELECT " + BUILD + " FROM build ORDER BY created_date DESC LIMIT ? OFFSET ?")) {
+        String sql = "SELECT " + BUILD + " FROM build";
+        sql += orderBy(page.orderBy, "created_date", "timestamp");
+        sql += " LIMIT ? OFFSET ?";
+
+        try (PreparedStatement s = c.prepareStatement(sql)) {
             int i = 1;
             s.setInt(i++, page.count.orSome(10));
             s.setInt(i, page.startIndex.orSome(0));

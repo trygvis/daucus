@@ -38,7 +38,7 @@ public class GitoriousProjectDiscovery {
 
         Set<GitoriousRepositoryDto> repositories = Collections.emptySet();
         try (Connection c = boneCp.getConnection()) {
-            repositories = new HashSet<>(new Daos(c).gitoriousRepositoryDao.select(Daos.OrderDirection.ASC));
+            repositories = new HashSet<>(new Daos(c).gitoriousRepositoryDao.select(true));
         } catch (SQLException e) {
             // ignore
         }
@@ -53,7 +53,7 @@ public class GitoriousProjectDiscovery {
             public void act(Connection c) throws Exception {
                 try (Daos daos = new Daos(c)) {
                     discoverProjects(daos);
-                    repositoryManager.update(daos.gitoriousRepositoryDao.select(Daos.OrderDirection.NONE));
+                    repositoryManager.update(daos.gitoriousRepositoryDao.select(null));
                     daos.commit();
                 }
             }

@@ -2,14 +2,15 @@ package io.trygvis.esper.testing.gitorious;
 
 import fj.data.*;
 import io.trygvis.esper.testing.*;
-import static io.trygvis.esper.testing.Util.dateToTimestamp;
-import static io.trygvis.esper.testing.Util.timestampToDate;
+import io.trygvis.esper.testing.util.sql.*;
 
 import java.net.*;
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
 import java.util.List;
+
+import static io.trygvis.esper.testing.Util.*;
 
 public class GitoriousRepositoryDao {
     private final Connection c;
@@ -38,7 +39,7 @@ public class GitoriousRepositoryDao {
     }
 
     public int countRepositories(String projectSlug, String name) throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("SELECT count(*) FROM gitorious_repository WHERE project_slug=? and name=?")) {
+        try (PreparedStatement s = c.prepareStatement("SELECT count(*) FROM gitorious_repository WHERE project_slug=? AND name=?")) {
             s.setString(1, projectSlug);
             s.setString(2, name);
             try (ResultSet rs = s.executeQuery()) {
@@ -55,21 +56,15 @@ public class GitoriousRepositoryDao {
         }
     }
 
-    public List<GitoriousRepositoryDto> select(Daos.OrderDirection order) throws SQLException {
-        String orderBy;
+    public List<GitoriousRepositoryDto> select(Boolean asc) throws SQLException {
+        String sql = "SELECT " + ALL_FIELDS + " FROM gitorious_repository ";
 
-        switch (order) {
-            case ASC:
-                orderBy = "ORDER BY project_slug, name";
-                break;
-            case DESC:
-                orderBy = "ORDER BY project_slug DESC, name DESC";
-                break;
-            default:
-                orderBy = "";
+        if(asc != null) {
+            String[] orderBy = asc ? new String[]{"project_slug", "name"} : new String[]{"project_slug-", "name-"};
+            sql += orderBy(orderBy, "project_slug", "name");
         }
 
-        try (PreparedStatement s = c.prepareStatement("SELECT " + ALL_FIELDS + " FROM gitorious_repository " + orderBy)) {
+        try (PreparedStatement s = c.prepareStatement(sql)) {
             return executeQuery(s);
         }
     }

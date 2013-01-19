@@ -88,11 +88,11 @@ function PersonCtrl($scope, $routeParams, Person, Build, JenkinsUser, PagingTabl
   $scope.mode = 'overview';
 
   var watcher = function () {
-    $scope.buildGroups = groupByDay($scope.builds.rows, function(build) { return build.createdDate});
+    $scope.buildGroups = groupByDay($scope.builds.rows, function(build) { return build.timestamp});
     console.log("$scope.buildGroups", $scope.buildGroups);
   };
   $scope.buildGroups = [];
-  $scope.builds = PagingTableService.create($scope, PagingTableService.defaultCallback(Build, {person: personUuid}),
+  $scope.builds = PagingTableService.create($scope, PagingTableService.defaultCallback(Build, {person: personUuid, orderBy: "timestamp-"}),
       {count: 50, watcher: watcher});
 
   $scope.setMode = function(mode) {
@@ -118,14 +118,14 @@ function PersonCtrl($scope, $routeParams, Person, Build, JenkinsUser, PagingTabl
       })});
   });
 
-  Build.query({person: personUuid}, function (builds) {
+  Build.query({person: personUuid, orderBy: "timestamp-"}, function (builds) {
     $scope.recentBuilds = builds;
   });
 }
 
 function BuildListCtrl($scope, Build, PagingTableService) {
   var watcher = function () {
-    $scope.buildGroups = groupByDay($scope.builds.rows, function(build) { return build.build.createdDate});
+    $scope.buildGroups = groupByDay($scope.builds.rows, function(build) { return build.build.timestamp});
   };
 
   $scope.buildGroups = [];

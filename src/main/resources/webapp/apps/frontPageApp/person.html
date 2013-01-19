@@ -48,7 +48,7 @@
       <h3>Recent builds</h3>
       <table class="table">
         <tr ng-repeat="build in recentBuilds" class="{{{true: 'success', false: 'error'}[build.success]}}">
-          <td>{{build.createdDate | date:'medium'}}</td>
+          <td>{{build.timestamp | date:'medium'}}</td>
           <td>{{{true: 'Success', false: 'Failure'}[build.success]}}</td>
           <td><a href="#/build/{{build.uuid}}">Details</a></td>
         </tr>
@@ -70,7 +70,7 @@
               <table class="table">
                 <tr ng-repeat="build in group" class="{{{true: 'success', false: 'error'}[build.success]}}">
                   <td>
-                    {{build.createdDate | date:'shortTime'}}:
+                    {{build.timestamp | date:'shortTime'}}:
                     {{{true: 'SUCCESS', false: 'FAILURE'}[build.success]}}
 
                     <a class="btn pull-right" href="#/build/{{build.uuid}}"><i class="icon-chevron-right"></i></a>
@@ -100,7 +100,7 @@
       </thead>
       <tbody>
       <tr ng-repeat="build in builds.rows" class="{{{true: 'success', false: 'error'}[build.success]}}">
-        <td>{{build.createdDate | date:'medium'}}</td>
+        <td>{{build.timestamp | date:'medium'}}</td>
         <td>
           <a class="btn btn-small" href="#/build/{{build.uuid}}"><i class="icon-chevron-right"></i></a>
         </td>
