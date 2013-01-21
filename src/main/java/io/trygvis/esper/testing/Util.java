@@ -78,7 +78,7 @@ public class Util {
     // -----------------------------------------------------------------------
 
     public static List<String> ifEmpty(List<String> inputs, String defaultValue) {
-        if (inputs.isEmpty()) {
+        if (!inputs.isEmpty()) {
             return inputs;
         }
 
