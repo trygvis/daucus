@@ -5,11 +5,10 @@ var frontPageApp = angular.module('frontPageApp', ['ngGrid', 'person', 'badge', 
       when('/', {controller: FrontPageCtrl, templateUrl: '/apps/frontPageApp/frontPage.html?noCache=' + noCache}).
       when('/badge/', {controller: BadgeListCtrl, templateUrl: '/apps/frontPageApp/badgeList.html?noCache=' + noCache}).
       when('/badge/:badgeUuid', {controller: BadgeCtrl, templateUrl: '/apps/frontPageApp/badge.html?noCache=' + noCache}).
-      when('/person/', {controller: PersonListCtrl, templateUrl: '/apps/frontPageApp/personList.html?noCache=' + noCache}).
+      when('/person/', {controller: PersonListCtrl, templateUrl: '/apps/frontPageApp/personList.html?noCache=' + noCache, reloadOnSearch: false}).
       when('/person/:personUuid', {controller: PersonCtrl, templateUrl: '/apps/frontPageApp/person.html?noCache=' + noCache}).
       when('/build/', {controller: BuildListCtrl, templateUrl: '/apps/frontPageApp/buildList.html?noCache=' + noCache}).
       when('/build/:buildUuid', {controller: BuildCtrl, templateUrl: '/apps/frontPageApp/build.html?noCache=' + noCache});
-  // job/:jobUuid/build/:buildUuid
 });
 
 function FrontPageCtrl($scope, Person, Badge) {
@@ -53,9 +52,7 @@ function groupByDay(array, accessor) {
 
 function BadgeListCtrl($scope, Badge, PagingTableService) {
   var personsWatcher = function () {
-    var byDay = groupByDay($scope.badges.rows, function(badge) { return badge.badge.createdDate});
-
-    $scope.badgeGroups = byDay;
+    $scope.badgeGroups = groupByDay($scope.badges.rows, function (badge) { return badge.badge.createdDate });
   };
 
   $scope.badges = PagingTableService.create($scope, PagingTableService.defaultCallback(Badge, {orderBy: "created_date-"}),
@@ -71,15 +68,21 @@ function BadgeCtrl($scope, $routeParams, Badge) {
   });
 }
 
-function PersonListCtrl($scope, Person, PagingTableService) {
+function PersonListCtrl($scope, $location, Person, PagingTableService) {
   var groupSize = 4, rows = 6;
   var personsWatcher = function () {
     $scope.personGroups = groupBy($scope.persons.rows, groupSize);
   };
 
+  var page = $location.search().page || 1;
+  var count = groupSize * rows;
   $scope.personGroups = [];
   $scope.persons = PagingTableService.create($scope, PagingTableService.defaultCallback(Person, {orderBy: "name"}),
-      {count: groupSize * rows, watcher: personsWatcher});
+      {startIndex: (page - 1) * count, count: count, watcher: personsWatcher});
+
+  $scope.$watch("persons.currentPage()", function(newValue) {
+    $location.search('page', newValue > 1 ? newValue : null);
+  });
 }
 
 function PersonCtrl($scope, $routeParams, Person, Build, JenkinsUser, PagingTableService) {

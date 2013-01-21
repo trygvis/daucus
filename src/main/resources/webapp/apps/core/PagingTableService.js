@@ -66,6 +66,9 @@ function PagingTableService() {
       });
     };
 
+    /*
+     * UI actions
+     */
     self.first = function () {
       self.startIndex = 0;
       update();
@@ -100,6 +103,7 @@ function PagingTableService() {
     };
 
     self.onSearchChange = function () {
+      self.startIndex = 0;
       update();
     };
 
@@ -125,6 +129,10 @@ function PagingTableService() {
 
     self.prevDisabled = function () {
       return internal.currentlySearching;
+    };
+
+    self.currentPage = function() {
+      return (self.startIndex / self.count) + 1;
     };
 
     // Do an initial fetch
