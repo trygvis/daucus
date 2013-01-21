@@ -33,7 +33,7 @@
 
   <div class="row">
     <div class="span12">
-      <div class="row" ng-show="persons.showSpinner()">
+      <div class="row" ng-show="persons.viewState() == 'loading'">
         <div class="span12">
           <div style="height: 100px">
             <div spinner spinner-class="wat" spinner-left="564px" spinner-top="50%"></div>
@@ -41,16 +41,25 @@
         </div>
       </div>
 
-      <div class="row" ng-repeat="group in personGroups" ng-show="persons.showResults()">
+      <div class="row" ng-repeat="group in personGroups" ng-show="persons.viewState() == 'data'">
         <div class="span3" ng-repeat="person in group" style="padding-bottom: 1em">
           <div class="row">
             <avatar-xl person="person.person"></avatar-xl>
             <a href="/#/person/{{person.person.uuid}}">{{person.person.name}}</a>
             <br/>
-            <span ng-repeat="level in person.badges | countBadgeByLevel | gz">
-              <span class="badge-inverse badge-level-{{$index + 1}} badge"><i class="icon-user"></i> x {{level}}</span>
-            </span>
+              <span ng-repeat="level in person.badges | countBadgeByLevel | gz">
+                <span class="badge-inverse badge-level-{{$index + 1}} badge"><i class="icon-user"></i> x {{level}}</span>
+              </span>
           </div>
+        </div>
+      </div>
+
+      <div class="row" ng-show="persons.viewState() == 'error'">
+        <div class="span12">
+          <p>An error occurred when loading the data...</p>
+          <p ng-show="persons.error">
+            Error: {{persons.error.message}}
+          </p>
         </div>
       </div>
 

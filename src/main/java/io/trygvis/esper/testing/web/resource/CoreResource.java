@@ -35,6 +35,11 @@ public class CoreResource extends AbstractResource {
     @Path("/person")
     public List<PersonDetailJson> getPersons(@MagicParam final PageRequest pageRequest,
                                              @QueryParam("query") final String query) throws Exception {
+//        Thread.sleep(1000);
+//        if(new Random().nextInt(3) == 0) {
+//            throw new RuntimeException("internal error");
+//        }
+
         return da.inTransaction(new CoreDaosCallback<List<PersonDetailJson>>() {
             protected List<PersonDetailJson> run() throws SQLException {
                 List<PersonDetailJson> list = new ArrayList<>();
@@ -201,7 +206,7 @@ public class CoreResource extends AbstractResource {
 
         protected final SqlF<BuildDto, BuildJson> getBuildJson = new SqlF<BuildDto, BuildJson>() {
             public BuildJson apply(BuildDto dto) throws SQLException {
-                return new BuildJson(dto.uuid, dto.timestamp, dto.success);
+                return new BuildJson(dto.uuid, dto.createdDate, dto.timestamp, dto.success);
             }
         };
 
@@ -245,11 +250,13 @@ public class CoreResource extends AbstractResource {
 class BuildJson {
     public final UUID uuid;
     public final DateTime createdDate;
+    public final DateTime timestamp;
     public final boolean success;
 
-    public BuildJson(UUID uuid, DateTime createdDate, boolean success) {
+    public BuildJson(UUID uuid, DateTime createdDate, DateTime timestamp, boolean success) {
         this.uuid = uuid;
         this.createdDate = createdDate;
+        this.timestamp = timestamp;
         this.success = success;
     }
 }
