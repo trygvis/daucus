@@ -32,7 +32,7 @@ function JobCtrl($scope, $location, $routeParams, JenkinsJob, JenkinsBuild, Pagi
     $scope.details = details;
   });
 
-  $scope.builds = PagingTableService.create($scope, PagingTableService.defaultCallback(JenkinsBuild, {job: $scope.jobUuid, orderBy: "timestamp-"}));
+  $scope.builds = PagingTableService.create($scope, PagingTableService.defaultCallback(JenkinsBuild, {job: $scope.jobUuid, orderBy: "created_date-"}));
 }
 
 function BuildCtrl($scope, $location, $routeParams, JenkinsBuild) {

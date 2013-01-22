@@ -174,7 +174,7 @@ public class JenkinsDao {
 
     public List<JenkinsBuildDto> selectBuildByJob(UUID job, PageRequest page) throws SQLException {
         String sql = "SELECT " + JENKINS_BUILD + " FROM jenkins_build WHERE job=?";
-        sql += orderBy(ifEmpty(page.orderBy, "created_date-"), "created_date", "timestamp");
+        sql += orderBy(ifEmpty(page.orderBy, "created_date-"), "created_date");
         sql += " LIMIT ? OFFSET ?";
 
         try (PreparedStatement s = c.prepareStatement(sql)) {
