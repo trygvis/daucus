@@ -12,55 +12,82 @@
     <li class="active">Server</li>
   </ul>
 
-  <h3>Overview</h3>
-  <table class="table">
-    <tbody>
-    <tr>
-      <th>URL</th>
-      <td><a href="{{server.url}}">{{server.url}}</a></td>
-    </tr>
-    <tr>
-      <th>Enabled</th>
-      <td>{{server.enabled}}</td>
-    </tr>
-    <tr>
-      <th>Number of jobs</th>
-      <td>{{server.jobCount}}</td>
-    </tr>
-    <tr>
-      <th>Number of builds</th>
-      <td>{{server.buildCount}}</td>
-    </tr>
-    <tr>
-      <th>Most recent build</th>
-      <td>{{server.lastBuildTimestamp | date:'medium'}}</td>
-    </tr>
-    </tbody>
-  </table>
+<!--
+  <ul class="nav nav-tabs">
+    <li ng-class="{active: mode == 'overview'}"><a ng-click="setMode('overview')">Overview</a></li>
+    <li ng-class="{active: mode == 'jobs'}"><a ng-click="setMode('jobs')">Jobs</a></li>
+    <li ng-class="{active: mode == 'recentBuilds'}"><a ng-click="setMode('recentBuilds')">Recent Builds</a></li>
+  </ul>
+-->
+  <ul class="nav nav-tabs">
+    <li ng-repeat="tab in navbar.tabs" ng-class="{active: navbar.selected() == tab}">
+      <a ng-click="navbar.onClick(tab)">{{tab}}</a>
+    </li>
+  </ul>
 
-  <h3>Recent Jobs</h3>
-  <table class="table">
-    <tbody>
-    <tr ng-repeat="job in jobs.rows">
-      <td>{{job.displayName}}</td>
-      <td>{{job.createdDate | date:'medium'}}</td>
-      <td><a class="btn" href="/jenkins/#/server/{{server.uuid}}/job/{{job.uuid}}"><i class="icon-chevron-right"></i></a></td>
-    </tr>
-    </tbody>
-    <tfoot>
-    <tr>
-      <td colspan="3">
-        <ul class="pager">
-          <li class="previous" ng-class="{disabled: jobs.startIndex == 0}">
-            <a ng-click="jobs.prev()">&larr; Older</a>
-          </li>
-          <li class="next">
-            <a ng-click="jobs.next()">Newer &rarr;</a>
-          </li>
-        </ul>
-      </td>
-    </tr>
-    </tfoot>
-  </table>
+  <div ng-show="navbar.selectedIndex() == 0" class="row">
+    <div class="span12">
+      <h3>Overview</h3>
+      <table class="table">
+        <tbody>
+        <tr>
+          <th>URL</th>
+          <td><a href="{{server.url}}">{{server.url}}</a></td>
+        </tr>
+        <tr>
+          <th>Enabled</th>
+          <td>{{server.enabled}}</td>
+        </tr>
+        <tr>
+          <th>Number of jobs</th>
+          <td>{{server.jobCount}}</td>
+        </tr>
+        <tr>
+          <th>Number of builds</th>
+          <td>{{server.buildCount}}</td>
+        </tr>
+        <tr>
+          <th>Most recent build</th>
+          <td>{{server.lastBuildTimestamp | date:'medium'}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div ng-show="navbar.selectedIndex() == 1" class="row">
+    <div class="span12">
+      <h3>Jobs</h3>
+      <table class="table">
+        <tbody>
+        <tr ng-repeat="job in jobs.rows">
+          <td>{{job.displayName}}</td>
+          <td>{{job.createdDate | date:'medium'}}</td>
+          <td><a class="btn" href="/jenkins/#/server/{{server.uuid}}/job/{{job.uuid}}"><i class="icon-chevron-right"></i></a></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+          <td colspan="3">
+            <ul class="pager">
+              <li class="previous" ng-class="{disabled: jobs.startIndex == 0}">
+                <a ng-click="jobs.prev()">&larr; Older</a>
+              </li>
+              <li class="next">
+                <a ng-click="jobs.next()">Newer &rarr;</a>
+              </li>
+            </ul>
+          </td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <div ng-show="navbar.selectedIndex() == 2" class="row">
+    <div class="span12">
+      <h3>Recent builds</h3>
+    </div>
+  </div>
 
 </div>

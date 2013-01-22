@@ -11,11 +11,6 @@ var frontPageApp = angular.module('frontPageApp', ['ngGrid', 'person', 'badge', 
       when('/build/:buildUuid', {controller: BuildCtrl, templateUrl: '/apps/frontPageApp/build.html?noCache=' + noCache});
 });
 
-function FrontPageCtrl($scope, Person, Badge) {
-  $scope.persons = Person.query();
-  $scope.recentBadges = Badge.query();
-}
-
 function groupBy(array, size) {
   var group = [];
   var groups = [];
@@ -48,6 +43,11 @@ function groupByDay(array, accessor) {
   });
 
   return byDay;
+}
+
+function FrontPageCtrl($scope, Person, Badge) {
+  $scope.persons = Person.query();
+  $scope.recentBadges = Badge.query();
 }
 
 function BadgeListCtrl($scope, Badge, PagingTableService) {
