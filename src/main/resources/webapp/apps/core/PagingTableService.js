@@ -156,7 +156,7 @@ function PagingTableService() {
       console.log("Fetching page. args =", args);
       Resource.query(args, function(data, headers) {
         var totalResults = headers("total-results");
-        console.log("Total results =", totalResults, "Data =", data);
+        console.log("Total results =", totalResults, "data.length =", data.length, "Data =", data);
         cb({
           totalResults: totalResults,
           rows: data

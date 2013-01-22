@@ -57,7 +57,14 @@
 
   <div ng-show="navbar.selectedIndex() == 1" class="row">
     <div class="span12">
-      <h3>Jobs</h3>
+      <form class="form-search form-inline well">
+        <div class="input-append">
+          <input type="text" class="span2 search-query" ng-model="jobs.query" ng-change="jobs.onSearchChange()">
+          <button type="submit" class="btn" ng-click="jobs.onSearch()">Search</button>
+        </div>
+      </form>
+    </div>
+    <div class="span12">
       <table class="table">
         <tbody>
         <tr ng-repeat="job in jobs.rows">

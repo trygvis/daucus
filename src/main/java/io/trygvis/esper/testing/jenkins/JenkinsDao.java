@@ -91,7 +91,7 @@ public class JenkinsDao {
         String sql = "SELECT " + JENKINS_SERVER + " FROM jenkins_server";
 
         if (enabledOnly) {
-            sql += " WHERE enabled=true";
+            sql += " WHERE enabled=TRUE";
         }
 
         sql += " ORDER BY url";
@@ -119,10 +119,22 @@ public class JenkinsDao {
         }
     }
 
-    public List<JenkinsJobDto> selectJobsByServer(UUID server, PageRequest page) throws SQLException {
-        try (PreparedStatement s = c.prepareStatement("SELECT " + JENKINS_JOB + " FROM jenkins_job WHERE server=? ORDER BY created_date DESC LIMIT ? OFFSET ?")) {
+    public List<JenkinsJobDto> selectJobsByServer(UUID server, PageRequest page, Option<String> name) throws SQLException {
+        String sql = "SELECT " + JENKINS_JOB + " FROM jenkins_job WHERE server=?";
+
+        if (name.isSome()) {
+            sql += " AND lower(display_name) LIKE '%' || lower(?) || '%'";
+        }
+
+        sql += orderBy(ifEmpty(page.orderBy, "created_date-"), "created_date");
+        sql += " LIMIT ? OFFSET ?";
+
+        try (PreparedStatement s = c.prepareStatement(sql)) {
             int i = 1;
             s.setString(i++, server.toString());
+            if (name.isSome()) {
+                s.setString(i++, name.some());
+            }
             s.setInt(i++, page.count.orSome(10));
             s.setInt(i, page.startIndex.orSome(0));
             return toList(s, jenkinsJob);

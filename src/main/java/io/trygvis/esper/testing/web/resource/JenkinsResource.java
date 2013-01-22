@@ -16,6 +16,9 @@ import java.util.List;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
+import static fj.data.Option.fromNull;
+import static org.apache.commons.lang.StringUtils.trimToNull;
+
 @Path("/resource/jenkins")
 public class JenkinsResource extends AbstractResource {
 
@@ -54,11 +57,21 @@ public class JenkinsResource extends AbstractResource {
     @GET
     @Path("/job")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<JenkinsJobJson> getJobs(@MagicParam(query = "server") final UUID server, @MagicParam final PageRequest page) throws Exception {
+    public List<JenkinsJobJson> getJobs(@MagicParam(query = "server") final UUID server,
+                                        @MagicParam final PageRequest page,
+                                        @QueryParam("query") final String query) throws Exception {
+        if (server == null) {
+            throw new WebApplicationException(Response.Status.BAD_REQUEST);
+        }
+
         return da.inTransaction(new JenkinsDaosCallback<List<JenkinsJobJson>>() {
             protected List<JenkinsJobJson> run() throws SQLException {
+                List<JenkinsJobDto> dtos;
+
+                dtos = daos.jenkinsDao.selectJobsByServer(server, page, fromNull(trimToNull(query)));
+
                 List<JenkinsJobJson> jobs = new ArrayList<>();
-                for (JenkinsJobDto job : daos.jenkinsDao.selectJobsByServer(server, page)) {
+                for (JenkinsJobDto job : dtos) {
                     jobs.add(getJenkinsJobJson.apply(job));
                 }
                 return jobs;

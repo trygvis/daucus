@@ -1,15 +1,19 @@
 'use strict';
 
-function NavbarService() {
-  var create = function(tabs) {
-    console.log("create", tabs);
-    var currentIndex = 0;
+function NavbarService($location) {
+  var create = function(name, tabs) {
+    var keys = _.map(tabs, function(element) {
+      return element.toLowerCase().replace(' ', '-');
+    });
+
+    var currentKey = $location.search()[name] || "";
+    var currentIndex = _.indexOf(keys, currentKey) || 0;
     var currentTab = tabs[currentIndex];
 
     var onClick = function(tab) {
-      console.log("onClick", arguments);
       currentTab = tab;
       currentIndex = _.indexOf(tabs, tab);
+      $location.search(name, keys[currentIndex]);
     };
 
     var selected = function() {
@@ -58,9 +62,9 @@ function ServerCtrl($scope, $routeParams, JenkinsServer, JenkinsJob, PagingTable
     $scope.server = server;
   });
 
-  $scope.jobs = PagingTableService.create($scope, PagingTableService.defaultCallback(JenkinsJob, {server: $scope.serverUuid}));
+  $scope.jobs = PagingTableService.create($scope, PagingTableService.defaultCallback(JenkinsJob, {server: $scope.serverUuid, orderBy: "display_name"}));
 
-  $scope.navbar = NavbarService.create(["Overview", "Jobs", "Recent Builds"]);
+  $scope.navbar = NavbarService.create("view", ["Overview", "Jobs", "Recent Builds"]);
 }
 
 function JobCtrl($scope, $location, $routeParams, JenkinsJob, JenkinsBuild, PagingTableService) {
