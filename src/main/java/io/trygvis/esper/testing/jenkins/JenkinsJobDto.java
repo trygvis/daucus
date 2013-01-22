@@ -22,4 +22,8 @@ public class JenkinsJobDto extends AbstractEntity {
         this.jobType = jobType;
         this.displayName = displayName;
     }
+
+    public String displayName() {
+        return displayName.orSome("<no name>");
+    }
 }

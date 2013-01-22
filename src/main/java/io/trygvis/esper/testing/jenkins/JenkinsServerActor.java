@@ -4,6 +4,7 @@ import fj.*;
 import fj.data.*;
 import io.trygvis.esper.testing.core.db.*;
 import io.trygvis.esper.testing.jenkins.xml.*;
+import io.trygvis.esper.testing.util.*;
 import io.trygvis.esper.testing.util.object.*;
 import io.trygvis.esper.testing.util.sql.*;
 import org.slf4j.*;
@@ -21,6 +22,7 @@ import static java.lang.System.*;
 
 public class JenkinsServerActor implements TransactionalActor {
     private static final Logger logger = LoggerFactory.getLogger(JenkinsServerActor.class);
+    private static final XmlParser xmlParser = new XmlParser();
     private final JenkinsClient client;
     public final JenkinsServerDto server;
 
@@ -121,10 +123,12 @@ public class JenkinsServerActor implements TransactionalActor {
 
             SqlOption<JenkinsJobDto> jobDtoOption = dao.selectJobByUrl(jobUrl);
 
-            UUID job;
+            JenkinsJobDto job;
 
             if (jobDtoOption.isSome()) {
-                job = jobDtoOption.get().uuid;
+                job = jobDtoOption.get();
+
+                logger.info("New build for job '{}'/{}", job.displayName(), job.uuid);
             } else {
                 logger.info("New job: {}, fetching info", jobUrl);
 
@@ -140,26 +144,60 @@ public class JenkinsServerActor implements TransactionalActor {
 
                 JenkinsJobXml xml = jobXmlOption.some()._1();
 
-                job = dao.insertJob(server.uuid, jobXmlFile, xml.url, xml.type, xml.displayName);
+                UUID uuid = dao.insertJob(server.uuid, jobXmlFile, xml.url, xml.type, xml.displayName);
 
-                logger.info("New job: {}, uuid={}", xml.displayName.orSome(xml.url.toASCIIString()), job);
+                job = dao.selectJob(uuid).get();
+
+                logger.info("New job: '{}'/{}", xml.displayName.orSome(xml.url.toASCIIString()), uuid);
             }
 
             i++;
 
+            checkForMissingBuilds(dao, fileDao, build, job);
+
             UUID uuid = dao.insertBuild(
-                    job,
+                    job.uuid,
                     buildXmlFile,
                     entry.id,
                     build.url,
                     users.toArray(new UUID[users.size()]));
 
-            logger.info("Build inserted: {}, #users={} item #{}/{}", uuid, users.size(), i, list.size());
+            logger.info("Build inserted: {}, name={}, number={}, #users={} item #{}/{}", uuid, job.displayName(), build.number, users.size(), i, list.size());
         }
 
         long end = currentTimeMillis();
 
         logger.info("Inserted " + i + " of " + list.size() + " builds in " + (end - start) + "ms.");
+    }
+
+    private void checkForMissingBuilds(JenkinsDao dao, FileDao fileDao, JenkinsBuildXml build, JenkinsJobDto job) throws SQLException {
+        if (build.number <= 1) {
+            return;
+        }
+
+        List<JenkinsBuildDto> builds = dao.selectBuildByJob(job.uuid, PageRequest.one());
+
+        if (builds.isEmpty()) {
+            return;
+        }
+
+        JenkinsBuildDto previousJob = builds.get(0);
+
+        Option<JenkinsBuildXml> previousXmlO = fileDao.load(previousJob.file).toFj().
+                bind(xmlParser.parseDocument).
+                bind(JenkinsBuildXml.parse);
+
+        if (previousXmlO.isNone()) {
+            logger.warn("Unable to load/parse XML file from previous build, file={}", previousJob.file);
+            return;
+        }
+
+        JenkinsBuildXml previousBuildXml = previousXmlO.some();
+
+        if (build.number != previousBuildXml.number + 1) {
+            logger.warn("MISSED BUILD. The build number for job={} ({}) was {}, but the previous build was {}",
+                    job.displayName(), job.uuid, build.number, previousBuildXml.number);
+        }
     }
 
     /**
