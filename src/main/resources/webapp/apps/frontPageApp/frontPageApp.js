@@ -1,6 +1,6 @@
 'use strict';
 
-var frontPageApp = angular.module('frontPageApp', ['ngGrid', 'person', 'badge', 'build', 'jenkinsUser', 'pagingTableService', 'core.directives']).config(function ($routeProvider) {
+var frontPageApp = angular.module('frontPageApp', ['ngGrid', 'person', 'badge', 'build', 'jenkinsUser', 'jenkinsBuild', 'pagingTableService', 'core.directives']).config(function ($routeProvider) {
   $routeProvider.
       when('/', {controller: FrontPageCtrl, templateUrl: '/apps/frontPageApp/frontPage.html?noCache=' + noCache}).
       when('/badge/', {controller: BadgeListCtrl, templateUrl: '/apps/frontPageApp/badgeList.html?noCache=' + noCache}).
@@ -136,10 +136,10 @@ function BuildListCtrl($scope, Build, PagingTableService) {
       { count: 100, watcher: watcher });
 }
 
-function BuildCtrl($scope, $routeParams, Build, PagingTableService) {
+function BuildCtrl($scope, $routeParams, Build, JenkinsBuild) {
   var buildUuid = $routeParams.buildUuid;
 
-  Build.get({uuid: buildUuid}, function (build) {
-    $scope.build = build;
+  $scope.build = Build.get({uuid: buildUuid}, function (build) {
+    $scope.jenkinsBuild = JenkinsBuild.get({uuid: build.build.buildUuid});
   });
 }

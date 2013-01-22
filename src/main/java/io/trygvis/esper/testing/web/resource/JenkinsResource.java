@@ -84,8 +84,10 @@ public class JenkinsResource extends AbstractResource {
         return da.inTransaction(new JenkinsDaosCallback<List<JenkinsBuildJson>>() {
             protected List<JenkinsBuildJson> run() throws SQLException {
                 List<JenkinsBuildJson> builds = new ArrayList<>();
-                for (JenkinsBuildDto dto : daos.jenkinsDao.selectBuildByJob(job, page)) {
-                    builds.add(getJenkinsBuildJson.apply(dto));
+                if(job != null) {
+                    for (JenkinsBuildDto dto : daos.jenkinsDao.selectBuildByJob(job, page)) {
+                        builds.add(getJenkinsBuildJson.apply(dto));
+                    }
                 }
                 return builds;
             }
@@ -122,12 +124,12 @@ public class JenkinsResource extends AbstractResource {
         }
     }
 
-    abstract class JenkinsDaosCallback<T> implements DatabaseAccess.DaosCallback<T> {
+    public static abstract class JenkinsDaosCallback<T> implements DatabaseAccess.DaosCallback<T> {
         protected Daos daos;
 
         protected abstract T run() throws SQLException;
 
-        private final XmlParser xmlParser = new XmlParser();
+        private static final XmlParser xmlParser = new XmlParser();
 
         public T run(Daos daos) throws SQLException {
             this.daos = daos;
@@ -168,13 +170,13 @@ public class JenkinsResource extends AbstractResource {
                         bind(JenkinsBuildXml.parse);
 
                 if(xmlO.isNone()) {
-                    return new JenkinsBuildJson(dto.uuid, dto.createdDate, new DateTime(dto.createdDate),
+                    return new JenkinsBuildJson(dto.uuid, dto.createdDate, dto.job, new DateTime(dto.createdDate),
                             "unknown", 0, 0);
                 }
 
                 JenkinsBuildXml xml = xmlO.some();
 
-                return new JenkinsBuildJson(dto.uuid, dto.createdDate, new DateTime(xml.timestamp),
+                return new JenkinsBuildJson(dto.uuid, dto.createdDate, dto.job, new DateTime(xml.timestamp),
                         xml.result.orSome("unknown"), xml.number, xml.duration);
             }
         };
@@ -248,14 +250,16 @@ class JenkinsJobDetailJson {
 class JenkinsBuildJson {
     public final UUID uuid;
     public final DateTime createdDate;
+    public final UUID job;
     public final DateTime timestamp;
     public final String result;
     public final int number;
     public final int duration;
 
-    JenkinsBuildJson(UUID uuid, DateTime createdDate, DateTime timestamp, String result, int number, int duration) {
+    JenkinsBuildJson(UUID uuid, DateTime createdDate, UUID job, DateTime timestamp, String result, int number, int duration) {
         this.uuid = uuid;
         this.createdDate = createdDate;
+        this.job = job;
         this.timestamp = timestamp;
         this.result = result;
         this.number = number;

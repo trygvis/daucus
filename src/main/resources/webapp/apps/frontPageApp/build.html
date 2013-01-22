@@ -12,17 +12,35 @@
         <tbody>
         <tr>
           <th>Type</th>
-          <td>Jenkins</td>
+          <td>
+            <span ng-hide="build.build.serverType">
+              Loading...
+            </span>
+            <ng-switch on="build.build.serverType" ng-show="build.build.serverType">
+              <span ng-switch-when="jenkins">
+                Jenkins
+
+                <a href="/jenkins/#/server/{{jenkinsBuild.build.serverUuid}}/job/{{jenkinsBuild.build.job}}/build/{{jenkinsBuild.build.uuid}}/">visit build</a>
+              </span>
+              <span ng-switch-default>
+                Unknown server type.
+              </span>
+            </ng-switch>
+          </td>
         </tr>
         <tr>
-          <th>Duration</th>
+          <th>Timestamp</th>
           <td>{{build.build.timestamp | date:'medium'}}</td>
+        </tr>
+        <tr>
+          <th>Result</th>
+          <td>{{{true: 'SUCCESS', false: 'FAILURE'}[build.build.success]}}</td>
         </tr>
         </tbody>
       </table>
 
       <h2>Participants</h2>
-      <span dogtagxl ng-repeat="p in build.participants" person="p"/>
+      <dogtag-xl ng-repeat="p in build.participants" person="p"></dogtag-xl>
     </div>
 
   </div>

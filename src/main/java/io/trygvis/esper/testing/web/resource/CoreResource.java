@@ -206,7 +206,8 @@ public class CoreResource extends AbstractResource {
 
         protected final SqlF<BuildDto, BuildJson> getBuildJson = new SqlF<BuildDto, BuildJson>() {
             public BuildJson apply(BuildDto dto) throws SQLException {
-                return new BuildJson(dto.uuid, dto.createdDate, dto.timestamp, dto.success);
+                return new BuildJson(dto.uuid, dto.createdDate, dto.timestamp, dto.success, "jenkins",
+                        dto.ref.uuid);
             }
         };
 
@@ -252,12 +253,16 @@ class BuildJson {
     public final DateTime createdDate;
     public final DateTime timestamp;
     public final boolean success;
+    public final String serverType;
+    public final UUID buildUuid;
 
-    public BuildJson(UUID uuid, DateTime createdDate, DateTime timestamp, boolean success) {
+    BuildJson(UUID uuid, DateTime createdDate, DateTime timestamp, boolean success, String serverType, UUID buildUuid) {
         this.uuid = uuid;
         this.createdDate = createdDate;
         this.timestamp = timestamp;
         this.success = success;
+        this.serverType = serverType;
+        this.buildUuid = buildUuid;
     }
 }
 
