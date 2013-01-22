@@ -1,13 +1,14 @@
 'use strict';
 
-function NavbarService($location) {
+function NavTabsService($location) {
   var create = function(name, tabs) {
     var keys = _.map(tabs, function(element) {
       return element.toLowerCase().replace(' ', '-');
     });
 
     var currentKey = $location.search()[name] || "";
-    var currentIndex = _.indexOf(keys, currentKey) || 0;
+    var currentIndex = _.indexOf(keys, currentKey);
+    currentIndex = currentIndex != -1 ? currentIndex : 0;
     var currentTab = tabs[currentIndex];
 
     var onClick = function(tab) {
@@ -38,13 +39,13 @@ function NavbarService($location) {
 }
 
 angular.
-    module('navbarService', ['ngResource']).
-    factory('NavbarService', NavbarService);
+    module('navTabsService', ['ngResource']).
+    factory('NavTabsService', NavTabsService);
 
-var jenkinsApp = angular.module('jenkinsApp', ['jenkinsServer', 'jenkinsJob', 'jenkinsBuild', 'core.directives', 'navbarService', 'pagingTableService']).config(function ($routeProvider) {
+var jenkinsApp = angular.module('jenkinsApp', ['jenkinsServer', 'jenkinsJob', 'jenkinsBuild', 'core.directives', 'navTabsService', 'pagingTableService']).config(function ($routeProvider) {
   $routeProvider.
       when('/', {controller: ServerListCtrl, templateUrl: '/apps/jenkinsApp/server-list.html?noCache=' + noCache}).
-      when('/server/:serverUuid', {controller: ServerCtrl, templateUrl: '/apps/jenkinsApp/server.html?noCache=' + noCache}).
+      when('/server/:serverUuid', {controller: ServerCtrl, templateUrl: '/apps/jenkinsApp/server.html?noCache=' + noCache, reloadOnSearch: false}).
       when('/server/:serverUuid/job/:jobUuid', {controller: JobCtrl, templateUrl: '/apps/jenkinsApp/job.html?noCache=' + noCache}).
       when('/server/:serverUuid/job/:jobUuid/build/:buildUuid', {controller: BuildCtrl, templateUrl: '/apps/jenkinsApp/build.html?noCache=' + noCache});
 });
@@ -55,8 +56,10 @@ function ServerListCtrl($scope, $location, JenkinsServer) {
   });
 }
 
-function ServerCtrl($scope, $routeParams, JenkinsServer, JenkinsJob, PagingTableService, NavbarService) {
+function ServerCtrl($scope, $routeParams, JenkinsServer, JenkinsJob, JenkinsBuild, PagingTableService, NavTabsService) {
   $scope.serverUuid = $routeParams.serverUuid;
+
+  $scope.navTabs = NavTabsService.create("view", ["Overview", "Jobs", "Recent Builds"]);
 
   JenkinsServer.get({uuid: $scope.serverUuid}, function (server) {
     $scope.server = server;
@@ -64,7 +67,7 @@ function ServerCtrl($scope, $routeParams, JenkinsServer, JenkinsJob, PagingTable
 
   $scope.jobs = PagingTableService.create($scope, PagingTableService.defaultCallback(JenkinsJob, {server: $scope.serverUuid, orderBy: "display_name"}));
 
-  $scope.navbar = NavbarService.create("view", ["Overview", "Jobs", "Recent Builds"]);
+  $scope.builds = PagingTableService.create($scope, PagingTableService.defaultCallback(JenkinsBuild, {server: $scope.serverUuid, orderBy: "created_date-"}));
 }
 
 function JobCtrl($scope, $location, $routeParams, JenkinsJob, JenkinsBuild, PagingTableService) {

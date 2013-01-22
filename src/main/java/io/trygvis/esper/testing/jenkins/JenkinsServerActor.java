@@ -50,6 +50,9 @@ public class JenkinsServerActor implements TransactionalActor {
 
         logger.info("Got " + list.size() + " entries.");
 
+        // Process the list from the oldest first.
+        Collections.reverse(list);
+
         int i = 0;
 
         Map<String, UUID> authors = new HashMap<>();

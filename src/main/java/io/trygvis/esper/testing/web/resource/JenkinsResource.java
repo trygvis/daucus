@@ -93,14 +93,26 @@ public class JenkinsResource extends AbstractResource {
     @GET
     @Path("/build")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<JenkinsBuildJson> getBuilds(@MagicParam(query = "job") final UUID job, @MagicParam final PageRequest page) throws Exception {
+    public List<JenkinsBuildJson> getBuilds(@MagicParam(query = "job") final UUID job,
+                                            @MagicParam(query = "server") final UUID server,
+                                            @MagicParam final PageRequest page) throws Exception {
         return da.inTransaction(new JenkinsDaosCallback<List<JenkinsBuildJson>>() {
             protected List<JenkinsBuildJson> run() throws SQLException {
-                List<JenkinsBuildJson> builds = new ArrayList<>();
+                List<JenkinsBuildDto> daos;
+
                 if(job != null) {
-                    for (JenkinsBuildDto dto : daos.jenkinsDao.selectBuildByJob(job, page)) {
-                        builds.add(getJenkinsBuildJson.apply(dto));
-                    }
+                    daos = this.daos.jenkinsDao.selectBuildByJob(job, page);
+                }
+                else if(server != null) {
+                    daos = this.daos.jenkinsDao.selectBuildByServer(server, page);
+                }
+                else {
+                    throw new WebApplicationException(Response.Status.BAD_REQUEST);
+                }
+
+                List<JenkinsBuildJson> builds = new ArrayList<>();
+                for (JenkinsBuildDto dto : daos) {
+                    builds.add(getJenkinsBuildJson.apply(dto));
                 }
                 return builds;
             }

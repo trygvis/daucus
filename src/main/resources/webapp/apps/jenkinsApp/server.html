@@ -2,7 +2,6 @@
 
   <navbar/>
 
-
   <div class="page-header">
     <h1>Jenkins Server: {{server.name}}</h1>
   </div>
@@ -12,20 +11,13 @@
     <li class="active">Server</li>
   </ul>
 
-<!--
   <ul class="nav nav-tabs">
-    <li ng-class="{active: mode == 'overview'}"><a ng-click="setMode('overview')">Overview</a></li>
-    <li ng-class="{active: mode == 'jobs'}"><a ng-click="setMode('jobs')">Jobs</a></li>
-    <li ng-class="{active: mode == 'recentBuilds'}"><a ng-click="setMode('recentBuilds')">Recent Builds</a></li>
-  </ul>
--->
-  <ul class="nav nav-tabs">
-    <li ng-repeat="tab in navbar.tabs" ng-class="{active: navbar.selected() == tab}">
-      <a ng-click="navbar.onClick(tab)">{{tab}}</a>
+    <li ng-repeat="tab in navTabs.tabs" ng-class="{active: navTabs.selected() == tab}">
+      <a ng-click="navTabs.onClick(tab)">{{tab}}</a>
     </li>
   </ul>
 
-  <div ng-show="navbar.selectedIndex() == 0" class="row">
+  <div ng-show="navTabs.selectedIndex() == 0" class="row">
     <div class="span12">
       <h3>Overview</h3>
       <table class="table">
@@ -55,7 +47,7 @@
     </div>
   </div>
 
-  <div ng-show="navbar.selectedIndex() == 1" class="row">
+  <div ng-show="navTabs.selectedIndex() == 1" class="row">
     <div class="span12">
       <form class="form-search form-inline well">
         <div class="input-append">
@@ -91,9 +83,21 @@
     </div>
   </div>
 
-  <div ng-show="navbar.selectedIndex() == 2" class="row">
+  <div ng-show="navTabs.selectedIndex() == 2" class="row">
     <div class="span12">
-      <h3>Recent builds</h3>
+      <table class="table table-striped">
+        <tbody>
+        <tr ng-repeat="b in builds.rows">
+          <td>{{b.timestamp | date:'medium'}}</td>
+          <td class="span6">{{b.result}}</td>
+          <td class="span1"><a class="btn" href="/jenkins/#/server/{{server.uuid}}/job/{{b.job}}">Job</a></td>
+          <td class="span1">
+            <a class="btn" href="/jenkins/#/server/{{server.uuid}}/job/{{b.job}}/build/{{b.uuid}}"><i class="icon-chevron-right"></i></a>
+          </td>
+        </tr>
+        </tbody>
+        <tfoot pager colspan="4" x="builds"/>
+      </table>
     </div>
   </div>
 

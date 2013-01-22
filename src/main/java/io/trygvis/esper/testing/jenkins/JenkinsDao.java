@@ -56,7 +56,7 @@ public class JenkinsDao {
         }
     };
 
-    public static final String JENKINS_BUILD = "uuid, created_date, job, file, entry_id, url, users";
+    public static final String JENKINS_BUILD = "jenkins_build.uuid, jenkins_build.created_date, jenkins_build.job, jenkins_build.file, jenkins_build.entry_id, jenkins_build.url, jenkins_build.users";
 
     public static final SqlF<ResultSet, JenkinsBuildDto> jenkinsBuild = new SqlF<ResultSet, JenkinsBuildDto>() {
         public JenkinsBuildDto apply(ResultSet rs) throws SQLException {
@@ -206,6 +206,20 @@ public class JenkinsDao {
         try (PreparedStatement s = c.prepareStatement(sql)) {
             int i = 1;
             s.setString(i++, job.toString());
+            s.setInt(i++, page.count.orSome(10));
+            s.setInt(i, page.startIndex.orSome(0));
+            return toList(s, jenkinsBuild);
+        }
+    }
+
+    public List<JenkinsBuildDto> selectBuildByServer(UUID server, PageRequest page) throws SQLException {
+        String sql = "SELECT " + JENKINS_BUILD + " FROM jenkins_build, jenkins_job WHERE jenkins_job.uuid = jenkins_build.job AND jenkins_job.server=?";
+        sql += orderBy(ifEmpty(page.orderBy, "created_date-"), "created_date");
+        sql += " LIMIT ? OFFSET ?";
+
+        try (PreparedStatement s = c.prepareStatement(sql)) {
+            int i = 1;
+            s.setString(i++, server.toString());
             s.setInt(i++, page.count.orSome(10));
             s.setInt(i, page.startIndex.orSome(0));
             return toList(s, jenkinsBuild);

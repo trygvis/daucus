@@ -110,6 +110,17 @@ directives.directive('dogtagXl', function () {
   }
 });
 
+directives.directive('pager', function () {
+  return {
+    restrict: 'A',
+    scope: {
+      pager: '=x',
+      colspan: '=colspan'
+    },
+    templateUrl: '/apps/core/pager.html'
+  }
+});
+
 directives.directive('spinner', function () {
   return function($scope, element, attr) {
     var opts = {
