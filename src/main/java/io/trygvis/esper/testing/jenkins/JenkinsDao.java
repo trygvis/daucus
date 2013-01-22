@@ -143,6 +143,20 @@ public class JenkinsDao {
         }
     }
 
+    public int selectBuildCountForServer(UUID uuid) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT count(1) FROM jenkins_job j, jenkins_build b WHERE j.server=? AND b.job = j.uuid")) {
+            s.setString(1, uuid.toString());
+            return fromRs(s.executeQuery()).map(getInt).get();
+        }
+    }
+
+    public DateTime selectLastBuildForServer(UUID uuid) throws SQLException {
+        try (PreparedStatement s = c.prepareStatement("SELECT b.created_date FROM jenkins_job j, jenkins_build b WHERE j.server=? AND b.job = j.uuid ORDER BY b.created_date LIMIT 1")) {
+            s.setString(1, uuid.toString());
+            return fromRs(s.executeQuery()).map(getDateTime).get();
+        }
+    }
+
     public UUID insertJob(UUID server, UUID file, URI url, JenkinsJobXml.JenkinsJobType type, Option<String> displayName) throws SQLException {
         try (PreparedStatement s = c.prepareStatement("INSERT INTO jenkins_job(" + JENKINS_JOB + ") VALUES(?, ?, ?, ?, ?, ?, ?)")) {
             UUID uuid = UUID.randomUUID();

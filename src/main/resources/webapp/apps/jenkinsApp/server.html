@@ -4,7 +4,7 @@
 
 
   <div class="page-header">
-    <h1>Jenkins Server</h1>
+    <h1>Jenkins Server: {{server.name}}</h1>
   </div>
 
   <ul class="breadcrumb">
@@ -24,8 +24,16 @@
       <td>{{server.enabled}}</td>
     </tr>
     <tr>
-      <th>Stats</th>
-      <td>{{server.jobCount}} jobs</td>
+      <th>Number of jobs</th>
+      <td>{{server.jobCount}}</td>
+    </tr>
+    <tr>
+      <th>Number of builds</th>
+      <td>{{server.buildCount}}</td>
+    </tr>
+    <tr>
+      <th>Most recent build</th>
+      <td>{{server.lastBuildTimestamp | date:'medium'}}</td>
     </tr>
     </tbody>
   </table>

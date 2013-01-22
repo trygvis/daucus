@@ -138,14 +138,12 @@ public class JenkinsResource extends AbstractResource {
 
         protected SqlF<JenkinsServerDto, JenkinsServerJson> getJenkinsServerJson = new SqlF<JenkinsServerDto, JenkinsServerJson>() {
             public JenkinsServerJson apply(JenkinsServerDto server) throws SQLException {
-                int count = daos.jenkinsDao.selectJobCountForServer(server.uuid);
+                int jobCount = daos.jenkinsDao.selectJobCountForServer(server.uuid);
+                int buildCount = daos.jenkinsDao.selectBuildCountForServer(server.uuid);
+                DateTime lastBuildTimestamp = daos.jenkinsDao.selectLastBuildForServer(server.uuid);
 
-                List<JenkinsJobJson> jobs = new ArrayList<>();
-                for (JenkinsJobDto jobDto : daos.jenkinsDao.selectJobsByServer(server.uuid, PageRequest.FIRST_PAGE)) {
-                    jobs.add(getJenkinsJobJson.apply(jobDto));
-                }
-
-                return new JenkinsServerJson(server.uuid, server.createdDate, server.name, server.url, server.enabled, count, jobs);
+                return new JenkinsServerJson(server.uuid, server.createdDate, server.name, server.url, server.enabled,
+                        jobCount, buildCount, lastBuildTimestamp);
             }
         };
 
@@ -208,16 +206,19 @@ class JenkinsServerJson {
     public final URI url;
     public final boolean enabled;
     public final int jobCount;
-    public final List<JenkinsJobJson> recentJobs;
+    public final int buildCount;
+    public final DateTime lastBuildTimestamp;
 
-    JenkinsServerJson(UUID uuid, DateTime createdDate, String name, URI url, boolean enabled, int jobCount, List<JenkinsJobJson> recentJobs) {
+    JenkinsServerJson(UUID uuid, DateTime createdDate, String name, URI url, boolean enabled, int jobCount,
+                      int buildCount, DateTime lastBuildTimestamp) {
         this.uuid = uuid;
         this.createdDate = createdDate;
         this.name = name;
         this.url = url;
         this.enabled = enabled;
         this.jobCount = jobCount;
-        this.recentJobs = recentJobs;
+        this.buildCount = buildCount;
+        this.lastBuildTimestamp = lastBuildTimestamp;
     }
 }
 
