@@ -73,7 +73,9 @@
                     {{build.timestamp | date:'shortTime'}}:
                     {{{true: 'SUCCESS', false: 'FAILURE'}[build.success]}}
 
-                    <a class="btn pull-right" href="#/build/{{build.uuid}}"><i class="icon-chevron-right"></i></a>
+                    <a class="btn btn-mini pull-right" href="#/build/{{build.uuid}}">
+                      <i class="icon-chevron-right"></i>
+                    </a>
                   </td>
                 </tr>
               </table>
@@ -90,38 +92,6 @@
         </ul>
       </div>
     </div>
-<!--
-    <table class="table text-baseline">
-      <thead>
-      <tr>
-        <th>Date</th>
-        <th></th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr ng-repeat="build in builds.rows" class="{{{true: 'success', false: 'error'}[build.success]}}">
-        <td>{{build.timestamp | date:'medium'}}</td>
-        <td>
-          <a class="btn btn-small" href="#/build/{{build.uuid}}"><i class="icon-chevron-right"></i></a>
-        </td>
-      </tr>
-      </tbody>
-      <tfoot>
-      <tr>
-        <td colspan="3">
-          <ul class="pager">
-            <li class="previous" ng-class="{disabled: builds.startIndex == 0}">
-              <a ng-click="builds.prev()">&larr; Older</a>
-            </li>
-            <li class="next">
-              <a ng-click="builds.next()">Newer &rarr;</a>
-            </li>
-          </ul>
-        </td>
-      </tr>
-      </tfoot>
-    </table>
--->
   </div>
 
   <div id="jenkins" ng-show="mode == 'jenkins'">

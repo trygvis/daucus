@@ -20,7 +20,7 @@
   <div ng-show="navTabs.selectedIndex() == 0" class="row">
     <div class="span12">
       <h3>Overview</h3>
-      <table class="table">
+      <table class="table details-table">
         <tbody>
         <tr>
           <th>URL</th>
@@ -32,7 +32,7 @@
         </tr>
         <tr>
           <th>Number of jobs</th>
-          <td>{{server.jobCount}}</td>
+          <td><a href="" ng-click="navTabs.onClick('jobs')">{{server.jobCount}}</a></td>
         </tr>
         <tr>
           <th>Number of builds</th>
@@ -57,12 +57,16 @@
       </form>
     </div>
     <div class="span12">
-      <table class="table">
+      <table class="table table-striped align-middle">
         <tbody>
         <tr ng-repeat="job in jobs.rows">
           <td>{{job.displayName}}</td>
           <td>{{job.createdDate | date:'medium'}}</td>
-          <td><a class="btn" href="/jenkins/#/server/{{server.uuid}}/job/{{job.uuid}}"><i class="icon-chevron-right"></i></a></td>
+          <td>
+            <a class="btn btn-mini" href="/jenkins/#/server/{{server.uuid}}/job/{{job.uuid}}">
+              <i class="icon-chevron-right"></i>
+            </a>
+          </td>
         </tr>
         </tbody>
         <tfoot>
@@ -88,11 +92,13 @@
       <table class="table table-striped">
         <tbody>
         <tr ng-repeat="b in builds.rows">
-          <td>{{b.timestamp | date:'medium'}}</td>
+          <td class="span4">{{b.timestamp | date:'medium'}}</td>
           <td class="span6">{{b.result}}</td>
-          <td class="span1"><a class="btn" href="/jenkins/#/server/{{server.uuid}}/job/{{b.job}}">Job</a></td>
+          <td class="span1"><a class="btn btn-mini" href="/jenkins/#/server/{{server.uuid}}/job/{{b.job}}">Job</a></td>
           <td class="span1">
-            <a class="btn" href="/jenkins/#/server/{{server.uuid}}/job/{{b.job}}/build/{{b.uuid}}"><i class="icon-chevron-right"></i></a>
+            <a class="btn btn-mini" href="/jenkins/#/server/{{server.uuid}}/job/{{b.job}}/build/{{b.uuid}}">
+              <i class="icon-chevron-right"></i>
+            </a>
           </td>
         </tr>
         </tbody>

@@ -14,7 +14,7 @@
 
   <h3>Overview</h3>
 
-  <table class="table">
+  <table class="table details-table">
     <tbody>
     <tr>
       <th>URL</th>
@@ -40,7 +40,11 @@
     <tr ng-repeat="build in builds.rows" class="{{{true: 'success', false: 'error'}[build.success]}}">
       <td>{{build.timestamp | date:'medium'}}</td>
       <td>{{build.result}}</td>
-      <td><a class="btn" href="/jenkins/#/server/{{serverUuid}}/job/{{jobUuid}}/build/{{build.uuid}}"><i class="icon-chevron-right"></i></a></td>
+      <td>
+        <a class="btn btn-mini" href="/jenkins/#/server/{{serverUuid}}/job/{{jobUuid}}/build/{{build.uuid}}">
+          <i class="icon-chevron-right"></i>
+        </a>
+      </td>
     </tr>
     </tbody>
     <tfoot>

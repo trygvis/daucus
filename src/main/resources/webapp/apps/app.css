@@ -24,8 +24,8 @@
  * Common elements
  */
 
-table.text-baseline td {
-    vertical-align: baseline
+table.align-middle td {
+    vertical-align: middle;
 }
 
 div.dogtag-big {
@@ -41,6 +41,10 @@ div.dogtag-big img {
     padding-right: 1em;
     float: left;
     margin-top: 0;
+}
+
+table.details-table th:first-child {
+  width: 15em;
 }
 
 /*

@@ -13,7 +13,15 @@ function NavTabsService($location) {
 
     var onClick = function(tab) {
       currentTab = tab;
-      currentIndex = _.indexOf(tabs, tab);
+      var x = _.indexOf(tabs, tab);
+      if(x == -1) {
+        x = _.indexOf(keys, tab);
+        if(x == -1) {
+          throw "Unknown tab: " + tab;
+        }
+      }
+
+      currentIndex = x;
       $location.search(name, keys[currentIndex]);
     };
 

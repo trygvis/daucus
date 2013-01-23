@@ -24,7 +24,7 @@
             <h2>{{date | date:'mediumDate'}}</h2>
           </div>
           <div class="span12">
-            <table class="table">
+            <table class="table align-middle">
             <tr ng-repeat="build in group" class="{{{true: 'success', false: 'error'}[build.build.success]}}">
               <td>
                 <h4>
@@ -35,10 +35,12 @@
                 <span ng-repeat="p in build.participants" ng-show="build.participants">
                   <dogtag-xl person="p"></dogtag-xl>
                 </span>
-                <p ng-hide="build.participants">
+                <span ng-hide="build.participants">
                   No participants.
-                </p>
-                <a class="btn pull-right" href="#/build/{{build.build.uuid}}"><i class="icon-chevron-right"></i></a>
+                </span>
+                <a class="btn pull-right" href="#/build/{{build.build.uuid}}">
+                  <i class="icon-chevron-right"></i>
+                </a>
               </td>
             </tr>
             </table>
